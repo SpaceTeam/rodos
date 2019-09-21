@@ -1,0 +1,103 @@
+
+errorCounter umbennen
+nameoflast error
+errroLog benutzen
+was macht errorLog.add(xxx) wenn scheduler noch nicht läuft? recursive loop?
+report errorlog per udp
+doku: see errrorLog periodically
+
+inwork:
+    asserts
+
+
+------------
+Bei jedem Datei die ich anfasse:
+    rm #ifndef NO_RODOS_NAMESPACE
+    clang-format
+-----------
+
+next ports
+unifiy so may files as possible between ports
+    SF2
+    iMX6SX 
+    STM32F411
+    STM32F70   
+    dual core low power ARM (eg STM32WB55CG)
+
+siehe ../rodos-200-being-extracted
+
+-------------
+erik:
+alle uart interfaces nutzen s3p aus support-lib
+gateway reduzieren: kein wieterleiten und so
+
+
+assert
+suchen
+    exit(), abort() ERROR(), wile(1){} etc etc
+mache assert daraus
+
+class Return
+
+----------------
+
+cmake, besipeil für projetke
+
+Rodos: errorcode & findrotaionvektor weiter & Assert
+rodos-assert.h
+result.h
+matlib
+   findrorationsvektor
+   find cosinus direction matrix
+
+error code return
+matlib update
+speelchecker
+cmake-format
+
+--------------
+integrate workarea/result & assert
+
+correct find-rotation-agelacix und return "result.h"
+add workarea/cos-disction-matrix.cpp zu matlib und den passende test progg
+
+   return "Result
+   asserts
+   test dies
+
+
+include files in schichten
+shell scripte besser / einfacher
+
+tutorial mit cmake proejkt für alle datein inside
+
+
+-----------------
+
+RODOS auf longjump ohne preemtion für schnles port
+/home/sem40wk/sergio/workarea/rodos/TODO/makeing-wasser-dicht.txt
+rodos portierung mit makecontext, setjmp & longjmp
+        reihefolge von Konstrukturen
+serializer für gateway
+
+
+Rodos check
+        cppcheck
+        andere static analyse tools, siehe bericht von PTS
+        ~/bibliotek/sw-verifikation/clang-thread-analysis.pdf
+        alles mit clang kompilieren
+        unit test?
+
+
+s3p encoder / decoder zum supportzlib
+
+
+include rodos.h -> liste con includes oder nur die layers nach unten
+layers beim include
+    in include files
+    in sources
+
+strings per elemtry
+siehe
+ progs-examples/stringsfinder-doit
+

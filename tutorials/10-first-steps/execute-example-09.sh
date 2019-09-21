@@ -1,0 +1,3 @@
+cd gps
+executeit.sh
+
