@@ -5,9 +5,7 @@
 
 #include "stm32f4xx_gpio.h"
 
-#ifndef NO_RODOS_NAMESPACE
 namespace RODOS {
-#endif
 
 
 void initEXTInterrupts();
@@ -290,10 +288,7 @@ void HAL_GPIO::interruptEnable(bool enable){
 		if(extInterruptLines[exti]==context){
 			return; //Already enabled
 		}else if(extInterruptLines[exti]==0){
-			if(context->numOfPins > 1){
-				ERROR("IRQ not possible with numOfPins > 1");
-				return;
-			}
+			RODOS_ASSERT_IFNOT_RETURN_VOID(context->numOfPins <= 1); // IRQ not possible with numOfPins > 1
 
 			SYSCFG_EXTILineConfig(portNum,pinNum);
 
@@ -309,7 +304,7 @@ void HAL_GPIO::interruptEnable(bool enable){
 			EXTI->IMR |= 1 << pinNum;
 
 		}else{
-			ERROR("External IRQ Line already used by another HAL_GPIO");
+			RODOS_ERROR("External IRQ Line already used by another HAL_GPIO");
 			return;
 		}
 
@@ -331,9 +326,7 @@ void HAL_GPIO::resetInterruptEventStatus(){
 }
 
 
-#ifndef NO_RODOS_NAMESPACE
 }
-#endif
 
 
 

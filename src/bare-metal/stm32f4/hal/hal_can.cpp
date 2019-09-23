@@ -149,11 +149,11 @@ void CAN_Ctrl::init(uint32_t baudrate) {
         CAN_InitStructure.CAN_Prescaler = 
                 canCtrlFreq / (baudrate * (1 + CAN_BS1_8tq + 1 + CAN_BS2_5tq + 1));
         if (canCtrlFreq % (baudrate * (1 + CAN_BS1_8tq + 1 + CAN_BS2_5tq + 1)) != 0) {
-            ERROR("CAN Baudrate not possible with current settings and CAN Clock!\n");
+            RODOS_ERROR("CAN Baudrate not possible with current settings and CAN Clock!\n");
         }
 
         if (CAN_Init(can, &CAN_InitStructure) == CAN_InitStatus_Failed) {
-            ERROR("CAN init failed\n");
+            RODOS_ERROR("CAN init failed\n");
         }
 
         CAN_ITConfig(can, CAN_IT_FMP0, ENABLE);
@@ -462,7 +462,7 @@ void CAN_Ctrl::SceIRQHandler() {
 HW_HAL_CAN::HW_HAL_CAN() {
 }
 
-extern unsigned long errorCounter;
+extern unsigned long rodosErrorCounter;
 HAL_CAN::HAL_CAN(CAN_IDX canIdx, GPIO_PIN rxPin, GPIO_PIN txPin) {
     if (canIdx > CAN_IDX1) {
         context->ctrl = 0;
@@ -478,7 +478,7 @@ HAL_CAN::HAL_CAN(CAN_IDX canIdx, GPIO_PIN rxPin, GPIO_PIN txPin) {
             context->ctrl->txPin = txPin;
         } else {
             /* CAN GPIO Pins set multiple Times, only allowed once */
-            errorCounter++;
+            rodosErrorCounter++;
         }
     }
 }
@@ -487,10 +487,9 @@ int HAL_CAN::init(unsigned int baudrate) {
     if (context->ctrl == 0) {
         return -1;
     }
-    if (baudrate == 0) {
-        ERROR("CAN Baudrate is 0");
-        return -1;
-    }
+
+    RODOS_ASSERT_IFNOT_RETURN(baudrate != 0, -1); //CAN Baudrate is 0
+
     if (isSchedulerRunning()) {
         PRIORITY_CEILER_IN_SCOPE();
         context->ctrl->init(baudrate);

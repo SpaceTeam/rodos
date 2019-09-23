@@ -35,11 +35,11 @@ namespace RODOS {
 
 
 /// counts how many errors have been detected. Normally it shall be 0
-extern unsigned long errorCounter;
+extern unsigned long rodosErrorCounter;
 
 /// register the error message of the last Error occurred: is is a unique pointer too
-extern const char* errorMsg;
-// extern unsigned long errorCode;
+extern const char* rodosErrorMsg;
+// extern unsigned long rodosErrorCode;
 
 
 /** Writes 0 terminated  1/0 string representing the input 
@@ -68,7 +68,7 @@ void PRINTF_CONDITIONAL(uint32_t id, const char* fmt, ...) __attribute__((__form
 /** Writes an error text with a leading title to stdout and keeps 
  * a counter. Used to report programming errors which shall be corrected.
  */
-void ERROR(const char* text);
+void RODOS_ERROR(const char* text);
 
 /** Print a character bitwise, highest bit first. 
  *  obsolete! use %b in PRINTF

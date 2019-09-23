@@ -21,7 +21,7 @@ void PRINTF(const char* fmt, ...) {
     if(printfMask == 0) return;
     Yprintf yprintf;
     va_start(yprintf.ap, fmt);
-    if (errorCounter != 0) xprintf("prev-ERR(%ld) -- ", errorCounter);
+    if (rodosErrorCounter != 0) xprintf("prev-ERR(%ld) -- ", rodosErrorCounter);
     if (!isSchedulerRunning()) {
         yprintf.vaprintf(fmt);
     } else {
@@ -36,7 +36,7 @@ void PRINTF_CONDITIONAL(uint32_t id, const char* fmt, ...) {
     if(id != 0xffffffff && (id & printfMask) == 0) return;
     Yprintf yprintf;
     va_start(yprintf.ap, fmt);
-    if (errorCounter != 0) xprintf("prev-ERR(%ld) -- ", errorCounter);
+    if (rodosErrorCounter != 0) xprintf("prev-ERR(%ld) -- ", rodosErrorCounter);
     if (!isSchedulerRunning()) {
         yprintf.vaprintf(fmt);
     } else {
@@ -72,11 +72,11 @@ void SPRINTF(char* dest, const char* fmt, ...) {
 }
 
 
-void ERROR(const char* text) {
-  // errorLog.add(text); WARNING: Crashes in called in constcutros whitout thread
-  errorMsg = text;
+void RODOS_ERROR(const char* text) {
+  rodosErrorMsg = text;
+  rodosErrorCounter++;
   PRINTF("!! Programming-ERROR %s\n",text);
-  errorCounter++;
+  errorLog.addRaw(text);
 }
 
 
@@ -109,7 +109,6 @@ char* formatBinary(long val, int len, char* outputBuf) {
 	outputBuf[len] = 0;
 	return outputBuf;
 }
-
 
 }
 

@@ -104,21 +104,19 @@ int main (int argc, char** argv) {
 
     initSystem();
 
+#ifdef DANGEROUS_ASSERT_ENABLED
+    xprintf("\n\n\nWARNING! 'DANGEROUS_ASSERT_ENABLED' is active! NEVER fly this code (%s)!\n\n\n", LOCATION);
+#endif
+
     xprintf("BigEndianity = %d, cpu-Arc = %s, Basis-Os = %s, Cpu-Speed (K-Loops/sec) = %ld yeildtim (ns) %ld\n",
             getIsHostBigEndian(), getHostCpuArch(), getHostBasisOS(), getSpeedKiloLoopsPerSecond(), getYieldTimeOverhead());
     xprintf("Node Number: HEX: %lx Dec: %ld\n",getNodeNumber(),getNodeNumber());
     xprintf("-----------------------------------------------------\n");
 
-
     MAIN();
 
     Timer::setInterval(PARAM_TIMER_INTERVAL);
     Timer::init(); // Timer interrupt started here
-
-#ifdef DANGEROUS_ASSERT_ENABLED
-    xprintf("\n\n\nWARNING! 'DANGEROUS_ASSERT_ENABLED' is active! NEVER fly this code (%s)!\n\n\n", LOCATION);
-#endif
-
 
     xprintf("--------------- Application running ------------\n");
     Scheduler::idle();

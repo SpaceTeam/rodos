@@ -10,9 +10,7 @@ extern "C" {
 #include "stm32f4xx_dma.h"
 }
 
-#ifndef NO_RODOS_NAMESPACE
 namespace RODOS {
-#endif
 
 /** TODO:
  * - timeout for while loops
@@ -77,8 +75,8 @@ public:
 DMA_InitTypeDef HW_HAL_SPI::DMA_InitStructure;
 
 HW_HAL_SPI::HW_HAL_SPI(SPI_IDX idx, GPIO_PIN sckPin, GPIO_PIN misoPin, GPIO_PIN mosiPin, GPIO_PIN nssPin) {
-  if(idx < SPI_IDX_MIN) ERROR("SPI index out of range");
-  if(idx > SPI_IDX_MAX) ERROR("SPI index out of range");
+  RODOS_ASSERT(idx >= SPI_IDX_MIN); // SPI index out of range
+  RODOS_ASSERT(idx <= SPI_IDX_MAX); // SPI index out of range
   initMembers(idx, sckPin, misoPin, mosiPin, nssPin);
 }
 
@@ -112,7 +110,7 @@ HW_HAL_SPI::HW_HAL_SPI(SPI_IDX idx) {
 		break;
 #endif
 	default:
-		ERROR("SPI index out of range");
+            RODOS_ERROR("SPI index out of range");
 	}
 
 }
@@ -208,7 +206,7 @@ void HW_HAL_SPI::initMembers(SPI_IDX idx, GPIO_PIN sckPin, GPIO_PIN misoPin, GPI
 		break;
 #endif
 	default:
-		ERROR("SPI index out of range");
+		RODOS_ERROR("SPI index out of range");
 	}
 
 }
@@ -247,7 +245,7 @@ int32_t HW_HAL_SPI::setBaudrate(uint32_t baudrate){
     case SPI_IDX5: pclk = sysClks.PCLK2_Frequency; break;
     case SPI_IDX6: pclk = sysClks.PCLK2_Frequency; break;
 #endif
-    default: ERROR("SPI index out of range"); return -1;
+    default: RODOS_ERROR("SPI index out of range"); return -1;
     }
 
     // calculate baud rate prescaler
@@ -280,7 +278,7 @@ HW_HAL_SPI SPIcontextArray[SPI_IDX_MAX];
 
 HAL_SPI::HAL_SPI(SPI_IDX idx, GPIO_PIN sckPin, GPIO_PIN misoPin, GPIO_PIN mosiPin, GPIO_PIN nssPin) {
 	if (idx < SPI_IDX_MIN || idx > SPI_IDX_MAX) {
-		ERROR("SPI index out of range");
+		RODOS_ERROR("SPI index out of range");
 	} else {
 		context = new (&SPIcontextArray[idx - 1]) HW_HAL_SPI(idx,sckPin,misoPin,mosiPin, nssPin); // placement new to avoid dynamic memory allocation
 	}
@@ -288,7 +286,7 @@ HAL_SPI::HAL_SPI(SPI_IDX idx, GPIO_PIN sckPin, GPIO_PIN misoPin, GPIO_PIN mosiPi
 
 HAL_SPI::HAL_SPI(SPI_IDX idx) {
 	if (idx < SPI_IDX_MIN || idx > SPI_IDX_MAX) {
-		ERROR("SPI index out of range");
+		RODOS_ERROR("SPI index out of range");
 	} else {
 		context = new (&SPIcontextArray[idx - 1]) HW_HAL_SPI(idx); // placement new to avoid dynamic memory allocation
 	}
@@ -331,7 +329,7 @@ int32_t HAL_SPI::init(uint32_t baudrate, bool slave, bool tiMode) {
 		RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_DMA2, ENABLE);
 		break;
 #endif
-	default: ERROR("SPI index out of range"); return -1;
+	default: RODOS_ERROR("SPI index out of range"); return -1;
 	}
 
 	/* enable clock for used IO pins */
@@ -461,7 +459,7 @@ void HAL_SPI::reset() {
     case SPI_IDX5: RCC_APB2PeriphClockCmd(RCC_APB2Periph_SPI5, DISABLE); break;
     case SPI_IDX6: RCC_APB2PeriphClockCmd(RCC_APB2Periph_SPI6, DISABLE); break;
 #endif
-    default: ERROR("SPI index out of range"); return;
+    default: RODOS_ERROR("SPI index out of range"); return;
     }
 
     /* reset GPIOs used by SPI interface */
@@ -723,6 +721,4 @@ int32_t HAL_SPI::writeRead(const uint8_t* sendBuf, uint32_t len, uint8_t* recBuf
 	return maxLen;
 }
 
-#ifndef NO_RODOS_NAMESPACE
 }
-#endif

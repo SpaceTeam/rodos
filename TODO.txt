@@ -1,15 +1,4 @@
 
-errorCounter umbennen
-nameoflast error
-errroLog benutzen
-was macht errorLog.add(xxx) wenn scheduler noch nicht läuft? recursive loop?
-report errorlog per udp
-doku: see errrorLog periodically
-
-inwork:
-    asserts
-
-
 ------------
 Bei jedem Datei die ich anfasse:
     rm #ifndef NO_RODOS_NAMESPACE
@@ -32,12 +21,8 @@ alle uart interfaces nutzen s3p aus support-lib
 gateway reduzieren: kein wieterleiten und so
 
 
-assert
-suchen
-    exit(), abort() ERROR(), wile(1){} etc etc
-mache assert daraus
-
 class Return
+    define global error codes, then see rodosErrorMsg, rodosErrorCnt
 
 ----------------
 

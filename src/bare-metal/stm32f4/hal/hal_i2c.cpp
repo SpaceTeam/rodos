@@ -10,9 +10,7 @@
 #include "stm32f4xx_i2c.h"
 #include "hw_hal_gpio.h"
 
-#ifndef NO_RODOS_NAMESPACE
 namespace RODOS {
-#endif
 
 #ifndef I2C_TIMEOUT_IN_NS
 #define I2C_TIMEOUT_IN_NS  		(2*MILLISECONDS)
@@ -61,10 +59,7 @@ int32_t HAL_I2C::init(uint32_t speed) {
     /* Reset I2C module */
     reset();
 
-    if(speed <= 0 || speed > 20000000){
-    	ERROR("I2C Speed is 0 or oddly high");
-    	return -1;
-    }
+    RODOS_ASSERT_IFNOT_RETURN((speed > 0 && speed <= 20000000), -1);
 
 	context->I2C_SPEED = speed;
 
@@ -578,7 +573,5 @@ void HW_HAL_I2C::initMembers(HAL_I2C* halI2C, I2C_IDX i2cIdx, GPIO_PIN sclPin, G
 //    }
 //}
 
-#ifndef NO_RODOS_NAMESPACE
 }
-#endif
 

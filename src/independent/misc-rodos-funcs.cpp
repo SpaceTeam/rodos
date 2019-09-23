@@ -23,18 +23,10 @@ void* xmalloc(long len) {
    }
    len = (len+7) & ~0x7; // round to be 32 bit align (4 bytes) TBD 64 Byte as needed by Thread::stack?
 
-   if(len > XMALLOC_SIZE) {
-      ERROR("xmalloc out of mem");
-      return 0;
-   }
+   RODOS_ASSERT_IFNOT_RETURN(len <= XMALLOC_SIZE,        0); // out of memmory?
+   RODOS_ASSERT_IFNOT_RETURN(!taskRunning,               0); // Xmalloc after system init completation
+   RODOS_ASSERT_IFNOT_RETURN(index + len < XMALLOC_SIZE, 0); // xmalloc out of mem
 
-   if(taskRunning) {
-      ERROR("Xmalloc after system init completation");
-   }
-   if(index + len >= XMALLOC_SIZE)  {
-      ERROR("xmalloc out of mem");
-      return 0;
-   }
    void *allocated =  &xmallocBuf[index];
    index += len;
    return allocated;

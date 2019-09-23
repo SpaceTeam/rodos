@@ -18,6 +18,7 @@
 #include "string_pico.h"
 #include "debug.h"
 #include "stream-bytesex.h"
+#include "rodos-assert.h"
 
 /******** Generic Network Message ***************/
 
@@ -111,15 +112,10 @@ public:
      * @param[in] topicId ID to add to the list
      */
     void add(const short topicId) {
-        if (numberOfTopics < MAX_SUBSCRIBERS - 1) {
-            if (find(topicId)) {
-                return;
-            }
-            topicList[numberOfTopics] = topicId;
-            numberOfTopics++;
-        } else {
-            ERROR("No more topics available\n");
-        }
+        RODOS_ASSERT_IFNOT_RETURN_VOID(numberOfTopics < MAX_SUBSCRIBERS - 1); // topics avialable
+        if (find(topicId)) return;
+        topicList[numberOfTopics] = topicId;
+        numberOfTopics++;
     }
 
     /// returns the size needed for transmission

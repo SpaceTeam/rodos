@@ -33,9 +33,8 @@ List Initiator::initiatorList   = 0;
 List Subscriber::subscriberList = 0;
 
 
-unsigned long errorCounter = 0;
-//unsigned long errorCode    = 0;
-const char* errorMsg    = "all OK";
+unsigned long rodosErrorCounter = 0;
+const char*   rodosErrorMsg     = "all OK";
 
 TimePoints<20>  errorLog;
 

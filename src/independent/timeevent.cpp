@@ -25,7 +25,7 @@ TimeEvent::TimeEvent(const char* name) : ListElement(TimeEvent::timeEventList,na
 
 /* destructor */
 TimeEvent::~TimeEvent() {
-    ERROR("Time EventHandler deleted");
+    RODOS_ERROR("Time EventHandler deleted");
 }
 
 /* Sets the time when the handler should be called

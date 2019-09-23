@@ -461,7 +461,7 @@ HW_HAL_PWM::HW_HAL_PWM(PWM_IDX idx){
     GPIO_Port = NULL;
 
     if ((static_cast<unsigned int>(idx) > static_cast<unsigned int>(PWM_IDX15))) {
-        ERROR("Invalid PWM Index\n");
+        RODOS_ERROR("Invalid PWM Index\n");
         return;
     }
 

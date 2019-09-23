@@ -33,17 +33,14 @@ ListElement::ListElement(List& list, const char* name, void* myOwner) {
 void ListElement::append(List& list) {
     next = list;
     list = this;
-    if(taskRunning) {
-        ERROR("Listelement::Constructor after sys initialisation");
-        PRINTF("List '%s' was created not static\n", name);
-    }
+    RODOS_ASSERT(!taskRunning); // Listelement::Constructor after sys initialisation List was created not static
 }
 
 /*
 *  destructor
 */
 ListElement::~ListElement() {
-    ERROR("ListElement deleted");
+    RODOS_ERROR("ListElement deleted");
 }
 
 

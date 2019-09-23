@@ -77,9 +77,8 @@ void hwDisableInterrupts() {
 void hwEnableInterrupts() {
     pthread_mutex_lock(&interruptDisableCounter_mutex);
     interruptDisableCounter--;
-    if(interruptDisableCounter < 0) {
-        ERROR("called hwEnabeldInterrupts without corresponding hwDisableInterrupt\n");
-    }
+    RODOS_ASSERT(interruptDisableCounter >= 0); // called hwEnabeldInterrupts without corresponding hwDisableInterrupt
+    
     if(interruptDisableCounter == 0) {
         pthread_mutex_unlock(&signal_mutex);
     }

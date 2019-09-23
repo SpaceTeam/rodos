@@ -22,7 +22,6 @@
 #include <unistd.h>
 
 namespace RODOS {
-extern "C" void exit(int c);
 
 UART::UART(const char* devname) {
     struct termios t;
@@ -39,10 +38,7 @@ UART::UART(const char* devname) {
     cfsetospeed(&t, B9600);
 
     fd = open(devname, O_RDWR | O_NDELAY);
-    if(fd == -1) {
-        printf("UART: cannot open file: %s\n", devname);
-        // exit(1);
-    }
+    RODOS_ASSERT(fd != -1);  // UART: cannot open file
     tcsetattr(fd, TCSANOW, &t);
 }
 

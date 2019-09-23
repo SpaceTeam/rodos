@@ -78,7 +78,7 @@ void TopicReporter::addGateway(Gateway* gateway) {
     numberOfGateways++;
 
     if(numberOfGateways > MAX_NUMBER_OF_GATEWAYS_PER_ROUTER) {
-        ERROR("Too many Gateway added to a TopicReporter\n");
+        RODOS_ERROR("Too many Gateway added to a TopicReporter\n");
         numberOfGateways--;
     }
 }

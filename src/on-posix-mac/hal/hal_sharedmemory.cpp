@@ -81,24 +81,17 @@ void* HAL_Sharedmemory::init(int32_t* size, int32_t* maxMembers) {
     key_t    shmkey    = context->index * 1000 + 1001;
 
     // Create the segment.
-    if((shmid = shmget(shmkey, totalSize, IPC_CREAT | 0666)) < 0) {
-        if(errno == EINVAL) { //shm too big
-            if((shmid = shmget(shmkey, 100, IPC_CREAT | 0666)) < 0) {
-                ERROR("sharedMemory: could not create shared memory");
-                return 0; //error
-            }
-        } else {
-            ERROR("sharedMemory: could not create shared memory");
-            return 0; //error
-        }
+    shmid = shmget(shmkey, totalSize, IPC_CREAT | 0666);
+    if(shmid < 0) {
+        RODOS_ASSERT_IFNOT_RETURN(errno == EINVAL, 0); //shm too big
+        shmid = shmget(shmkey, 100, IPC_CREAT | 0666);
+        RODOS_ASSERT_IFNOT_RETURN(shmid >= 0, 0); // could not create shared memory
     }
 
     // Get pointer to segment
     shm = reinterpret_cast<intptr_t>(shmat(shmid, NULL, 0));
-    if((int)shm == -1) {
-        ERROR("sharedMemory: could not open shared memory");
-        return 0; //error
-    }
+    RODOS_ASSERT_IFNOT_RETURN(((int)shm != -1), 0); // sharedMemory: could not open shared memory
+
     context->header = (shmHeader_t*)shm;
 
     //create posix system semaphore
@@ -106,12 +99,8 @@ void* HAL_Sharedmemory::init(int32_t* size, int32_t* maxMembers) {
     semname[8]         = (char)(((int32_t)'0') + context->index);
     context->semaphore = sem_open(semname, O_CREAT | O_EXCL, S_IRUSR | S_IWUSR, 1);
     if(context->semaphore == SEM_FAILED) {
-        if(errno == EEXIST) { //semaphore exists already
-            context->semaphore = sem_open(semname, 0);
-        } else {
-            ERROR("sharedMemory: could not create posix semaphore");
-            return 0;
-        }
+        RODOS_ASSERT_IFNOT_RETURN(errno == EEXIST, 0);  //semaphore exists already
+        context->semaphore = sem_open(semname, 0);
     }
 
     signal(SIGUSR1, sharedmemorySignalHandler);
@@ -128,7 +117,7 @@ void* HAL_Sharedmemory::init(int32_t* size, int32_t* maxMembers) {
         *maxMembers = context->header->maxMembers; // max num of members
         if(context->header->membersCount >= context->header->maxMembers) {
             sem_post(context->semaphore); //close semaphore
-            ERROR("sharedMemory: to many members");
+            RODOS_ERROR("sharedMemory: to many members");
             return 0; //error number of rodos instances == maxMembers
         }
         context->header->membersCount++; // number of rodos instances

@@ -225,7 +225,7 @@ BufferedCANMessage* LinkinterfaceCAN::receiveCANMessage(){
 	if(emptyBufferedCANMessagesPos < 0){ // put msg back to empty msgs if it was taken out of the buffer
 		emptyBufferedCANMessagesPos++;
 		if(emptyBufferedCANMessagesPos < 0 || emptyBufferedCANMessagesPos >= CAN_MSG_BUFFER_SIZE){
-			ERROR("ASSERT: emptyBufferedCANMessagesPos out of range");
+			RODOS_ERROR("ASSERT: emptyBufferedCANMessagesPos out of range");
 		}
 		emptyBufferedCANMessages[emptyBufferedCANMessagesPos]=msg;
 	}
@@ -240,7 +240,7 @@ bool LinkinterfaceCAN::appendCANMsgToCurrentNetMsg(BufferedCANMessage* canMsg){
 
 	emptyBufferedCANMessagesPos++;
 	if(emptyBufferedCANMessagesPos < 0 || emptyBufferedCANMessagesPos >= CAN_MSG_BUFFER_SIZE) {
-		ERROR("ASSERT: emptyBufferedCANMessagesPos out of range");
+		RODOS_ERROR("ASSERT: emptyBufferedCANMessagesPos out of range");
 	}
 	emptyBufferedCANMessages[emptyBufferedCANMessagesPos]=canMsg;
 

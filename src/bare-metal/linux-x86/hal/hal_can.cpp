@@ -104,10 +104,8 @@ HAL_CAN::HAL_CAN(CAN_IDX canIdx, GPIO_PIN rxPin, GPIO_PIN txPin) {
     context->rxFifoEmpty = true;
     context->s           = 0;
     context->hal_can     = this;
-    if(numHalCanInstances >= MAX_HALCAN_INSTANCES) {
-        ERROR("Too many HAL_CAN instances, see hal_can.cpp: #define MAX_HALCAN_INSTANCES\n");
-        return;
-    }
+    RODOS_ASSERT_IFNOT_RETURN_VOID(numHalCanInstances < MAX_HALCAN_INSTANCES); // Too many HAL_CAN's, see  MAX_HALCAN_INSTANCES
+
     activeDevices[numHalCanInstances] = context;
     numHalCanInstances++;
 }

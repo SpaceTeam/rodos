@@ -78,8 +78,8 @@ public:
 
 #if 0
 // DEPRECATED! use PROTECT_IN_SCOPE instead
-#define PROTECT_WITH_SEMAPHORE(sem) \  !!!Commented out: DEPRECATED!!!
-  for(bool _onlyonce_ = sem.enterRetTrue(); _onlyonce_ ; _onlyonce_ = false, sem.leave())
+// #define PROTECT_WITH_SEMAPHORE(sem) \  !!!Commented out: DEPRECATED!!!
+// for(bool _onlyonce_ = sem.enterRetTrue(); _onlyonce_ ; _onlyonce_ = false, sem.leave())
 #endif
 
 } // namespace
