@@ -12,8 +12,8 @@ void MAIN(void) {
     v = vx;
 
     for(int i = 0; i <10; i++) { // shall be: while(1) 
-        PRINTF("Currten attitude v   :");    v.print();
-        v = v.vecRotate(rotor);
+        PRINTF("Current attitude v   :");    v.print();
+        v = v.aRotate(rotor);
     }
 
     PRINTF("----------- Test END -------------------\n");
