@@ -25,7 +25,7 @@ void MAIN(void) {
         PRINTF("Currten attitude quat:"); lage.print();
         PRINTF("Currten attitude v   :");    v.print();
         PRINTF("Currten attitude ypr :");  ypr.print();
-        ypr = lage.toYPRnils(); 
+        ypr = lage.toYPR(); 
         PRINTF("Currten attitude yprN:");  ypr.print();
 
 

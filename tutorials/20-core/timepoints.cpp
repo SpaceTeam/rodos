@@ -24,14 +24,16 @@ class TestThread : public Thread {
         tp.add("next entry");
         tp.printAll(); tp.clear();
         while(1) {
-            if(i > 20) {
+            if((i % 30) == 0) {
+                PRINTF("\n\n____________________________________\n");
+                PRINTF("my own log:\n");
                 tp.printAll();
                 tp.clear();
+                PRINTF("\nsystem errors log (Shall be empty)\n");
                 errorLog.printAll();
-                i = 0;
             }
             i++;
-            tp.add(" loop entry");
+            tp.add(" loop entry", i);
             suspendCallerUntil(NOW() + 100 * MILLISECONDS);
         }
     }

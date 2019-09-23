@@ -1,8 +1,8 @@
-#include "stdio.h"
+#include "rodos.h"
 #include "matlib.h"
 
 
-main() {
+void MAIN() {
 
     Vector3D p1(2, 3, 4);
     Vector3D p2;

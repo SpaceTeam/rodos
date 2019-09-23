@@ -28,9 +28,9 @@ void run(){
       
       Polar geodetic2 = ecefToGeodetic(ecef);
       double dh, dlat, dlon;
-      dh = fabs(geodetic.r - geodetic2.r);
-      dlat = fabs(geodetic.phi - geodetic2.phi);
-      dlon = fabs(geodetic.theta - geodetic2.theta);
+      dh   = RODOS::fabs(geodetic.r - geodetic2.r);
+      dlat = RODOS::fabs(geodetic.phi - geodetic2.phi);
+      dlon = RODOS::fabs(geodetic.theta - geodetic2.theta);
       PRINTF("%.5f \t %.9f \t %.9f \n",dh,dlat,dlon);
       c++;
     }
