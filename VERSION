@@ -37,6 +37,10 @@ RODOS Versioning
         d:  PRIORITY_CEILING and PROTECT_WITH_SEMAPHORE deprecated, use now PRIORITY_CEILER_IN_SCOPE and PROTECT_SCOPE
             rename ERROR(...) -> RODOS_ERROR(...)
             add RODOS_ASSERT(..), substitute many if(xxx) RODOS_ERROR(...);
+        e:  Änderungen auf git-informatik vom alten RODOS-133 übernhemne
+                Commbuffer::put(..) -> Commbuffer::put(const ..)
+                new: SNPRINTF
+
 
 
 

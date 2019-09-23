@@ -79,7 +79,7 @@ public:
    * Put methods should only used by one thread.
    * @param data Reference of the message data to put.
    */
-  void put(Type& data) {
+  void put(const Type& data) {
     *writer = data;
 
     /* Swap reader <-> writer in order to make them read in the next call to get. */
@@ -111,7 +111,7 @@ public:
    * @param data Reference of the message data to get.
    */
   void get(Type &data) {
-	newDataAvailable = false;
+    newDataAvailable = false;
     readingNow = true;
     Type* readerTmp = (Type*)reader; // This is assumed to be atomar
     data = *readerTmp;		  // this is not atomar

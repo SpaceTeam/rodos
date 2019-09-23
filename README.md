@@ -2,6 +2,8 @@
 Get RODOS
 =========
 
+Inf you have questions, please contact sergio.montenegro@uni-wuerzburg.de
+
 (By the way, you can format this file using the program okular)
 
 Please download RODOS from

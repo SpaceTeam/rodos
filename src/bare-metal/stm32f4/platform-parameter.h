@@ -27,14 +27,15 @@
 // MINI-M4, STM32F4Discovery
 #define CPU_CLK                         168   // 24,32,42,48,56,84,96,120,144,168 MHz
 
-
 /** uart for printf **/
 #define UART_DEBUG                      UART_IDX2, GPIO_053, GPIO_054 // PD5 and PD6
 //#define UART_DEBUG                      UART_IDX3, GPIO_056, GPIO_057 // PD8 and PD9
 //#define UART_DEBUG                      UART_IDX4, GPIO_000, GPIO_001 // PA0 and PA1
 //#define UART_DEBUG                      UART_IDX5
 
+#undef  XMALLOC_SIZE
 #define XMALLOC_SIZE		40*1024
+#undef  DEFAULT_STACKSIZE
 #define DEFAULT_STACKSIZE	2000
 
 /** stack size (in bytes) for scheduler
@@ -42,20 +43,15 @@
  * - The array "char __schedulerStack__[SCHEDULER_STACKSIZE];" in scheduler.cpp is not used!
  * - So we must provide enough stack in the linker script (see "_Min_Stack_Size" in stm32_flash.ld)!
  */
+#undef  SCHEDULER_STACKSIZE
 #define SCHEDULER_STACKSIZE 		8
-#define PARAM_TIMER_INTERVAL		10000
-#define TIME_SLICE_FOR_SAME_PRIORITY	(100*MILLISECONDS)
-#define DEFAULT_THREAD_PRIORITY		100
-#define MAX_THREAD_PRIORITY		1000
-#define NETWORKREADER_PRIORITY		(MAX_THREAD_PRIORITY + 2)
-#define FLOORING_PRIORITY               10
-#define CEILING_PRIORITY		(NETWORKREADER_PRIORITY + 1)
-#define MAX_NUMBER_OF_NODES             10 //< for gateway if it has to forward msgs
-#define MAX_NETWORK_MESSAGE_LENGTH	1300
-#define MAX_SUBSCRIBERS			60
+
 
 // Declare global variables with this to put them into the 64k-CoreCoupled Memory Block
 // No DMA is possible. No initialization is possible,all gets set to zero.
 #define PUT_INTO_CCRAM __attribute__ ((section (".bss_ccram")))
+
+#undef  UDP_INCOMMIG_BUF_LEN
+#define UDP_INCOMMIG_BUF_LEN          4 //number of "NetworkMessage (1300 Bytes each)" in FIFO
 
 

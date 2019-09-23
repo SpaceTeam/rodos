@@ -36,7 +36,7 @@ public:
    * Same as Commbuffer put, but also resumes any currently suspended reader.
    * @param data Reference of the message data to put.
    */
-  void put(Type& data) {
+  void put(const Type& data) {
     CommBuffer<Type>::put(data);
     {
       PRIORITY_CEILER_IN_SCOPE();
