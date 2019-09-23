@@ -60,6 +60,7 @@ void PRINTF(const char* fmt, ...) __attribute__((__format__(__printf__,1,2)));
 
 void SPRINTF(char* dest, const char* fmt, ...) __attribute__((__format__(__printf__,2,3)));
 
+int SNPRINTF(char* dest, size_t size, const char* fmt, ...) __attribute__((__format__(__printf__,3,4)));
 
 /** id shall have only one bit set, prints only if (id & printfMask)  **/
 void PRINTF_CONDITIONAL(uint32_t id, const char* fmt, ...) __attribute__((__format__(__printf__,2,3)));

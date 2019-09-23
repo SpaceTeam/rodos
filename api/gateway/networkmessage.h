@@ -13,7 +13,9 @@
 #pragma once
 
 #include <stdint.h>
+#include "default-platform-parameter.h"
 #include "platform-parameter.h"
+
 #include "checksumes.h"
 #include "string_pico.h"
 #include "debug.h"

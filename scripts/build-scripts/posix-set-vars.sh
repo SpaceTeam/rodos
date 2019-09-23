@@ -23,3 +23,10 @@ export C_COMP="clang "  # only to compile BSP and Drivers from chip provider
 export CPP_COMP="clang++ "  
 
 
+
+#POSIX-warning: 
+#To execute your compiled code, please use no more than one core. 
+#Please call
+#    "sudo taskset -c 0 tst"
+
+

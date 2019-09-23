@@ -27,7 +27,7 @@ protected:
 private:
 
     Topic<GenericMsgRef> udpAsyncTopic;
-    Fifo<NetworkMessage, 1500> incoming;
+    Fifo<NetworkMessage, UDP_INCOMMIG_BUF_LEN> incoming;
     //CommBuffer<NetworkMessage> incoming;
     bool newMessage;
 

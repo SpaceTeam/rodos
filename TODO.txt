@@ -1,4 +1,14 @@
 
+
+In Arbeit:
+class Return
+    define globla errorocdes, then see rodosErrorMsg, rodosErrorCnt
+
+error code return
+matlib update
+
+
+
 ------------
 Bei jedem Datei die ich anfasse:
     rm #ifndef NO_RODOS_NAMESPACE
@@ -20,10 +30,6 @@ erik:
 alle uart interfaces nutzen s3p aus support-lib
 gateway reduzieren: kein wieterleiten und so
 
-
-class Return
-    define global error codes, then see rodosErrorMsg, rodosErrorCnt
-
 ----------------
 
 cmake, besipeil für projetke
@@ -35,13 +41,7 @@ matlib
    findrorationsvektor
    find cosinus direction matrix
 
-error code return
-matlib update
-speelchecker
-cmake-format
-
 --------------
-integrate workarea/result & assert
 
 correct find-rotation-agelacix und return "result.h"
 add workarea/cos-disction-matrix.cpp zu matlib und den passende test progg
@@ -52,10 +52,8 @@ add workarea/cos-disction-matrix.cpp zu matlib und den passende test progg
 
 
 include files in schichten
-shell scripte besser / einfacher
 
 tutorial mit cmake proejkt für alle datein inside
-
 
 -----------------
 
@@ -72,9 +70,6 @@ Rodos check
         ~/bibliotek/sw-verifikation/clang-thread-analysis.pdf
         alles mit clang kompilieren
         unit test?
-
-
-s3p encoder / decoder zum supportzlib
 
 
 include rodos.h -> liste con includes oder nur die layers nach unten

@@ -13,6 +13,7 @@
 
 #include "listelement.h" // required when compilng with posix
 #include "timemodel.h"
+#include "default-platform-parameter.h"
 #include "platform-parameter.h"
 
 
