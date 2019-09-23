@@ -27,11 +27,7 @@ public:
   }
 
   bool putGeneric(const long topicId, const unsigned int len, const void* msg, const NetMsgInfo& netMsgInfo) {
-    if (len > sizeof(Type)) {
-      ERROR("SyncCommBuffer wrong len");
-      return false;
-    }
-
+    RODOS_ASSERT_IFNOT_RETURN((len <= sizeof(Type)), false); // SyncCommBuffer wrong len
     this->put(*(Type*)msg);
     return true;
   }

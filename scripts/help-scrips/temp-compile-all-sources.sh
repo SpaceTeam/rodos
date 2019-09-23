@@ -14,13 +14,6 @@ do
     rodos-executable.sh posix $i
 done
 
-echo "   __________________________________________________________ posix64 "
-for i in *.cpp
-do
-    # echo $i
-    rodos-executable.sh posix64 $i
-done
-
 echo "   __________________________________________________________ linux-makecontext "
 for i in *.cpp
 do
@@ -35,4 +28,10 @@ do
     rodos-executable.sh stm32f4 $i
 done
 
+echo "   __________________________________________________________ posix64 "
+for i in *.cpp
+do
+    # echo $i
+    rodos-executable.sh posix64 $i
+done
 

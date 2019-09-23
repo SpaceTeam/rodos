@@ -36,17 +36,14 @@ TopicInterface::TopicInterface(long id, long len, const char* name, bool _onlyLo
 
     /** Check for replications **/
     ITERATE_LIST(TopicInterface, topicList) {
-        if((iter->topicId == id) && (iter != this)) {
-            ERROR("Duplicated topicId");
-            PRINTF("Duplicated topicId %ld, name1 = %s name2 = %s\n", id, name, iter->name);
-        }
+        RODOS_ASSERT( (iter->topicId != id) || (iter == this) ); // Duplicated topicId
     }
 
 }
 
 void TopicInterface::setTopicFilter(TopicFilter* filter) {
     if(topicFilter != 0) {
-        ERROR("More than one topicFilter for topic");
+        RODOS_ERROR("More than one topicFilter for topic");
         PRINTF(" topic %s has more than one filter\n", name);
     }
     topicFilter = filter;

@@ -24,7 +24,7 @@ Application::Application(const char* name_, const int32_t id) :
 
 
 Application::~Application() {
-  ERROR("Application deleted");
+  RODOS_ERROR("Application deleted");
 }
 
 /** more code to come from user */

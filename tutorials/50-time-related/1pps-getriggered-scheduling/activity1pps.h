@@ -23,7 +23,7 @@ public:
         frequency = freq;
         this->associatedThread = associatedThreadP;
     }
-    ~Activity1PPS() { ERROR("activity deleted"); }
+    ~Activity1PPS() { RODOS_ERROR("activity deleted"); }
 
     virtual void init() { }
     virtual void step(int64_t timeNow) { }

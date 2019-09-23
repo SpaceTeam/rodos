@@ -34,7 +34,6 @@
 */
 volatile long __interruptedInstructionPointer__ = 0;
 
-extern "C" void exit(int c);
 
 namespace RODOS {
 
@@ -96,10 +95,7 @@ void Timer::init() {
     sigemptyset(&action.sa_mask);
 
     retval = sigaction(SIGALRM,&action,0);
-    if (retval != 0) {
-      xprintf("error during call to sigaction\n");
-      exit(1);
-    }
+    RODOS_ASSERT(retval == 0); // error during call to sigaction
   }
 }
 
@@ -114,10 +110,7 @@ void Timer::start() {
   params.it_value.tv_sec     = microsecondsInterval / 1000000;
   params.it_value.tv_usec    = microsecondsInterval % 1000000;
   retval = setitimer(ITIMER_REAL,&params,0);
-  if (retval != 0) {
-    xprintf("error during call to setitimer\n");
-    exit(1);
-  }
+  RODOS_ASSERT(retval == 0); // error during call to sigaction
 }
 
 /**
@@ -131,10 +124,7 @@ void Timer::stop() {
   params.it_value.tv_sec = 0;
   params.it_value.tv_usec = 0;
   retval = setitimer(ITIMER_REAL,&params,0);
-  if (retval != 0) {
-    xprintf("error during call to setitimer\n");
-    exit(1);
-  }
+  RODOS_ASSERT(retval == 0); // error during call to sigaction
 }
 
 /**

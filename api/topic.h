@@ -66,7 +66,7 @@ public:
 
     TopicInterface(long id, long len, const char* name, bool _onlyLocal = false);
 
-    virtual ~TopicInterface() { ERROR("Topic Deleted"); }
+    virtual ~TopicInterface() { RODOS_ERROR("Topic Deleted"); }
 
     /** publish/distribute the message to all listeners to the given serviceId.
      * if shallSendToNetwork the message will be forwarded to gateways too (default).
@@ -149,7 +149,7 @@ public:
     Topic(long id, const char* name, bool _onlyLocal = false) : TopicInterface(id, sizeof(Type), name, _onlyLocal) { }
 
     ~Topic() {
-        ERROR("topic deleted");
+        RODOS_ERROR("topic deleted");
     }
 
     /** publish/distribute the message to all listeners to the given serviceId.

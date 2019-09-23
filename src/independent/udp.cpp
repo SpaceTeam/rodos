@@ -50,9 +50,7 @@ UDPInOut::UDPInOut(int broadcastPort):
     udpIn(broadcastPort),
     udpOut(broadcastPort) {
     isBroadcastLink=true;
-    if(broadcastPort >=0) {
-        ERROR("Broadcast UDPInOut defined but port number ist positive");
-    }
+    RODOS_ASSERT(broadcastPort < 0); // Broadcast UDPInOut defined but port number ist positive
 }
 
 UDPInOut::UDPInOut(int port ,const char* hostname):
@@ -60,7 +58,7 @@ UDPInOut::UDPInOut(int port ,const char* hostname):
     udpOut(port,hostname) {
     isBroadcastLink=false;
     if(port <=0) {
-        ERROR("Non-Broadcast UDPInOut defined but port number ist negative");
+        RODOS_ERROR("Non-Broadcast UDPInOut defined but port number ist negative");
     }
 }
 
@@ -69,7 +67,7 @@ UDPInOut::UDPInOut(int localInputPort, int remoteOutputPort,const  char* hostnam
     udpOut(remoteOutputPort,hostname) {
     isBroadcastLink=false;
     if(localInputPort <=0 || remoteOutputPort <=0) {
-        ERROR("Non-Broadcast UDPInOut defined but port number ist negative");
+        RODOS_ERROR("Non-Broadcast UDPInOut defined but port number ist negative");
     }
 }
 

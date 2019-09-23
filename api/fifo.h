@@ -54,10 +54,7 @@ public:
 
     /** implements the generic interface of putter */
     bool putGeneric(const long topicId, const unsigned int msgLen, const void* msg, const NetMsgInfo& netMsgInfo) {
-        if(msgLen > sizeof(Type)) {
-            ERROR("fifo wrong len");
-            return false;
-        }
+        RODOS_ASSERT_IFNOT_RETURN(msgLen <= sizeof(Type), false);
         return put(*(Type*)msg);
     }
 
@@ -132,10 +129,7 @@ public:
     * Warning does not suspends if fifo full
     */
     bool putGeneric(const long topicId, const unsigned int msgLen, const void* msg, const NetMsgInfo& netMsgInfo) {
-        if (msgLen > sizeof(Type)) {
-            ERROR("syncFifo wrong len");
-            return false;
-        }
+        RODOS_ASSERT_IFNOT_RETURN(msgLen <= sizeof(Type), false);
 
         bool ok = this->put(*(Type*)msg);
         {
@@ -242,10 +236,7 @@ public:
 
     /** implements the generic interface of putter */
     bool putGeneric(const long topicId, const unsigned int msgLen, const void* msg, const NetMsgInfo& netMsgInfo) {
-        if(msgLen > sizeof(Type)) {
-            ERROR("fifo wrong len");
-            return false;
-        }
+        RODOS_ASSERT_IFNOT_RETURN(msgLen <= sizeof(Type), false);
         return put(*(Type*)msg);
     }
 

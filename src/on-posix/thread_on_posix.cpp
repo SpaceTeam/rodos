@@ -61,7 +61,7 @@ Thread::Thread(const char* name,
 
 Thread::~Thread() {
     PRINTF("%s:", getName());
-    ERROR("Thread deleted");
+    RODOS_ERROR("Thread deleted");
 }
 
 

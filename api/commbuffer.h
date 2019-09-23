@@ -68,10 +68,7 @@ public:
    * successful.
    */
   bool putGeneric(const long topicId, const unsigned int len, const void* msg, const NetMsgInfo& netMsgInfo) {
-    if(len > sizeof(Type)) {
-      ERROR("combuffer wrong len");
-      return false;
-    }
+    RODOS_ASSERT_IFNOT_RETURN(len <= sizeof(Type), false);
     put(*(Type*)msg);
     return true;
   }

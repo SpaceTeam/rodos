@@ -72,7 +72,7 @@ void Router::addGateway(Gateway* gateway) {
     numberOfGateways++;
 
     if(numberOfGateways > MAX_NUMBER_OF_GATEWAYS_PER_ROUTER) {
-        ERROR("Too many Gateway added to a router\n");
+        RODOS_ERROR("Too many Gateway added to a router\n");
         numberOfGateways--;
     }
 }

@@ -18,8 +18,9 @@
 #include "string_pico.h"
 //#include "stdlib_pico.h"
 
-//#define DANGEROUS_ASSERT_ENABLED  // if you activate/deactivate it, please recompile the rodos libs
+// #define DANGEROUS_ASSERT_ENABLED  // if you activate/deactivate it, please recompile the rodos libs
 #include "debug.h"
+#include "rodos-assert.h"
 
 #include "hostinfos.h"  /* architecture dependent */
 

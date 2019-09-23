@@ -60,10 +60,7 @@ bool Gateway::messageSeen(NetworkMessage& msg) {
     node= (SeenNode*)bsearch(&key,seenNodes,numberOfNodes,sizeof(SeenNode),compare_SeenNode);
 
     if(!node) {
-        if(numberOfNodes+1 > MAX_NUMBER_OF_NODES) {
-            ERROR("There are more nodes than MAX_NUMBER_OF_NODES");
-            return false;
-        }
+        RODOS_ASSERT_IFNOT_RETURN(numberOfNodes < MAX_NUMBER_OF_NODES, false);
         key.lastMsgTime=msg.sentTime-1;
         seenNodes[numberOfNodes]=key;
         numberOfNodes++;
@@ -85,10 +82,8 @@ bool Gateway::messageSeen(NetworkMessage& msg) {
        }
 
        if(!node){
-           if(numberOfNodes >= MAX_NUMBER_OF_NODES) {
-               ERROR("There are more nodes than MAX_NUMBER_OF_NODES");
-               return false;
-           }
+           RODOS_ASSERT_IFNOT_RETURN((numberOfNodes < MAX_NUMBER_OF_NODES), false);
+           
            node=&seenNodes[numberOfNodes];
            numberOfNodes++;
 

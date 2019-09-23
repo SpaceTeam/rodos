@@ -35,6 +35,8 @@ RODOS Versioning
             use clang compiler instead of gcc
             add s3p encoder/decoder to support-lib
         d:  PRIORITY_CEILING and PROTECT_WITH_SEMAPHORE deprecated, use now PRIORITY_CEILER_IN_SCOPE and PROTECT_SCOPE
+            rename ERROR(...) -> RODOS_ERROR(...)
+            add RODOS_ASSERT(..), substitute many if(xxx) RODOS_ERROR(...);
 
 
 
