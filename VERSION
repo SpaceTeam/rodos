@@ -40,6 +40,8 @@ RODOS Versioning
         e:  Änderungen auf git-informatik vom alten RODOS-133 übernhemne
                 Commbuffer::put(..) -> Commbuffer::put(const ..)
                 new: SNPRINTF
+                correct some support-lib tutorials
+            rename semaphore.h & debug.h -> rodos-semaphore.h & rodos-debug.h
 
 
 

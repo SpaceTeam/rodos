@@ -3,7 +3,7 @@
 
 
 /**
-* @file semaphore.h
+* @file rodos-semaphore.h
 * @date 2008/05/10 16:37
 * @author Sergio Montenegro
 *

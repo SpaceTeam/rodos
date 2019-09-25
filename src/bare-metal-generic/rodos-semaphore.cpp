@@ -1,7 +1,7 @@
 
 
 /**
- * @file semaphore.cc
+ * @file rodos-semaphore.cc
  * @date 2008/05/11 10:12
  * @author Sergio Montenegro
  *

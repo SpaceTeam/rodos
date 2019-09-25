@@ -18,7 +18,7 @@
 
 #include "checksumes.h"
 #include "string_pico.h"
-#include "debug.h"
+#include "rodos-debug.h"
 #include "stream-bytesex.h"
 #include "rodos-assert.h"
 

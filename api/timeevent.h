@@ -14,7 +14,7 @@
 
 #include "listelement.h"
 #include "timemodel.h"
-#include "debug.h"
+#include "rodos-debug.h"
 
 namespace RODOS {
 

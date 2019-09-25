@@ -11,7 +11,7 @@
 
 #pragma once
 
-#include "semaphore.h"
+#include "rodos-semaphore.h"
 #include "topic.h"
 
 
