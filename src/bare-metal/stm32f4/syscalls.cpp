@@ -16,7 +16,7 @@ extern int errno;
 #include "hal/hal_uart.h"
 #include "platform-parameter.h"
 //#include "scheduler.h"
-#include "debug.h"
+#include "rodos-debug.h"
 #include "hw_specific.h"
 #include "yprintf.h"
 #include "stm32f4xx_conf.h"

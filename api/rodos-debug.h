@@ -2,10 +2,10 @@
 #pragma once
 
 /**
-* @file debug.h
+* @file rodos-debug.h
 * @date 2008/06/17, 2017/jun
 * @author Sergio Montenegro, Lutz Dittrich
-* @brief debug functions (header)
+* @brief debug and prinf functions 
 */
 
 

@@ -12,7 +12,7 @@
 #include <sys/shm.h>
 #include <sys/stat.h>
 #include <new>
-#include </usr/include/semaphore.h>
+#include <semaphore.h>
 #include <fcntl.h>
 #include <errno.h>
 #include <signal.h>

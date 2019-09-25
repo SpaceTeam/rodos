@@ -10,7 +10,7 @@
 
 #pragma once
 #include <stdint.h>
-
+#include "rodos-debug.h"
 
 namespace RODOS {
 
@@ -52,7 +52,7 @@ public:
         PRINTF("time(secs)         id  text/name\n");
         PRINTF("---------------------------------\n");
         for (uint32_t i = 0; i < index; i++)  {
-            PRINTF("%3.9f  %6d  %s\n", (double)time[i]/SECONDS, id[i], text[i]);
+            PRINTF("%3.9f  %6d  %s\n", (double)time[i]/SECONDS, (int)id[i], text[i]);
         }
     }
 

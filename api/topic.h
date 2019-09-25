@@ -12,7 +12,7 @@
 
 #pragma once
 
-#include "debug.h"
+#include "rodos-debug.h"
 #include "gateway/networkmessage.h"
 
 namespace RODOS {

@@ -22,7 +22,7 @@
 //#include "stdlib_pico.h"
 
 // #define DANGEROUS_ASSERT_ENABLED  // if you activate/deactivate it, please recompile the rodos libs
-#include "debug.h"
+#include "rodos-debug.h"
 #include "rodos-assert.h"
 
 #include "hostinfos.h"  /* architecture dependent */
@@ -44,7 +44,7 @@
 #include "fifo.h"
 #include "commbuffer.h"
 
-#include "semaphore.h"
+#include "rodos-semaphore.h"
 #include "timeevent.h"
 #include "timepoints.h"
 

@@ -1,7 +1,7 @@
 
 
 /**
-* @file debug.cpp
+* @file rodos-debug.cpp
 * @date 2008/06/17 10:48
 * @author Lutz Dittrich & Sergio Montenegro,
 *   adapted in 2010 by Henrik Theiling (AbsInt Angewandte Informatik GmbH)
