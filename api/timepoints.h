@@ -34,16 +34,18 @@ public:
     TimePoints(void) { index = 0; addCounter = 0; }
     void clear(void) { index = 0; }
 
-    void addRaw(const char* const name, int32_t _id = 0) { // not thread safe
+    bool addRaw(const char* const name, int32_t _id = 0) { // not thread safe
         time[index] = NOW();
         text[index] = name; // ony the pointer which shall be a constant
         id[index]   = _id;
-        if (index < (POINTS-2)) { index++; }
+        if (index >= (POINTS -1)) return false; //yes! first write, then ask! Overwrite the last one with intention!
+        index++;
+        return true;
     }
 
-    void add(const char* const name, int32_t _id = 0) { // thread safe
+    bool add(const char* const name, int32_t _id = 0) { // thread safe
         PRIORITY_CEILER_IN_SCOPE();
-        addRaw(name, _id);
+        return addRaw(name, _id);
     }
 
     bool isEmpty() { return index==0; }
