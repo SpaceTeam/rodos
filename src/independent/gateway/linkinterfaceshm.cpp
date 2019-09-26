@@ -28,7 +28,7 @@ void LinkinterfaceSHM::init() {
 	sharedMemoryUserSpace = hal_sharedmemory.init(&size, &maxMembers);
 	this->readerId = hal_sharedmemory.getMemberId();
 
-	RODOS_ASSERT_IFNOT_RETURN_VOID(sharedMemoryUserSpace != 0)
+	RODOS_ASSERT_IFNOT_RETURN_VOID(sharedMemoryUserSpace != 0);
 
 	hal_sharedmemory.setIoEventReceiver(this);
 
