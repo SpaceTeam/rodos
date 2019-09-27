@@ -1,5 +1,6 @@
 #pragma once
 // #include "macros-bits-bytes.h" warning: conflicts with SET_BIT, and MIN,  include by yourself
+#include "rodos-result.h"
 #include "matlib.h"
 #include "misc-support.h"
 #include "monitoringMsg.h"

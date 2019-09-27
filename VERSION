@@ -41,9 +41,10 @@ RODOS Versioning
                 Commbuffer::put(..) -> Commbuffer::put(const ..)
                 new: SNPRINTF
                 correct some support-lib tutorials
-            rename semaphore.h & debug.h -> rodos-semaphore.h & rodos-debug.h
+        f:  rename semaphore.h & debug.h -> rodos-semaphore.h & rodos-debug.h
             silent RODOS_ERROR(...)
             Timpoings::add now bool
+	    add result class
 
 
 
