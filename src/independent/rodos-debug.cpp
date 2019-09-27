@@ -15,13 +15,14 @@
 
 namespace RODOS {
 
+bool printErrorReports = true; // the user can set it to false
+
 Semaphore printfProtector;
 
 void PRINTF(const char* fmt, ...) {
     if(printfMask == 0) return;
     Yprintf yprintf;
     va_start(yprintf.ap, fmt);
-    if (rodosErrorCounter != 0) xprintf("prev-ERR(%ld) -- ", rodosErrorCounter);
     if (!isSchedulerRunning()) {
         yprintf.vaprintf(fmt);
     } else {
@@ -36,7 +37,6 @@ void PRINTF_CONDITIONAL(uint32_t id, const char* fmt, ...) {
     if(id != 0xffffffff && (id & printfMask) == 0) return;
     Yprintf yprintf;
     va_start(yprintf.ap, fmt);
-    if (rodosErrorCounter != 0) xprintf("prev-ERR(%ld) -- ", rodosErrorCounter);
     if (!isSchedulerRunning()) {
         yprintf.vaprintf(fmt);
     } else {
@@ -53,8 +53,8 @@ void PRINTF_CONDITIONAL(uint32_t id, const char* fmt, ...) {
 void RODOS_ERROR(const char* text) {
   rodosErrorMsg = text;
   rodosErrorCounter++;
-  PRINTF("!! Programming-ERROR %s\n",text);
   errorLog.addRaw(text);
+  if(printErrorReports) PRINTF(SCREEN_RED "\n!! Programm ERROR %s!!\n", text); // keep in red to make aware
 }
 
 

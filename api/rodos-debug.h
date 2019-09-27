@@ -127,10 +127,16 @@ void activateTopicCharInput();
  */
 void FFLUSH();
 
+
+/** Set to true or false to allow RODOS-ERROR(...) To print text
+ ** if false RODOS_ERROR(...) will not print, only registered in errLog **/
+extern bool printErrorReports;
+
 } // namespace 
 
 /** Sets the pirntf mask for PRINTF_CONDITIONAL, 0 means no printf (not even from PRINTF)
- ** else see tutorials/core/printfconditional ***/
+ ** else see tutorials/core/printfconditional 
+ ** intentionally out of name spaces ***/
 
 extern uint32_t printfMask;
 
