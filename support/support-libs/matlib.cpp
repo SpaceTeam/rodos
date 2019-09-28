@@ -2,6 +2,7 @@
 
 #include "rodos.h"
 #include "math.h" // for sin, sqrt, etc
+#include "rodos-result.h"
 #include "matlib.h"
 
 namespace RODOS {
@@ -2877,7 +2878,7 @@ void lubksb(Matrix6D &a, Vector6D &indx, Vector6D &b) {
  *   compare to "cosinus direction matrix"
  */
 
-AngleAxis  findRotationsAngleAxis(Vector3D fromA, Vector3D toA, Vector3D fromB, Vector3D toB) {
+Result<AngleAxis>  findRotationsAngleAxis(Vector3D fromA, Vector3D toA, Vector3D fromB, Vector3D toB) {
 
     fromA = fromA.normalize();
     toA   = toA.normalize();
@@ -2910,14 +2911,15 @@ AngleAxis  findRotationsAngleAxis(Vector3D fromA, Vector3D toA, Vector3D fromB, 
 
     double cosAngleA = dotProduct(projectionFromA, projectionToA);
     double cosAngleB = dotProduct(projectionFromB, projectionToB);
-    if(!isAlmost0(cosAngleA - cosAngleB)) {
-        PRINTF(" diff cos! %f != %f, invalid input rotation, body was deformated\n",  cosAngleA, cosAngleB);
-    }
+    if(!isAlmost0(cosAngleA - cosAngleB)) return ErrorCode::VECTOR_LEN;
+    
     AngleAxis rotor(acos(cosAngleA), rotAxis);
 
     /** BUT!!! Some times (50%) the rotation axis is inverted. Check and correct ***/
     Vector3D newA = fromA.aRotate(rotor);
     if(!newA.equals(toA))  rotor = AngleAxis(acos(cosAngleA), rotAxis*(-1.0));
+    newA = fromA.aRotate(rotor);
+    if(!newA.equals(toA))  return { ErrorCode::COLINEAR_VECTORS, rotor } ;
 
     return rotor;
 }

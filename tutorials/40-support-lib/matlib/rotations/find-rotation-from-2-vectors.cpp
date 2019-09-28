@@ -1,4 +1,5 @@
-﻿#include "rodos.h"
+﻿
+#include "rodos.h"
 #include "matlib.h"
 
 #include "random.h" // just to test
@@ -11,7 +12,7 @@ class TestRotation : public Thread {
 
 void TestRotation::run() {
     int numOfWrongs = 0;
-
+    Result<AngleAxis> result;
     Vector3D a ;
     Vector3D a_;
     Vector3D b ;
@@ -43,12 +44,14 @@ void TestRotation::run() {
         a_ = a.aRotate(originalRotor);
         b_ = b.aRotate(originalRotor);
 
-        reconstructedRotor = findRotationsAngleAxis(a, a_, b, b_);
+        result = findRotationsAngleAxis(a, a_, b, b_);
+        if(!result.isOk()) PRINTF(" wrong computation, errorcode = %d\n", result.getErr());
+        reconstructedRotor = result.val;
 
         bool ok = true;
-        PRINTF("----------------------------------\n");
-        PRINTF("  original Rotor: "); originalRotor.print();
-        PRINTF("  Reconstructed : "); reconstructedRotor.print();
+        //PRINTF("----------------------------------\n");
+        //PRINTF("  original Rotor: "); originalRotor.print();
+        //PRINTF("  Reconstructed : "); reconstructedRotor.print();
         if(!originalRotor.u.equals(reconstructedRotor.u))          ok = false;
         if(!isAlmost0(originalRotor.phi - reconstructedRotor.phi)) ok = false;
         if(!a_.equals(a.aRotate(reconstructedRotor)))              ok = false;

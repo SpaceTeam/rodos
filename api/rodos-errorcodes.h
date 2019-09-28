@@ -32,6 +32,7 @@ enum class ErrorCode : uint32_t {
 
     //_______ Numerical and matlib errors
     NUMERICAL      = 600,
+    VECTOR_LEN,
     NO_NORMALIZED,
     VECTOR_LEN_0,
     COLINEAR_VECTORS,

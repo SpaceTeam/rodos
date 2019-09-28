@@ -2,6 +2,7 @@
 #pragma once
 
 #include "math.h" // sin, sqrt, etc
+#include "rodos-result.h"
 
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
@@ -567,7 +568,7 @@ void lubksb(Matrix6D &a, Vector6D &indx, Vector6D &b);
  *   compare to "cosine direction matrix"
  *
  */
-AngleAxis  findRotationsAngleAxis(Vector3D fromA, Vector3D toA, Vector3D fromB, Vector3D toB);
+Result<AngleAxis>  findRotationsAngleAxis(Vector3D fromA, Vector3D toA, Vector3D fromB, Vector3D toB);
 
 /* cos_direction_matrix_from_vectors
  *  when we use only one vector to rate a body, we get an ambiguous rotation
