@@ -1,13 +1,5 @@
 
 
-In Arbeit:
-class Return
-    define globla errorocdes, then see rodosErrorMsg, rodosErrorCnt
-
-error code return
-matlib update
-
-
 ------------
 Bei jedem Datei die ich anfasse:
     rm #ifndef NO_RODOS_NAMESPACE
@@ -16,7 +8,7 @@ Bei jedem Datei die ich anfasse:
 
 next ports
 unifiy so may files as possible between ports
-    rastberypi
+    rastberypi On_psoix / baremetal
     SF2
     iMX6SX 
     STM32F411
