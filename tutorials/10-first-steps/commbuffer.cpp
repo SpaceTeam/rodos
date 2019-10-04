@@ -1,6 +1,6 @@
 #include "rodos.h"
 
-static Application applic("ComBufTest");
+static Application nameNotImportantCB("ComBufTest");
 
 CommBuffer<int> buf;
 

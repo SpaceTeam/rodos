@@ -1,6 +1,6 @@
 #include "rodos.h"
 
-static Application appHW("HelloWorld");
+static Application nameNotImportantHW("HelloWorld");
 
 class HelloWorld : public Thread {
 
@@ -8,11 +8,11 @@ class HelloWorld : public Thread {
     HelloWorld() : Thread("HelloWorld") {}
 
     void init() {
-        PRINTF("Printing Hello World");
+        PRINTF(SCREEN_RED "This is init() for Printing Hello World" SCREEN_RESET);
     }
 
     void run() {
-        PRINTF("Hello World!\n");
+        PRINTF("Hello World!\ndid you see the init in red?\n");
     }
 };
 

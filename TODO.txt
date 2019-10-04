@@ -1,5 +1,19 @@
 
 
+test mit compare printf and NOW() in printf
+
+Abhängigkeitsdiragram mit layers
+    gateway
+    totpics
+    middleware
+    core
+    hal
+    etc etc
+am besten in den includes der sources
+
+Integrations / port Tests
+
+
 ------------
 Bei jedem Datei die ich anfasse:
     rm #ifndef NO_RODOS_NAMESPACE
@@ -26,33 +40,15 @@ gateway reduzieren: kein wieterleiten und so
 
 cmake, besipeil für projetke
 
-Rodos: errorcode & findrotaionvektor weiter & Assert
-rodos-assert.h
-result.h
-matlib
-   findrorationsvektor
-   find cosinus direction matrix
-
 --------------
-
-correct find-rotation-agelacix und return "result.h"
-add workarea/cos-disction-matrix.cpp zu matlib und den passende test progg
-
-   return "Result
-   asserts
-   test dies
-
 
 include files in schichten
 
-tutorial mit cmake proejkt für alle datein inside
-
 -----------------
 
-RODOS auf longjump ohne preemtion für schnles port
 /home/sem40wk/sergio/workarea/rodos/TODO/makeing-wasser-dicht.txt
-rodos portierung mit makecontext, setjmp & longjmp
-        reihefolge von Konstrukturen
+
+reihefolge von Konstrukturen
 serializer für gateway
 
 
@@ -60,16 +56,10 @@ Rodos check
         cppcheck
         andere static analyse tools, siehe bericht von PTS
         ~/bibliotek/sw-verifikation/clang-thread-analysis.pdf
-        alles mit clang kompilieren
         unit test?
-
 
 include rodos.h -> liste con includes oder nur die layers nach unten
 layers beim include
     in include files
     in sources
-
-strings per elemtry
-siehe
- progs-examples/stringsfinder-doit
 

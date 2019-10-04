@@ -1,6 +1,6 @@
 #include "rodos.h"
 
-static Application module02("TestTimeAT");
+static Application nameNotImportantTM("TestTimeAT");
 
 static class TestTime : public Thread {
 
