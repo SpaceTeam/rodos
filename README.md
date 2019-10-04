@@ -1,22 +1,37 @@
 ﻿
-Get RODOS
-=========
+RODOS
+=====
 
-Inf you have questions, please contact sergio.montenegro@uni-wuerzburg.de
+Rodos (Real time Onboard Dependable Operating System) is a real-time operating system for embedded systems and was designed for application domains demanding high dependability. 
 
-(By the way, you can format this file using the program okular)
+The first directive of RODOS is **"As simple as possible"**.  
+We target the **Irreducible Complexity"** which is very difficult to reach.
+Our target is: every developer shall be able to understand the whole code.
+This is important to achieve a very low error number.
 
-Please download RODOS from
+RODOS can run as "bare metal": directly on the hardware (it is self contained)
+or on the top of other operating systems, like Linux, Posix derivates, RTEMS,
+FreeRTOS, etc. We have many ports to many different processors, but here
+only a few are published. In the future more will come.
 
-```
-	URL ... To be defined ....
-```
+An important aspect of Rodos is its integrated real time middleware.
+Developing the control and payload software on the top of a middleware provides
+the maximum of modularity today.
+Applications/modules can be developed independently and it is very simple
+to interchange modules later without worrying about side effects.
 
-Extract:
+Rodos was implemented as a software framework in C++ with an object
+oriented application interface (API).
+It is organized in layers: The lowest layer (1) is responsible for
+control of the embedded system hardware (HAL: Hardware abstraction layer).
+The next layer (2) kernel: administrates the local resources, threads and time.
+On top of the kernel we have the middleware (layer 3) which enables communication
+between building blocks (BB) using a publisher subscriber multicast protocol.
+And on the top of the middleware the user may implement his applications (layer 4)
+as a distributed software network of simple BBs.
+The Building Blocks API on the top of the middleware is a service oriented interface.
+BBs interact by providing services to other BBs and using services from other BBs.
 
-```
-	tar -jxvf rodos-dist.tar.gz
-```
 Take a look to the short introduction in  
 
 ```
@@ -24,111 +39,15 @@ Take a look to the short introduction in
 	https://de.wikipedia.org/wiki/Rodos_%28Betriebssystem%29
 ```
 
-How to use
-==========
 
-All these instructions are only for **Linux**  
-and please use the **bash** shell!
+And take a look to all other README file in this directory and
+in each sub directory.
 
-Each directory has one or more `*README*` files.   
-For each directory you visit, please read first these files,  
-and study the "doc" directory.
+Any questions, suggestions or complains?
+please contact
 
-1  Tools
---------
-
-If you do not have the clang/c++ tools, please install first:
-
-```
-    sudo apt-get install gcc-multilib g++-multilib
-    sudo apt-get install clang 
-for ARM:
-    sudo apt install binutils-arm-none-eabi gcc-arm-none-eabi libnewlib-arm-none-eabi
-```
-
-2  Sent shell variables
------------------------
-Every time you start a new session or a new terminal
-set the environment variables directories and default compiler options by calling
-
-```
-    cd <your rodos rood directory>
-    source setenvs.sh 
-```
-
-3  RODOS libs
--------------
-Generate the RODOS lib for some target architectures, for example
-
-```
-        rodos-lib.sh  linux
-        rodos-lib.sh  linuxMC
-        rodos-lib.sh  stm32f4   # you will need the ARM Corsscompiler
-    or generate all libraries
-        rodos-all-libs.sh
-```
-Please not, for some you will need the crosscompiler tools
-
-4 first test
------------- 
-
-(optional) Test some tutorial examples using different
-target architectures
-
-```
-    cdrodos     #"cdrodos" is defined as alias in setenvs.sh
-    cd tutorials
-    cd 20-core
-
-    rodos-executable.sh  linux semaphore-worm.cpp 
-    tst       # terminate with control-c
-
-    rodos-executable.sh  posix semaphore-worm.cpp 
-    tst
-
-    rodos-executable.sh  linuxMC  semaphore-worm.cpp 
-    tst
-
-```
-
-5 Begin learning 
-----------------
-
-To begin, learning rodos
-
-```
-    cdrodos 
-    cd tutorials/10-first-steps
-```
-1. read the `*README*` files  
-2. read the `execute-example*.sh` scripts
-3. read the corresponding source code
-4. execute the `execute-example*.sh` scripts
-5. see the results.
-
-
-6 other tutorials
------------------
-
-Go to all other tutorials and to the same.
-
-
-7 Port to other Hardware
-------------------------
-
-To port to other platforms, see  
-    rodos/src/bare-metal/template
-see all `*REAME*` files  all pdf and all examples  
-see infos in   
-    src/bare-metal/template/README-how-to-port
-
-
-Need help?
-----------
-
-If you need help, please contact me.
-
-Cheers
 Sergio Montenegro
 sergio.montenegro@uni-wuerzburg.de
+
+We want to improve it. We hear your suggestions!
 

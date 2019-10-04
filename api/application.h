@@ -2,8 +2,7 @@
 /**
 * @file application.h
 * @date 2008/06/04 11:46
-* @author Sergio Montenegro, Lutz Dittrich
-*
+* @author Sergio Montenegro
 *
 * @brief collection of information about an application (header)
 *
@@ -38,11 +37,18 @@ private:
     int32_t applicationId;
 
 public:
-    /** Constructor; Creates and registeres an application with given name
+    /** Constructor; Creates and registers an application with given name
       * and id.
       * @param[in] name The name of the application.
       * @param[in] id The application id.
+      *
+      * Please note: The name of the created will never be used. In our
+      * examples we call it for example 
+      *    Application nameNotImportant01(...);
+      * The string name is a help ONLY to debug code.
+      *
       */
+
     Application(const char* name, const int32_t id=1000);
 
     /** Destructor; Should never be called.
@@ -60,7 +66,7 @@ public:
     *   functions returns a pointer to this application. If there is more
     *   than one application with that id, this function returns a pointer
     *   to the first one it encounters. In any other case
-    *   this methode returns null.  (do not call before main())
+    *   this method returns null.  (do not call before main())
     *   @param[in] id The id to search for.
     *   @return pointer to application with given id or null if not found.
     */
@@ -69,7 +75,7 @@ public:
     /// to signal activate / deactivate applications
     bool isActivated;
 
-    virtual void init(void) { } ///< calles by rodos::main at system start
+    virtual void init(void) { } ///< called by rodos::main at system start
 
     virtual void activate(); ///< user implemented to activate the application
     virtual void deactivate(); ///< user implemented to deactivate the application

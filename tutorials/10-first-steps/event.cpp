@@ -1,6 +1,6 @@
 #include "rodos.h"
 
-static Application module01("resumefromEvent");
+static Application nameNotImportantEV("resumefromEvent");
 
 class TestWaiter : public Thread {
   public:
