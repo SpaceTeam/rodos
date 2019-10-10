@@ -16,4 +16,7 @@ echo "posix64-lib"
 rodos-lib.sh posix64
 echo "stm32f4-lib"
 rodos-lib.sh stm32f4
+echo "raspberrypi3"
+rodos-lib.sh raspberrypi3
 echo "   __________________________________________________________"
+

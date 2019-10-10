@@ -45,6 +45,8 @@ RODOS Versioning
             silent RODOS_ERROR(...)
             Timpoings::add now bool
 	    add result class
+        g:  add raspberypy & Update tutotrials
+            beginning of test suite
 
 
 

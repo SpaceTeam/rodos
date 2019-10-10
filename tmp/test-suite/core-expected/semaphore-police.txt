@@ -1,0 +1,232 @@
+RODOS RODOS-200.0 OS Version Linux-x86
+Loaded Applications:
+         10 -> 'Topics & Middleware'
+       1000 -> 'terminateTest'
+Calling Initiators and Application Initiators
+ initiator nodnr = 7
+Distribute Subscribers to Topics
+List of Middleware Topics:
+ CharInput  Id = 28449 len = 16.   -- Subscribers:
+ SigTermInterrupt  Id = 16716 len = 4.   -- Subscribers:
+ UartInterrupt  Id = 15678 len = 4.   -- Subscribers:
+ TimerInterrupt  Id = 25697 len = 4.   -- Subscribers:
+ routerTopic  Id = 21324 len = 1326.   -- Subscribers:
+ gatewayTopic  Id = 0 len = 16.   -- Subscribers:
+
+Event servers:
+Threads in System:
+   Prio =       0 Stack =  32000 IdleThread: yields all the time
+   Prio =    1003 Stack =  32000 TerminateTest: 
+   Prio =     100 Stack =  32000 AnonymThread: 
+   Prio =     100 Stack =  32000 AnonymThread: 
+   Prio =     100 Stack =  32000 AnonymThread: 
+   Prio =     100 Stack =  32000 AnonymThread: 
+   Prio =     100 Stack =  32000 AnonymThread: 
+   Prio =     100 Stack =  32000 AnonymThread: 
+   Prio =     100 Stack =  32000 AnonymThread: 
+   Prio =     100 Stack =  32000 AnonymThread: 
+   Prio =     100 Stack =  32000 AnonymThread: 
+   Prio =     100 Stack =  32000 AnonymThread: 
+   Prio =     100 Stack =  32000 AnonymThread: 
+   Prio =     100 Stack =  32000 AnonymThread: 
+   Prio =     100 Stack =  32000 AnonymThread: 
+   Prio =     100 Stack =  32000 AnonymThread: 
+   Prio =     100 Stack =  32000 AnonymThread: 
+   Prio =     100 Stack =  32000 AnonymThread: 
+   Prio =     100 Stack =  32000 AnonymThread: 
+   Prio =     100 Stack =  32000 AnonymThread: 
+   Prio =     100 Stack =  32000 AnonymThread: 
+   Prio =     100 Stack =  32000 AnonymThread: 
+BigEndianity = 0, cpu-Arc = x86, Basis-Os = baremetal, Cpu-Speed (K-Loops/sec) = 313330 yeildtim (ns) 990
+Node Number: HEX: 7 Dec: 7
+-----------------------------------------------------
+Default internal MAIN
+--------------- Application running ------------
+
+This run (test) will be terminated in 20 Seconds
+ only one, I am -- 00 -- ,time   0.100000000
+ only one, I am -- 01 -- ,time   0.200000000
+ only one, I am -- 02 -- ,time   0.300000000
+ only one, I am -- 03 -- ,time   0.400000000
+ only one, I am -- 04 -- ,time   0.500000000
+ only one, I am -- 05 -- ,time   0.600000000
+ only one, I am -- 06 -- ,time   0.700000000
+ only one, I am -- 07 -- ,time   0.800000000
+ only one, I am -- 08 -- ,time   0.900000000
+ only one, I am -- 09 -- ,time   1.000000000
+ only one, I am -- 10 -- ,time   1.100000000
+ only one, I am -- 11 -- ,time   1.199999999
+ only one, I am -- 12 -- ,time   1.300000000
+ only one, I am -- 13 -- ,time   1.399999999
+ only one, I am -- 14 -- ,time   1.500000000
+ only one, I am -- 15 -- ,time   1.600000000
+ only one, I am -- 16 -- ,time   1.700000000
+ only one, I am -- 17 -- ,time   1.800000000
+ only one, I am -- 18 -- ,time   1.900000000
+ only one, I am -- 19 -- ,time   2.000000000
+ only one, I am -- 00 -- ,time   2.100000000
+ only one, I am -- 01 -- ,time   2.200000000
+ only one, I am -- 02 -- ,time   2.299999999
+ only one, I am -- 03 -- ,time   2.399999999
+ only one, I am -- 04 -- ,time   2.500000000
+ only one, I am -- 05 -- ,time   2.600000000
+ only one, I am -- 06 -- ,time   2.700000000
+ only one, I am -- 07 -- ,time   2.799999999
+ only one, I am -- 08 -- ,time   2.900000000
+ only one, I am -- 09 -- ,time   3.000000000
+ only one, I am -- 10 -- ,time   3.100000000
+ only one, I am -- 11 -- ,time   3.200000000
+ only one, I am -- 12 -- ,time   3.299999999
+ only one, I am -- 13 -- ,time   3.399999999
+ only one, I am -- 14 -- ,time   3.500000000
+ only one, I am -- 15 -- ,time   3.600000000
+ only one, I am -- 16 -- ,time   3.700000000
+ only one, I am -- 17 -- ,time   3.799999999
+ only one, I am -- 18 -- ,time   3.900000000
+ only one, I am -- 19 -- ,time   4.000000000
+ only one, I am -- 00 -- ,time   4.099999999
+ only one, I am -- 01 -- ,time   4.200000000
+ only one, I am -- 02 -- ,time   4.299999999
+ only one, I am -- 03 -- ,time   4.400000000
+ only one, I am -- 04 -- ,time   4.500000000
+ only one, I am -- 05 -- ,time   4.599999999
+ only one, I am -- 06 -- ,time   4.700000000
+ only one, I am -- 07 -- ,time   4.799999999
+ only one, I am -- 08 -- ,time   4.900000000
+ only one, I am -- 09 -- ,time   5.000000000
+ only one, I am -- 10 -- ,time   5.099999999
+ only one, I am -- 11 -- ,time   5.200000000
+ only one, I am -- 12 -- ,time   5.299999999
+ only one, I am -- 13 -- ,time   5.400000000
+ only one, I am -- 14 -- ,time   5.500000000
+ only one, I am -- 15 -- ,time   5.599999999
+ only one, I am -- 16 -- ,time   5.700000000
+ only one, I am -- 17 -- ,time   5.799999999
+ only one, I am -- 18 -- ,time   5.900000000
+ only one, I am -- 19 -- ,time   6.000000000
+ only one, I am -- 00 -- ,time   6.099999999
+ only one, I am -- 01 -- ,time   6.200000000
+ only one, I am -- 02 -- ,time   6.299999999
+ only one, I am -- 03 -- ,time   6.400000000
+ only one, I am -- 04 -- ,time   6.500000000
+ only one, I am -- 05 -- ,time   6.599999999
+ only one, I am -- 06 -- ,time   6.700000000
+ only one, I am -- 07 -- ,time   6.799999999
+ only one, I am -- 08 -- ,time   6.900000000
+ only one, I am -- 09 -- ,time   7.000000000
+ only one, I am -- 10 -- ,time   7.099999999
+ only one, I am -- 11 -- ,time   7.200000000
+ only one, I am -- 12 -- ,time   7.299999999
+ only one, I am -- 13 -- ,time   7.400000000
+ only one, I am -- 14 -- ,time   7.500000000
+ only one, I am -- 15 -- ,time   7.599999999
+ only one, I am -- 16 -- ,time   7.700000000
+ only one, I am -- 17 -- ,time   7.799999999
+ only one, I am -- 18 -- ,time   7.900000000
+ only one, I am -- 19 -- ,time   8.000000000
+ only one, I am -- 00 -- ,time   8.099999999
+ only one, I am -- 01 -- ,time   8.199999999
+ only one, I am -- 02 -- ,time   8.300000000
+ only one, I am -- 03 -- ,time   8.400000000
+ only one, I am -- 04 -- ,time   8.500000000
+ only one, I am -- 05 -- ,time   8.599999999
+ only one, I am -- 06 -- ,time   8.699999999
+ only one, I am -- 07 -- ,time   8.800000000
+ only one, I am -- 08 -- ,time   8.900000000
+ only one, I am -- 09 -- ,time   9.000000000
+ only one, I am -- 10 -- ,time   9.099999999
+ only one, I am -- 11 -- ,time   9.199999999
+ only one, I am -- 12 -- ,time   9.300000000
+ only one, I am -- 13 -- ,time   9.400000000
+ only one, I am -- 14 -- ,time   9.500000000
+ only one, I am -- 15 -- ,time   9.599999999
+ only one, I am -- 16 -- ,time   9.699999999
+ only one, I am -- 17 -- ,time   9.800000000
+ only one, I am -- 18 -- ,time   9.900000000
+ only one, I am -- 19 -- ,time  10.000000000
+ only one, I am -- 00 -- ,time  10.099999999
+ only one, I am -- 01 -- ,time  10.199999999
+ only one, I am -- 02 -- ,time  10.300000000
+ only one, I am -- 03 -- ,time  10.400000000
+ only one, I am -- 04 -- ,time  10.500000000
+ only one, I am -- 05 -- ,time  10.599999999
+ only one, I am -- 06 -- ,time  10.699999999
+ only one, I am -- 07 -- ,time  10.800000000
+ only one, I am -- 08 -- ,time  10.900000000
+ only one, I am -- 09 -- ,time  11.000000000
+ only one, I am -- 10 -- ,time  11.099999999
+ only one, I am -- 11 -- ,time  11.199999999
+ only one, I am -- 12 -- ,time  11.300000000
+ only one, I am -- 13 -- ,time  11.400000000
+ only one, I am -- 14 -- ,time  11.500000000
+ only one, I am -- 15 -- ,time  11.599999999
+ only one, I am -- 16 -- ,time  11.699999999
+ only one, I am -- 17 -- ,time  11.800000000
+ only one, I am -- 18 -- ,time  11.900000000
+ only one, I am -- 19 -- ,time  12.000000000
+ only one, I am -- 00 -- ,time  12.099999999
+ only one, I am -- 01 -- ,time  12.199999999
+ only one, I am -- 02 -- ,time  12.300000000
+ only one, I am -- 03 -- ,time  12.400000000
+ only one, I am -- 04 -- ,time  12.500000000
+ only one, I am -- 05 -- ,time  12.599999999
+ only one, I am -- 06 -- ,time  12.699999999
+ only one, I am -- 07 -- ,time  12.800000000
+ only one, I am -- 08 -- ,time  12.900000000
+ only one, I am -- 09 -- ,time  13.000000000
+ only one, I am -- 10 -- ,time  13.099999999
+ only one, I am -- 11 -- ,time  13.199999999
+ only one, I am -- 12 -- ,time  13.300000000
+ only one, I am -- 13 -- ,time  13.400000000
+ only one, I am -- 14 -- ,time  13.500000000
+ only one, I am -- 15 -- ,time  13.599999999
+ only one, I am -- 16 -- ,time  13.699999999
+ only one, I am -- 17 -- ,time  13.800000000
+ only one, I am -- 18 -- ,time  13.900000000
+ only one, I am -- 19 -- ,time  14.000000000
+ only one, I am -- 00 -- ,time  14.099999999
+ only one, I am -- 01 -- ,time  14.199999999
+ only one, I am -- 02 -- ,time  14.300000000
+ only one, I am -- 03 -- ,time  14.400000000
+ only one, I am -- 04 -- ,time  14.500000000
+ only one, I am -- 05 -- ,time  14.599999999
+ only one, I am -- 06 -- ,time  14.699999999
+ only one, I am -- 07 -- ,time  14.800000000
+ only one, I am -- 08 -- ,time  14.900000000
+ only one, I am -- 09 -- ,time  15.000000000
+ only one, I am -- 10 -- ,time  15.099999999
+ only one, I am -- 11 -- ,time  15.199999999
+ only one, I am -- 12 -- ,time  15.300000000
+ only one, I am -- 13 -- ,time  15.400000000
+ only one, I am -- 14 -- ,time  15.500000000
+ only one, I am -- 15 -- ,time  15.599999999
+ only one, I am -- 16 -- ,time  15.699999999
+ only one, I am -- 17 -- ,time  15.800000000
+ only one, I am -- 18 -- ,time  15.900000000
+ only one, I am -- 19 -- ,time  16.000000000
+ only one, I am -- 00 -- ,time  16.100000000
+ only one, I am -- 01 -- ,time  16.199999999
+ only one, I am -- 02 -- ,time  16.300000000
+ only one, I am -- 03 -- ,time  16.399999999
+ only one, I am -- 04 -- ,time  16.500000000
+ only one, I am -- 05 -- ,time  16.600000000
+ only one, I am -- 06 -- ,time  16.699999999
+ only one, I am -- 07 -- ,time  16.800000000
+ only one, I am -- 08 -- ,time  16.899999999
+ only one, I am -- 09 -- ,time  17.000000000
+ only one, I am -- 10 -- ,time  17.100000000
+ only one, I am -- 11 -- ,time  17.199999999
+ only one, I am -- 12 -- ,time  17.300000000
+ only one, I am -- 13 -- ,time  17.399999999
+ only one, I am -- 14 -- ,time  17.500000000
+ only one, I am -- 15 -- ,time  17.600000000
+ only one, I am -- 16 -- ,time  17.699999999
+ only one, I am -- 17 -- ,time  17.800000000
+ only one, I am -- 18 -- ,time  17.899999999
+ only one, I am -- 19 -- ,time  18.000000000
+
+This run (test) terminates now! but first error log:
+time(secs)         id  text/name
+---------------------------------
+
+This run (test) terminates now! (terminate-test.cpp : 20)

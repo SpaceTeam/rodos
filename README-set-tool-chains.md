@@ -21,6 +21,17 @@ sudo apt install build-essential xz-utils curl
 Add CLang toolchain repository. 
 ------------------------------
 
+Note: In case you want the easy way, do not use clang, use g++ instead.
+Edit the last lines in scripts/build-scripts  `*set-vars.sh` 
+
+```
+#export CPP_COMP="g++ "
+#export C_COMP="gcc "  # only to compile BSP and Drivers from chip provider
+export C_COMP="clang "  # only to compile BSP and Drivers from chip provider
+export CPP_COMP="clang++ "
+```
+
+
 Append the following lines to **/etc/apt/sources.list**
 
 ```
@@ -41,6 +52,7 @@ sudo apt install g++-multilib gcc-multilib
 sudo update-alternatives --install /usr/bin/cc cc /usr/bin/clang-7 100
 sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-7 100
 ```
+
 
 
 Manually install latest cmake 
