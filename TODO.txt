@@ -2,6 +2,8 @@
 
 test mit compare printf and NOW() in printf
 
+
+
 Abhängigkeitsdiragram mit layers
     gateway
     totpics
@@ -12,6 +14,11 @@ Abhängigkeitsdiragram mit layers
 am besten in den includes der sources
 
 Integrations / port Tests
+
+ 
+redesign hal's, using class Result
+arduino IO interface als HAL Interface?
+    https://www.arduino.cc/reference/en/language/functions/communication/serial/
 
 
 ------------

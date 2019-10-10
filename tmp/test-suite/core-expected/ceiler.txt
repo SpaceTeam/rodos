@@ -1,0 +1,50 @@
+RODOS RODOS-200.0 OS Version Linux-x86
+Loaded Applications:
+         10 -> 'Topics & Middleware'
+       1000 -> 'terminateTest'
+       3000 -> 'PriorityCeiling'
+Calling Initiators and Application Initiators
+ initiator nodnr = 7
+Distribute Subscribers to Topics
+List of Middleware Topics:
+ CharInput  Id = 28449 len = 16.   -- Subscribers:
+ SigTermInterrupt  Id = 16716 len = 4.   -- Subscribers:
+ UartInterrupt  Id = 15678 len = 4.   -- Subscribers:
+ TimerInterrupt  Id = 25697 len = 4.   -- Subscribers:
+ routerTopic  Id = 21324 len = 1326.   -- Subscribers:
+ gatewayTopic  Id = 0 len = 16.   -- Subscribers:
+
+Event servers:
+Threads in System:
+   Prio =       0 Stack =  32000 IdleThread: yields all the time
+   Prio =    1003 Stack =  32000 TerminateTest: 
+   Prio =      20 Stack =  32000 PriotyCeiler:  ceiler = '+'
+BigEndianity = 0, cpu-Arc = x86, Basis-Os = baremetal, Cpu-Speed (K-Loops/sec) = 313330 yeildtim (ns) 990
+Node Number: HEX: 7 Dec: 7
+-----------------------------------------------------
+
+
+**********************
+To be able to test it compile together with PreemptionTest
+**********************
+
+
+--------------- Application running ------------
+
+This run (test) will be terminated in 20 Seconds
+
+Priority ceiler 122 times normal
+-
+Priority ceiler 122 tmes prio ceiling
+-
+Priority ceiler 122 times normal
+-
+Priority ceiler 122 times normal
+-
+Priority ceiler terminates
+
+This run (test) terminates now! but first error log:
+time(secs)         id  text/name
+---------------------------------
+
+This run (test) terminates now! (terminate-test.cpp : 20)

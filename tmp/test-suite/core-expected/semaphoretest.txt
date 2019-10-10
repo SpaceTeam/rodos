@@ -1,0 +1,3637 @@
+RODOS RODOS-200.0 OS Version Linux-x86
+Loaded Applications:
+         10 -> 'Topics & Middleware'
+       1000 -> 'terminateTest'
+       1000 -> 'semaphoretest'
+Calling Initiators and Application Initiators
+ initiator nodnr = 7
+Distribute Subscribers to Topics
+List of Middleware Topics:
+ CharInput  Id = 28449 len = 16.   -- Subscribers:
+ SigTermInterrupt  Id = 16716 len = 4.   -- Subscribers:
+ UartInterrupt  Id = 15678 len = 4.   -- Subscribers:
+ TimerInterrupt  Id = 25697 len = 4.   -- Subscribers:
+ routerTopic  Id = 21324 len = 1326.   -- Subscribers:
+ gatewayTopic  Id = 0 len = 16.   -- Subscribers:
+
+Event servers:
+Threads in System:
+   Prio =       0 Stack =  32000 IdleThread: yields all the time
+   Prio =    1003 Stack =  32000 TerminateTest: 
+   Prio =     100 Stack =  32000 ddd: 
+   Prio =     100 Stack =  32000 ccc: 
+   Prio =     100 Stack =  32000 bbb: 
+   Prio =     100 Stack =  32000 aaa: 
+BigEndianity = 0, cpu-Arc = x86, Basis-Os = baremetal, Cpu-Speed (K-Loops/sec) = 313330 yeildtim (ns) 990
+Node Number: HEX: 7 Dec: 7
+-----------------------------------------------------
+Default internal MAIN
+--------------- Application running ------------
+
+This run (test) will be terminated in 20 Seconds
+ddd
+ccc
+bbb
+aaa
+ddd before protector 
+ccc before protector 
+bbb before protector 
+aaa before protector 
+------- ddd entered at   0.100000000 
+          ddd 1.yield. getScheduleCounter()  10
+          ddd 2.yield. getScheduleCounter() 10
+          ddd 3.yield. getScheduleCounter() 10
+          ddd 4.yield. getScheduleCounter() 10
+-------- ddd leavs getScheduleCounter() 10
+ddd after protector getScheduleCounter()  12 
+------- ccc entered at   0.200000000 
+ddd
+          ccc 1.yield. getScheduleCounter()  15
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 17
+          ccc 3.yield. getScheduleCounter() 17
+          ccc 4.yield. getScheduleCounter() 17
+-------- ccc leavs getScheduleCounter() 17
+ccc after protector getScheduleCounter()  19 
+------- bbb entered at   0.300000000 
+ccc
+          bbb 1.yield. getScheduleCounter()  22
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 24
+          bbb 3.yield. getScheduleCounter() 24
+          bbb 4.yield. getScheduleCounter() 24
+-------- bbb leavs getScheduleCounter() 24
+bbb after protector getScheduleCounter()  26 
+------- aaa entered at   0.400000000 
+bbb
+          aaa 1.yield. getScheduleCounter()  29
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 31
+          aaa 3.yield. getScheduleCounter() 31
+          aaa 4.yield. getScheduleCounter() 31
+-------- aaa leavs getScheduleCounter() 31
+aaa after protector getScheduleCounter()  33 
+------- ddd entered at   0.500000000 
+aaa
+          ddd 1.yield. getScheduleCounter()  36
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 38
+          ddd 3.yield. getScheduleCounter() 38
+          ddd 4.yield. getScheduleCounter() 38
+-------- ddd leavs getScheduleCounter() 38
+ddd after protector getScheduleCounter()  40 
+------- ccc entered at   0.600000000 
+ddd
+          ccc 1.yield. getScheduleCounter()  43
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 45
+          ccc 3.yield. getScheduleCounter() 45
+          ccc 4.yield. getScheduleCounter() 45
+-------- ccc leavs getScheduleCounter() 45
+ccc after protector getScheduleCounter()  47 
+------- bbb entered at   0.700000000 
+ccc
+          bbb 1.yield. getScheduleCounter()  50
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 52
+          bbb 3.yield. getScheduleCounter() 52
+          bbb 4.yield. getScheduleCounter() 52
+-------- bbb leavs getScheduleCounter() 52
+bbb after protector getScheduleCounter()  54 
+------- aaa entered at   0.800000000 
+bbb
+          aaa 1.yield. getScheduleCounter()  57
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 59
+          aaa 3.yield. getScheduleCounter() 59
+          aaa 4.yield. getScheduleCounter() 59
+-------- aaa leavs getScheduleCounter() 59
+aaa after protector getScheduleCounter()  61 
+------- ddd entered at   0.900000000 
+aaa
+          ddd 1.yield. getScheduleCounter()  64
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 66
+          ddd 3.yield. getScheduleCounter() 66
+          ddd 4.yield. getScheduleCounter() 66
+-------- ddd leavs getScheduleCounter() 66
+ddd after protector getScheduleCounter()  68 
+------- ccc entered at   1.000000000 
+ddd
+          ccc 1.yield. getScheduleCounter()  71
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 73
+          ccc 3.yield. getScheduleCounter() 73
+          ccc 4.yield. getScheduleCounter() 73
+-------- ccc leavs getScheduleCounter() 73
+ccc after protector getScheduleCounter()  75 
+------- bbb entered at   1.100000000 
+ccc
+          bbb 1.yield. getScheduleCounter()  78
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 80
+          bbb 3.yield. getScheduleCounter() 80
+          bbb 4.yield. getScheduleCounter() 80
+-------- bbb leavs getScheduleCounter() 80
+bbb after protector getScheduleCounter()  82 
+------- aaa entered at   1.199999999 
+bbb
+          aaa 1.yield. getScheduleCounter()  85
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 87
+          aaa 3.yield. getScheduleCounter() 87
+          aaa 4.yield. getScheduleCounter() 87
+-------- aaa leavs getScheduleCounter() 87
+aaa after protector getScheduleCounter()  89 
+------- ddd entered at   1.300000000 
+aaa
+          ddd 1.yield. getScheduleCounter()  92
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 94
+          ddd 3.yield. getScheduleCounter() 94
+          ddd 4.yield. getScheduleCounter() 94
+-------- ddd leavs getScheduleCounter() 94
+ddd after protector getScheduleCounter()  96 
+------- ccc entered at   1.399999999 
+ddd
+          ccc 1.yield. getScheduleCounter()  99
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 101
+          ccc 3.yield. getScheduleCounter() 101
+          ccc 4.yield. getScheduleCounter() 101
+-------- ccc leavs getScheduleCounter() 101
+ccc after protector getScheduleCounter()  103 
+------- bbb entered at   1.500000000 
+ccc
+          bbb 1.yield. getScheduleCounter()  106
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 108
+          bbb 3.yield. getScheduleCounter() 108
+          bbb 4.yield. getScheduleCounter() 108
+-------- bbb leavs getScheduleCounter() 108
+bbb after protector getScheduleCounter()  110 
+------- aaa entered at   1.600000000 
+bbb
+          aaa 1.yield. getScheduleCounter()  113
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 115
+          aaa 3.yield. getScheduleCounter() 115
+          aaa 4.yield. getScheduleCounter() 115
+-------- aaa leavs getScheduleCounter() 115
+aaa after protector getScheduleCounter()  117 
+------- ddd entered at   1.700000000 
+aaa
+          ddd 1.yield. getScheduleCounter()  120
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 122
+          ddd 3.yield. getScheduleCounter() 122
+          ddd 4.yield. getScheduleCounter() 122
+-------- ddd leavs getScheduleCounter() 122
+ddd after protector getScheduleCounter()  124 
+------- ccc entered at   1.800000000 
+ddd
+          ccc 1.yield. getScheduleCounter()  127
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 129
+          ccc 3.yield. getScheduleCounter() 129
+          ccc 4.yield. getScheduleCounter() 129
+-------- ccc leavs getScheduleCounter() 129
+ccc after protector getScheduleCounter()  131 
+------- bbb entered at   1.900000000 
+ccc
+          bbb 1.yield. getScheduleCounter()  134
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 136
+          bbb 3.yield. getScheduleCounter() 136
+          bbb 4.yield. getScheduleCounter() 136
+-------- bbb leavs getScheduleCounter() 136
+bbb after protector getScheduleCounter()  138 
+------- aaa entered at   2.000000000 
+bbb
+          aaa 1.yield. getScheduleCounter()  141
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 143
+          aaa 3.yield. getScheduleCounter() 143
+          aaa 4.yield. getScheduleCounter() 143
+-------- aaa leavs getScheduleCounter() 143
+aaa after protector getScheduleCounter()  145 
+------- ddd entered at   2.100000000 
+aaa
+          ddd 1.yield. getScheduleCounter()  148
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 150
+          ddd 3.yield. getScheduleCounter() 150
+          ddd 4.yield. getScheduleCounter() 150
+-------- ddd leavs getScheduleCounter() 150
+ddd after protector getScheduleCounter()  152 
+------- ccc entered at   2.200000000 
+ddd
+          ccc 1.yield. getScheduleCounter()  155
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 157
+          ccc 3.yield. getScheduleCounter() 157
+          ccc 4.yield. getScheduleCounter() 157
+-------- ccc leavs getScheduleCounter() 157
+ccc after protector getScheduleCounter()  159 
+------- bbb entered at   2.299999999 
+ccc
+          bbb 1.yield. getScheduleCounter()  162
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 164
+          bbb 3.yield. getScheduleCounter() 164
+          bbb 4.yield. getScheduleCounter() 164
+-------- bbb leavs getScheduleCounter() 164
+bbb after protector getScheduleCounter()  166 
+------- aaa entered at   2.399999999 
+bbb
+          aaa 1.yield. getScheduleCounter()  169
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 171
+          aaa 3.yield. getScheduleCounter() 171
+          aaa 4.yield. getScheduleCounter() 171
+-------- aaa leavs getScheduleCounter() 171
+aaa after protector getScheduleCounter()  173 
+------- ddd entered at   2.500000000 
+aaa
+          ddd 1.yield. getScheduleCounter()  176
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 178
+          ddd 3.yield. getScheduleCounter() 178
+          ddd 4.yield. getScheduleCounter() 178
+-------- ddd leavs getScheduleCounter() 178
+ddd after protector getScheduleCounter()  180 
+------- ccc entered at   2.600000000 
+ddd
+          ccc 1.yield. getScheduleCounter()  183
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 185
+          ccc 3.yield. getScheduleCounter() 185
+          ccc 4.yield. getScheduleCounter() 185
+-------- ccc leavs getScheduleCounter() 185
+ccc after protector getScheduleCounter()  187 
+------- bbb entered at   2.700000000 
+ccc
+          bbb 1.yield. getScheduleCounter()  190
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 192
+          bbb 3.yield. getScheduleCounter() 192
+          bbb 4.yield. getScheduleCounter() 192
+-------- bbb leavs getScheduleCounter() 192
+bbb after protector getScheduleCounter()  194 
+------- aaa entered at   2.799999999 
+bbb
+          aaa 1.yield. getScheduleCounter()  197
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 199
+          aaa 3.yield. getScheduleCounter() 199
+          aaa 4.yield. getScheduleCounter() 199
+-------- aaa leavs getScheduleCounter() 199
+aaa after protector getScheduleCounter()  201 
+------- ddd entered at   2.900000000 
+aaa
+          ddd 1.yield. getScheduleCounter()  204
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 206
+          ddd 3.yield. getScheduleCounter() 206
+          ddd 4.yield. getScheduleCounter() 206
+-------- ddd leavs getScheduleCounter() 206
+ddd after protector getScheduleCounter()  208 
+------- ccc entered at   3.000000000 
+ddd
+          ccc 1.yield. getScheduleCounter()  211
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 213
+          ccc 3.yield. getScheduleCounter() 213
+          ccc 4.yield. getScheduleCounter() 213
+-------- ccc leavs getScheduleCounter() 213
+ccc after protector getScheduleCounter()  215 
+------- bbb entered at   3.100000000 
+ccc
+          bbb 1.yield. getScheduleCounter()  218
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 220
+          bbb 3.yield. getScheduleCounter() 220
+          bbb 4.yield. getScheduleCounter() 220
+-------- bbb leavs getScheduleCounter() 220
+bbb after protector getScheduleCounter()  222 
+------- aaa entered at   3.200000000 
+bbb
+          aaa 1.yield. getScheduleCounter()  225
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 227
+          aaa 3.yield. getScheduleCounter() 227
+          aaa 4.yield. getScheduleCounter() 227
+-------- aaa leavs getScheduleCounter() 227
+aaa after protector getScheduleCounter()  229 
+------- ddd entered at   3.299999999 
+aaa
+          ddd 1.yield. getScheduleCounter()  232
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 234
+          ddd 3.yield. getScheduleCounter() 234
+          ddd 4.yield. getScheduleCounter() 234
+-------- ddd leavs getScheduleCounter() 234
+ddd after protector getScheduleCounter()  236 
+------- ccc entered at   3.399999999 
+ddd
+          ccc 1.yield. getScheduleCounter()  239
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 241
+          ccc 3.yield. getScheduleCounter() 241
+          ccc 4.yield. getScheduleCounter() 241
+-------- ccc leavs getScheduleCounter() 241
+ccc after protector getScheduleCounter()  243 
+------- bbb entered at   3.500000000 
+ccc
+          bbb 1.yield. getScheduleCounter()  246
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 248
+          bbb 3.yield. getScheduleCounter() 248
+          bbb 4.yield. getScheduleCounter() 248
+-------- bbb leavs getScheduleCounter() 248
+bbb after protector getScheduleCounter()  250 
+------- aaa entered at   3.600000000 
+bbb
+          aaa 1.yield. getScheduleCounter()  253
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 255
+          aaa 3.yield. getScheduleCounter() 255
+          aaa 4.yield. getScheduleCounter() 255
+-------- aaa leavs getScheduleCounter() 255
+aaa after protector getScheduleCounter()  257 
+------- ddd entered at   3.700000000 
+aaa
+          ddd 1.yield. getScheduleCounter()  260
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 262
+          ddd 3.yield. getScheduleCounter() 262
+          ddd 4.yield. getScheduleCounter() 262
+-------- ddd leavs getScheduleCounter() 262
+ddd after protector getScheduleCounter()  264 
+------- ccc entered at   3.799999999 
+ddd
+          ccc 1.yield. getScheduleCounter()  267
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 269
+          ccc 3.yield. getScheduleCounter() 269
+          ccc 4.yield. getScheduleCounter() 269
+-------- ccc leavs getScheduleCounter() 269
+ccc after protector getScheduleCounter()  271 
+------- bbb entered at   3.900000000 
+ccc
+          bbb 1.yield. getScheduleCounter()  274
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 276
+          bbb 3.yield. getScheduleCounter() 276
+          bbb 4.yield. getScheduleCounter() 276
+-------- bbb leavs getScheduleCounter() 276
+bbb after protector getScheduleCounter()  278 
+------- aaa entered at   4.000000000 
+bbb
+          aaa 1.yield. getScheduleCounter()  281
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 283
+          aaa 3.yield. getScheduleCounter() 283
+          aaa 4.yield. getScheduleCounter() 283
+-------- aaa leavs getScheduleCounter() 283
+aaa after protector getScheduleCounter()  285 
+------- ddd entered at   4.099999999 
+aaa
+          ddd 1.yield. getScheduleCounter()  288
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 290
+          ddd 3.yield. getScheduleCounter() 290
+          ddd 4.yield. getScheduleCounter() 290
+-------- ddd leavs getScheduleCounter() 290
+ddd after protector getScheduleCounter()  292 
+------- ccc entered at   4.200000000 
+ddd
+          ccc 1.yield. getScheduleCounter()  295
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 297
+          ccc 3.yield. getScheduleCounter() 297
+          ccc 4.yield. getScheduleCounter() 297
+-------- ccc leavs getScheduleCounter() 297
+ccc after protector getScheduleCounter()  299 
+------- bbb entered at   4.299999999 
+ccc
+          bbb 1.yield. getScheduleCounter()  302
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 304
+          bbb 3.yield. getScheduleCounter() 304
+          bbb 4.yield. getScheduleCounter() 304
+-------- bbb leavs getScheduleCounter() 304
+bbb after protector getScheduleCounter()  306 
+------- aaa entered at   4.400000000 
+bbb
+          aaa 1.yield. getScheduleCounter()  309
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 311
+          aaa 3.yield. getScheduleCounter() 311
+          aaa 4.yield. getScheduleCounter() 311
+-------- aaa leavs getScheduleCounter() 311
+aaa after protector getScheduleCounter()  313 
+------- ddd entered at   4.500000000 
+aaa
+          ddd 1.yield. getScheduleCounter()  316
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 318
+          ddd 3.yield. getScheduleCounter() 318
+          ddd 4.yield. getScheduleCounter() 318
+-------- ddd leavs getScheduleCounter() 318
+ddd after protector getScheduleCounter()  320 
+------- ccc entered at   4.599999999 
+ddd
+          ccc 1.yield. getScheduleCounter()  323
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 325
+          ccc 3.yield. getScheduleCounter() 325
+          ccc 4.yield. getScheduleCounter() 325
+-------- ccc leavs getScheduleCounter() 325
+ccc after protector getScheduleCounter()  327 
+------- bbb entered at   4.700000000 
+ccc
+          bbb 1.yield. getScheduleCounter()  330
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 332
+          bbb 3.yield. getScheduleCounter() 332
+          bbb 4.yield. getScheduleCounter() 332
+-------- bbb leavs getScheduleCounter() 332
+bbb after protector getScheduleCounter()  334 
+------- aaa entered at   4.799999999 
+bbb
+          aaa 1.yield. getScheduleCounter()  337
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 339
+          aaa 3.yield. getScheduleCounter() 339
+          aaa 4.yield. getScheduleCounter() 339
+-------- aaa leavs getScheduleCounter() 339
+aaa after protector getScheduleCounter()  341 
+------- ddd entered at   4.900000000 
+aaa
+          ddd 1.yield. getScheduleCounter()  344
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 346
+          ddd 3.yield. getScheduleCounter() 346
+          ddd 4.yield. getScheduleCounter() 346
+-------- ddd leavs getScheduleCounter() 346
+ddd after protector getScheduleCounter()  348 
+------- ccc entered at   5.000000000 
+ddd
+          ccc 1.yield. getScheduleCounter()  351
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 353
+          ccc 3.yield. getScheduleCounter() 353
+          ccc 4.yield. getScheduleCounter() 353
+-------- ccc leavs getScheduleCounter() 353
+ccc after protector getScheduleCounter()  355 
+------- bbb entered at   5.099999999 
+ccc
+          bbb 1.yield. getScheduleCounter()  358
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 360
+          bbb 3.yield. getScheduleCounter() 360
+          bbb 4.yield. getScheduleCounter() 360
+-------- bbb leavs getScheduleCounter() 360
+bbb after protector getScheduleCounter()  362 
+------- aaa entered at   5.200000000 
+bbb
+          aaa 1.yield. getScheduleCounter()  365
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 367
+          aaa 3.yield. getScheduleCounter() 367
+          aaa 4.yield. getScheduleCounter() 367
+-------- aaa leavs getScheduleCounter() 367
+aaa after protector getScheduleCounter()  369 
+------- ddd entered at   5.299999999 
+aaa
+          ddd 1.yield. getScheduleCounter()  372
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 374
+          ddd 3.yield. getScheduleCounter() 374
+          ddd 4.yield. getScheduleCounter() 374
+-------- ddd leavs getScheduleCounter() 374
+ddd after protector getScheduleCounter()  376 
+------- ccc entered at   5.400000000 
+ddd
+          ccc 1.yield. getScheduleCounter()  379
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 381
+          ccc 3.yield. getScheduleCounter() 381
+          ccc 4.yield. getScheduleCounter() 381
+-------- ccc leavs getScheduleCounter() 381
+ccc after protector getScheduleCounter()  383 
+------- bbb entered at   5.500000000 
+ccc
+          bbb 1.yield. getScheduleCounter()  386
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 388
+          bbb 3.yield. getScheduleCounter() 388
+          bbb 4.yield. getScheduleCounter() 388
+-------- bbb leavs getScheduleCounter() 388
+bbb after protector getScheduleCounter()  390 
+------- aaa entered at   5.599999999 
+bbb
+          aaa 1.yield. getScheduleCounter()  393
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 395
+          aaa 3.yield. getScheduleCounter() 395
+          aaa 4.yield. getScheduleCounter() 395
+-------- aaa leavs getScheduleCounter() 395
+aaa after protector getScheduleCounter()  397 
+------- ddd entered at   5.700000000 
+aaa
+          ddd 1.yield. getScheduleCounter()  400
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 402
+          ddd 3.yield. getScheduleCounter() 402
+          ddd 4.yield. getScheduleCounter() 402
+-------- ddd leavs getScheduleCounter() 402
+ddd after protector getScheduleCounter()  404 
+------- ccc entered at   5.799999999 
+ddd
+          ccc 1.yield. getScheduleCounter()  407
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 409
+          ccc 3.yield. getScheduleCounter() 409
+          ccc 4.yield. getScheduleCounter() 409
+-------- ccc leavs getScheduleCounter() 409
+ccc after protector getScheduleCounter()  411 
+------- bbb entered at   5.900000000 
+ccc
+          bbb 1.yield. getScheduleCounter()  414
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 416
+          bbb 3.yield. getScheduleCounter() 416
+          bbb 4.yield. getScheduleCounter() 416
+-------- bbb leavs getScheduleCounter() 416
+bbb after protector getScheduleCounter()  418 
+------- aaa entered at   6.000000000 
+bbb
+          aaa 1.yield. getScheduleCounter()  421
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 423
+          aaa 3.yield. getScheduleCounter() 423
+          aaa 4.yield. getScheduleCounter() 423
+-------- aaa leavs getScheduleCounter() 423
+aaa after protector getScheduleCounter()  425 
+------- ddd entered at   6.099999999 
+aaa
+          ddd 1.yield. getScheduleCounter()  428
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 430
+          ddd 3.yield. getScheduleCounter() 430
+          ddd 4.yield. getScheduleCounter() 430
+-------- ddd leavs getScheduleCounter() 430
+ddd after protector getScheduleCounter()  432 
+------- ccc entered at   6.200000000 
+ddd
+          ccc 1.yield. getScheduleCounter()  435
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 437
+          ccc 3.yield. getScheduleCounter() 437
+          ccc 4.yield. getScheduleCounter() 437
+-------- ccc leavs getScheduleCounter() 437
+ccc after protector getScheduleCounter()  439 
+------- bbb entered at   6.299999999 
+ccc
+          bbb 1.yield. getScheduleCounter()  442
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 444
+          bbb 3.yield. getScheduleCounter() 444
+          bbb 4.yield. getScheduleCounter() 444
+-------- bbb leavs getScheduleCounter() 444
+bbb after protector getScheduleCounter()  446 
+------- aaa entered at   6.400000000 
+bbb
+          aaa 1.yield. getScheduleCounter()  449
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 451
+          aaa 3.yield. getScheduleCounter() 451
+          aaa 4.yield. getScheduleCounter() 451
+-------- aaa leavs getScheduleCounter() 451
+aaa after protector getScheduleCounter()  453 
+------- ddd entered at   6.500000000 
+aaa
+          ddd 1.yield. getScheduleCounter()  456
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 458
+          ddd 3.yield. getScheduleCounter() 458
+          ddd 4.yield. getScheduleCounter() 458
+-------- ddd leavs getScheduleCounter() 458
+ddd after protector getScheduleCounter()  460 
+------- ccc entered at   6.599999999 
+ddd
+          ccc 1.yield. getScheduleCounter()  463
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 465
+          ccc 3.yield. getScheduleCounter() 465
+          ccc 4.yield. getScheduleCounter() 465
+-------- ccc leavs getScheduleCounter() 465
+ccc after protector getScheduleCounter()  467 
+------- bbb entered at   6.700000000 
+ccc
+          bbb 1.yield. getScheduleCounter()  470
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 472
+          bbb 3.yield. getScheduleCounter() 472
+          bbb 4.yield. getScheduleCounter() 472
+-------- bbb leavs getScheduleCounter() 472
+bbb after protector getScheduleCounter()  474 
+------- aaa entered at   6.799999999 
+bbb
+          aaa 1.yield. getScheduleCounter()  477
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 479
+          aaa 3.yield. getScheduleCounter() 479
+          aaa 4.yield. getScheduleCounter() 479
+-------- aaa leavs getScheduleCounter() 479
+aaa after protector getScheduleCounter()  481 
+------- ddd entered at   6.900000000 
+aaa
+          ddd 1.yield. getScheduleCounter()  484
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 486
+          ddd 3.yield. getScheduleCounter() 486
+          ddd 4.yield. getScheduleCounter() 486
+-------- ddd leavs getScheduleCounter() 486
+ddd after protector getScheduleCounter()  488 
+------- ccc entered at   7.000000000 
+ddd
+          ccc 1.yield. getScheduleCounter()  491
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 493
+          ccc 3.yield. getScheduleCounter() 493
+          ccc 4.yield. getScheduleCounter() 493
+-------- ccc leavs getScheduleCounter() 493
+ccc after protector getScheduleCounter()  495 
+------- bbb entered at   7.099999999 
+ccc
+          bbb 1.yield. getScheduleCounter()  498
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 500
+          bbb 3.yield. getScheduleCounter() 500
+          bbb 4.yield. getScheduleCounter() 500
+-------- bbb leavs getScheduleCounter() 500
+bbb after protector getScheduleCounter()  502 
+------- aaa entered at   7.200000000 
+bbb
+          aaa 1.yield. getScheduleCounter()  505
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 507
+          aaa 3.yield. getScheduleCounter() 507
+          aaa 4.yield. getScheduleCounter() 507
+-------- aaa leavs getScheduleCounter() 507
+aaa after protector getScheduleCounter()  509 
+------- ddd entered at   7.299999999 
+aaa
+          ddd 1.yield. getScheduleCounter()  512
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 514
+          ddd 3.yield. getScheduleCounter() 514
+          ddd 4.yield. getScheduleCounter() 514
+-------- ddd leavs getScheduleCounter() 514
+ddd after protector getScheduleCounter()  516 
+------- ccc entered at   7.400000000 
+ddd
+          ccc 1.yield. getScheduleCounter()  519
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 521
+          ccc 3.yield. getScheduleCounter() 521
+          ccc 4.yield. getScheduleCounter() 521
+-------- ccc leavs getScheduleCounter() 521
+ccc after protector getScheduleCounter()  523 
+------- bbb entered at   7.500000000 
+ccc
+          bbb 1.yield. getScheduleCounter()  526
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 528
+          bbb 3.yield. getScheduleCounter() 528
+          bbb 4.yield. getScheduleCounter() 528
+-------- bbb leavs getScheduleCounter() 528
+bbb after protector getScheduleCounter()  530 
+------- aaa entered at   7.599999999 
+bbb
+          aaa 1.yield. getScheduleCounter()  533
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 535
+          aaa 3.yield. getScheduleCounter() 535
+          aaa 4.yield. getScheduleCounter() 535
+-------- aaa leavs getScheduleCounter() 535
+aaa after protector getScheduleCounter()  537 
+------- ddd entered at   7.700000000 
+aaa
+          ddd 1.yield. getScheduleCounter()  540
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 542
+          ddd 3.yield. getScheduleCounter() 542
+          ddd 4.yield. getScheduleCounter() 542
+-------- ddd leavs getScheduleCounter() 542
+ddd after protector getScheduleCounter()  544 
+------- ccc entered at   7.799999999 
+ddd
+          ccc 1.yield. getScheduleCounter()  547
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 549
+          ccc 3.yield. getScheduleCounter() 549
+          ccc 4.yield. getScheduleCounter() 549
+-------- ccc leavs getScheduleCounter() 549
+ccc after protector getScheduleCounter()  551 
+------- bbb entered at   7.900000000 
+ccc
+          bbb 1.yield. getScheduleCounter()  554
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 556
+          bbb 3.yield. getScheduleCounter() 556
+          bbb 4.yield. getScheduleCounter() 556
+-------- bbb leavs getScheduleCounter() 556
+bbb after protector getScheduleCounter()  558 
+------- aaa entered at   8.000000000 
+bbb
+          aaa 1.yield. getScheduleCounter()  561
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 563
+          aaa 3.yield. getScheduleCounter() 563
+          aaa 4.yield. getScheduleCounter() 563
+-------- aaa leavs getScheduleCounter() 563
+aaa after protector getScheduleCounter()  565 
+------- ddd entered at   8.099999999 
+aaa
+          ddd 1.yield. getScheduleCounter()  568
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 570
+          ddd 3.yield. getScheduleCounter() 570
+          ddd 4.yield. getScheduleCounter() 570
+-------- ddd leavs getScheduleCounter() 570
+ddd after protector getScheduleCounter()  572 
+------- ccc entered at   8.199999999 
+ddd
+          ccc 1.yield. getScheduleCounter()  575
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 577
+          ccc 3.yield. getScheduleCounter() 577
+          ccc 4.yield. getScheduleCounter() 577
+-------- ccc leavs getScheduleCounter() 577
+ccc after protector getScheduleCounter()  579 
+------- bbb entered at   8.300000000 
+ccc
+          bbb 1.yield. getScheduleCounter()  582
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 584
+          bbb 3.yield. getScheduleCounter() 584
+          bbb 4.yield. getScheduleCounter() 584
+-------- bbb leavs getScheduleCounter() 584
+bbb after protector getScheduleCounter()  586 
+------- aaa entered at   8.400000000 
+bbb
+          aaa 1.yield. getScheduleCounter()  589
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 591
+          aaa 3.yield. getScheduleCounter() 591
+          aaa 4.yield. getScheduleCounter() 591
+-------- aaa leavs getScheduleCounter() 591
+aaa after protector getScheduleCounter()  593 
+------- ddd entered at   8.500000000 
+aaa
+          ddd 1.yield. getScheduleCounter()  596
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 598
+          ddd 3.yield. getScheduleCounter() 598
+          ddd 4.yield. getScheduleCounter() 598
+-------- ddd leavs getScheduleCounter() 598
+ddd after protector getScheduleCounter()  600 
+------- ccc entered at   8.599999999 
+ddd
+          ccc 1.yield. getScheduleCounter()  603
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 605
+          ccc 3.yield. getScheduleCounter() 605
+          ccc 4.yield. getScheduleCounter() 605
+-------- ccc leavs getScheduleCounter() 605
+ccc after protector getScheduleCounter()  607 
+------- bbb entered at   8.699999999 
+ccc
+          bbb 1.yield. getScheduleCounter()  610
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 612
+          bbb 3.yield. getScheduleCounter() 612
+          bbb 4.yield. getScheduleCounter() 612
+-------- bbb leavs getScheduleCounter() 612
+bbb after protector getScheduleCounter()  614 
+------- aaa entered at   8.800000000 
+bbb
+          aaa 1.yield. getScheduleCounter()  617
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 619
+          aaa 3.yield. getScheduleCounter() 619
+          aaa 4.yield. getScheduleCounter() 619
+-------- aaa leavs getScheduleCounter() 619
+aaa after protector getScheduleCounter()  621 
+------- ddd entered at   8.900000000 
+aaa
+          ddd 1.yield. getScheduleCounter()  624
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 626
+          ddd 3.yield. getScheduleCounter() 626
+          ddd 4.yield. getScheduleCounter() 626
+-------- ddd leavs getScheduleCounter() 626
+ddd after protector getScheduleCounter()  628 
+------- ccc entered at   9.000000000 
+ddd
+          ccc 1.yield. getScheduleCounter()  631
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 633
+          ccc 3.yield. getScheduleCounter() 633
+          ccc 4.yield. getScheduleCounter() 633
+-------- ccc leavs getScheduleCounter() 633
+ccc after protector getScheduleCounter()  635 
+------- bbb entered at   9.099999999 
+ccc
+          bbb 1.yield. getScheduleCounter()  638
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 640
+          bbb 3.yield. getScheduleCounter() 640
+          bbb 4.yield. getScheduleCounter() 640
+-------- bbb leavs getScheduleCounter() 640
+bbb after protector getScheduleCounter()  642 
+------- aaa entered at   9.199999999 
+bbb
+          aaa 1.yield. getScheduleCounter()  645
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 647
+          aaa 3.yield. getScheduleCounter() 647
+          aaa 4.yield. getScheduleCounter() 647
+-------- aaa leavs getScheduleCounter() 647
+aaa after protector getScheduleCounter()  649 
+------- ddd entered at   9.300000000 
+aaa
+          ddd 1.yield. getScheduleCounter()  652
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 654
+          ddd 3.yield. getScheduleCounter() 654
+          ddd 4.yield. getScheduleCounter() 654
+-------- ddd leavs getScheduleCounter() 654
+ddd after protector getScheduleCounter()  656 
+------- ccc entered at   9.400000000 
+ddd
+          ccc 1.yield. getScheduleCounter()  659
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 661
+          ccc 3.yield. getScheduleCounter() 661
+          ccc 4.yield. getScheduleCounter() 661
+-------- ccc leavs getScheduleCounter() 661
+ccc after protector getScheduleCounter()  663 
+------- bbb entered at   9.500000000 
+ccc
+          bbb 1.yield. getScheduleCounter()  666
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 668
+          bbb 3.yield. getScheduleCounter() 668
+          bbb 4.yield. getScheduleCounter() 668
+-------- bbb leavs getScheduleCounter() 668
+bbb after protector getScheduleCounter()  670 
+------- aaa entered at   9.599999999 
+bbb
+          aaa 1.yield. getScheduleCounter()  673
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 675
+          aaa 3.yield. getScheduleCounter() 675
+          aaa 4.yield. getScheduleCounter() 675
+-------- aaa leavs getScheduleCounter() 675
+aaa after protector getScheduleCounter()  677 
+------- ddd entered at   9.699999999 
+aaa
+          ddd 1.yield. getScheduleCounter()  680
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 682
+          ddd 3.yield. getScheduleCounter() 682
+          ddd 4.yield. getScheduleCounter() 682
+-------- ddd leavs getScheduleCounter() 682
+ddd after protector getScheduleCounter()  684 
+------- ccc entered at   9.800000000 
+ddd
+          ccc 1.yield. getScheduleCounter()  687
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 689
+          ccc 3.yield. getScheduleCounter() 689
+          ccc 4.yield. getScheduleCounter() 689
+-------- ccc leavs getScheduleCounter() 689
+ccc after protector getScheduleCounter()  691 
+------- bbb entered at   9.900000000 
+ccc
+          bbb 1.yield. getScheduleCounter()  694
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 696
+          bbb 3.yield. getScheduleCounter() 696
+          bbb 4.yield. getScheduleCounter() 696
+-------- bbb leavs getScheduleCounter() 696
+bbb after protector getScheduleCounter()  698 
+------- aaa entered at  10.000000000 
+bbb
+          aaa 1.yield. getScheduleCounter()  701
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 703
+          aaa 3.yield. getScheduleCounter() 703
+          aaa 4.yield. getScheduleCounter() 703
+-------- aaa leavs getScheduleCounter() 703
+aaa after protector getScheduleCounter()  705 
+------- ddd entered at  10.099999999 
+aaa
+          ddd 1.yield. getScheduleCounter()  708
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 710
+          ddd 3.yield. getScheduleCounter() 710
+          ddd 4.yield. getScheduleCounter() 710
+-------- ddd leavs getScheduleCounter() 710
+ddd after protector getScheduleCounter()  712 
+------- ccc entered at  10.199999999 
+ddd
+          ccc 1.yield. getScheduleCounter()  715
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 717
+          ccc 3.yield. getScheduleCounter() 717
+          ccc 4.yield. getScheduleCounter() 717
+-------- ccc leavs getScheduleCounter() 717
+ccc after protector getScheduleCounter()  719 
+------- bbb entered at  10.300000000 
+ccc
+          bbb 1.yield. getScheduleCounter()  722
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 724
+          bbb 3.yield. getScheduleCounter() 724
+          bbb 4.yield. getScheduleCounter() 724
+-------- bbb leavs getScheduleCounter() 724
+bbb after protector getScheduleCounter()  726 
+------- aaa entered at  10.400000000 
+bbb
+          aaa 1.yield. getScheduleCounter()  729
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 731
+          aaa 3.yield. getScheduleCounter() 731
+          aaa 4.yield. getScheduleCounter() 731
+-------- aaa leavs getScheduleCounter() 731
+aaa after protector getScheduleCounter()  733 
+------- ddd entered at  10.500000000 
+aaa
+          ddd 1.yield. getScheduleCounter()  736
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 738
+          ddd 3.yield. getScheduleCounter() 738
+          ddd 4.yield. getScheduleCounter() 738
+-------- ddd leavs getScheduleCounter() 738
+ddd after protector getScheduleCounter()  740 
+------- ccc entered at  10.599999999 
+ddd
+          ccc 1.yield. getScheduleCounter()  743
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 745
+          ccc 3.yield. getScheduleCounter() 745
+          ccc 4.yield. getScheduleCounter() 745
+-------- ccc leavs getScheduleCounter() 745
+ccc after protector getScheduleCounter()  747 
+------- bbb entered at  10.699999999 
+ccc
+          bbb 1.yield. getScheduleCounter()  750
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 752
+          bbb 3.yield. getScheduleCounter() 752
+          bbb 4.yield. getScheduleCounter() 752
+-------- bbb leavs getScheduleCounter() 752
+bbb after protector getScheduleCounter()  754 
+------- aaa entered at  10.800000000 
+bbb
+          aaa 1.yield. getScheduleCounter()  757
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 759
+          aaa 3.yield. getScheduleCounter() 759
+          aaa 4.yield. getScheduleCounter() 759
+-------- aaa leavs getScheduleCounter() 759
+aaa after protector getScheduleCounter()  761 
+------- ddd entered at  10.900000000 
+aaa
+          ddd 1.yield. getScheduleCounter()  764
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 766
+          ddd 3.yield. getScheduleCounter() 766
+          ddd 4.yield. getScheduleCounter() 766
+-------- ddd leavs getScheduleCounter() 766
+ddd after protector getScheduleCounter()  768 
+------- ccc entered at  11.000000000 
+ddd
+          ccc 1.yield. getScheduleCounter()  771
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 773
+          ccc 3.yield. getScheduleCounter() 773
+          ccc 4.yield. getScheduleCounter() 773
+-------- ccc leavs getScheduleCounter() 773
+ccc after protector getScheduleCounter()  775 
+------- bbb entered at  11.099999999 
+ccc
+          bbb 1.yield. getScheduleCounter()  778
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 780
+          bbb 3.yield. getScheduleCounter() 780
+          bbb 4.yield. getScheduleCounter() 780
+-------- bbb leavs getScheduleCounter() 780
+bbb after protector getScheduleCounter()  782 
+------- aaa entered at  11.199999999 
+bbb
+          aaa 1.yield. getScheduleCounter()  785
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 787
+          aaa 3.yield. getScheduleCounter() 787
+          aaa 4.yield. getScheduleCounter() 787
+-------- aaa leavs getScheduleCounter() 787
+aaa after protector getScheduleCounter()  789 
+------- ddd entered at  11.300000000 
+aaa
+          ddd 1.yield. getScheduleCounter()  792
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 794
+          ddd 3.yield. getScheduleCounter() 794
+          ddd 4.yield. getScheduleCounter() 794
+-------- ddd leavs getScheduleCounter() 794
+ddd after protector getScheduleCounter()  796 
+------- ccc entered at  11.400000000 
+ddd
+          ccc 1.yield. getScheduleCounter()  799
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 801
+          ccc 3.yield. getScheduleCounter() 801
+          ccc 4.yield. getScheduleCounter() 801
+-------- ccc leavs getScheduleCounter() 801
+ccc after protector getScheduleCounter()  803 
+------- bbb entered at  11.500000000 
+ccc
+          bbb 1.yield. getScheduleCounter()  806
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 808
+          bbb 3.yield. getScheduleCounter() 808
+          bbb 4.yield. getScheduleCounter() 808
+-------- bbb leavs getScheduleCounter() 808
+bbb after protector getScheduleCounter()  810 
+------- aaa entered at  11.599999999 
+bbb
+          aaa 1.yield. getScheduleCounter()  813
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 815
+          aaa 3.yield. getScheduleCounter() 815
+          aaa 4.yield. getScheduleCounter() 815
+-------- aaa leavs getScheduleCounter() 815
+aaa after protector getScheduleCounter()  817 
+------- ddd entered at  11.699999999 
+aaa
+          ddd 1.yield. getScheduleCounter()  820
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 822
+          ddd 3.yield. getScheduleCounter() 822
+          ddd 4.yield. getScheduleCounter() 822
+-------- ddd leavs getScheduleCounter() 822
+ddd after protector getScheduleCounter()  824 
+------- ccc entered at  11.800000000 
+ddd
+          ccc 1.yield. getScheduleCounter()  827
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 829
+          ccc 3.yield. getScheduleCounter() 829
+          ccc 4.yield. getScheduleCounter() 829
+-------- ccc leavs getScheduleCounter() 829
+ccc after protector getScheduleCounter()  831 
+------- bbb entered at  11.900000000 
+ccc
+          bbb 1.yield. getScheduleCounter()  834
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 836
+          bbb 3.yield. getScheduleCounter() 836
+          bbb 4.yield. getScheduleCounter() 836
+-------- bbb leavs getScheduleCounter() 836
+bbb after protector getScheduleCounter()  838 
+------- aaa entered at  12.000000000 
+bbb
+          aaa 1.yield. getScheduleCounter()  841
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 843
+          aaa 3.yield. getScheduleCounter() 843
+          aaa 4.yield. getScheduleCounter() 843
+-------- aaa leavs getScheduleCounter() 843
+aaa after protector getScheduleCounter()  845 
+------- ddd entered at  12.099999999 
+aaa
+          ddd 1.yield. getScheduleCounter()  848
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 850
+          ddd 3.yield. getScheduleCounter() 850
+          ddd 4.yield. getScheduleCounter() 850
+-------- ddd leavs getScheduleCounter() 850
+ddd after protector getScheduleCounter()  852 
+------- ccc entered at  12.199999999 
+ddd
+          ccc 1.yield. getScheduleCounter()  855
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 857
+          ccc 3.yield. getScheduleCounter() 857
+          ccc 4.yield. getScheduleCounter() 857
+-------- ccc leavs getScheduleCounter() 857
+ccc after protector getScheduleCounter()  859 
+------- bbb entered at  12.300000000 
+ccc
+          bbb 1.yield. getScheduleCounter()  862
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 864
+          bbb 3.yield. getScheduleCounter() 864
+          bbb 4.yield. getScheduleCounter() 864
+-------- bbb leavs getScheduleCounter() 864
+bbb after protector getScheduleCounter()  866 
+------- aaa entered at  12.400000000 
+bbb
+          aaa 1.yield. getScheduleCounter()  869
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 871
+          aaa 3.yield. getScheduleCounter() 871
+          aaa 4.yield. getScheduleCounter() 871
+-------- aaa leavs getScheduleCounter() 871
+aaa after protector getScheduleCounter()  873 
+------- ddd entered at  12.500000000 
+aaa
+          ddd 1.yield. getScheduleCounter()  876
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 878
+          ddd 3.yield. getScheduleCounter() 878
+          ddd 4.yield. getScheduleCounter() 878
+-------- ddd leavs getScheduleCounter() 878
+ddd after protector getScheduleCounter()  880 
+------- ccc entered at  12.599999999 
+ddd
+          ccc 1.yield. getScheduleCounter()  883
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 885
+          ccc 3.yield. getScheduleCounter() 885
+          ccc 4.yield. getScheduleCounter() 885
+-------- ccc leavs getScheduleCounter() 885
+ccc after protector getScheduleCounter()  887 
+------- bbb entered at  12.699999999 
+ccc
+          bbb 1.yield. getScheduleCounter()  890
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 892
+          bbb 3.yield. getScheduleCounter() 892
+          bbb 4.yield. getScheduleCounter() 892
+-------- bbb leavs getScheduleCounter() 892
+bbb after protector getScheduleCounter()  894 
+------- aaa entered at  12.800000000 
+bbb
+          aaa 1.yield. getScheduleCounter()  897
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 899
+          aaa 3.yield. getScheduleCounter() 899
+          aaa 4.yield. getScheduleCounter() 899
+-------- aaa leavs getScheduleCounter() 899
+aaa after protector getScheduleCounter()  901 
+------- ddd entered at  12.900000000 
+aaa
+          ddd 1.yield. getScheduleCounter()  904
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 906
+          ddd 3.yield. getScheduleCounter() 906
+          ddd 4.yield. getScheduleCounter() 906
+-------- ddd leavs getScheduleCounter() 906
+ddd after protector getScheduleCounter()  908 
+------- ccc entered at  13.000000000 
+ddd
+          ccc 1.yield. getScheduleCounter()  911
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 913
+          ccc 3.yield. getScheduleCounter() 913
+          ccc 4.yield. getScheduleCounter() 913
+-------- ccc leavs getScheduleCounter() 913
+ccc after protector getScheduleCounter()  915 
+------- bbb entered at  13.099999999 
+ccc
+          bbb 1.yield. getScheduleCounter()  918
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 920
+          bbb 3.yield. getScheduleCounter() 920
+          bbb 4.yield. getScheduleCounter() 920
+-------- bbb leavs getScheduleCounter() 920
+bbb after protector getScheduleCounter()  922 
+------- aaa entered at  13.199999999 
+bbb
+          aaa 1.yield. getScheduleCounter()  925
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 927
+          aaa 3.yield. getScheduleCounter() 927
+          aaa 4.yield. getScheduleCounter() 927
+-------- aaa leavs getScheduleCounter() 927
+aaa after protector getScheduleCounter()  929 
+------- ddd entered at  13.300000000 
+aaa
+          ddd 1.yield. getScheduleCounter()  932
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 934
+          ddd 3.yield. getScheduleCounter() 934
+          ddd 4.yield. getScheduleCounter() 934
+-------- ddd leavs getScheduleCounter() 934
+ddd after protector getScheduleCounter()  936 
+------- ccc entered at  13.400000000 
+ddd
+          ccc 1.yield. getScheduleCounter()  939
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 941
+          ccc 3.yield. getScheduleCounter() 941
+          ccc 4.yield. getScheduleCounter() 941
+-------- ccc leavs getScheduleCounter() 941
+ccc after protector getScheduleCounter()  943 
+------- bbb entered at  13.500000000 
+ccc
+          bbb 1.yield. getScheduleCounter()  946
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 948
+          bbb 3.yield. getScheduleCounter() 948
+          bbb 4.yield. getScheduleCounter() 948
+-------- bbb leavs getScheduleCounter() 948
+bbb after protector getScheduleCounter()  950 
+------- aaa entered at  13.599999999 
+bbb
+          aaa 1.yield. getScheduleCounter()  953
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 955
+          aaa 3.yield. getScheduleCounter() 955
+          aaa 4.yield. getScheduleCounter() 955
+-------- aaa leavs getScheduleCounter() 955
+aaa after protector getScheduleCounter()  957 
+------- ddd entered at  13.699999999 
+aaa
+          ddd 1.yield. getScheduleCounter()  960
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 962
+          ddd 3.yield. getScheduleCounter() 962
+          ddd 4.yield. getScheduleCounter() 962
+-------- ddd leavs getScheduleCounter() 962
+ddd after protector getScheduleCounter()  964 
+------- ccc entered at  13.800000000 
+ddd
+          ccc 1.yield. getScheduleCounter()  967
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 969
+          ccc 3.yield. getScheduleCounter() 969
+          ccc 4.yield. getScheduleCounter() 969
+-------- ccc leavs getScheduleCounter() 969
+ccc after protector getScheduleCounter()  971 
+------- bbb entered at  13.900000000 
+ccc
+          bbb 1.yield. getScheduleCounter()  974
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 976
+          bbb 3.yield. getScheduleCounter() 976
+          bbb 4.yield. getScheduleCounter() 976
+-------- bbb leavs getScheduleCounter() 976
+bbb after protector getScheduleCounter()  978 
+------- aaa entered at  14.000000000 
+bbb
+          aaa 1.yield. getScheduleCounter()  981
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 983
+          aaa 3.yield. getScheduleCounter() 983
+          aaa 4.yield. getScheduleCounter() 983
+-------- aaa leavs getScheduleCounter() 983
+aaa after protector getScheduleCounter()  985 
+------- ddd entered at  14.099999999 
+aaa
+          ddd 1.yield. getScheduleCounter()  988
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 990
+          ddd 3.yield. getScheduleCounter() 990
+          ddd 4.yield. getScheduleCounter() 990
+-------- ddd leavs getScheduleCounter() 990
+ddd after protector getScheduleCounter()  992 
+------- ccc entered at  14.199999999 
+ddd
+          ccc 1.yield. getScheduleCounter()  995
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 997
+          ccc 3.yield. getScheduleCounter() 997
+          ccc 4.yield. getScheduleCounter() 997
+-------- ccc leavs getScheduleCounter() 997
+ccc after protector getScheduleCounter()  999 
+------- bbb entered at  14.300000000 
+ccc
+          bbb 1.yield. getScheduleCounter()  1002
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 1004
+          bbb 3.yield. getScheduleCounter() 1004
+          bbb 4.yield. getScheduleCounter() 1004
+-------- bbb leavs getScheduleCounter() 1004
+bbb after protector getScheduleCounter()  1006 
+------- aaa entered at  14.400000000 
+bbb
+          aaa 1.yield. getScheduleCounter()  1009
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 1011
+          aaa 3.yield. getScheduleCounter() 1011
+          aaa 4.yield. getScheduleCounter() 1011
+-------- aaa leavs getScheduleCounter() 1011
+aaa after protector getScheduleCounter()  1013 
+------- ddd entered at  14.500000000 
+aaa
+          ddd 1.yield. getScheduleCounter()  1016
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 1018
+          ddd 3.yield. getScheduleCounter() 1018
+          ddd 4.yield. getScheduleCounter() 1018
+-------- ddd leavs getScheduleCounter() 1018
+ddd after protector getScheduleCounter()  1020 
+------- ccc entered at  14.599999999 
+ddd
+          ccc 1.yield. getScheduleCounter()  1023
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 1025
+          ccc 3.yield. getScheduleCounter() 1025
+          ccc 4.yield. getScheduleCounter() 1025
+-------- ccc leavs getScheduleCounter() 1025
+ccc after protector getScheduleCounter()  1027 
+------- bbb entered at  14.699999999 
+ccc
+          bbb 1.yield. getScheduleCounter()  1030
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 1032
+          bbb 3.yield. getScheduleCounter() 1032
+          bbb 4.yield. getScheduleCounter() 1032
+-------- bbb leavs getScheduleCounter() 1032
+bbb after protector getScheduleCounter()  1034 
+------- aaa entered at  14.800000000 
+bbb
+          aaa 1.yield. getScheduleCounter()  1037
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 1039
+          aaa 3.yield. getScheduleCounter() 1039
+          aaa 4.yield. getScheduleCounter() 1039
+-------- aaa leavs getScheduleCounter() 1039
+aaa after protector getScheduleCounter()  1041 
+------- ddd entered at  14.900000000 
+aaa
+          ddd 1.yield. getScheduleCounter()  1044
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 1046
+          ddd 3.yield. getScheduleCounter() 1046
+          ddd 4.yield. getScheduleCounter() 1046
+-------- ddd leavs getScheduleCounter() 1046
+ddd after protector getScheduleCounter()  1048 
+------- ccc entered at  15.000000000 
+ddd
+          ccc 1.yield. getScheduleCounter()  1051
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 1053
+          ccc 3.yield. getScheduleCounter() 1053
+          ccc 4.yield. getScheduleCounter() 1053
+-------- ccc leavs getScheduleCounter() 1053
+ccc after protector getScheduleCounter()  1055 
+------- bbb entered at  15.099999999 
+ccc
+          bbb 1.yield. getScheduleCounter()  1058
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 1060
+          bbb 3.yield. getScheduleCounter() 1060
+          bbb 4.yield. getScheduleCounter() 1060
+-------- bbb leavs getScheduleCounter() 1060
+bbb after protector getScheduleCounter()  1062 
+------- aaa entered at  15.199999999 
+bbb
+          aaa 1.yield. getScheduleCounter()  1065
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 1067
+          aaa 3.yield. getScheduleCounter() 1067
+          aaa 4.yield. getScheduleCounter() 1067
+-------- aaa leavs getScheduleCounter() 1067
+aaa after protector getScheduleCounter()  1069 
+------- ddd entered at  15.300000000 
+aaa
+          ddd 1.yield. getScheduleCounter()  1072
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 1074
+          ddd 3.yield. getScheduleCounter() 1074
+          ddd 4.yield. getScheduleCounter() 1074
+-------- ddd leavs getScheduleCounter() 1074
+ddd after protector getScheduleCounter()  1076 
+------- ccc entered at  15.400000000 
+ddd
+          ccc 1.yield. getScheduleCounter()  1079
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 1081
+          ccc 3.yield. getScheduleCounter() 1081
+          ccc 4.yield. getScheduleCounter() 1081
+-------- ccc leavs getScheduleCounter() 1081
+ccc after protector getScheduleCounter()  1083 
+------- bbb entered at  15.500000000 
+ccc
+          bbb 1.yield. getScheduleCounter()  1086
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 1088
+          bbb 3.yield. getScheduleCounter() 1088
+          bbb 4.yield. getScheduleCounter() 1088
+-------- bbb leavs getScheduleCounter() 1088
+bbb after protector getScheduleCounter()  1090 
+------- aaa entered at  15.599999999 
+bbb
+          aaa 1.yield. getScheduleCounter()  1093
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 1095
+          aaa 3.yield. getScheduleCounter() 1095
+          aaa 4.yield. getScheduleCounter() 1095
+-------- aaa leavs getScheduleCounter() 1095
+aaa after protector getScheduleCounter()  1097 
+------- ddd entered at  15.699999999 
+aaa
+          ddd 1.yield. getScheduleCounter()  1100
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 1102
+          ddd 3.yield. getScheduleCounter() 1102
+          ddd 4.yield. getScheduleCounter() 1102
+-------- ddd leavs getScheduleCounter() 1102
+ddd after protector getScheduleCounter()  1104 
+------- ccc entered at  15.800000000 
+ddd
+          ccc 1.yield. getScheduleCounter()  1107
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 1109
+          ccc 3.yield. getScheduleCounter() 1109
+          ccc 4.yield. getScheduleCounter() 1109
+-------- ccc leavs getScheduleCounter() 1109
+ccc after protector getScheduleCounter()  1111 
+------- bbb entered at  15.900000000 
+ccc
+          bbb 1.yield. getScheduleCounter()  1114
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 1116
+          bbb 3.yield. getScheduleCounter() 1116
+          bbb 4.yield. getScheduleCounter() 1116
+-------- bbb leavs getScheduleCounter() 1116
+bbb after protector getScheduleCounter()  1118 
+------- aaa entered at  16.000000000 
+bbb
+          aaa 1.yield. getScheduleCounter()  1121
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 1123
+          aaa 3.yield. getScheduleCounter() 1123
+          aaa 4.yield. getScheduleCounter() 1123
+-------- aaa leavs getScheduleCounter() 1123
+aaa after protector getScheduleCounter()  1125 
+------- ddd entered at  16.100000000 
+aaa
+          ddd 1.yield. getScheduleCounter()  1128
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 1130
+          ddd 3.yield. getScheduleCounter() 1130
+          ddd 4.yield. getScheduleCounter() 1130
+-------- ddd leavs getScheduleCounter() 1130
+ddd after protector getScheduleCounter()  1132 
+------- ccc entered at  16.199999999 
+ddd
+          ccc 1.yield. getScheduleCounter()  1135
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 1137
+          ccc 3.yield. getScheduleCounter() 1137
+          ccc 4.yield. getScheduleCounter() 1137
+-------- ccc leavs getScheduleCounter() 1137
+ccc after protector getScheduleCounter()  1139 
+------- bbb entered at  16.300000000 
+ccc
+          bbb 1.yield. getScheduleCounter()  1142
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 1144
+          bbb 3.yield. getScheduleCounter() 1144
+          bbb 4.yield. getScheduleCounter() 1144
+-------- bbb leavs getScheduleCounter() 1144
+bbb after protector getScheduleCounter()  1146 
+------- aaa entered at  16.399999999 
+bbb
+          aaa 1.yield. getScheduleCounter()  1149
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 1151
+          aaa 3.yield. getScheduleCounter() 1151
+          aaa 4.yield. getScheduleCounter() 1151
+-------- aaa leavs getScheduleCounter() 1151
+aaa after protector getScheduleCounter()  1153 
+------- ddd entered at  16.500000000 
+aaa
+          ddd 1.yield. getScheduleCounter()  1156
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 1158
+          ddd 3.yield. getScheduleCounter() 1158
+          ddd 4.yield. getScheduleCounter() 1158
+-------- ddd leavs getScheduleCounter() 1158
+ddd after protector getScheduleCounter()  1160 
+------- ccc entered at  16.600000000 
+ddd
+          ccc 1.yield. getScheduleCounter()  1163
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 1165
+          ccc 3.yield. getScheduleCounter() 1165
+          ccc 4.yield. getScheduleCounter() 1165
+-------- ccc leavs getScheduleCounter() 1165
+ccc after protector getScheduleCounter()  1167 
+------- bbb entered at  16.699999999 
+ccc
+          bbb 1.yield. getScheduleCounter()  1170
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 1172
+          bbb 3.yield. getScheduleCounter() 1172
+          bbb 4.yield. getScheduleCounter() 1172
+-------- bbb leavs getScheduleCounter() 1172
+bbb after protector getScheduleCounter()  1174 
+------- aaa entered at  16.800000000 
+bbb
+          aaa 1.yield. getScheduleCounter()  1177
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 1179
+          aaa 3.yield. getScheduleCounter() 1179
+          aaa 4.yield. getScheduleCounter() 1179
+-------- aaa leavs getScheduleCounter() 1179
+aaa after protector getScheduleCounter()  1181 
+------- ddd entered at  16.899999999 
+aaa
+          ddd 1.yield. getScheduleCounter()  1184
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 1186
+          ddd 3.yield. getScheduleCounter() 1186
+          ddd 4.yield. getScheduleCounter() 1186
+-------- ddd leavs getScheduleCounter() 1186
+ddd after protector getScheduleCounter()  1188 
+------- ccc entered at  17.000000000 
+ddd
+          ccc 1.yield. getScheduleCounter()  1191
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 1193
+          ccc 3.yield. getScheduleCounter() 1193
+          ccc 4.yield. getScheduleCounter() 1193
+-------- ccc leavs getScheduleCounter() 1193
+ccc after protector getScheduleCounter()  1195 
+------- bbb entered at  17.100000000 
+ccc
+          bbb 1.yield. getScheduleCounter()  1198
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 1200
+          bbb 3.yield. getScheduleCounter() 1200
+          bbb 4.yield. getScheduleCounter() 1200
+-------- bbb leavs getScheduleCounter() 1200
+bbb after protector getScheduleCounter()  1202 
+------- aaa entered at  17.199999999 
+bbb
+          aaa 1.yield. getScheduleCounter()  1205
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 1207
+          aaa 3.yield. getScheduleCounter() 1207
+          aaa 4.yield. getScheduleCounter() 1207
+-------- aaa leavs getScheduleCounter() 1207
+aaa after protector getScheduleCounter()  1209 
+------- ddd entered at  17.300000000 
+aaa
+          ddd 1.yield. getScheduleCounter()  1212
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 1214
+          ddd 3.yield. getScheduleCounter() 1214
+          ddd 4.yield. getScheduleCounter() 1214
+-------- ddd leavs getScheduleCounter() 1214
+ddd after protector getScheduleCounter()  1216 
+------- ccc entered at  17.399999999 
+ddd
+          ccc 1.yield. getScheduleCounter()  1219
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 1221
+          ccc 3.yield. getScheduleCounter() 1221
+          ccc 4.yield. getScheduleCounter() 1221
+-------- ccc leavs getScheduleCounter() 1221
+ccc after protector getScheduleCounter()  1223 
+------- bbb entered at  17.500000000 
+ccc
+          bbb 1.yield. getScheduleCounter()  1226
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 1228
+          bbb 3.yield. getScheduleCounter() 1228
+          bbb 4.yield. getScheduleCounter() 1228
+-------- bbb leavs getScheduleCounter() 1228
+bbb after protector getScheduleCounter()  1230 
+------- aaa entered at  17.600000000 
+bbb
+          aaa 1.yield. getScheduleCounter()  1233
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 1235
+          aaa 3.yield. getScheduleCounter() 1235
+          aaa 4.yield. getScheduleCounter() 1235
+-------- aaa leavs getScheduleCounter() 1235
+aaa after protector getScheduleCounter()  1237 
+------- ddd entered at  17.699999999 
+aaa
+          ddd 1.yield. getScheduleCounter()  1240
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 1242
+          ddd 3.yield. getScheduleCounter() 1242
+          ddd 4.yield. getScheduleCounter() 1242
+-------- ddd leavs getScheduleCounter() 1242
+ddd after protector getScheduleCounter()  1244 
+------- ccc entered at  17.800000000 
+ddd
+          ccc 1.yield. getScheduleCounter()  1247
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 1249
+          ccc 3.yield. getScheduleCounter() 1249
+          ccc 4.yield. getScheduleCounter() 1249
+-------- ccc leavs getScheduleCounter() 1249
+ccc after protector getScheduleCounter()  1251 
+------- bbb entered at  17.899999999 
+ccc
+          bbb 1.yield. getScheduleCounter()  1254
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 1256
+          bbb 3.yield. getScheduleCounter() 1256
+          bbb 4.yield. getScheduleCounter() 1256
+-------- bbb leavs getScheduleCounter() 1256
+bbb after protector getScheduleCounter()  1258 
+------- aaa entered at  18.000000000 
+bbb
+          aaa 1.yield. getScheduleCounter()  1261
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 1263
+          aaa 3.yield. getScheduleCounter() 1263
+          aaa 4.yield. getScheduleCounter() 1263
+-------- aaa leavs getScheduleCounter() 1263
+aaa after protector getScheduleCounter()  1265 
+------- ddd entered at  18.100000000 
+aaa
+          ddd 1.yield. getScheduleCounter()  1268
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 1270
+          ddd 3.yield. getScheduleCounter() 1270
+          ddd 4.yield. getScheduleCounter() 1270
+-------- ddd leavs getScheduleCounter() 1270
+ddd after protector getScheduleCounter()  1272 
+------- ccc entered at  18.199999999 
+ddd
+          ccc 1.yield. getScheduleCounter()  1275
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 1277
+          ccc 3.yield. getScheduleCounter() 1277
+          ccc 4.yield. getScheduleCounter() 1277
+-------- ccc leavs getScheduleCounter() 1277
+ccc after protector getScheduleCounter()  1279 
+------- bbb entered at  18.300000000 
+ccc
+          bbb 1.yield. getScheduleCounter()  1282
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 1284
+          bbb 3.yield. getScheduleCounter() 1284
+          bbb 4.yield. getScheduleCounter() 1284
+-------- bbb leavs getScheduleCounter() 1284
+bbb after protector getScheduleCounter()  1286 
+------- aaa entered at  18.399999999 
+bbb
+          aaa 1.yield. getScheduleCounter()  1289
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 1291
+          aaa 3.yield. getScheduleCounter() 1291
+          aaa 4.yield. getScheduleCounter() 1291
+-------- aaa leavs getScheduleCounter() 1291
+aaa after protector getScheduleCounter()  1293 
+------- ddd entered at  18.500000000 
+aaa
+          ddd 1.yield. getScheduleCounter()  1296
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 1298
+          ddd 3.yield. getScheduleCounter() 1298
+          ddd 4.yield. getScheduleCounter() 1298
+-------- ddd leavs getScheduleCounter() 1298
+ddd after protector getScheduleCounter()  1300 
+------- ccc entered at  18.600000000 
+ddd
+          ccc 1.yield. getScheduleCounter()  1303
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 1305
+          ccc 3.yield. getScheduleCounter() 1305
+          ccc 4.yield. getScheduleCounter() 1305
+-------- ccc leavs getScheduleCounter() 1305
+ccc after protector getScheduleCounter()  1307 
+------- bbb entered at  18.699999999 
+ccc
+          bbb 1.yield. getScheduleCounter()  1310
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 1312
+          bbb 3.yield. getScheduleCounter() 1312
+          bbb 4.yield. getScheduleCounter() 1312
+-------- bbb leavs getScheduleCounter() 1312
+bbb after protector getScheduleCounter()  1314 
+------- aaa entered at  18.800000000 
+bbb
+          aaa 1.yield. getScheduleCounter()  1317
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 1319
+          aaa 3.yield. getScheduleCounter() 1319
+          aaa 4.yield. getScheduleCounter() 1319
+-------- aaa leavs getScheduleCounter() 1319
+aaa after protector getScheduleCounter()  1321 
+------- ddd entered at  18.899999999 
+aaa
+          ddd 1.yield. getScheduleCounter()  1324
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 1326
+          ddd 3.yield. getScheduleCounter() 1326
+          ddd 4.yield. getScheduleCounter() 1326
+-------- ddd leavs getScheduleCounter() 1326
+ddd after protector getScheduleCounter()  1328 
+------- ccc entered at  19.000000000 
+ddd
+          ccc 1.yield. getScheduleCounter()  1331
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 1333
+          ccc 3.yield. getScheduleCounter() 1333
+          ccc 4.yield. getScheduleCounter() 1333
+-------- ccc leavs getScheduleCounter() 1333
+ccc after protector getScheduleCounter()  1335 
+------- bbb entered at  19.100000000 
+ccc
+          bbb 1.yield. getScheduleCounter()  1338
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 1340
+          bbb 3.yield. getScheduleCounter() 1340
+          bbb 4.yield. getScheduleCounter() 1340
+-------- bbb leavs getScheduleCounter() 1340
+bbb after protector getScheduleCounter()  1342 
+------- aaa entered at  19.199999999 
+bbb
+          aaa 1.yield. getScheduleCounter()  1345
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 1347
+          aaa 3.yield. getScheduleCounter() 1347
+          aaa 4.yield. getScheduleCounter() 1347
+-------- aaa leavs getScheduleCounter() 1347
+aaa after protector getScheduleCounter()  1349 
+------- ddd entered at  19.300000000 
+aaa
+          ddd 1.yield. getScheduleCounter()  1352
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 1354
+          ddd 3.yield. getScheduleCounter() 1354
+          ddd 4.yield. getScheduleCounter() 1354
+-------- ddd leavs getScheduleCounter() 1354
+ddd after protector getScheduleCounter()  1356 
+------- ccc entered at  19.399999999 
+ddd
+          ccc 1.yield. getScheduleCounter()  1359
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 1361
+          ccc 3.yield. getScheduleCounter() 1361
+          ccc 4.yield. getScheduleCounter() 1361
+-------- ccc leavs getScheduleCounter() 1361
+ccc after protector getScheduleCounter()  1363 
+------- bbb entered at  19.500000000 
+ccc
+          bbb 1.yield. getScheduleCounter()  1366
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 1368
+          bbb 3.yield. getScheduleCounter() 1368
+          bbb 4.yield. getScheduleCounter() 1368
+-------- bbb leavs getScheduleCounter() 1368
+bbb after protector getScheduleCounter()  1370 
+------- aaa entered at  19.600000000 
+bbb
+          aaa 1.yield. getScheduleCounter()  1373
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 1375
+          aaa 3.yield. getScheduleCounter() 1375
+          aaa 4.yield. getScheduleCounter() 1375
+-------- aaa leavs getScheduleCounter() 1375
+aaa after protector getScheduleCounter()  1377 
+------- ddd entered at  19.699999999 
+aaa
+          ddd 1.yield. getScheduleCounter()  1380
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 1382
+          ddd 3.yield. getScheduleCounter() 1382
+          ddd 4.yield. getScheduleCounter() 1382
+-------- ddd leavs getScheduleCounter() 1382
+ddd after protector getScheduleCounter()  1384 
+------- ccc entered at  19.800000000 
+ddd
+          ccc 1.yield. getScheduleCounter()  1387
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 1389
+          ccc 3.yield. getScheduleCounter() 1389
+          ccc 4.yield. getScheduleCounter() 1389
+-------- ccc leavs getScheduleCounter() 1389
+ccc after protector getScheduleCounter()  1391 
+------- bbb entered at  19.899999999 
+ccc
+          bbb 1.yield. getScheduleCounter()  1394
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 1396
+          bbb 3.yield. getScheduleCounter() 1396
+          bbb 4.yield. getScheduleCounter() 1396
+-------- bbb leavs getScheduleCounter() 1396
+bbb after protector getScheduleCounter()  1398 
+------- aaa entered at  20.000000000 
+bbb
+          aaa 1.yield. getScheduleCounter()  1401
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 1403
+          aaa 3.yield. getScheduleCounter() 1403
+          aaa 4.yield. getScheduleCounter() 1403
+-------- aaa leavs getScheduleCounter() 1403
+aaa after protector getScheduleCounter()  1405 
+------- ddd entered at  20.100000000 
+aaa
+          ddd 1.yield. getScheduleCounter()  1408
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 1410
+          ddd 3.yield. getScheduleCounter() 1410
+          ddd 4.yield. getScheduleCounter() 1410
+-------- ddd leavs getScheduleCounter() 1410
+ddd after protector getScheduleCounter()  1412 
+------- ccc entered at  20.199999999 
+ddd
+          ccc 1.yield. getScheduleCounter()  1415
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 1417
+          ccc 3.yield. getScheduleCounter() 1417
+          ccc 4.yield. getScheduleCounter() 1417
+-------- ccc leavs getScheduleCounter() 1417
+ccc after protector getScheduleCounter()  1419 
+------- bbb entered at  20.300000000 
+ccc
+          bbb 1.yield. getScheduleCounter()  1422
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 1424
+          bbb 3.yield. getScheduleCounter() 1424
+          bbb 4.yield. getScheduleCounter() 1424
+-------- bbb leavs getScheduleCounter() 1424
+bbb after protector getScheduleCounter()  1426 
+------- aaa entered at  20.399999999 
+bbb
+          aaa 1.yield. getScheduleCounter()  1429
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 1431
+          aaa 3.yield. getScheduleCounter() 1431
+          aaa 4.yield. getScheduleCounter() 1431
+-------- aaa leavs getScheduleCounter() 1431
+aaa after protector getScheduleCounter()  1433 
+------- ddd entered at  20.500000000 
+aaa
+          ddd 1.yield. getScheduleCounter()  1436
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 1438
+          ddd 3.yield. getScheduleCounter() 1438
+          ddd 4.yield. getScheduleCounter() 1438
+-------- ddd leavs getScheduleCounter() 1438
+ddd after protector getScheduleCounter()  1440 
+------- ccc entered at  20.600000000 
+ddd
+          ccc 1.yield. getScheduleCounter()  1443
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 1445
+          ccc 3.yield. getScheduleCounter() 1445
+          ccc 4.yield. getScheduleCounter() 1445
+-------- ccc leavs getScheduleCounter() 1445
+ccc after protector getScheduleCounter()  1447 
+------- bbb entered at  20.699999999 
+ccc
+          bbb 1.yield. getScheduleCounter()  1450
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 1452
+          bbb 3.yield. getScheduleCounter() 1452
+          bbb 4.yield. getScheduleCounter() 1452
+-------- bbb leavs getScheduleCounter() 1452
+bbb after protector getScheduleCounter()  1454 
+------- aaa entered at  20.800000000 
+bbb
+          aaa 1.yield. getScheduleCounter()  1457
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 1459
+          aaa 3.yield. getScheduleCounter() 1459
+          aaa 4.yield. getScheduleCounter() 1459
+-------- aaa leavs getScheduleCounter() 1459
+aaa after protector getScheduleCounter()  1461 
+------- ddd entered at  20.899999999 
+aaa
+          ddd 1.yield. getScheduleCounter()  1464
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 1466
+          ddd 3.yield. getScheduleCounter() 1466
+          ddd 4.yield. getScheduleCounter() 1466
+-------- ddd leavs getScheduleCounter() 1466
+ddd after protector getScheduleCounter()  1468 
+------- ccc entered at  21.000000000 
+ddd
+          ccc 1.yield. getScheduleCounter()  1471
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 1473
+          ccc 3.yield. getScheduleCounter() 1473
+          ccc 4.yield. getScheduleCounter() 1473
+-------- ccc leavs getScheduleCounter() 1473
+ccc after protector getScheduleCounter()  1475 
+------- bbb entered at  21.100000000 
+ccc
+          bbb 1.yield. getScheduleCounter()  1478
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 1480
+          bbb 3.yield. getScheduleCounter() 1480
+          bbb 4.yield. getScheduleCounter() 1480
+-------- bbb leavs getScheduleCounter() 1480
+bbb after protector getScheduleCounter()  1482 
+------- aaa entered at  21.199999999 
+bbb
+          aaa 1.yield. getScheduleCounter()  1485
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 1487
+          aaa 3.yield. getScheduleCounter() 1487
+          aaa 4.yield. getScheduleCounter() 1487
+-------- aaa leavs getScheduleCounter() 1487
+aaa after protector getScheduleCounter()  1489 
+------- ddd entered at  21.300000000 
+aaa
+          ddd 1.yield. getScheduleCounter()  1492
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 1494
+          ddd 3.yield. getScheduleCounter() 1494
+          ddd 4.yield. getScheduleCounter() 1494
+-------- ddd leavs getScheduleCounter() 1494
+ddd after protector getScheduleCounter()  1496 
+------- ccc entered at  21.399999999 
+ddd
+          ccc 1.yield. getScheduleCounter()  1499
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 1501
+          ccc 3.yield. getScheduleCounter() 1501
+          ccc 4.yield. getScheduleCounter() 1501
+-------- ccc leavs getScheduleCounter() 1501
+ccc after protector getScheduleCounter()  1503 
+------- bbb entered at  21.500000000 
+ccc
+          bbb 1.yield. getScheduleCounter()  1506
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 1508
+          bbb 3.yield. getScheduleCounter() 1508
+          bbb 4.yield. getScheduleCounter() 1508
+-------- bbb leavs getScheduleCounter() 1508
+bbb after protector getScheduleCounter()  1510 
+------- aaa entered at  21.600000000 
+bbb
+          aaa 1.yield. getScheduleCounter()  1513
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 1515
+          aaa 3.yield. getScheduleCounter() 1515
+          aaa 4.yield. getScheduleCounter() 1515
+-------- aaa leavs getScheduleCounter() 1515
+aaa after protector getScheduleCounter()  1517 
+------- ddd entered at  21.699999999 
+aaa
+          ddd 1.yield. getScheduleCounter()  1520
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 1522
+          ddd 3.yield. getScheduleCounter() 1522
+          ddd 4.yield. getScheduleCounter() 1522
+-------- ddd leavs getScheduleCounter() 1522
+ddd after protector getScheduleCounter()  1524 
+------- ccc entered at  21.800000000 
+ddd
+          ccc 1.yield. getScheduleCounter()  1527
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 1529
+          ccc 3.yield. getScheduleCounter() 1529
+          ccc 4.yield. getScheduleCounter() 1529
+-------- ccc leavs getScheduleCounter() 1529
+ccc after protector getScheduleCounter()  1531 
+------- bbb entered at  21.899999999 
+ccc
+          bbb 1.yield. getScheduleCounter()  1534
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 1536
+          bbb 3.yield. getScheduleCounter() 1536
+          bbb 4.yield. getScheduleCounter() 1536
+-------- bbb leavs getScheduleCounter() 1536
+bbb after protector getScheduleCounter()  1538 
+------- aaa entered at  22.000000000 
+bbb
+          aaa 1.yield. getScheduleCounter()  1541
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 1543
+          aaa 3.yield. getScheduleCounter() 1543
+          aaa 4.yield. getScheduleCounter() 1543
+-------- aaa leavs getScheduleCounter() 1543
+aaa after protector getScheduleCounter()  1545 
+------- ddd entered at  22.100000000 
+aaa
+          ddd 1.yield. getScheduleCounter()  1548
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 1550
+          ddd 3.yield. getScheduleCounter() 1550
+          ddd 4.yield. getScheduleCounter() 1550
+-------- ddd leavs getScheduleCounter() 1550
+ddd after protector getScheduleCounter()  1552 
+------- ccc entered at  22.199999999 
+ddd
+          ccc 1.yield. getScheduleCounter()  1555
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 1557
+          ccc 3.yield. getScheduleCounter() 1557
+          ccc 4.yield. getScheduleCounter() 1557
+-------- ccc leavs getScheduleCounter() 1557
+ccc after protector getScheduleCounter()  1559 
+------- bbb entered at  22.300000000 
+ccc
+          bbb 1.yield. getScheduleCounter()  1562
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 1564
+          bbb 3.yield. getScheduleCounter() 1564
+          bbb 4.yield. getScheduleCounter() 1564
+-------- bbb leavs getScheduleCounter() 1564
+bbb after protector getScheduleCounter()  1566 
+------- aaa entered at  22.399999999 
+bbb
+          aaa 1.yield. getScheduleCounter()  1569
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 1571
+          aaa 3.yield. getScheduleCounter() 1571
+          aaa 4.yield. getScheduleCounter() 1571
+-------- aaa leavs getScheduleCounter() 1571
+aaa after protector getScheduleCounter()  1573 
+------- ddd entered at  22.500000000 
+aaa
+          ddd 1.yield. getScheduleCounter()  1576
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 1578
+          ddd 3.yield. getScheduleCounter() 1578
+          ddd 4.yield. getScheduleCounter() 1578
+-------- ddd leavs getScheduleCounter() 1578
+ddd after protector getScheduleCounter()  1580 
+------- ccc entered at  22.600000000 
+ddd
+          ccc 1.yield. getScheduleCounter()  1583
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 1585
+          ccc 3.yield. getScheduleCounter() 1585
+          ccc 4.yield. getScheduleCounter() 1585
+-------- ccc leavs getScheduleCounter() 1585
+ccc after protector getScheduleCounter()  1587 
+------- bbb entered at  22.699999999 
+ccc
+          bbb 1.yield. getScheduleCounter()  1590
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 1592
+          bbb 3.yield. getScheduleCounter() 1592
+          bbb 4.yield. getScheduleCounter() 1592
+-------- bbb leavs getScheduleCounter() 1592
+bbb after protector getScheduleCounter()  1594 
+------- aaa entered at  22.800000000 
+bbb
+          aaa 1.yield. getScheduleCounter()  1597
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 1599
+          aaa 3.yield. getScheduleCounter() 1599
+          aaa 4.yield. getScheduleCounter() 1599
+-------- aaa leavs getScheduleCounter() 1599
+aaa after protector getScheduleCounter()  1601 
+------- ddd entered at  22.899999999 
+aaa
+          ddd 1.yield. getScheduleCounter()  1604
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 1606
+          ddd 3.yield. getScheduleCounter() 1606
+          ddd 4.yield. getScheduleCounter() 1606
+-------- ddd leavs getScheduleCounter() 1606
+ddd after protector getScheduleCounter()  1608 
+------- ccc entered at  23.000000000 
+ddd
+          ccc 1.yield. getScheduleCounter()  1611
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 1613
+          ccc 3.yield. getScheduleCounter() 1613
+          ccc 4.yield. getScheduleCounter() 1613
+-------- ccc leavs getScheduleCounter() 1613
+ccc after protector getScheduleCounter()  1615 
+------- bbb entered at  23.100000000 
+ccc
+          bbb 1.yield. getScheduleCounter()  1618
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 1620
+          bbb 3.yield. getScheduleCounter() 1620
+          bbb 4.yield. getScheduleCounter() 1620
+-------- bbb leavs getScheduleCounter() 1620
+bbb after protector getScheduleCounter()  1622 
+------- aaa entered at  23.199999999 
+bbb
+          aaa 1.yield. getScheduleCounter()  1625
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 1627
+          aaa 3.yield. getScheduleCounter() 1627
+          aaa 4.yield. getScheduleCounter() 1627
+-------- aaa leavs getScheduleCounter() 1627
+aaa after protector getScheduleCounter()  1629 
+------- ddd entered at  23.300000000 
+aaa
+          ddd 1.yield. getScheduleCounter()  1632
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 1634
+          ddd 3.yield. getScheduleCounter() 1634
+          ddd 4.yield. getScheduleCounter() 1634
+-------- ddd leavs getScheduleCounter() 1634
+ddd after protector getScheduleCounter()  1636 
+------- ccc entered at  23.399999999 
+ddd
+          ccc 1.yield. getScheduleCounter()  1639
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 1641
+          ccc 3.yield. getScheduleCounter() 1641
+          ccc 4.yield. getScheduleCounter() 1641
+-------- ccc leavs getScheduleCounter() 1641
+ccc after protector getScheduleCounter()  1643 
+------- bbb entered at  23.500000000 
+ccc
+          bbb 1.yield. getScheduleCounter()  1646
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 1648
+          bbb 3.yield. getScheduleCounter() 1648
+          bbb 4.yield. getScheduleCounter() 1648
+-------- bbb leavs getScheduleCounter() 1648
+bbb after protector getScheduleCounter()  1650 
+------- aaa entered at  23.600000000 
+bbb
+          aaa 1.yield. getScheduleCounter()  1653
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 1655
+          aaa 3.yield. getScheduleCounter() 1655
+          aaa 4.yield. getScheduleCounter() 1655
+-------- aaa leavs getScheduleCounter() 1655
+aaa after protector getScheduleCounter()  1657 
+------- ddd entered at  23.699999999 
+aaa
+          ddd 1.yield. getScheduleCounter()  1660
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 1662
+          ddd 3.yield. getScheduleCounter() 1662
+          ddd 4.yield. getScheduleCounter() 1662
+-------- ddd leavs getScheduleCounter() 1662
+ddd after protector getScheduleCounter()  1664 
+------- ccc entered at  23.800000000 
+ddd
+          ccc 1.yield. getScheduleCounter()  1667
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 1669
+          ccc 3.yield. getScheduleCounter() 1669
+          ccc 4.yield. getScheduleCounter() 1669
+-------- ccc leavs getScheduleCounter() 1669
+ccc after protector getScheduleCounter()  1671 
+------- bbb entered at  23.899999999 
+ccc
+          bbb 1.yield. getScheduleCounter()  1674
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 1676
+          bbb 3.yield. getScheduleCounter() 1676
+          bbb 4.yield. getScheduleCounter() 1676
+-------- bbb leavs getScheduleCounter() 1676
+bbb after protector getScheduleCounter()  1678 
+------- aaa entered at  24.000000000 
+bbb
+          aaa 1.yield. getScheduleCounter()  1681
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 1683
+          aaa 3.yield. getScheduleCounter() 1683
+          aaa 4.yield. getScheduleCounter() 1683
+-------- aaa leavs getScheduleCounter() 1683
+aaa after protector getScheduleCounter()  1685 
+------- ddd entered at  24.100000000 
+aaa
+          ddd 1.yield. getScheduleCounter()  1688
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 1690
+          ddd 3.yield. getScheduleCounter() 1690
+          ddd 4.yield. getScheduleCounter() 1690
+-------- ddd leavs getScheduleCounter() 1690
+ddd after protector getScheduleCounter()  1692 
+------- ccc entered at  24.199999999 
+ddd
+          ccc 1.yield. getScheduleCounter()  1695
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 1697
+          ccc 3.yield. getScheduleCounter() 1697
+          ccc 4.yield. getScheduleCounter() 1697
+-------- ccc leavs getScheduleCounter() 1697
+ccc after protector getScheduleCounter()  1699 
+------- bbb entered at  24.300000000 
+ccc
+          bbb 1.yield. getScheduleCounter()  1702
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 1704
+          bbb 3.yield. getScheduleCounter() 1704
+          bbb 4.yield. getScheduleCounter() 1704
+-------- bbb leavs getScheduleCounter() 1704
+bbb after protector getScheduleCounter()  1706 
+------- aaa entered at  24.399999999 
+bbb
+          aaa 1.yield. getScheduleCounter()  1709
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 1711
+          aaa 3.yield. getScheduleCounter() 1711
+          aaa 4.yield. getScheduleCounter() 1711
+-------- aaa leavs getScheduleCounter() 1711
+aaa after protector getScheduleCounter()  1713 
+------- ddd entered at  24.500000000 
+aaa
+          ddd 1.yield. getScheduleCounter()  1716
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 1718
+          ddd 3.yield. getScheduleCounter() 1718
+          ddd 4.yield. getScheduleCounter() 1718
+-------- ddd leavs getScheduleCounter() 1718
+ddd after protector getScheduleCounter()  1720 
+------- ccc entered at  24.600000000 
+ddd
+          ccc 1.yield. getScheduleCounter()  1723
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 1725
+          ccc 3.yield. getScheduleCounter() 1725
+          ccc 4.yield. getScheduleCounter() 1725
+-------- ccc leavs getScheduleCounter() 1725
+ccc after protector getScheduleCounter()  1727 
+------- bbb entered at  24.699999999 
+ccc
+          bbb 1.yield. getScheduleCounter()  1730
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 1732
+          bbb 3.yield. getScheduleCounter() 1732
+          bbb 4.yield. getScheduleCounter() 1732
+-------- bbb leavs getScheduleCounter() 1732
+bbb after protector getScheduleCounter()  1734 
+------- aaa entered at  24.800000000 
+bbb
+          aaa 1.yield. getScheduleCounter()  1737
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 1739
+          aaa 3.yield. getScheduleCounter() 1739
+          aaa 4.yield. getScheduleCounter() 1739
+-------- aaa leavs getScheduleCounter() 1739
+aaa after protector getScheduleCounter()  1741 
+------- ddd entered at  24.899999999 
+aaa
+          ddd 1.yield. getScheduleCounter()  1744
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 1746
+          ddd 3.yield. getScheduleCounter() 1746
+          ddd 4.yield. getScheduleCounter() 1746
+-------- ddd leavs getScheduleCounter() 1746
+ddd after protector getScheduleCounter()  1748 
+------- ccc entered at  25.000000000 
+ddd
+          ccc 1.yield. getScheduleCounter()  1751
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 1753
+          ccc 3.yield. getScheduleCounter() 1753
+          ccc 4.yield. getScheduleCounter() 1753
+-------- ccc leavs getScheduleCounter() 1753
+ccc after protector getScheduleCounter()  1755 
+------- bbb entered at  25.100000000 
+ccc
+          bbb 1.yield. getScheduleCounter()  1758
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 1760
+          bbb 3.yield. getScheduleCounter() 1760
+          bbb 4.yield. getScheduleCounter() 1760
+-------- bbb leavs getScheduleCounter() 1760
+bbb after protector getScheduleCounter()  1762 
+------- aaa entered at  25.199999999 
+bbb
+          aaa 1.yield. getScheduleCounter()  1765
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 1767
+          aaa 3.yield. getScheduleCounter() 1767
+          aaa 4.yield. getScheduleCounter() 1767
+-------- aaa leavs getScheduleCounter() 1767
+aaa after protector getScheduleCounter()  1769 
+------- ddd entered at  25.300000000 
+aaa
+          ddd 1.yield. getScheduleCounter()  1772
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 1774
+          ddd 3.yield. getScheduleCounter() 1774
+          ddd 4.yield. getScheduleCounter() 1774
+-------- ddd leavs getScheduleCounter() 1774
+ddd after protector getScheduleCounter()  1776 
+------- ccc entered at  25.399999999 
+ddd
+          ccc 1.yield. getScheduleCounter()  1779
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 1781
+          ccc 3.yield. getScheduleCounter() 1781
+          ccc 4.yield. getScheduleCounter() 1781
+-------- ccc leavs getScheduleCounter() 1781
+ccc after protector getScheduleCounter()  1783 
+------- bbb entered at  25.500000000 
+ccc
+          bbb 1.yield. getScheduleCounter()  1786
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 1788
+          bbb 3.yield. getScheduleCounter() 1788
+          bbb 4.yield. getScheduleCounter() 1788
+-------- bbb leavs getScheduleCounter() 1788
+bbb after protector getScheduleCounter()  1790 
+------- aaa entered at  25.600000000 
+bbb
+          aaa 1.yield. getScheduleCounter()  1793
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 1795
+          aaa 3.yield. getScheduleCounter() 1795
+          aaa 4.yield. getScheduleCounter() 1795
+-------- aaa leavs getScheduleCounter() 1795
+aaa after protector getScheduleCounter()  1797 
+------- ddd entered at  25.699999999 
+aaa
+          ddd 1.yield. getScheduleCounter()  1800
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 1802
+          ddd 3.yield. getScheduleCounter() 1802
+          ddd 4.yield. getScheduleCounter() 1802
+-------- ddd leavs getScheduleCounter() 1802
+ddd after protector getScheduleCounter()  1804 
+------- ccc entered at  25.800000000 
+ddd
+          ccc 1.yield. getScheduleCounter()  1807
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 1809
+          ccc 3.yield. getScheduleCounter() 1809
+          ccc 4.yield. getScheduleCounter() 1809
+-------- ccc leavs getScheduleCounter() 1809
+ccc after protector getScheduleCounter()  1811 
+------- bbb entered at  25.899999999 
+ccc
+          bbb 1.yield. getScheduleCounter()  1814
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 1816
+          bbb 3.yield. getScheduleCounter() 1816
+          bbb 4.yield. getScheduleCounter() 1816
+-------- bbb leavs getScheduleCounter() 1816
+bbb after protector getScheduleCounter()  1818 
+------- aaa entered at  26.000000000 
+bbb
+          aaa 1.yield. getScheduleCounter()  1821
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 1823
+          aaa 3.yield. getScheduleCounter() 1823
+          aaa 4.yield. getScheduleCounter() 1823
+-------- aaa leavs getScheduleCounter() 1823
+aaa after protector getScheduleCounter()  1825 
+------- ddd entered at  26.100000000 
+aaa
+          ddd 1.yield. getScheduleCounter()  1828
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 1830
+          ddd 3.yield. getScheduleCounter() 1830
+          ddd 4.yield. getScheduleCounter() 1830
+-------- ddd leavs getScheduleCounter() 1830
+ddd after protector getScheduleCounter()  1832 
+------- ccc entered at  26.199999999 
+ddd
+          ccc 1.yield. getScheduleCounter()  1835
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 1837
+          ccc 3.yield. getScheduleCounter() 1837
+          ccc 4.yield. getScheduleCounter() 1837
+-------- ccc leavs getScheduleCounter() 1837
+ccc after protector getScheduleCounter()  1839 
+------- bbb entered at  26.300000000 
+ccc
+          bbb 1.yield. getScheduleCounter()  1842
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 1844
+          bbb 3.yield. getScheduleCounter() 1844
+          bbb 4.yield. getScheduleCounter() 1844
+-------- bbb leavs getScheduleCounter() 1844
+bbb after protector getScheduleCounter()  1846 
+------- aaa entered at  26.399999999 
+bbb
+          aaa 1.yield. getScheduleCounter()  1849
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 1851
+          aaa 3.yield. getScheduleCounter() 1851
+          aaa 4.yield. getScheduleCounter() 1851
+-------- aaa leavs getScheduleCounter() 1851
+aaa after protector getScheduleCounter()  1853 
+------- ddd entered at  26.500000000 
+aaa
+          ddd 1.yield. getScheduleCounter()  1856
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 1858
+          ddd 3.yield. getScheduleCounter() 1858
+          ddd 4.yield. getScheduleCounter() 1858
+-------- ddd leavs getScheduleCounter() 1858
+ddd after protector getScheduleCounter()  1860 
+------- ccc entered at  26.600000000 
+ddd
+          ccc 1.yield. getScheduleCounter()  1863
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 1865
+          ccc 3.yield. getScheduleCounter() 1865
+          ccc 4.yield. getScheduleCounter() 1865
+-------- ccc leavs getScheduleCounter() 1865
+ccc after protector getScheduleCounter()  1867 
+------- bbb entered at  26.699999999 
+ccc
+          bbb 1.yield. getScheduleCounter()  1870
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 1872
+          bbb 3.yield. getScheduleCounter() 1872
+          bbb 4.yield. getScheduleCounter() 1872
+-------- bbb leavs getScheduleCounter() 1872
+bbb after protector getScheduleCounter()  1874 
+------- aaa entered at  26.800000000 
+bbb
+          aaa 1.yield. getScheduleCounter()  1877
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 1879
+          aaa 3.yield. getScheduleCounter() 1879
+          aaa 4.yield. getScheduleCounter() 1879
+-------- aaa leavs getScheduleCounter() 1879
+aaa after protector getScheduleCounter()  1881 
+------- ddd entered at  26.899999999 
+aaa
+          ddd 1.yield. getScheduleCounter()  1884
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 1886
+          ddd 3.yield. getScheduleCounter() 1886
+          ddd 4.yield. getScheduleCounter() 1886
+-------- ddd leavs getScheduleCounter() 1886
+ddd after protector getScheduleCounter()  1888 
+------- ccc entered at  27.000000000 
+ddd
+          ccc 1.yield. getScheduleCounter()  1891
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 1893
+          ccc 3.yield. getScheduleCounter() 1893
+          ccc 4.yield. getScheduleCounter() 1893
+-------- ccc leavs getScheduleCounter() 1893
+ccc after protector getScheduleCounter()  1895 
+------- bbb entered at  27.100000000 
+ccc
+          bbb 1.yield. getScheduleCounter()  1898
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 1900
+          bbb 3.yield. getScheduleCounter() 1900
+          bbb 4.yield. getScheduleCounter() 1900
+-------- bbb leavs getScheduleCounter() 1900
+bbb after protector getScheduleCounter()  1902 
+------- aaa entered at  27.199999999 
+bbb
+          aaa 1.yield. getScheduleCounter()  1905
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 1907
+          aaa 3.yield. getScheduleCounter() 1907
+          aaa 4.yield. getScheduleCounter() 1907
+-------- aaa leavs getScheduleCounter() 1907
+aaa after protector getScheduleCounter()  1909 
+------- ddd entered at  27.300000000 
+aaa
+          ddd 1.yield. getScheduleCounter()  1912
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 1914
+          ddd 3.yield. getScheduleCounter() 1914
+          ddd 4.yield. getScheduleCounter() 1914
+-------- ddd leavs getScheduleCounter() 1914
+ddd after protector getScheduleCounter()  1916 
+------- ccc entered at  27.399999999 
+ddd
+          ccc 1.yield. getScheduleCounter()  1919
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 1921
+          ccc 3.yield. getScheduleCounter() 1921
+          ccc 4.yield. getScheduleCounter() 1921
+-------- ccc leavs getScheduleCounter() 1921
+ccc after protector getScheduleCounter()  1923 
+------- bbb entered at  27.500000000 
+ccc
+          bbb 1.yield. getScheduleCounter()  1926
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 1928
+          bbb 3.yield. getScheduleCounter() 1928
+          bbb 4.yield. getScheduleCounter() 1928
+-------- bbb leavs getScheduleCounter() 1928
+bbb after protector getScheduleCounter()  1930 
+------- aaa entered at  27.600000000 
+bbb
+          aaa 1.yield. getScheduleCounter()  1933
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 1935
+          aaa 3.yield. getScheduleCounter() 1935
+          aaa 4.yield. getScheduleCounter() 1935
+-------- aaa leavs getScheduleCounter() 1935
+aaa after protector getScheduleCounter()  1937 
+------- ddd entered at  27.699999999 
+aaa
+          ddd 1.yield. getScheduleCounter()  1940
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 1942
+          ddd 3.yield. getScheduleCounter() 1942
+          ddd 4.yield. getScheduleCounter() 1942
+-------- ddd leavs getScheduleCounter() 1942
+ddd after protector getScheduleCounter()  1944 
+------- ccc entered at  27.800000000 
+ddd
+          ccc 1.yield. getScheduleCounter()  1947
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 1949
+          ccc 3.yield. getScheduleCounter() 1949
+          ccc 4.yield. getScheduleCounter() 1949
+-------- ccc leavs getScheduleCounter() 1949
+ccc after protector getScheduleCounter()  1951 
+------- bbb entered at  27.899999999 
+ccc
+          bbb 1.yield. getScheduleCounter()  1954
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 1956
+          bbb 3.yield. getScheduleCounter() 1956
+          bbb 4.yield. getScheduleCounter() 1956
+-------- bbb leavs getScheduleCounter() 1956
+bbb after protector getScheduleCounter()  1958 
+------- aaa entered at  28.000000000 
+bbb
+          aaa 1.yield. getScheduleCounter()  1961
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 1963
+          aaa 3.yield. getScheduleCounter() 1963
+          aaa 4.yield. getScheduleCounter() 1963
+-------- aaa leavs getScheduleCounter() 1963
+aaa after protector getScheduleCounter()  1965 
+------- ddd entered at  28.100000000 
+aaa
+          ddd 1.yield. getScheduleCounter()  1968
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 1970
+          ddd 3.yield. getScheduleCounter() 1970
+          ddd 4.yield. getScheduleCounter() 1970
+-------- ddd leavs getScheduleCounter() 1970
+ddd after protector getScheduleCounter()  1972 
+------- ccc entered at  28.199999999 
+ddd
+          ccc 1.yield. getScheduleCounter()  1975
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 1977
+          ccc 3.yield. getScheduleCounter() 1977
+          ccc 4.yield. getScheduleCounter() 1977
+-------- ccc leavs getScheduleCounter() 1977
+ccc after protector getScheduleCounter()  1979 
+------- bbb entered at  28.300000000 
+ccc
+          bbb 1.yield. getScheduleCounter()  1982
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 1984
+          bbb 3.yield. getScheduleCounter() 1984
+          bbb 4.yield. getScheduleCounter() 1984
+-------- bbb leavs getScheduleCounter() 1984
+bbb after protector getScheduleCounter()  1986 
+------- aaa entered at  28.399999999 
+bbb
+          aaa 1.yield. getScheduleCounter()  1989
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 1991
+          aaa 3.yield. getScheduleCounter() 1991
+          aaa 4.yield. getScheduleCounter() 1991
+-------- aaa leavs getScheduleCounter() 1991
+aaa after protector getScheduleCounter()  1993 
+------- ddd entered at  28.500000000 
+aaa
+          ddd 1.yield. getScheduleCounter()  1996
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 1998
+          ddd 3.yield. getScheduleCounter() 1998
+          ddd 4.yield. getScheduleCounter() 1998
+-------- ddd leavs getScheduleCounter() 1998
+ddd after protector getScheduleCounter()  2000 
+------- ccc entered at  28.600000000 
+ddd
+          ccc 1.yield. getScheduleCounter()  2003
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 2005
+          ccc 3.yield. getScheduleCounter() 2005
+          ccc 4.yield. getScheduleCounter() 2005
+-------- ccc leavs getScheduleCounter() 2005
+ccc after protector getScheduleCounter()  2007 
+------- bbb entered at  28.699999999 
+ccc
+          bbb 1.yield. getScheduleCounter()  2010
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 2012
+          bbb 3.yield. getScheduleCounter() 2012
+          bbb 4.yield. getScheduleCounter() 2012
+-------- bbb leavs getScheduleCounter() 2012
+bbb after protector getScheduleCounter()  2014 
+------- aaa entered at  28.800000000 
+bbb
+          aaa 1.yield. getScheduleCounter()  2017
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 2019
+          aaa 3.yield. getScheduleCounter() 2019
+          aaa 4.yield. getScheduleCounter() 2019
+-------- aaa leavs getScheduleCounter() 2019
+aaa after protector getScheduleCounter()  2021 
+------- ddd entered at  28.899999999 
+aaa
+          ddd 1.yield. getScheduleCounter()  2024
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 2026
+          ddd 3.yield. getScheduleCounter() 2026
+          ddd 4.yield. getScheduleCounter() 2026
+-------- ddd leavs getScheduleCounter() 2026
+ddd after protector getScheduleCounter()  2028 
+------- ccc entered at  29.000000000 
+ddd
+          ccc 1.yield. getScheduleCounter()  2031
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 2033
+          ccc 3.yield. getScheduleCounter() 2033
+          ccc 4.yield. getScheduleCounter() 2033
+-------- ccc leavs getScheduleCounter() 2033
+ccc after protector getScheduleCounter()  2035 
+------- bbb entered at  29.100000000 
+ccc
+          bbb 1.yield. getScheduleCounter()  2038
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 2040
+          bbb 3.yield. getScheduleCounter() 2040
+          bbb 4.yield. getScheduleCounter() 2040
+-------- bbb leavs getScheduleCounter() 2040
+bbb after protector getScheduleCounter()  2042 
+------- aaa entered at  29.199999999 
+bbb
+          aaa 1.yield. getScheduleCounter()  2045
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 2047
+          aaa 3.yield. getScheduleCounter() 2047
+          aaa 4.yield. getScheduleCounter() 2047
+-------- aaa leavs getScheduleCounter() 2047
+aaa after protector getScheduleCounter()  2049 
+------- ddd entered at  29.300000000 
+aaa
+          ddd 1.yield. getScheduleCounter()  2052
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 2054
+          ddd 3.yield. getScheduleCounter() 2054
+          ddd 4.yield. getScheduleCounter() 2054
+-------- ddd leavs getScheduleCounter() 2054
+ddd after protector getScheduleCounter()  2056 
+------- ccc entered at  29.399999999 
+ddd
+          ccc 1.yield. getScheduleCounter()  2059
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 2061
+          ccc 3.yield. getScheduleCounter() 2061
+          ccc 4.yield. getScheduleCounter() 2061
+-------- ccc leavs getScheduleCounter() 2061
+ccc after protector getScheduleCounter()  2063 
+------- bbb entered at  29.500000000 
+ccc
+          bbb 1.yield. getScheduleCounter()  2066
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 2068
+          bbb 3.yield. getScheduleCounter() 2068
+          bbb 4.yield. getScheduleCounter() 2068
+-------- bbb leavs getScheduleCounter() 2068
+bbb after protector getScheduleCounter()  2070 
+------- aaa entered at  29.600000000 
+bbb
+          aaa 1.yield. getScheduleCounter()  2073
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 2075
+          aaa 3.yield. getScheduleCounter() 2075
+          aaa 4.yield. getScheduleCounter() 2075
+-------- aaa leavs getScheduleCounter() 2075
+aaa after protector getScheduleCounter()  2077 
+------- ddd entered at  29.699999999 
+aaa
+          ddd 1.yield. getScheduleCounter()  2080
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 2082
+          ddd 3.yield. getScheduleCounter() 2082
+          ddd 4.yield. getScheduleCounter() 2082
+-------- ddd leavs getScheduleCounter() 2082
+ddd after protector getScheduleCounter()  2084 
+------- ccc entered at  29.800000000 
+ddd
+          ccc 1.yield. getScheduleCounter()  2087
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 2089
+          ccc 3.yield. getScheduleCounter() 2089
+          ccc 4.yield. getScheduleCounter() 2089
+-------- ccc leavs getScheduleCounter() 2089
+ccc after protector getScheduleCounter()  2091 
+------- bbb entered at  29.899999999 
+ccc
+          bbb 1.yield. getScheduleCounter()  2094
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 2096
+          bbb 3.yield. getScheduleCounter() 2096
+          bbb 4.yield. getScheduleCounter() 2096
+-------- bbb leavs getScheduleCounter() 2096
+bbb after protector getScheduleCounter()  2098 
+------- aaa entered at  30.000000000 
+bbb
+          aaa 1.yield. getScheduleCounter()  2101
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 2103
+          aaa 3.yield. getScheduleCounter() 2103
+          aaa 4.yield. getScheduleCounter() 2103
+-------- aaa leavs getScheduleCounter() 2103
+aaa after protector getScheduleCounter()  2105 
+------- ddd entered at  30.100000000 
+aaa
+          ddd 1.yield. getScheduleCounter()  2108
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 2110
+          ddd 3.yield. getScheduleCounter() 2110
+          ddd 4.yield. getScheduleCounter() 2110
+-------- ddd leavs getScheduleCounter() 2110
+ddd after protector getScheduleCounter()  2112 
+------- ccc entered at  30.199999999 
+ddd
+          ccc 1.yield. getScheduleCounter()  2115
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 2117
+          ccc 3.yield. getScheduleCounter() 2117
+          ccc 4.yield. getScheduleCounter() 2117
+-------- ccc leavs getScheduleCounter() 2117
+ccc after protector getScheduleCounter()  2119 
+------- bbb entered at  30.300000000 
+ccc
+          bbb 1.yield. getScheduleCounter()  2122
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 2124
+          bbb 3.yield. getScheduleCounter() 2124
+          bbb 4.yield. getScheduleCounter() 2124
+-------- bbb leavs getScheduleCounter() 2124
+bbb after protector getScheduleCounter()  2126 
+------- aaa entered at  30.399999999 
+bbb
+          aaa 1.yield. getScheduleCounter()  2129
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 2131
+          aaa 3.yield. getScheduleCounter() 2131
+          aaa 4.yield. getScheduleCounter() 2131
+-------- aaa leavs getScheduleCounter() 2131
+aaa after protector getScheduleCounter()  2133 
+------- ddd entered at  30.500000000 
+aaa
+          ddd 1.yield. getScheduleCounter()  2136
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 2138
+          ddd 3.yield. getScheduleCounter() 2138
+          ddd 4.yield. getScheduleCounter() 2138
+-------- ddd leavs getScheduleCounter() 2138
+ddd after protector getScheduleCounter()  2140 
+------- ccc entered at  30.600000000 
+ddd
+          ccc 1.yield. getScheduleCounter()  2143
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 2145
+          ccc 3.yield. getScheduleCounter() 2145
+          ccc 4.yield. getScheduleCounter() 2145
+-------- ccc leavs getScheduleCounter() 2145
+ccc after protector getScheduleCounter()  2147 
+------- bbb entered at  30.699999999 
+ccc
+          bbb 1.yield. getScheduleCounter()  2150
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 2152
+          bbb 3.yield. getScheduleCounter() 2152
+          bbb 4.yield. getScheduleCounter() 2152
+-------- bbb leavs getScheduleCounter() 2152
+bbb after protector getScheduleCounter()  2154 
+------- aaa entered at  30.800000000 
+bbb
+          aaa 1.yield. getScheduleCounter()  2157
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 2159
+          aaa 3.yield. getScheduleCounter() 2159
+          aaa 4.yield. getScheduleCounter() 2159
+-------- aaa leavs getScheduleCounter() 2159
+aaa after protector getScheduleCounter()  2161 
+------- ddd entered at  30.899999999 
+aaa
+          ddd 1.yield. getScheduleCounter()  2164
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 2166
+          ddd 3.yield. getScheduleCounter() 2166
+          ddd 4.yield. getScheduleCounter() 2166
+-------- ddd leavs getScheduleCounter() 2166
+ddd after protector getScheduleCounter()  2168 
+------- ccc entered at  31.000000000 
+ddd
+          ccc 1.yield. getScheduleCounter()  2171
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 2173
+          ccc 3.yield. getScheduleCounter() 2173
+          ccc 4.yield. getScheduleCounter() 2173
+-------- ccc leavs getScheduleCounter() 2173
+ccc after protector getScheduleCounter()  2175 
+------- bbb entered at  31.100000000 
+ccc
+          bbb 1.yield. getScheduleCounter()  2178
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 2180
+          bbb 3.yield. getScheduleCounter() 2180
+          bbb 4.yield. getScheduleCounter() 2180
+-------- bbb leavs getScheduleCounter() 2180
+bbb after protector getScheduleCounter()  2182 
+------- aaa entered at  31.199999999 
+bbb
+          aaa 1.yield. getScheduleCounter()  2185
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 2187
+          aaa 3.yield. getScheduleCounter() 2187
+          aaa 4.yield. getScheduleCounter() 2187
+-------- aaa leavs getScheduleCounter() 2187
+aaa after protector getScheduleCounter()  2189 
+------- ddd entered at  31.300000000 
+aaa
+          ddd 1.yield. getScheduleCounter()  2192
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 2194
+          ddd 3.yield. getScheduleCounter() 2194
+          ddd 4.yield. getScheduleCounter() 2194
+-------- ddd leavs getScheduleCounter() 2194
+ddd after protector getScheduleCounter()  2196 
+------- ccc entered at  31.399999999 
+ddd
+          ccc 1.yield. getScheduleCounter()  2199
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 2201
+          ccc 3.yield. getScheduleCounter() 2201
+          ccc 4.yield. getScheduleCounter() 2201
+-------- ccc leavs getScheduleCounter() 2201
+ccc after protector getScheduleCounter()  2203 
+------- bbb entered at  31.500000000 
+ccc
+          bbb 1.yield. getScheduleCounter()  2206
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 2208
+          bbb 3.yield. getScheduleCounter() 2208
+          bbb 4.yield. getScheduleCounter() 2208
+-------- bbb leavs getScheduleCounter() 2208
+bbb after protector getScheduleCounter()  2210 
+------- aaa entered at  31.600000000 
+bbb
+          aaa 1.yield. getScheduleCounter()  2213
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 2215
+          aaa 3.yield. getScheduleCounter() 2215
+          aaa 4.yield. getScheduleCounter() 2215
+-------- aaa leavs getScheduleCounter() 2215
+aaa after protector getScheduleCounter()  2217 
+------- ddd entered at  31.699999999 
+aaa
+          ddd 1.yield. getScheduleCounter()  2220
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 2222
+          ddd 3.yield. getScheduleCounter() 2222
+          ddd 4.yield. getScheduleCounter() 2222
+-------- ddd leavs getScheduleCounter() 2222
+ddd after protector getScheduleCounter()  2224 
+------- ccc entered at  31.800000000 
+ddd
+          ccc 1.yield. getScheduleCounter()  2227
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 2229
+          ccc 3.yield. getScheduleCounter() 2229
+          ccc 4.yield. getScheduleCounter() 2229
+-------- ccc leavs getScheduleCounter() 2229
+ccc after protector getScheduleCounter()  2231 
+------- bbb entered at  31.899999999 
+ccc
+          bbb 1.yield. getScheduleCounter()  2234
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 2236
+          bbb 3.yield. getScheduleCounter() 2236
+          bbb 4.yield. getScheduleCounter() 2236
+-------- bbb leavs getScheduleCounter() 2236
+bbb after protector getScheduleCounter()  2238 
+------- aaa entered at  32.000000000 
+bbb
+          aaa 1.yield. getScheduleCounter()  2241
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 2243
+          aaa 3.yield. getScheduleCounter() 2243
+          aaa 4.yield. getScheduleCounter() 2243
+-------- aaa leavs getScheduleCounter() 2243
+aaa after protector getScheduleCounter()  2245 
+------- ddd entered at  32.100000000 
+aaa
+          ddd 1.yield. getScheduleCounter()  2248
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 2250
+          ddd 3.yield. getScheduleCounter() 2250
+          ddd 4.yield. getScheduleCounter() 2250
+-------- ddd leavs getScheduleCounter() 2250
+ddd after protector getScheduleCounter()  2252 
+------- ccc entered at  32.200000000 
+ddd
+          ccc 1.yield. getScheduleCounter()  2255
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 2257
+          ccc 3.yield. getScheduleCounter() 2257
+          ccc 4.yield. getScheduleCounter() 2257
+-------- ccc leavs getScheduleCounter() 2257
+ccc after protector getScheduleCounter()  2259 
+------- bbb entered at  32.299999999 
+ccc
+          bbb 1.yield. getScheduleCounter()  2262
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 2264
+          bbb 3.yield. getScheduleCounter() 2264
+          bbb 4.yield. getScheduleCounter() 2264
+-------- bbb leavs getScheduleCounter() 2264
+bbb after protector getScheduleCounter()  2266 
+------- aaa entered at  32.399999999 
+bbb
+          aaa 1.yield. getScheduleCounter()  2269
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 2271
+          aaa 3.yield. getScheduleCounter() 2271
+          aaa 4.yield. getScheduleCounter() 2271
+-------- aaa leavs getScheduleCounter() 2271
+aaa after protector getScheduleCounter()  2273 
+------- ddd entered at  32.500000000 
+aaa
+          ddd 1.yield. getScheduleCounter()  2276
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 2278
+          ddd 3.yield. getScheduleCounter() 2278
+          ddd 4.yield. getScheduleCounter() 2278
+-------- ddd leavs getScheduleCounter() 2278
+ddd after protector getScheduleCounter()  2280 
+------- ccc entered at  32.600000000 
+ddd
+          ccc 1.yield. getScheduleCounter()  2283
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 2285
+          ccc 3.yield. getScheduleCounter() 2285
+          ccc 4.yield. getScheduleCounter() 2285
+-------- ccc leavs getScheduleCounter() 2285
+ccc after protector getScheduleCounter()  2287 
+------- bbb entered at  32.700000000 
+ccc
+          bbb 1.yield. getScheduleCounter()  2290
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 2292
+          bbb 3.yield. getScheduleCounter() 2292
+          bbb 4.yield. getScheduleCounter() 2292
+-------- bbb leavs getScheduleCounter() 2292
+bbb after protector getScheduleCounter()  2294 
+------- aaa entered at  32.799999999 
+bbb
+          aaa 1.yield. getScheduleCounter()  2297
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 2299
+          aaa 3.yield. getScheduleCounter() 2299
+          aaa 4.yield. getScheduleCounter() 2299
+-------- aaa leavs getScheduleCounter() 2299
+aaa after protector getScheduleCounter()  2301 
+------- ddd entered at  32.899999999 
+aaa
+          ddd 1.yield. getScheduleCounter()  2304
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 2306
+          ddd 3.yield. getScheduleCounter() 2306
+          ddd 4.yield. getScheduleCounter() 2306
+-------- ddd leavs getScheduleCounter() 2306
+ddd after protector getScheduleCounter()  2308 
+------- ccc entered at  33.000000000 
+ddd
+          ccc 1.yield. getScheduleCounter()  2311
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 2313
+          ccc 3.yield. getScheduleCounter() 2313
+          ccc 4.yield. getScheduleCounter() 2313
+-------- ccc leavs getScheduleCounter() 2313
+ccc after protector getScheduleCounter()  2315 
+------- bbb entered at  33.100000000 
+ccc
+          bbb 1.yield. getScheduleCounter()  2318
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 2320
+          bbb 3.yield. getScheduleCounter() 2320
+          bbb 4.yield. getScheduleCounter() 2320
+-------- bbb leavs getScheduleCounter() 2320
+bbb after protector getScheduleCounter()  2322 
+------- aaa entered at  33.200000000 
+bbb
+          aaa 1.yield. getScheduleCounter()  2325
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 2327
+          aaa 3.yield. getScheduleCounter() 2327
+          aaa 4.yield. getScheduleCounter() 2327
+-------- aaa leavs getScheduleCounter() 2327
+aaa after protector getScheduleCounter()  2329 
+------- ddd entered at  33.299999999 
+aaa
+          ddd 1.yield. getScheduleCounter()  2332
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 2334
+          ddd 3.yield. getScheduleCounter() 2334
+          ddd 4.yield. getScheduleCounter() 2334
+-------- ddd leavs getScheduleCounter() 2334
+ddd after protector getScheduleCounter()  2336 
+------- ccc entered at  33.399999999 
+ddd
+          ccc 1.yield. getScheduleCounter()  2339
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 2341
+          ccc 3.yield. getScheduleCounter() 2341
+          ccc 4.yield. getScheduleCounter() 2341
+-------- ccc leavs getScheduleCounter() 2341
+ccc after protector getScheduleCounter()  2343 
+------- bbb entered at  33.500000000 
+ccc
+          bbb 1.yield. getScheduleCounter()  2346
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 2348
+          bbb 3.yield. getScheduleCounter() 2348
+          bbb 4.yield. getScheduleCounter() 2348
+-------- bbb leavs getScheduleCounter() 2348
+bbb after protector getScheduleCounter()  2350 
+------- aaa entered at  33.600000000 
+bbb
+          aaa 1.yield. getScheduleCounter()  2353
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 2355
+          aaa 3.yield. getScheduleCounter() 2355
+          aaa 4.yield. getScheduleCounter() 2355
+-------- aaa leavs getScheduleCounter() 2355
+aaa after protector getScheduleCounter()  2357 
+------- ddd entered at  33.700000000 
+aaa
+          ddd 1.yield. getScheduleCounter()  2360
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 2362
+          ddd 3.yield. getScheduleCounter() 2362
+          ddd 4.yield. getScheduleCounter() 2362
+-------- ddd leavs getScheduleCounter() 2362
+ddd after protector getScheduleCounter()  2364 
+------- ccc entered at  33.799999999 
+ddd
+          ccc 1.yield. getScheduleCounter()  2367
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 2369
+          ccc 3.yield. getScheduleCounter() 2369
+          ccc 4.yield. getScheduleCounter() 2369
+-------- ccc leavs getScheduleCounter() 2369
+ccc after protector getScheduleCounter()  2371 
+------- bbb entered at  33.899999999 
+ccc
+          bbb 1.yield. getScheduleCounter()  2374
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 2376
+          bbb 3.yield. getScheduleCounter() 2376
+          bbb 4.yield. getScheduleCounter() 2376
+-------- bbb leavs getScheduleCounter() 2376
+bbb after protector getScheduleCounter()  2378 
+------- aaa entered at  34.000000000 
+bbb
+          aaa 1.yield. getScheduleCounter()  2381
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 2383
+          aaa 3.yield. getScheduleCounter() 2383
+          aaa 4.yield. getScheduleCounter() 2383
+-------- aaa leavs getScheduleCounter() 2383
+aaa after protector getScheduleCounter()  2385 
+------- ddd entered at  34.100000000 
+aaa
+          ddd 1.yield. getScheduleCounter()  2388
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 2390
+          ddd 3.yield. getScheduleCounter() 2390
+          ddd 4.yield. getScheduleCounter() 2390
+-------- ddd leavs getScheduleCounter() 2390
+ddd after protector getScheduleCounter()  2392 
+------- ccc entered at  34.200000000 
+ddd
+          ccc 1.yield. getScheduleCounter()  2395
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 2397
+          ccc 3.yield. getScheduleCounter() 2397
+          ccc 4.yield. getScheduleCounter() 2397
+-------- ccc leavs getScheduleCounter() 2397
+ccc after protector getScheduleCounter()  2399 
+------- bbb entered at  34.299999999 
+ccc
+          bbb 1.yield. getScheduleCounter()  2402
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 2404
+          bbb 3.yield. getScheduleCounter() 2404
+          bbb 4.yield. getScheduleCounter() 2404
+-------- bbb leavs getScheduleCounter() 2404
+bbb after protector getScheduleCounter()  2406 
+------- aaa entered at  34.399999999 
+bbb
+          aaa 1.yield. getScheduleCounter()  2409
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 2411
+          aaa 3.yield. getScheduleCounter() 2411
+          aaa 4.yield. getScheduleCounter() 2411
+-------- aaa leavs getScheduleCounter() 2411
+aaa after protector getScheduleCounter()  2413 
+------- ddd entered at  34.500000000 
+aaa
+          ddd 1.yield. getScheduleCounter()  2416
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 2418
+          ddd 3.yield. getScheduleCounter() 2418
+          ddd 4.yield. getScheduleCounter() 2418
+-------- ddd leavs getScheduleCounter() 2418
+ddd after protector getScheduleCounter()  2420 
+------- ccc entered at  34.600000000 
+ddd
+          ccc 1.yield. getScheduleCounter()  2423
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 2425
+          ccc 3.yield. getScheduleCounter() 2425
+          ccc 4.yield. getScheduleCounter() 2425
+-------- ccc leavs getScheduleCounter() 2425
+ccc after protector getScheduleCounter()  2427 
+------- bbb entered at  34.700000000 
+ccc
+          bbb 1.yield. getScheduleCounter()  2430
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 2432
+          bbb 3.yield. getScheduleCounter() 2432
+          bbb 4.yield. getScheduleCounter() 2432
+-------- bbb leavs getScheduleCounter() 2432
+bbb after protector getScheduleCounter()  2434 
+------- aaa entered at  34.799999999 
+bbb
+          aaa 1.yield. getScheduleCounter()  2437
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 2439
+          aaa 3.yield. getScheduleCounter() 2439
+          aaa 4.yield. getScheduleCounter() 2439
+-------- aaa leavs getScheduleCounter() 2439
+aaa after protector getScheduleCounter()  2441 
+------- ddd entered at  34.899999999 
+aaa
+          ddd 1.yield. getScheduleCounter()  2444
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 2446
+          ddd 3.yield. getScheduleCounter() 2446
+          ddd 4.yield. getScheduleCounter() 2446
+-------- ddd leavs getScheduleCounter() 2446
+ddd after protector getScheduleCounter()  2448 
+------- ccc entered at  35.000000000 
+ddd
+          ccc 1.yield. getScheduleCounter()  2451
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 2453
+          ccc 3.yield. getScheduleCounter() 2453
+          ccc 4.yield. getScheduleCounter() 2453
+-------- ccc leavs getScheduleCounter() 2453
+ccc after protector getScheduleCounter()  2455 
+------- bbb entered at  35.100000000 
+ccc
+          bbb 1.yield. getScheduleCounter()  2458
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 2460
+          bbb 3.yield. getScheduleCounter() 2460
+          bbb 4.yield. getScheduleCounter() 2460
+-------- bbb leavs getScheduleCounter() 2460
+bbb after protector getScheduleCounter()  2462 
+------- aaa entered at  35.200000000 
+bbb
+          aaa 1.yield. getScheduleCounter()  2465
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 2467
+          aaa 3.yield. getScheduleCounter() 2467
+          aaa 4.yield. getScheduleCounter() 2467
+-------- aaa leavs getScheduleCounter() 2467
+aaa after protector getScheduleCounter()  2469 
+------- ddd entered at  35.299999999 
+aaa
+          ddd 1.yield. getScheduleCounter()  2472
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 2474
+          ddd 3.yield. getScheduleCounter() 2474
+          ddd 4.yield. getScheduleCounter() 2474
+-------- ddd leavs getScheduleCounter() 2474
+ddd after protector getScheduleCounter()  2476 
+------- ccc entered at  35.399999999 
+ddd
+          ccc 1.yield. getScheduleCounter()  2479
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 2481
+          ccc 3.yield. getScheduleCounter() 2481
+          ccc 4.yield. getScheduleCounter() 2481
+-------- ccc leavs getScheduleCounter() 2481
+ccc after protector getScheduleCounter()  2483 
+------- bbb entered at  35.500000000 
+ccc
+          bbb 1.yield. getScheduleCounter()  2486
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 2488
+          bbb 3.yield. getScheduleCounter() 2488
+          bbb 4.yield. getScheduleCounter() 2488
+-------- bbb leavs getScheduleCounter() 2488
+bbb after protector getScheduleCounter()  2490 
+------- aaa entered at  35.600000000 
+bbb
+          aaa 1.yield. getScheduleCounter()  2493
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 2495
+          aaa 3.yield. getScheduleCounter() 2495
+          aaa 4.yield. getScheduleCounter() 2495
+-------- aaa leavs getScheduleCounter() 2495
+aaa after protector getScheduleCounter()  2497 
+------- ddd entered at  35.700000000 
+aaa
+          ddd 1.yield. getScheduleCounter()  2500
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 2502
+          ddd 3.yield. getScheduleCounter() 2502
+          ddd 4.yield. getScheduleCounter() 2502
+-------- ddd leavs getScheduleCounter() 2502
+ddd after protector getScheduleCounter()  2504 
+------- ccc entered at  35.799999999 
+ddd
+          ccc 1.yield. getScheduleCounter()  2507
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 2509
+          ccc 3.yield. getScheduleCounter() 2509
+          ccc 4.yield. getScheduleCounter() 2509
+-------- ccc leavs getScheduleCounter() 2509
+ccc after protector getScheduleCounter()  2511 
+------- bbb entered at  35.899999999 
+ccc
+          bbb 1.yield. getScheduleCounter()  2514
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 2516
+          bbb 3.yield. getScheduleCounter() 2516
+          bbb 4.yield. getScheduleCounter() 2516
+-------- bbb leavs getScheduleCounter() 2516
+bbb after protector getScheduleCounter()  2518 
+------- aaa entered at  36.000000000 
+bbb
+          aaa 1.yield. getScheduleCounter()  2521
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 2523
+          aaa 3.yield. getScheduleCounter() 2523
+          aaa 4.yield. getScheduleCounter() 2523
+-------- aaa leavs getScheduleCounter() 2523
+aaa after protector getScheduleCounter()  2525 
+------- ddd entered at  36.100000000 
+aaa
+          ddd 1.yield. getScheduleCounter()  2528
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 2530
+          ddd 3.yield. getScheduleCounter() 2530
+          ddd 4.yield. getScheduleCounter() 2530
+-------- ddd leavs getScheduleCounter() 2530
+ddd after protector getScheduleCounter()  2532 
+------- ccc entered at  36.200000000 
+ddd
+          ccc 1.yield. getScheduleCounter()  2535
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 2537
+          ccc 3.yield. getScheduleCounter() 2537
+          ccc 4.yield. getScheduleCounter() 2537
+-------- ccc leavs getScheduleCounter() 2537
+ccc after protector getScheduleCounter()  2539 
+------- bbb entered at  36.299999999 
+ccc
+          bbb 1.yield. getScheduleCounter()  2542
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 2544
+          bbb 3.yield. getScheduleCounter() 2544
+          bbb 4.yield. getScheduleCounter() 2544
+-------- bbb leavs getScheduleCounter() 2544
+bbb after protector getScheduleCounter()  2546 
+------- aaa entered at  36.399999999 
+bbb
+          aaa 1.yield. getScheduleCounter()  2549
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 2551
+          aaa 3.yield. getScheduleCounter() 2551
+          aaa 4.yield. getScheduleCounter() 2551
+-------- aaa leavs getScheduleCounter() 2551
+aaa after protector getScheduleCounter()  2553 
+------- ddd entered at  36.500000000 
+aaa
+          ddd 1.yield. getScheduleCounter()  2556
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 2558
+          ddd 3.yield. getScheduleCounter() 2558
+          ddd 4.yield. getScheduleCounter() 2558
+-------- ddd leavs getScheduleCounter() 2558
+ddd after protector getScheduleCounter()  2560 
+------- ccc entered at  36.600000000 
+ddd
+          ccc 1.yield. getScheduleCounter()  2563
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 2565
+          ccc 3.yield. getScheduleCounter() 2565
+          ccc 4.yield. getScheduleCounter() 2565
+-------- ccc leavs getScheduleCounter() 2565
+ccc after protector getScheduleCounter()  2567 
+------- bbb entered at  36.700000000 
+ccc
+          bbb 1.yield. getScheduleCounter()  2570
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 2572
+          bbb 3.yield. getScheduleCounter() 2572
+          bbb 4.yield. getScheduleCounter() 2572
+-------- bbb leavs getScheduleCounter() 2572
+bbb after protector getScheduleCounter()  2574 
+------- aaa entered at  36.799999999 
+bbb
+          aaa 1.yield. getScheduleCounter()  2577
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 2579
+          aaa 3.yield. getScheduleCounter() 2579
+          aaa 4.yield. getScheduleCounter() 2579
+-------- aaa leavs getScheduleCounter() 2579
+aaa after protector getScheduleCounter()  2581 
+------- ddd entered at  36.899999999 
+aaa
+          ddd 1.yield. getScheduleCounter()  2584
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 2586
+          ddd 3.yield. getScheduleCounter() 2586
+          ddd 4.yield. getScheduleCounter() 2586
+-------- ddd leavs getScheduleCounter() 2586
+ddd after protector getScheduleCounter()  2588 
+------- ccc entered at  37.000000000 
+ddd
+          ccc 1.yield. getScheduleCounter()  2591
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 2593
+          ccc 3.yield. getScheduleCounter() 2593
+          ccc 4.yield. getScheduleCounter() 2593
+-------- ccc leavs getScheduleCounter() 2593
+ccc after protector getScheduleCounter()  2595 
+------- bbb entered at  37.100000000 
+ccc
+          bbb 1.yield. getScheduleCounter()  2598
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 2600
+          bbb 3.yield. getScheduleCounter() 2600
+          bbb 4.yield. getScheduleCounter() 2600
+-------- bbb leavs getScheduleCounter() 2600
+bbb after protector getScheduleCounter()  2602 
+------- aaa entered at  37.200000000 
+bbb
+          aaa 1.yield. getScheduleCounter()  2605
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 2607
+          aaa 3.yield. getScheduleCounter() 2607
+          aaa 4.yield. getScheduleCounter() 2607
+-------- aaa leavs getScheduleCounter() 2607
+aaa after protector getScheduleCounter()  2609 
+------- ddd entered at  37.299999999 
+aaa
+          ddd 1.yield. getScheduleCounter()  2612
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 2614
+          ddd 3.yield. getScheduleCounter() 2614
+          ddd 4.yield. getScheduleCounter() 2614
+-------- ddd leavs getScheduleCounter() 2614
+ddd after protector getScheduleCounter()  2616 
+------- ccc entered at  37.399999999 
+ddd
+          ccc 1.yield. getScheduleCounter()  2619
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 2621
+          ccc 3.yield. getScheduleCounter() 2621
+          ccc 4.yield. getScheduleCounter() 2621
+-------- ccc leavs getScheduleCounter() 2621
+ccc after protector getScheduleCounter()  2623 
+------- bbb entered at  37.500000000 
+ccc
+          bbb 1.yield. getScheduleCounter()  2626
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 2628
+          bbb 3.yield. getScheduleCounter() 2628
+          bbb 4.yield. getScheduleCounter() 2628
+-------- bbb leavs getScheduleCounter() 2628
+bbb after protector getScheduleCounter()  2630 
+------- aaa entered at  37.600000000 
+bbb
+          aaa 1.yield. getScheduleCounter()  2633
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 2635
+          aaa 3.yield. getScheduleCounter() 2635
+          aaa 4.yield. getScheduleCounter() 2635
+-------- aaa leavs getScheduleCounter() 2635
+aaa after protector getScheduleCounter()  2637 
+------- ddd entered at  37.700000000 
+aaa
+          ddd 1.yield. getScheduleCounter()  2640
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 2642
+          ddd 3.yield. getScheduleCounter() 2642
+          ddd 4.yield. getScheduleCounter() 2642
+-------- ddd leavs getScheduleCounter() 2642
+ddd after protector getScheduleCounter()  2644 
+------- ccc entered at  37.799999999 
+ddd
+          ccc 1.yield. getScheduleCounter()  2647
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 2649
+          ccc 3.yield. getScheduleCounter() 2649
+          ccc 4.yield. getScheduleCounter() 2649
+-------- ccc leavs getScheduleCounter() 2649
+ccc after protector getScheduleCounter()  2651 
+------- bbb entered at  37.899999999 
+ccc
+          bbb 1.yield. getScheduleCounter()  2654
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 2656
+          bbb 3.yield. getScheduleCounter() 2656
+          bbb 4.yield. getScheduleCounter() 2656
+-------- bbb leavs getScheduleCounter() 2656
+bbb after protector getScheduleCounter()  2658 
+------- aaa entered at  38.000000000 
+bbb
+          aaa 1.yield. getScheduleCounter()  2661
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 2663
+          aaa 3.yield. getScheduleCounter() 2663
+          aaa 4.yield. getScheduleCounter() 2663
+-------- aaa leavs getScheduleCounter() 2663
+aaa after protector getScheduleCounter()  2665 
+------- ddd entered at  38.100000000 
+aaa
+          ddd 1.yield. getScheduleCounter()  2668
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 2670
+          ddd 3.yield. getScheduleCounter() 2670
+          ddd 4.yield. getScheduleCounter() 2670
+-------- ddd leavs getScheduleCounter() 2670
+ddd after protector getScheduleCounter()  2672 
+------- ccc entered at  38.200000000 
+ddd
+          ccc 1.yield. getScheduleCounter()  2675
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 2677
+          ccc 3.yield. getScheduleCounter() 2677
+          ccc 4.yield. getScheduleCounter() 2677
+-------- ccc leavs getScheduleCounter() 2677
+ccc after protector getScheduleCounter()  2679 
+------- bbb entered at  38.299999999 
+ccc
+          bbb 1.yield. getScheduleCounter()  2682
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 2684
+          bbb 3.yield. getScheduleCounter() 2684
+          bbb 4.yield. getScheduleCounter() 2684
+-------- bbb leavs getScheduleCounter() 2684
+bbb after protector getScheduleCounter()  2686 
+------- aaa entered at  38.399999999 
+bbb
+          aaa 1.yield. getScheduleCounter()  2689
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 2691
+          aaa 3.yield. getScheduleCounter() 2691
+          aaa 4.yield. getScheduleCounter() 2691
+-------- aaa leavs getScheduleCounter() 2691
+aaa after protector getScheduleCounter()  2693 
+------- ddd entered at  38.500000000 
+aaa
+          ddd 1.yield. getScheduleCounter()  2696
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 2698
+          ddd 3.yield. getScheduleCounter() 2698
+          ddd 4.yield. getScheduleCounter() 2698
+-------- ddd leavs getScheduleCounter() 2698
+ddd after protector getScheduleCounter()  2700 
+------- ccc entered at  38.600000000 
+ddd
+          ccc 1.yield. getScheduleCounter()  2703
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 2705
+          ccc 3.yield. getScheduleCounter() 2705
+          ccc 4.yield. getScheduleCounter() 2705
+-------- ccc leavs getScheduleCounter() 2705
+ccc after protector getScheduleCounter()  2707 
+------- bbb entered at  38.700000000 
+ccc
+          bbb 1.yield. getScheduleCounter()  2710
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 2712
+          bbb 3.yield. getScheduleCounter() 2712
+          bbb 4.yield. getScheduleCounter() 2712
+-------- bbb leavs getScheduleCounter() 2712
+bbb after protector getScheduleCounter()  2714 
+------- aaa entered at  38.799999999 
+bbb
+          aaa 1.yield. getScheduleCounter()  2717
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 2719
+          aaa 3.yield. getScheduleCounter() 2719
+          aaa 4.yield. getScheduleCounter() 2719
+-------- aaa leavs getScheduleCounter() 2719
+aaa after protector getScheduleCounter()  2721 
+------- ddd entered at  38.899999999 
+aaa
+          ddd 1.yield. getScheduleCounter()  2724
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 2726
+          ddd 3.yield. getScheduleCounter() 2726
+          ddd 4.yield. getScheduleCounter() 2726
+-------- ddd leavs getScheduleCounter() 2726
+ddd after protector getScheduleCounter()  2728 
+------- ccc entered at  39.000000000 
+ddd
+          ccc 1.yield. getScheduleCounter()  2731
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 2733
+          ccc 3.yield. getScheduleCounter() 2733
+          ccc 4.yield. getScheduleCounter() 2733
+-------- ccc leavs getScheduleCounter() 2733
+ccc after protector getScheduleCounter()  2735 
+------- bbb entered at  39.100000000 
+ccc
+          bbb 1.yield. getScheduleCounter()  2738
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 2740
+          bbb 3.yield. getScheduleCounter() 2740
+          bbb 4.yield. getScheduleCounter() 2740
+-------- bbb leavs getScheduleCounter() 2740
+bbb after protector getScheduleCounter()  2742 
+------- aaa entered at  39.200000000 
+bbb
+          aaa 1.yield. getScheduleCounter()  2745
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 2747
+          aaa 3.yield. getScheduleCounter() 2747
+          aaa 4.yield. getScheduleCounter() 2747
+-------- aaa leavs getScheduleCounter() 2747
+aaa after protector getScheduleCounter()  2749 
+------- ddd entered at  39.299999999 
+aaa
+          ddd 1.yield. getScheduleCounter()  2752
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 2754
+          ddd 3.yield. getScheduleCounter() 2754
+          ddd 4.yield. getScheduleCounter() 2754
+-------- ddd leavs getScheduleCounter() 2754
+ddd after protector getScheduleCounter()  2756 
+------- ccc entered at  39.399999999 
+ddd
+          ccc 1.yield. getScheduleCounter()  2759
+ddd before protector 
+          ccc 2.yield. getScheduleCounter() 2761
+          ccc 3.yield. getScheduleCounter() 2761
+          ccc 4.yield. getScheduleCounter() 2761
+-------- ccc leavs getScheduleCounter() 2761
+ccc after protector getScheduleCounter()  2763 
+------- bbb entered at  39.500000000 
+ccc
+          bbb 1.yield. getScheduleCounter()  2766
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 2768
+          bbb 3.yield. getScheduleCounter() 2768
+          bbb 4.yield. getScheduleCounter() 2768
+-------- bbb leavs getScheduleCounter() 2768
+bbb after protector getScheduleCounter()  2770 
+------- aaa entered at  39.600000000 
+bbb
+          aaa 1.yield. getScheduleCounter()  2773
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 2775
+          aaa 3.yield. getScheduleCounter() 2775
+          aaa 4.yield. getScheduleCounter() 2775
+-------- aaa leavs getScheduleCounter() 2775
+aaa after protector getScheduleCounter()  2777 
+------- ddd entered at  39.700000000 
+aaa
+          ddd 1.yield. getScheduleCounter()  2780
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 2782
+          ddd 3.yield. getScheduleCounter() 2782
+          ddd 4.yield. getScheduleCounter() 2782
+-------- ddd leavs getScheduleCounter() 2782
+ddd after protector getScheduleCounter()  2784 
+------- ccc entered at  39.799999999 
+          ccc 1.yield. getScheduleCounter()  2787
+          ccc 2.yield. getScheduleCounter() 2787
+          ccc 3.yield. getScheduleCounter() 2787
+          ccc 4.yield. getScheduleCounter() 2787
+-------- ccc leavs getScheduleCounter() 2787
+ccc after protector getScheduleCounter()  2789 
+------- bbb entered at  39.899999999 
+          bbb 1.yield. getScheduleCounter()  2792
+          bbb 2.yield. getScheduleCounter() 2792
+          bbb 3.yield. getScheduleCounter() 2792
+          bbb 4.yield. getScheduleCounter() 2792
+-------- bbb leavs getScheduleCounter() 2792
+bbb after protector getScheduleCounter()  2794 
+------- aaa entered at  40.000000000 
+          aaa 1.yield. getScheduleCounter()  2797
+          aaa 2.yield. getScheduleCounter() 2797
+          aaa 3.yield. getScheduleCounter() 2797
+          aaa 4.yield. getScheduleCounter() 2797
+-------- aaa leavs getScheduleCounter() 2797
+aaa after protector getScheduleCounter()  2797 
+
+This run (test) terminates now! but first error log:
+time(secs)         id  text/name
+---------------------------------
+
+This run (test) terminates now! (terminate-test.cpp : 20)
