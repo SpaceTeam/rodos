@@ -2,6 +2,8 @@
 
 # Author Michael Zehrer (Uni Wuerzburg), October 2019
 
+# to create a boot SD card, see doc/how-to-make-a-boot-SD-card-for-Raspberry.md
+
 export ARCH=raspberrypi3
 
 SRCS[1]="${RODOS_SRC}/bare-metal-generic"
