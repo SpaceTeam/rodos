@@ -82,12 +82,12 @@ id  text/name
 This run (test) terminates now! but first error log:
 time(secs)         id  text/name
 ---------------------------------
- 16.500610043       0  In the loop
- 17.000615675       0  In the loop
- 17.500621378       0  In the loop
- 18.000630570       0  In the loop
- 18.500636949       0  In the loop
- 19.000644111       0  In the loop
- 19.500650685       0  In the loop
+ 16.500597402       0  In the loop
+ 17.000605703       0  In the loop
+ 17.500611416       0  In the loop
+ 18.000617598       0  In the loop
+ 18.500624719       0  In the loop
+ 19.000630605       0  In the loop
+ 19.500636530       0  In the loop
 
 This run (test) terminates now! (terminate-test.cpp : 20)

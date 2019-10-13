@@ -35,6 +35,8 @@ This run (test) will be terminated in 20 Seconds
   hi pri cnt = 2
   hi pri cnt = 3
   hi pri cnt = 3
+  hi pri cnt = 4
+  hi pri cnt = 4
 
 This run (test) terminates now! but first error log:
 time(secs)         id  text/name
