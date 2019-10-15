@@ -1,0 +1,14 @@
+image: nixos/nix:latest
+
+build-all:
+  stage: build
+  script:
+   - nix-build -k default.nix
+   - RET=$?
+   - find -L result* -type f -name '*.tgz' -exec cp '{}' . '+'
+   - (exit $RET)
+  artifacts:
+    paths:
+      - "*.tgz"
+    when: always
+    expire_in: 1 week

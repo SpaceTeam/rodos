@@ -45,7 +45,7 @@ echo "  --------- create rodoslib.a ---------"
 
 cd ${RODOS_TO_LINK}
 rm -f ${RODOS_LIBS}/${ARCH}/librodos.a
-ar rc ${RODOS_LIBS}/${ARCH}/librodos.a */*.o
+${AR:-ar} rc ${RODOS_LIBS}/${ARCH}/librodos.a */*.o || exit 1
 cd ..
 
 \rm -rf ${RODOS_TO_LINK}   # left my workspace clean

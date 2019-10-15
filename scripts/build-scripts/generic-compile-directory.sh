@@ -33,12 +33,13 @@ mkdir   $RODOS_TO_LINK/$NAME_TO_USE
 
 LIST=$(ls  $1/*.cc    $1/*.cpp   2> /dev/null)
 if [ ! -z "$LIST" ] ; then
-  ${CPP_COMP}  ${CFLAGS} ${CPPFLAGS} ${INCLUDES} ${YOURFLAGS}  -c $LIST
+  ${CPP_COMP} ${CFLAGS} ${CPPFLAGS} ${INCLUDES} ${YOURFLAGS} -c $LIST \
+      || exit 1
 fi
 
 LIST=$(ls  $1/*.c    $1/*.s      $1/*.S     2> /dev/null)
 if [ ! -z "$LIST" ] ; then
-  ${C_COMP}  ${CFLAGS} ${INCLUDES} ${YOURFLAGS}  -c $LIST
+  ${C_COMP} ${CFLAGS} ${INCLUDES} ${YOURFLAGS} -c $LIST || exit 1
 fi
 
 mv -i *.o $RODOS_TO_LINK/$NAME_TO_USE
