@@ -1,5 +1,8 @@
 image: nixos/nix:latest
 
+#  launches NixOS in a docker image; runs nix-build default.nix and 
+#  collects all build tgz files as build artifacts. These can be downloaded.
+
 build-all:
   stage: build
   script:

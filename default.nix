@@ -1,5 +1,8 @@
 with import <nixpkgs> {};
 
+# to build rodos and create a tgz archive with the librodos.a and all header files.  
+# It does so for a combination of targets/platforms: linux, posix, stm32f4, raspberry pi
+
 
 let doit = (target: env: env.mkDerivation {
  name = "rodos-${target}";
