@@ -20,6 +20,6 @@ export LINKFLAGS=" -L ${RODOS_LIBS}/${ARCH} -lrodos -lm "
 #__________________________ Select one: gcc or clang, clang is better to detect warnings but slower
 #export CPP_COMP="g++ "
 #export C_COMP="gcc "  # only to compile BSP and Drivers from chip provider
-export C_COMP="clang "  # only to compile BSP and Drivers from chip provider
-export CPP_COMP="clang++ "
+export C_COMP="${CC:-clang} "  # only to compile BSP and Drivers from chip provider
+export CPP_COMP="${CXX:-clang++} "
 

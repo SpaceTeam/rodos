@@ -43,8 +43,8 @@ fi
 # have symlinks in /usr/bin so this would work out-of-the box
 export ARM_TOOLS=""
 
-export CPP_COMP="${ARM_TOOLS}arm-none-eabi-g++ "
-export C_COMP="${ARM_TOOLS}arm-none-eabi-gcc "
-export AR="${ARM_TOOLS}arm-none-eabi-ar "
-export OBJCOPY="${ARM_TOOLS}arm-none-eabi-objcopy "
-export OBJDUMP="${ARM_TOOLS}arm-none-eabi-objdump "
+export CPP_COMP="${CXX:-${ARM_TOOLS}arm-none-eabi-g++} "
+export C_COMP="${CC:-${ARM_TOOLS}arm-none-eabi-gcc} "
+export AR="${AR:-${ARM_TOOLS}arm-none-eabi-ar} "
+export OBJCOPY="${OBJCOPY:-${ARM_TOOLS}arm-none-eabi-objcopy} "
+export OBJDUMP="${OBJDUMP:-${ARM_TOOLS}arm-none-eabi-objdump} "

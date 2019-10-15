@@ -57,7 +57,7 @@ export CFLAGS=${CFLAGS}" ${CFLAGS_BASICS} ${HWCFLAGS} "
 #export ARM_TOOLS="/opt/arm-tools/bin/"
 export ARM_TOOLS=""
 
-export CPP_COMP="${ARM_TOOLS}arm-none-eabi-g++ "
-export C_COMP="${ARM_TOOLS}arm-none-eabi-gcc " # only to compile BSP and Drivers from chip provider
-export AR="${ARM_TOOLS}arm-none-eabi-ar "
+export CPP_COMP="${CXX:-${ARM_TOOLS}arm-none-eabi-g++} "
+export C_COMP="${CC:-${ARM_TOOLS}arm-none-eabi-gcc} " # only to compile BSP and Drivers from chip provider
+export AR="${AR:-${ARM_TOOLS}arm-none-eabi-ar} "
 

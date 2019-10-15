@@ -1,0 +1,55 @@
+with import <nixpkgs> {};
+
+
+let doit = (target: env: env.mkDerivation {
+ name = "rodos-${target}";
+ src = ./.;
+ buildPhase =
+  ''
+  patchShebangs scripts/**/rodos-lib.sh
+  patchShebangs scripts/**/rodos-executable.sh
+  source setenvs.sh
+  rodos-lib.sh ${target}
+  if ! stat `find build -name librodos.a` &>/dev/null
+  then
+    echo "librodos.a not built!"
+    exit 1
+  fi
+  pushd tutorials/10*
+  rodos-executable.sh ${target} helloworld.cpp
+  if ! stat tst &>/dev/null
+  then
+    echo "helloworld test program could not be compiled"
+    exit 1
+  fi
+  popd
+  '';
+ installPhase =
+  ''
+  mkdir staging
+  mkdir staging/lib
+  mkdir staging/include
+  mv build/libs/* staging/lib/
+  mv api staging/include/rodos
+  cd src
+  find -L . -name "*.h" -exec bash -c 'mkdir -p ../staging/include/rodos/$(dirname $0); mv $0 ../staging/include/rodos/$0' '{}' ';'
+  cd ..
+  RODOS_NAME=rodos-${target}-${env.hostPlatform.system}
+  mv staging $RODOS_NAME
+  tar -caf ''${RODOS_NAME}.tgz $RODOS_NAME
+  mkdir $out
+  mv ''${RODOS_NAME}.tgz $out/
+  '';
+});
+
+in
+
+  map (cfg: doit (builtins.elemAt cfg 0) (builtins.elemAt cfg 1))
+  [
+  ["linuxMC" pkgsi686Linux.stdenv]
+  ["linux" pkgsi686Linux.stdenv]
+  ["posix" pkgsi686Linux.stdenv]
+  ["posix64" stdenv]
+  ["stm32f4" pkgsCross.arm-embedded.stdenv]
+  ["raspberrypi3" pkgsCross.arm-embedded.stdenv]
+  ]
