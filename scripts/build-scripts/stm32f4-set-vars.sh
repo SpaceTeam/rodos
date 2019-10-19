@@ -17,6 +17,7 @@ export ARCH=stm32f4
 
 export SUB_ARCH=stm32f40x  # STM32F4Discovery, MINI-M4
 export OSC_CLK=8000000     # STM32F4Discovery, STM32F429Discovery
+#export OSC_CLK=16000000     # SKITH
 
 export ST_LINK="v2_1" #stm32f40x
 #export ST_LINK="v2_0" #stm32f401

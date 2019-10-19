@@ -25,7 +25,7 @@ namespace RODOS {
 *  protected using priority_ceiling, or semaphores.
 *
 *  @param Type    data type of fifo entries
-*  @param len     maximal number of entries must be at least 2
+*  @param len     maximal number of entries must be at least 2 (real capacity = len-1)
 *
 */
 template < typename Type, int len > class Fifo : public Putter {

@@ -71,7 +71,7 @@ PriorityCeiler priorityCeiler;
 void MAIN() {
     if(Application::findApplication(2000) == 0) {
         xprintf("\n\n**********************\n");
-        xprintf("To be able to test it compile together wirh PreemptionTest\n");
+        xprintf("To be able to test it compile together with PreemptionTest\n");
         xprintf("**********************\n\n\n");
     } else {
         xprintf("Preemptiontest found\n");
