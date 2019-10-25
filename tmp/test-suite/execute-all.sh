@@ -10,10 +10,9 @@ fi
 
 set -e
 
-rm -rf $3
-mkdir  $3
+mkdir -p  $3
 
-TEST_LEN=-DTIME_TO_END=20
+TEST_LEN=-DTIME_TO_END=40
 
 for i in $2/*.cpp
 do
@@ -32,17 +31,17 @@ do
     # no more than 4 jobs simultaneusliy (I assume 4 cores)
     NUM=$(jobs | wc -l)
     if [ "$NUM" -gt 3 ] ; then
-        echo "waiting for jobs to conclude"
+        echo "          waiting for jobs to conclude"
         wait
     fi
 
 done
 
-echo "__________________________________"
+echo "          __________________________________"
 jobs
 wait
 rm -f tst
-echo "__________________________________"
+echo "          __________________________________"
 jobs
 
 
