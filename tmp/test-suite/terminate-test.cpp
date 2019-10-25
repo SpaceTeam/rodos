@@ -1,7 +1,7 @@
 #include "rodos.h"
 
 #ifndef TIME_TO_END
-#define TIME_TO_END 20
+#define TIME_TO_END 40
 #endif
 
 #include "prt-seconds-now.h"

@@ -44,7 +44,7 @@ uint16_t hash(const char* str);
 
 
 /// Computes the checkSum of an array of 32-bit words, according to CCSDS algorithm.
-/// Warning: There are several checksum standard. 
+/// Warning: len ist not bytes! it is num of 32-bit words
 uint32_t checkSumXor32(uint32_t *buf, int len);
 
 

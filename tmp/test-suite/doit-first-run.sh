@@ -1,6 +1,14 @@
 #!/bin/bash
 #rodos-lib.sh linuxMC
 
-execute-all.sh   linux        core-tests       core-expected
+\rm -rf expected-outputs
 
+echo "__________________________________________________________ core fast test programs"
+execute-all.sh   linux        core-fast       expected-outputs
+
+echo "__________________________________________________________ core slow test programs"
+execute-all.sh   linux        core-slow       expected-outputs
+
+echo "__________________________________________________________ middleware test programs"
+execute-all.sh   linux        middleware-tests expected-outputs
 
