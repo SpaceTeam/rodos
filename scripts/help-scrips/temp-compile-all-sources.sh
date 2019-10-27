@@ -28,6 +28,14 @@ do
     rodos-executable.sh stm32f4 $i
 done
 
+echo "   __________________________________________________________ sf2 "
+for i in *.cpp
+do
+    # echo $i
+    rodos-executable.sh sf2 $i
+done
+
+
 echo "   __________________________________________________________ raspberrypi3 "
 for i in *.cpp
 do
