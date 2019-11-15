@@ -13,8 +13,10 @@
 * @brief linked list management
 */
 
-#include "rodos.h"
-#include "hw_specific.h"
+#include "listelement.h"
+#include "rodos-assert.h"
+#include "rodos-debug.h"
+#include "thread.h"
 
 
 namespace RODOS {
