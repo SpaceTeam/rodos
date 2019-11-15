@@ -1,6 +1,3 @@
-
-
-
 /**
  * @file time.cc
  * @date 2008/04/24 11:03
@@ -10,9 +7,11 @@
  * @brief basic functions for time handling
  *
  */
+#include <stdint.h>
 
-#include "rodos.h"
+
 #include "hw_specific.h"
+#include "timemodel.h"
 
 
 namespace RODOS {
