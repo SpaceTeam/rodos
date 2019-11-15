@@ -2,6 +2,7 @@
 #pragma once
 
 #include "hw_udp.h"
+#include "topic.h"
 
 /**
  * @file udp.h
