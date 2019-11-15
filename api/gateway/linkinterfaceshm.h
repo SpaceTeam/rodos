@@ -1,5 +1,10 @@
 #pragma once
 
+
+#include <stdint.h>
+
+
+#include "fifo.h"
 #include "gateway/networkmessage.h"
 #include "gateway/linkinterface.h"
 #include "hal/hal_sharedmemory.h"

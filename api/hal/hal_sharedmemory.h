@@ -5,9 +5,13 @@
  * @author Johannes Freitag
  */
 #pragma once
+#include <stdint.h>
+
 
 #include "genericIO.h"
-#include <stdint.h>
+#include "misc-rodos-funcs.h"
+#include "thread.h"
+
 
 namespace RODOS {
 
