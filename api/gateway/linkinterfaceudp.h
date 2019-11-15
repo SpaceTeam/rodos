@@ -7,10 +7,12 @@
 
 #pragma once
 
+#include "fifo.h"
 #include "gateway/linkinterface.h"
-#include "subscriber.h"
 #include "hal/udp.h"
-#include "rodos.h"
+#include "subscriber.h"
+#include "topic.h"
+
 
 namespace RODOS {
 
