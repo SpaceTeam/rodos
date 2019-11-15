@@ -1,4 +1,3 @@
-
 /**
  * @file gatewayGeneric.cc
  * @date 2012/05/01 7:07
@@ -8,9 +7,15 @@
  * @brief gateway for middleware
  *
  */
+#include <stdint.h>
 
+
+#include "application.h"
 #include "gateway/gateway.h"
-#include "rodos.h"
+#include "reserved_application_ids.h"
+#include "subscriber.h"
+#include "thread.h"
+
 
 namespace RODOS {
 
