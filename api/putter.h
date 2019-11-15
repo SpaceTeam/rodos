@@ -15,6 +15,7 @@
 
 #pragma once
 
+#include "rodos-debug.h"
 #include "subscriber.h"
 
 

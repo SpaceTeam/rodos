@@ -10,6 +10,8 @@
 
 #pragma once
 
+#include <stdint.h>
+
 #include "putter.h"
 
 namespace RODOS {

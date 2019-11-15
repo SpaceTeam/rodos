@@ -13,6 +13,8 @@
 #pragma once
 
 #include "putter.h"
+#include "rodos-debug.h"
+#include "thread.h"
 
 namespace RODOS {
 

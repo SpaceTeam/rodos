@@ -1,5 +1,3 @@
-
-
 /**
 * @file debuecksumes.h
 * @date 2008/06/17 10:46
@@ -9,6 +7,9 @@
 */
 
 #pragma once
+
+
+#include <stdint.h>
 
 
 namespace RODOS {

@@ -11,6 +11,8 @@
 
 #pragma once
 
+#include <stdint.h>
+
 #include "listelement.h" // required when compilng with posix
 #include "timemodel.h"
 #include "default-platform-parameter.h"

@@ -1,4 +1,3 @@
-
 /**
 * @file application.h
 * @date 2008/06/04 11:46
@@ -7,8 +6,10 @@
 * @brief collection of information about an application (header)
 *
 */
-
 #pragma once
+
+
+#include <stdint.h>
 
 #include "listelement.h"
 
