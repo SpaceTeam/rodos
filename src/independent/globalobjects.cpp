@@ -13,7 +13,14 @@
 * @brief %Thread handling
 */
 
-#include "rodos.h"
+
+#include "initiator.h"
+#include "listelement.h"
+#include "subscriber.h"
+#include "thread.h"
+#include "timeevent.h"
+#include "timepoints.h"
+
 
 namespace RODOS {
 
