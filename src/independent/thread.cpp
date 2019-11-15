@@ -1,4 +1,3 @@
-
 /**
 * @file thread.cc
 * @date 2008/04/22 16:50
@@ -10,7 +9,10 @@
 * @brief %Thread handling
 */
 
-#include "rodos.h"
+#include "rodos-debug.h"
+#include "thread.h"
+#include "timepoints.h"
+
 
 namespace RODOS {
 
