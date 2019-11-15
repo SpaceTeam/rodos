@@ -14,6 +14,7 @@
 //#include <netinet/in.h>
 
 #include "hw_datatypes.h"
+#include "topic.h"
 
 
 #ifndef NO_RODOS_NAMESPACE
