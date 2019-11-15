@@ -19,7 +19,7 @@
  * max middleware message len = 255*7 + 5 bytes = 1790 (Internal limited to 1300)
  *
  */
-
+#include <stdint.h>
 
 
 #include"gateway/linkinterfacecan.h"
