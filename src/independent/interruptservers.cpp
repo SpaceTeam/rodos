@@ -6,7 +6,7 @@
 * @author Sergio Montenegro
 *
 */
-#include "rodos.h"
+#include "topic.h"
 
 
 namespace RODOS {
