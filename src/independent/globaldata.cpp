@@ -8,7 +8,11 @@
 *
 */
 
-#include "rodos.h"
+#include "stdint.h"
+
+
+#include "thread.h"
+
 
 namespace RODOS {
 
