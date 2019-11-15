@@ -1,4 +1,4 @@
-#include "rodos.h"
+#include "yprintf.h"
 
 /**
  * MAIN() is the entry point for user code.
@@ -7,6 +7,6 @@
  */
 
 void MAIN() __attribute__((weak));
-void MAIN() { xprintf("Default internal MAIN\n"); }
+void MAIN() { RODOS::xprintf("Default internal MAIN\n"); }
 
 
