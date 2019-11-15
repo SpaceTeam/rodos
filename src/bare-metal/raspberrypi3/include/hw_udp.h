@@ -12,6 +12,7 @@
 //#include <netinet/in.h>
 
 #include "hw_datatypes.h"
+#include "topic.h"
 
 namespace RODOS {
 
