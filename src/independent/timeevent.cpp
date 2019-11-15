@@ -1,7 +1,3 @@
-
-
-
-
 /**
 * @file event.cc
 * @date 2008/05/06 10:12
@@ -10,8 +6,12 @@
 *
 * @brief %Event management
 */
+#include <stdint.h>
 
-#include "rodos.h"
+
+#include "listelement.h"
+#include "rodos-debug.h"
+#include "timeevent.h"
 
 
 namespace RODOS {
