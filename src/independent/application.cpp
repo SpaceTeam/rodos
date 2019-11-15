@@ -9,7 +9,11 @@
 *
 */
 
-#include "rodos.h"
+
+#include "application.h"
+#include "listelement.h"
+#include "rodos-debug.h"
+
 
 namespace RODOS {
 
