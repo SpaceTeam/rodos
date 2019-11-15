@@ -12,6 +12,9 @@
 #pragma once
 
 
+#include "thread.h"
+
+
 namespace RODOS {
 
 extern "C" {
