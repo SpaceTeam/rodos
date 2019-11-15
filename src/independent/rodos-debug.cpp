@@ -1,5 +1,3 @@
-
-
 /**
 * @file rodos-debug.cpp
 * @date 2008/06/17 10:48
@@ -11,7 +9,16 @@
 *
 */
 
-#include "rodos.h"
+#include "stddef.h"
+#include "stdint.h"
+
+
+#include "misc-rodos-funcs.h"
+#include "rodos-debug.h"
+#include "rodos-semaphore.h"
+#include "timepoints.h"
+#include "yprintf.h"
+
 
 namespace RODOS {
 
