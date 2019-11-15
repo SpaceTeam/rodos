@@ -6,8 +6,10 @@
 * @brief Messages to be exchanged between nodes and network
 *
 */
+#include <stdint.h>
 
-#include "rodos.h"
+
+#include "gateway/networkmessage.h"
 #include "macros_bits_bytes.h"
 
 namespace RODOS {
