@@ -10,9 +10,13 @@
 #ifndef __HW_UDP_H__
 #define __HW_UDP_H__
 
+#include <stdint.h>
 #include <sys/types.h>
+
+
 #include "lwip/udp.h"
 #include "hw_datatypes.h"
+#include "topic.h"
 
 #define RECV_BUFFER_COUNT 8
 
