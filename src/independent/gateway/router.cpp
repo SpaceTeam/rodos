@@ -10,6 +10,7 @@
  */
 
 #include "gateway/router.h"
+#include "rodos-debug.h"
 
 namespace RODOS {
 
