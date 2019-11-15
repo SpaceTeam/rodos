@@ -8,9 +8,21 @@
  *
  */
 
-#include "hw_specific.h"
-#include "rodos.h"
+
+#include "application.h"
+#include "hostinfos.h"
+#include "initiator.h"
+#include "listelement.h"
+#include "misc-rodos-funcs.h"
+#include "rodos-version.h"
 #include "scheduler.h"
+#include "subscriber.h"
+#include "thread.h"
+#include "timeevent.h"
+#include "yprintf.h"
+
+
+#include "hw_specific.h"
 
 
 namespace RODOS {
