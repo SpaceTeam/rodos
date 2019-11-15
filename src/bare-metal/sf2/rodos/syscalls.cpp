@@ -13,7 +13,7 @@
 extern int errno;
 
 #include "hal/hal_uart.h"
-#include "platform-parameter.h"
+#include "default-platform-parameter.h"
 #include "misc-rodos-funcs.h"
 #include "rodos-debug.h"
 #include "hw_specific.h"

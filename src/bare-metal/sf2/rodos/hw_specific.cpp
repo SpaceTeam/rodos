@@ -17,7 +17,7 @@
 
 #include "rodos.h"
 
-#include "platform-parameter.h"
+#include "default-platform-parameter.h"
 #include "hw_specific.h"
 #include "hal/hal_uart.h"
 

@@ -13,7 +13,6 @@
 #include <stdint.h>
 
 #include "default-platform-parameter.h"
-#include "platform-parameter.h"   // this comes from the platform directory (eg. stm32f4, sf2, ppc, linux-x86)
 
 #include "rodos-errorcodes.h"
 
