@@ -55,4 +55,5 @@ in
   ["posix64" stdenv]
   ["stm32f4" pkgsCross.arm-embedded.stdenv]
   ["raspberrypi3" pkgsCross.arm-embedded.stdenv]
+  ["sf2" pkgsCross.arm-embedded.stdenv]
   ]

@@ -10,6 +10,11 @@
 #define __PLATFORM_PARAMETER_H__
 
 //#include "userconfig.h"
+
+// Work around issue with CMSIS files which lack the necessary
+// includes for uint32_t and friends.
+#include <stdint.h>
+
 #include "../drivers_config/sys_config/sys_config.h"
 #include "../CMSIS/system_m2sxxx.h"
 
