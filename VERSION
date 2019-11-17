@@ -46,6 +46,7 @@ RODOS Versioning
             Timpoings::add now bool
 	    add result class
         g:  add raspberypy & Update tutotrials
+            add sf2
             beginning of test suite
 
 
