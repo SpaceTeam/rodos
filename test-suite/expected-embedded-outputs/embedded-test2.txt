@@ -1,0 +1,134 @@
+RODOS RODOS-200.0 OS Version Linux-x86
+Loaded Applications:
+         10 -> 'Topics & Middleware'
+       1000 -> 'terminateTest'
+       1100 -> 'ReciverPutter'
+       1100 -> 'ReceiverSimple'
+       1100 -> 'Publisher 01 simple'
+Calling Initiators and Application Initiators
+ initiator nodnr = 7
+Distribute Subscribers to Topics
+List of Middleware Topics:
+ CharInput  Id = 28449 len = 16.   -- Subscribers:
+ SigTermInterrupt  Id = 16716 len = 4.   -- Subscribers:
+ UartInterrupt  Id = 15678 len = 4.   -- Subscribers:
+ TimerInterrupt  Id = 25697 len = 4.   -- Subscribers:
+ routerTopic  Id = 21324 len = 1326.   -- Subscribers:
+ gatewayTopic  Id = 0 len = 16.   -- Subscribers:
+ counter1  Id = 11555 len = 4.   -- Subscribers:
+     simplesub
+     justprint01
+     fifo
+     receiverbuf
+
+Event servers:
+Threads in System:
+   Prio =       0 Stack =  32000 IdleThread: yields all the time
+   Prio =    1003 Stack =  32000 TerminateTest: 
+   Prio =     100 Stack =  32000 AnonymThread: 
+   Prio =     100 Stack =  32000 AnonymThread: 
+   Prio =     100 Stack =  32000 SenderSimple: 
+   Prio =     100 Stack =  32000 AnonymThread: 
+   Prio =     100 Stack =  32000 AnonymThread: 
+   Prio =     100 Stack =  32000 AnonymThread: 
+   Prio =     100 Stack =  32000 AnonymThread: 
+   Prio =     100 Stack =  32000 AnonymThread: 
+   Prio =     100 Stack =  32000 AnonymThread: 
+   Prio =     100 Stack =  32000 AnonymThread: 
+   Prio =     100 Stack =  32000 AnonymThread: 
+   Prio =     100 Stack =  32000 AnonymThread: 
+   Prio =     100 Stack =  32000 AnonymThread: 
+   Prio =     100 Stack =  32000 AnonymThread: 
+   Prio =     100 Stack =  32000 AnonymThread: 
+   Prio =     100 Stack =  32000 AnonymThread: 
+   Prio =     100 Stack =  32000 AnonymThread: 
+   Prio =     100 Stack =  32000 AnonymThread: 
+   Prio =     100 Stack =  32000 AnonymThread: 
+   Prio =     100 Stack =  32000 AnonymThread: 
+   Prio =     100 Stack =  32000 AnonymThread: 
+   Prio =     100 Stack =  32000 AnonymThread: 
+   Prio =     100 Stack =  32000 AnonymThread: 
+   Prio =     100 Stack =  32000 AnonymThread: 
+   Prio =     100 Stack =  32000 AnonymThread: 
+   Prio =     100 Stack =  32000 AnonymThread: 
+   Prio =     100 Stack =  32000 AnonymThread: 
+   Prio =     100 Stack =  32000 AnonymThread: 
+   Prio =     100 Stack =  32000 AnonymThread: 
+   Prio =     100 Stack =  32000 AnonymThread: 
+   Prio =     100 Stack =  32000 AnonymThread: 
+   Prio =     100 Stack =  32000 AnonymThread: 
+   Prio =     100 Stack =  32000 AnonymThread: 
+   Prio =     100 Stack =  32000 MainTest: 
+BigEndianity = 0, cpu-Arc = x86, Basis-Os = baremetal, Cpu-Speed (K-Loops/sec) = 313330 yeildtim (ns) 990
+Node Number: HEX: 7 Dec: 7
+-----------------------------------------------------
+Default internal MAIN
+--------------- Application running ------------
+
+This run (test) will be terminated in 40 Seconds
+Semaphore-Test----------------
+Result: 30000 (Correct)
+Various Receivers-------------
+ReceiverComBuffer - counter1: 0
+Publisher01 sending Counter1 1
+SimpleSub - Length: 4 Data: 1 TopicId: 11555 
+ReceiverPutter -  msgLen: 4 data: 1 topicId: 11555
+ReceiverSync - counter1: 1
+ReceiverComBuffer - counter1: 1
+Publisher01 sending Counter1 2
+SimpleSub - Length: 4 Data: 2 TopicId: 11555 
+ReceiverPutter -  msgLen: 4 data: 2 topicId: 11555
+ReceiverSync - counter1: 2
+ReceiverComBuffer - counter1: 2
+Publisher01 sending Counter1 3
+SimpleSub - Length: 4 Data: 3 TopicId: 11555 
+ReceiverPutter -  msgLen: 4 data: 3 topicId: 11555
+ReceiverSync - counter1: 3
+ReceiverComBuffer - counter1: 3
+Publisher01 sending Counter1 4
+SimpleSub - Length: 4 Data: 4 TopicId: 11555 
+ReceiverPutter -  msgLen: 4 data: 4 topicId: 11555
+ReceiverSync - counter1: 4
+ReceiverComBuffer - counter1: 4
+Publisher01 sending Counter1 5
+SimpleSub - Length: 4 Data: 5 TopicId: 11555 
+ReceiverPutter -  msgLen: 4 data: 5 topicId: 11555
+ReceiverSync - counter1: 5
+ReceiverComBuffer - counter1: 5
+Publisher01 sending Counter1 6
+SimpleSub - Length: 4 Data: 6 TopicId: 11555 
+ReceiverPutter -  msgLen: 4 data: 6 topicId: 11555
+ReceiverSync - counter1: 6
+ReceiverComBuffer - counter1: 6
+Publisher01 sending Counter1 7
+SimpleSub - Length: 4 Data: 7 TopicId: 11555 
+ReceiverPutter -  msgLen: 4 data: 7 topicId: 11555
+ReceiverSync - counter1: 7
+ReceiverComBuffer - counter1: 7
+Publisher01 sending Counter1 8
+SimpleSub - Length: 4 Data: 8 TopicId: 11555 
+ReceiverPutter -  msgLen: 4 data: 8 topicId: 11555
+ReceiverSync - counter1: 8
+ReceiverComBuffer - counter1: 8
+Publisher01 sending Counter1 9
+SimpleSub - Length: 4 Data: 9 TopicId: 11555 
+ReceiverPutter -  msgLen: 4 data: 9 topicId: 11555
+ReceiverSync - counter1: 9
+ReceiverComBuffer - counter1: 9
+Publisher01 sending Counter1 10
+SimpleSub - Length: 4 Data: 10 TopicId: 11555 
+ReceiverPutter -  msgLen: 4 data: 10 topicId: 11555
+ReceiverSync - counter1: 10
+ReceiverComBuffer - counter1: 10
+Publisher01 sending Counter1 11
+SimpleSub - Length: 4 Data: 11 TopicId: 11555 
+ReceiverPutter -  msgLen: 4 data: 11 topicId: 11555
+ReceiverSync - counter1: 11
+ReceiverComBuffer - counter1: 11
+Publisher01 sending Counter1 12
+SimpleSub - Length: 4 Data: 12 TopicId: 11555 
+ReceiverPutter -  msgLen: 4 data: 12 topicId: 11555
+ReceiverSync - counter1: 12
+ReceiverComBuffer - counter1: 12
+Publisher01 sending Counter1 13
+FINISHED----------------------
