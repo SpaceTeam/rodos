@@ -41,11 +41,11 @@ This commands builds the RODOS' support library, which is then placed at `build/
 Compile Tutorials
 -----------------
 For some of the tutorials, there are ready compilation targets in CMake.
-In order to enable them, you must set the `TUTORIALS` variable to `ON`: 
+In order to enable them, you must set the `EXECUTABLE` variable to `ON`: 
 
 ```shell script
 $ cd build
-$ cmake -DCMAKE_TOOLCHAIN_FILE=cmake/port/posix.cmake -DTUTORIALS=ON ..
+$ cmake -DCMAKE_TOOLCHAIN_FILE=cmake/port/posix.cmake -DEXECUTABLE=ON ..
 ```
 
 After that, several new targets are available, which can be compiled by using their names, e.g.

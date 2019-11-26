@@ -7,6 +7,7 @@ add_compile_options( $<$<COMPILE_LANGUAGE:CXX>:-fno-rtti> $<$<COMPILE_LANGUAGE:C
 
 project(rodos C CXX ASM)
 
+#___________________________________________________________________
 file(GLOB_RECURSE independent_sources
     src/independent/*.cpp
     support/support-libs/*.cpp)
@@ -27,6 +28,8 @@ target_include_directories(rodos PUBLIC
     src/${port_dir}/include
     support/support-libs)
 
+
+#___________________________________________________________________
 if (is_port_baremetal)
   file(GLOB baremetal_generic_sources src/bare-metal-generic/*.cpp)
   target_sources(rodos PRIVATE ${baremetal_generic_sources})
@@ -35,6 +38,10 @@ if (is_port_baremetal)
       src/bare-metal-generic/ip/lwip/include)
 endif ()
 
+
+#___________________________________________________________________
+#    optional extra files which are port dependent. See cmake/port/xxx.cmake
+#___________________________________________________________________
 if (sources_to_add)
   file(GLOB files ${sources_to_add})
   target_sources(rodos PRIVATE ${files})
@@ -48,7 +55,7 @@ if (libraries_to_link)
   target_link_libraries(rodos PUBLIC ${libraries_to_link})
 endif ()
 
-if (TUTORIALS)
+if (EXECUTABLE)
   include(cmake/executable.cmake)
   add_subdirectory(tutorials)
 endif ()
