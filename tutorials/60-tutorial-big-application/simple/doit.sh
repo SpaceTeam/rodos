@@ -12,6 +12,13 @@ EOT
   exit
 fi
 
+if [ $# -ne 1 ]
+then
+    echo
+    echo "expected one parameter: name of architecture"
+    echo
+    exit 1
+fi
 
 set -e
 
@@ -19,7 +26,7 @@ set -e
 #       We set here the variables for "Linux make context"! Change this for other platforms
 #       bash is intelligent, it searches for xxx-set-vars.sh search in $PATH and finds it in $RODOS_BUILD_SCRIPTS
 
-source linuxMC-set-vars.sh
+source $1-set-vars.sh
 
 export INCLUDES=${INCLUDES}" -I ${MISSION_ROOT}/common"
 
