@@ -13,7 +13,7 @@ def Settings(**kwargs):
     final_flags.append(my_srcs)
 
     final_flags.append("-I")
-    my_hw_srcs = os.environ["RODOS_ROOT"] + "/src/bare-metal/linux_x86"
+    my_hw_srcs = os.environ["RODOS_ROOT"] + "/src/bare-metal/linux-x86"
     final_flags.append(my_hw_srcs)
 
     final_flags.append("-I")
