@@ -71,7 +71,7 @@ HAL_UART::HAL_UART(UART_IDX uartIdx) {
     context           = &UART_contextArray[uartIdx];
     context->idx      = uartIdx;
     context->hal_uart = this;
-};
+}
 
 
 /*
