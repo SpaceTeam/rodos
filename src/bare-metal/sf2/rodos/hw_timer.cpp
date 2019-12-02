@@ -113,7 +113,6 @@ static __INLINE uint32_t SysTick_Disable(void) {
  * the timer interval
  */
 long long Timer::microsecondsInterval = PARAM_TIMER_INTERVAL;
-;
 
 void Timer::init() {
     Timer::microsecondsInterval = PARAM_TIMER_INTERVAL;

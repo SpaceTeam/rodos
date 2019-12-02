@@ -16,7 +16,7 @@ HW_HAL_GPIO::HW_HAL_GPIO(GPIO_PIN pinIdx, uint8_t numOfPins, bool isOutput) : pi
     setPinMask();
     irqSensitivity       = GPIO_IRQ_SENS_BOTH;
     interruptEventOcured = false;
-};
+}
 
 void HW_HAL_GPIO::setPinMask(void) {
     if(numOfPins + (pinIdx & 0x1F) > 32) { // pin-group exceeds port boundary ! only the pins up to most significant pin of port will be set
