@@ -8,8 +8,8 @@
 * @brief debug and prinf functions 
 */
 
-
-#include "stdint.h"
+#include <stddef.h>
+#include <stdint.h>
 
 namespace RODOS {
 

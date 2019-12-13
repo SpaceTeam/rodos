@@ -12,6 +12,8 @@
 
 #pragma once
 
+#include <stdint.h>
+
 #include "listelement.h"
 #include "timemodel.h"
 #include "rodos-debug.h"

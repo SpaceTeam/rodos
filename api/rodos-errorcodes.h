@@ -6,7 +6,7 @@
  * @brief Error codes definitions 
  */
 
-#include "stdint.h"
+#include <stdint.h>
 
 namespace RODOS {
 

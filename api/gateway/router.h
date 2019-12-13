@@ -10,10 +10,10 @@
 
 #define MAX_NUMBER_OF_GATEWAYS_PER_ROUTER 8
 
-#include "rodos.h"
+
 #include "gateway/gateway.h"
-#include "subscriber.h"
 #include "putter.h"
+#include "subscriber.h"
 #include "topic.h"
 
 

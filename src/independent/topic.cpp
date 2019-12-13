@@ -1,6 +1,3 @@
-
-#include "rodos.h"
-
 /**
  * @file topic.cc
  * @date 2008/09/01 7:07
@@ -10,6 +7,16 @@
  * @brief topic for middleware
  *
  */
+
+#include "application.h"
+#include "listelement.h"
+#include "misc-rodos-funcs.h"
+#include "reserved_application_ids.h"
+#include "reserved_topic_ids.h"
+#include "rodos-debug.h"
+#include "subscriber.h"
+#include "topic.h"
+
 
 namespace RODOS {
 

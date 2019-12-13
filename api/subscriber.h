@@ -11,6 +11,9 @@
 
 #pragma once
 
+#include <stdint.h>
+
+#include "rodos-debug.h"
 #include "rodos-semaphore.h"
 #include "topic.h"
 

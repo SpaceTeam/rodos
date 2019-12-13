@@ -1,9 +1,10 @@
-
-
 #pragma once
 
+
+#include <stdint.h>
+
+
 #include "gateway/linkinterface.h"
-#include "rodos.h"
 #include "hal.h"
 #include "hal/hal_can.h"
 

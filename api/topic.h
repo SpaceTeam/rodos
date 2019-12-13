@@ -12,6 +12,7 @@
 
 #pragma once
 
+#include "listelement.h"
 #include "rodos-debug.h"
 #include "gateway/networkmessage.h"
 

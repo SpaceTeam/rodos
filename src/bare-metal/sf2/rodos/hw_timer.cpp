@@ -10,7 +10,7 @@
 #include "rodos.h"
 #include "hw_specific.h"
 
-#include "platform-parameter.h"
+#include "default-platform-parameter.h"
 
 #include "../drivers/mss_timer.h"
 

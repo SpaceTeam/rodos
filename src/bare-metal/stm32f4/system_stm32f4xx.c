@@ -213,7 +213,7 @@
   */
 
 #include "stm32f4xx.h"
-#include "platform-parameter.h"
+#include "default-platform-parameter.h"
 
 /**
   * @}

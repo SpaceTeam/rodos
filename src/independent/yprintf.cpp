@@ -1,6 +1,3 @@
-#include <stdarg.h>
-#include "rodos.h"
-
 /**
  * micro printf (subset)
  *
@@ -9,6 +6,12 @@
  * %e Extensions: Michael Strohmeier 2018
  *
  */
+#include <stdarg.h>
+
+
+#include "rodos-debug.h"
+#include "yprintf.h"
+
 
 namespace RODOS {
 

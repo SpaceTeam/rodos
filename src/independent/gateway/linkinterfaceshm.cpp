@@ -1,8 +1,11 @@
-
-#include "rodos.h"
-#include "hal/hal_sharedmemory.h"
 #include <new>
+#include <stdint.h>
+
+
 #include "gateway/linkinterfaceshm.h"
+#include "hal/hal_sharedmemory.h"
+#include "rodos-assert.h"
+
 
 #define FIFO_MAGIC_WORD 1234
 

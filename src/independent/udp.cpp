@@ -1,8 +1,3 @@
-
-
-
-
-#include "rodos.h"
 /**
  * @file udp.h
  * @date 2008/05/20 6:20
@@ -12,6 +7,11 @@
  * UDP interface
  *
  */
+#include "hal/udp.h"
+#include "rodos-assert.h"
+#include "rodos-debug.h"
+#include "topic.h"
+
 
 
 namespace RODOS {

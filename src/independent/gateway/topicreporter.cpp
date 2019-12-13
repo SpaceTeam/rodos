@@ -5,9 +5,9 @@
  *      Author: Dilger
  */
 
-#include "rodos.h"
 
 #include "gateway/topicreporter.h"
+#include "rodos-debug.h"
 
 namespace RODOS {
 

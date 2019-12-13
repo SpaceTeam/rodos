@@ -8,13 +8,11 @@
 
 #pragma once
 
-#define RODOS_VERSION 200.0
-#define RODOS_VERSION_TEXT "RODOS-200.0"
+#include "rodos-version.h"
 
 #include <stdint.h>
 
 #include "default-platform-parameter.h"
-#include "platform-parameter.h"   // this comes from the platform directory (eg. stm32f4, sf2, ppc, linux-x86)
 
 #include "rodos-errorcodes.h"
 

@@ -7,7 +7,7 @@
  * Date      : 23.10.2008
  */
 
-#include "stdint.h"
+#include <stdint.h>
 
 namespace RODOS {
 

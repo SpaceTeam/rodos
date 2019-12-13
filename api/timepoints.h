@@ -10,7 +10,9 @@
 
 #pragma once
 #include <stdint.h>
+
 #include "rodos-debug.h"
+#include "thread.h"
 
 namespace RODOS {
 

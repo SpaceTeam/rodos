@@ -1,3 +1,5 @@
+#include <stddef.h>
+
 
 #include "string_pico.h"
 

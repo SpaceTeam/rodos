@@ -8,8 +8,13 @@
 * @brief small support functions
 *
 */
+#include "default-platform-parameter.h"
+#include "hostinfos.h"
+#include "rodos-assert.h"
+#include "thread.h"
+
 #include "hw_specific.h"
-#include "rodos.h"
+
 
 namespace RODOS {
 

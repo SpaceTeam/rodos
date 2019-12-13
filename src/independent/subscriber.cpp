@@ -1,6 +1,3 @@
-
-#include "rodos.h"
-
 /**
 * @file subscriber.cc
 * @date 2008/09/01 7:07
@@ -13,6 +10,10 @@
 
 // List Subscriber::subscriberList = 0;
 
+
+#include "listelement.h"
+#include "putter.h"
+#include "subscriber.h"
 
 
 namespace RODOS {

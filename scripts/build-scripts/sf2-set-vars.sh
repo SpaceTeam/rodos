@@ -30,7 +30,7 @@ export LINKSCRIPT="debug-in-microsemi-smartfusion2-envm_w_ddr.ld"
 #export LINKSCRIPT="production-smartfusion2-execute-in-place.ld"
 
 export DEFINES=" -DMICROSEMI_STDIO_THRU_UART -DMULTICAST "
-export CFLAGS_BASICS=" -Wno-long-long -O2 -Wall -Wno-format -fsigned-char -ffunction-sections \
+export CFLAGS_BASICS=" -Wno-long-long -O2 -Wall -fsigned-char -ffunction-sections \
                        -fdata-sections --specs=nano.specs ${DEFINES}"
 export HWCFLAGS=" -mcpu=cortex-m3 -mthumb "
 export CFLAGS=" ${CFLAGS_BASICS} ${HWCFLAGS} "
@@ -44,11 +44,11 @@ if [ -z ${ARM_TOOLS} ]; then
     export ARM_TOOLS=""
 fi
 
-export CPP_COMP="${ARM_TOOLS}arm-none-eabi-g++ "
-export C_COMP="${ARM_TOOLS}arm-none-eabi-gcc "
-export OBJDUMP="${ARM_TOOLS}arm-none-eabi-objdump "
-export AR="${ARM_TOOLS}arm-none-eabi-ar "
-export SIZE="${ARM_TOOLS}arm-none-eabi-size "
+export CPP_COMP="${CXX:-${ARM_TOOLS}arm-none-eabi-g++} "
+export C_COMP="${CC:-${ARM_TOOLS}arm-none-eabi-gcc} "
+export OBJDUMP="${OBJDUMP:-${ARM_TOOLS}arm-none-eabi-objdump} "
+export AR="${AR:-${ARM_TOOLS}arm-none-eabi-ar} "
+export SIZE="${SIZE:-${ARM_TOOLS}arm-none-eabi-size} "
 
 # check arm-none-eabi version and set flags accordingly
 currentver="$($CPP_COMP -dumpversion)"

@@ -6,6 +6,10 @@
 
 #pragma once
 
+
+#include "stdint.h"
+
+
 /**  bigendian is standard net protocol. 
  * Warning: Will be set in main.
  * never use before main (in static constructors)
