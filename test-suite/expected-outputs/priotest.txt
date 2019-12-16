@@ -47,4 +47,9 @@ This run (test) will be terminated in 40 Seconds
   hi pri cnt = 8
   hi pri cnt = 9
   hi pri cnt = 9
-  hi pri cnt = 10
+
+This run (test) terminates now! but first error log:
+time(secs)         id  text/name
+---------------------------------
+
+This run (test) terminates now! (terminate-test.cpp : 20)

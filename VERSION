@@ -49,7 +49,7 @@ RODOS Versioning
             add sf2
             beginning of test suite
         h:  add cmake
-        g:  instead of include "rodos.h" in src & apis : include-what-you-use
+        i:  instead of include "rodos.h" in src & apis : include-what-you-use
 
 
 
