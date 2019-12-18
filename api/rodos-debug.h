@@ -26,6 +26,11 @@ namespace RODOS {
 #define SCREEN_YELLOW "\x1B[33m"
 #define SCREEN_BLUE   "\x1B[34m"
 #define SCREEN_WHITE  "\x1B[37m"
+#define SCREEN_MAGENTA      "\x1b[35m"
+#define SCREEN_CYAN         "\x1b[36m"
+#define SCREEN_BRIGHT_RED   "\x1b[91m"
+#define SCREEN_BRIGHT_GREEN "\x1b[92m"
+#define SCREEH_UNDERLINE    "\x1b[4m"
 
 
 // 3 macros are (really) required to be able to generate a string with the source code location like "debug.cpp : 23"

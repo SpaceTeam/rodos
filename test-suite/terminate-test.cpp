@@ -25,17 +25,3 @@ class TerminateTest : public Thread {
 static TerminateTest terminateTest;
 
 
-//____________________________________________________
-
-namespace RODOS {
-extern long myNodeNr;
-}
-
-static class SetNodeNr : public Initiator {
-    void init() {
-        RODOS::myNodeNr = 7;
-        xprintf(" initiator nodnr = %ld\n", RODOS::myNodeNr);
-    }
-} setNodeNr;
-
-

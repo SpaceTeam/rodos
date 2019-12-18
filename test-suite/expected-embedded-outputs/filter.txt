@@ -3,7 +3,6 @@ Loaded Applications:
          10 -> 'Topics & Middleware'
        1000 -> 'terminateTest'
 Calling Initiators and Application Initiators
- initiator nodnr = 7
 Distribute Subscribers to Topics
 List of Middleware Topics:
  CharInput  Id = 28449 len = 16.   -- Subscribers:
@@ -24,7 +23,6 @@ Threads in System:
    Prio =    1003 Stack =  32000 TerminateTest: 
    Prio =     100 Stack =  32000 AnonymThread: 
 BigEndianity = 0, cpu-Arc = x86, Basis-Os = baremetal, Cpu-Speed (K-Loops/sec) = 313330 yeildtim (ns) 990
-Node Number: HEX: 7 Dec: 7
 -----------------------------------------------------
 Default internal MAIN
 --------------- Application running ------------
