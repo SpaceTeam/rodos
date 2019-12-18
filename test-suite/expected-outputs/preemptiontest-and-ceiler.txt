@@ -5,7 +5,6 @@ Loaded Applications:
        3000 -> 'PriorityCeiling'
        2000 -> 'PreemptiveTest'
 Calling Initiators and Application Initiators
- initiator nodnr = 7
 Distribute Subscribers to Topics
 List of Middleware Topics:
  CharInput  Id = 28449 len = 16.   -- Subscribers:
@@ -23,7 +22,6 @@ Threads in System:
    Prio =      10 Stack =  32000 LowPriority:  lopri = '.'
    Prio =      25 Stack =  32000 HiPriority:  hipri = '*'
 BigEndianity = 0, cpu-Arc = x86, Basis-Os = baremetal, Cpu-Speed (K-Loops/sec) = 313330 yeildtim (ns) 990
-Node Number: HEX: 7 Dec: 7
 -----------------------------------------------------
 Preemptiontest found
 --------------- Application running ------------

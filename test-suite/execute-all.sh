@@ -25,7 +25,7 @@ do
     \rm -f tst
     rodos-executable.sh $1 $TEST_LEN  -I. $i  terminate-test.cpp
     {
-        tst  &> $3/$BASE.txt 
+        tst  |  grep -v "Node Number" > $3/$BASE.txt 
     } &> /dev/null &
 
     # no more than 4 jobs simultaneusliy (I assume 4 cores)
