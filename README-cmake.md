@@ -56,20 +56,34 @@ $ make -j helloworld
 
 The compiled executables are then available under `build/tutorials`.
 
-Create Own Application Using Cmake
+Create Own Application Using CMake
 ----------------------------------
+
+Instead of installing RODOS globally to the computer, we encourage users to add it as a submodule/subfolder to the user project.
+If you are using git, you can add it directly as submodule just like this:
+```shell script
+git submodule add https://gitlab.com/rodos/rodos.git
+```
+Otherwise, if you do not use git, you can simply clone (or manually copy) it into a subfolder:
+```shell script
+git clone https://gitlab.com/rodos/rodos.git
+```
+In each case, you need to make RODOS available to your application's CMake by adding it as a subdirectory:
+```cmake
+add_subdirectory(rodos)
+```
 
 There are two ways of compiling an own application that makes use of RODOS: either simply create an own CMake target as usual and link RODOS and the support lib if needed, or use our predefined simple macro, does these steps in only one call.
 
 ```shell script
-include(rodos/cmake/executable.cmake)
-
+add_subdirectory(rodos)
 add_rodos_executable(my-application my-source.cpp)
 ```
 
 does the same thing as
 
 ```shell script
+add_subdirectory(rodos)
 add_executable(my-application my-source.cpp)
 target_link_libraries(my-application PUBLIC rodos support-lib)
 ```
