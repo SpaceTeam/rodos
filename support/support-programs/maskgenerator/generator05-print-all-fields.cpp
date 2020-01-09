@@ -15,6 +15,8 @@ main() {
     int fieldCnt = 0;
 
     fprintf(stdout, "\n\n /**** Generated with support_programs/maskgenerator/generator05-print-all-fields.cpp ***/\n");
+
+    fprintf(stdout, "#include \"mask-fields.h\"\n");
     fprintf(stdout, "\n\nconst char* screen[] = {\n");
 
     int ycnt=0;
@@ -35,23 +37,29 @@ main() {
     }
     fprintf(stdout, " 0 };\n\n\n");
 
-    fprintf(stdout, "#define CLEAR_MASK \"\\x1B[2J\\x1B[1;1H\"\n");
-    fprintf(stdout, "#define INIT_MASK() PRINTMASK(\"%%s\", CLEAR_MASK); for(int i = 0; screen[i] != 0; i++) PRINTMASK(\"%%s\\n\", screen[i]);\n\n");
 
 
     FILE* fileMaskFields = fopen("mask-fields.h", "w");
-    fprintf(fileMaskFields, "#define PRINTMASK \n");
+    fprintf(fileMaskFields, "#pragma once\n");
+    fprintf(fileMaskFields, "#include \"rodos.h\"\n");
+
+    fprintf(fileMaskFields, "#define CLEAR_MASK \"\\x1B[2J\\x1B[1;1H\"\n");
+    fprintf(fileMaskFields, "void  initMask();\n");
+    fprintf(stdout,         "void  initMask() { PRINTF(\"%%s\", CLEAR_MASK); for(int i = 0; screen[i] != 0; i++) PRINTF(\"%%s\\n\", screen[i]);}\n\n");
+    fprintf(fileMaskFields, "void printMaskContent();\n");
+
     for(int i = 0; i < fieldCnt; i++) {
-        fprintf(fileMaskFields, "#define %s \n", field[i].name);
+        fprintf(stdout,         "int32_t %s;\n", field[i].name);
+        fprintf(fileMaskFields, "extern int32_t %s;\n", field[i].name);
     }
     fclose(fileMaskFields);
 
-
     fprintf(stdout, "void printMaskContent() {\n");
     for(int i = 0; i < fieldCnt; i++) {
-        fprintf(stdout, "    PRINTMASK(\"\\x1B[%d;%dH%%%dd\", %s);\n", field[i].y, field[i].x+1, (int)strlen(field[i].name), field[i].name);
+        fprintf(stdout, "    PRINTF(\"\\x1B[%d;%dH%%%dd\", %s);\n", field[i].y, field[i].x+1, (int)strlen(field[i].name), field[i].name);
         //fprintf(stdout, "    PRINTMAKS(\"\\x1B[%d;%dH\%-%dd\", %s);\n", field[i].y, field[i].x+1, strlen(field[i].name), field[i].name);
     }
     fprintf(stdout, "}\n");
+
 }
 

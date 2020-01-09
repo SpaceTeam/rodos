@@ -13,7 +13,7 @@
 
 namespace RODOS {
 
-/** To be used from printfs, to control screen poss **/
+/** To be used from printfs, to control screen poss , see http://www.termsys.demon.co.uk/vtansi.htm **/
 #define SCREEN_CLEAR "\x1B[2J"
 #define SCREEN_CLEAR_LINE "\x1B[K"
 #define SCREEN_MOVE_CURSOR_TO  "\x1B[%d;%dH"
