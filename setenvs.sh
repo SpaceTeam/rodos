@@ -45,4 +45,5 @@ export CPPFLAGS=" -fno-rtti -fno-exceptions  -std=c++14"
 
 #_____________________________________________________ extras, nice to have but not required
 
+export NOT_USED=bash # else the first line in the next script using $_ will deliver a wrong value
 source ${RODOS_HELP_SCRIPTS}/set-git-aware-promt.sh  # nice if you are using git, else remove this line
