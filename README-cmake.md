@@ -75,17 +75,25 @@ add_subdirectory(rodos)
 
 There are two ways of compiling an own application that makes use of RODOS: either simply create an own CMake target as usual and link RODOS and the support lib if needed, or use our predefined simple macro, does these steps in only one call.
 
-```shell script
+```cmake
 add_subdirectory(rodos)
 add_rodos_executable(my-application my-source.cpp)
 ```
 
 does the same thing as
 
-```shell script
+```cmake
 add_subdirectory(rodos)
 add_executable(my-application my-source.cpp)
 target_link_libraries(my-application PUBLIC rodos support-lib)
 ```
 
-After those lines you can use all the features of CMake.
+After those lines you can use all the features of CMake. To build the application, it is recommended to create a build-direcotry. Applications can then be built from the directory where your CMakeLists.txt is with:
+
+```shell script
+cd build
+cmake -DCMAKE_TOOLCHAIN_FILE=cmake/port/posix.cmake ..
+make all
+```
+
+Your executable should now show up in `ls -l`. If it is called my-application, it can be run with `./my-application`.
