@@ -53,6 +53,16 @@ sudo update-alternatives --install /usr/bin/cc cc /usr/bin/clang-7 100
 sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-7 100
 ```
 
+Other tools
+-----------
+
+```
+  build-essential
+  gcc-multilib
+  g++-multilib
+  clang
+  clang++
+```
 
 
 Manually install latest cmake 
@@ -68,6 +78,9 @@ chmod +x cmake-3.13.2-Linux-x86_64.sh
 sudo ./cmake-3.13.2-Linux-x86_64.sh
 sudo ln -s /opt/cmake-3.13.2-Linux-x86_64/bin/* /usr/local/bin
 ```
+
+For AMR
+=======
 
 Install ARM cross compilation toolchain prerequisites
 -----------------------------------------------------
@@ -91,6 +104,9 @@ tar -xf gcc-arm-none-eabi-8-2018-q4-major-linux.tar.bz2
 sudo mv gcc-arm-none-eabi-8-2018-q4-major /opt/gcc-arm
 sudo ln -s /opt/gcc-arm/bin/* /usr/local/bin
 ```
+
+For Smartfusion 2 (SF2)
+======================
 
 Setting up FlashPro 5 on newer Linux versions (to upload boot images to SF2)
 ---------------------------------------------------------------------------

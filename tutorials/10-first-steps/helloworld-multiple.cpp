@@ -2,8 +2,8 @@
 
 class HelloWorld : public Thread {
     void run() {
-        PRINTF("Hello ");
-        PRINTF("World!\n");
+        PRINTF("Hello ");   // Be aware of preemtion at this point
+        PRINTF("World!\n"); // what you will see shall not be a surprise
     }
 };
 
