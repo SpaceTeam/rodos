@@ -45,6 +45,12 @@ export CPPFLAGS=" -fno-rtti -fno-exceptions  -std=c++14"
 
 #_____________________________________________________ extras, nice to have but not required
 
-echo "   if you are using git I recomment to use:" 
-echo "   source ${RODOS_HELP_SCRIPTS}/set-git-aware-promt.sh"
-echo "______________________________________________________"
+cat << EOT2
+______________________________________________________
+   Now I know where RODOS is, you may use the rodos shell scripts
+   from anywhere, and come back here using "cdrodos"
+....
+   if you are using git I recomment to use: 
+   source ${RODOS_HELP_SCRIPTS}/set-git-aware-promt.sh
+______________________________________________________
+EOT2
