@@ -14,14 +14,14 @@ or on the top of other operating systems, like Linux, Posix derivates, RTEMS,
 FreeRTOS, etc. We have many ports to many different processors, but here
 only a few are published. In the future more will come.
 
-An important aspect of Rodos is its integrated real time middleware.
+An important aspect of Rodos is its integrated real-time middleware.
 Developing the control and payload software on the top of a middleware provides
-the maximum of modularity today.
+maximal modularity today.
 Applications/modules can be developed independently and it is very simple
 to interchange modules later without worrying about side effects.
 
 Rodos was implemented as a software framework in C++ with an object
-oriented application interface (API).
+oriented application programm interface (API).
 It is organized in layers: The lowest layer (1) is responsible for
 control of the embedded system hardware (HAL: Hardware abstraction layer).
 The next layer (2) kernel: administrates the local resources, threads and time.
@@ -41,9 +41,21 @@ Take a look to the short introduction in
 
 
 And take a look to all other README file in this directory and
-in each sub directory.
+in each sub directory:
 
-Any questions, suggestions or complains?
+
+| File                        | Purpose                                           |
+| ----------------------------|---------------------------------------------------|
+| README.md                   | Project Description                               |
+| README-fast-intro.md        | Installation and first Tests, points to Tutorials |
+| README-set-tool-chains.md   | Installation Instructions of different Toolchains |
+| README-how-to-begin.pdf     | Printable Installation and Test Instructions      |
+| doc/rodos-dokumentation.pdf | Printable API Documentation                       |
+| doc/*                       | Coding Directives, Usage on STM32F4, Raspberry Pi |
+| README-cmake.md             | Guide to build RODOS Projects with CMake          |
+
+
+Any questions, suggestions or complaints?
 please contact
 
 Sergio Montenegro
