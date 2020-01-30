@@ -1,6 +1,12 @@
 How to build RODOS with CMake
 =============================
 
+CMake is a meta build-system suitable for large projects where build steps are
+configured declaratevly in CMakeLists.txt. CMake can automatically generate a
+Makefile from this build configuration. Afterwards, make is used to compile the
+project. The following text explains the required steps to build rodos projects
+with CMake.
+
 RODOS supports different target platforms, which require different compilation configuration.
 The configuration for all the ports is encapsulated in separate cmake files at `cmake/port`.
 There, port configuration files such as `posix.cmake`, `linux-x86.cmake`, and `stm32f4.cmake` exist.
@@ -13,7 +19,10 @@ Generate Make Files
 ```shell script
 $ mkdir build
 $ cd build
-$ cmake -DCMAKE_TOOLCHAIN_FILE=cmake/port/posix.cmake ..
+# if on x86:
+$ cmake -DCMAKE_TOOLCHAIN_FILE=../cmake/port/linux-x86.cmake ..
+# other linux based platforms:
+$ cmake -DCMAKE_TOOLCHAIN_FILE=../cmake/port/posix.cmake ..
 ```
 
 First, create a folder, where all the make files and the compiled files should be stored.
@@ -31,12 +40,7 @@ This commands builds the RODOS library, which is then placed at `build/librodos.
 
 Compile RODOS' Support Lib
 --------------------------
-```shell script
-# make sure to be in the build directory
-$ make -j support-lib
-```
-
-This commands builds the RODOS' support library, which is then placed at `build/support/support_libs/libsupport-lib.a`
+The support-libs are included automatically when compiling rodos with CMake.
 
 Compile Tutorials
 -----------------
@@ -45,7 +49,7 @@ In order to enable them, you must set the `EXECUTABLE` variable to `ON`:
 
 ```shell script
 $ cd build
-$ cmake -DCMAKE_TOOLCHAIN_FILE=cmake/port/posix.cmake -DEXECUTABLE=ON ..
+$ cmake -DCMAKE_TOOLCHAIN_FILE=../cmake/port/posix.cmake -DEXECUTABLE=ON ..
 ```
 
 After that, several new targets are available, which can be compiled by using their names, e.g.
@@ -72,6 +76,7 @@ In each case, you need to make RODOS available to your application's CMake by ad
 ```cmake
 add_subdirectory(rodos)
 ```
+(Assuming that your CMakeLists.txt and RODOS are in the root directory of your project.)
 
 There are two ways of compiling an own application that makes use of RODOS: either simply create an own CMake target as usual and link RODOS and the support lib if needed, or use our predefined simple macro, does these steps in only one call.
 
@@ -91,8 +96,9 @@ target_link_libraries(my-application PUBLIC rodos support-lib)
 After those lines you can use all the features of CMake. To build the application, it is recommended to create a build-direcotry. Applications can then be built from the directory where your CMakeLists.txt is with:
 
 ```shell script
+# optionally create the build directory
 cd build
-cmake -DCMAKE_TOOLCHAIN_FILE=cmake/port/posix.cmake ..
+cmake -DCMAKE_TOOLCHAIN_FILE=../rodos/cmake/port/posix.cmake -DEXECUTABLE=ON ..
 make all
 ```
 
