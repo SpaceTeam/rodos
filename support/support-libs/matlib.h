@@ -12,7 +12,7 @@
 namespace RODOS {
 
 
-// Tutorials in tutorail/matlib
+// Tutorials in tutorials/matlib
 
 
 //_________________________________________________________________________
@@ -123,7 +123,7 @@ public:
     Rotor(const double ca, const Vector3D& u) { cosAngle = ca; axis = u; }
     Rotor(const Vector3D& fromVector, const Vector3D& toVector); ///< rotor to go from one vector ot other
     bool resetIfNAN(); ///< sets to (1,(1,1,1)) if any component is infinite or NAN
-    bool isNoRotation() { return isAlmost0(1 - cosAngle)  || isAlmost0(axis.getLen()); }
+    bool isNoRotation() { return isAlmost0(1 - cosAngle)  || isAlmost0(axis.getLen()) || (fabs(cosAngle) > 1); }
     void print();
 };
 
@@ -169,14 +169,15 @@ public:
 //_________________________________________________________________________
 
 
+//This class is supposed to be used for homogenous transformations. 
+//This means that despite its name, it only consists out of 3 components x, y and z.
 class Vector4D : public Vector3D {
 public:
-    double scale;
     Vector4D(); ///< creates (0,0,0,1)
-    Vector4D (const double &x, const double &y, const double &z, const double &scale);
+    Vector4D (const double &x, const double &y, const double &z);
     Vector4D(const Vector4D& other);
     Vector4D (double* arr); ///< like Vector4D(arr[0],arr[1],arr[2],arr[3])
-    Vector4D matVecMult(const Matrix4D& M) const;
+    Vector4D matVecMult(const Matrix4D& M) const; // WARNING: bottom row of the matrix MUST be 0, 0, 0, 1 as it is used for homogenous transformations.
     Vector3D to3D() const; ///< returns (x,y,z)
     Vector4D mRotate(const Matrix4D& M) const;
     void print() const;
@@ -213,8 +214,8 @@ public:
     Quaternion qMult(const Quaternion& right) const;
 
     Quaternion conjugate() const; ///< returns  (q0, -(q) )
-    Quaternion invert() const; ///< returns multiplikative Inverse
-    Quaternion qDivide(const Quaternion& denominator) const; ///< (*this)/(other.invert())*/
+    Quaternion invert() const; ///< returns multiplicative Inverse
+    Quaternion qDivide(const Quaternion& denominator) const; ///< (*this)*(other.invert())*/
 
     double getLen() const;
     Quaternion normalize() const;
@@ -263,8 +264,8 @@ public:
     Matrix3D(const Quaternion& other); ///< corresponding rotation matrix
 
 
-    Vector3D getVec() const; ///< return the rotations axis which is codded in the matrix
-    double getAngle() const; ///< returns the rotation angle which is codded in the matrix
+    Vector3D getVec() const; ///< return the rotations axis which is coded in the matrix
+    double getAngle() const; ///< returns the rotation angle which is coded in the matrix
 
 
     Vector3D getRow1() const;
@@ -292,11 +293,11 @@ public:
     Matrix3D mDivide(const Matrix3D& other) const; ///< multiply with inverse
 
 
-    Matrix3D cofac() const; ///< jedes Eintrages aij erhält die Unterdeterminante Aij (für inverse matrixen)
-    Matrix3D adjoint() const; ///< die Transponierte Kofaktormatrix
+    Matrix3D cofac() const; ///< each entry aij holds the subdeterminate Aij (for inverse matrices)
+    Matrix3D adjoint() const; ///<transposed cofactor matrix
     Matrix3D invert() const;
     Matrix3D transpose() const;
-    double trace() const; ///< return Die Spur der Matrix
+    double trace() const; ///< return the trace of the matrix
 
     void rotationX(const double &angle); ///< reinit as rotation matrix
     void rotationY(const double &angle); ///< reinit as rotation matrix
@@ -329,6 +330,8 @@ inline Matrix3D operator/(const Matrix3D &left, const double   &right) { return 
 inline Matrix3D operator*   (const Vector3D &left, const Vector3D &right) { return Matrix3D( left*right.x, left*right.y, left*right.z ); }
 
 inline Vector3D operator*(const Matrix3D &left, const Vector3D &right) { return right.matVecMult(left); } // in matVecMult right and left are toggled
+inline bool operator==(const Matrix3D &left, const Matrix3D &right) { return left.equals(right); }
+inline bool operator!=(const Matrix3D &left, const Matrix3D &right) { return !left.equals(right); }
 
 
 //_________________________________________________________________________
@@ -360,11 +363,11 @@ public:
 //_________________________________________________________________________
 
 
-///stellt eine Rotation durch einen Drehwinkel und eine Rotationsachse dar
+///represents a rotation with an angle and axis
 class AngleAxis {
 public:
-    Vector3D u; ///< Stellt den Einheitsvektor u der Rotation dar.
-    double phi; ///< Stellt den Rotationswinkel phi in Radians dar.
+    Vector3D u; ///< rotation axis, must be an unit vector
+    double phi; ///< rotation angle in radians
 
     AngleAxis(); ///< (0, (1,0,0);
     AngleAxis(const double &phi, const double &x, const double &y, const double &z);
@@ -379,6 +382,8 @@ public:
     Matrix3D toMatrix3D() const;
     RPY toRPY() const;
     YPR toYPR() const; ///< DEPRECATED
+    
+    bool equals(AngleAxis& other);       //Compares 2 AngleAxis, returns true if the result of the rotation is the same, so if the axis points in the opposite direction and the angle is the other way round, the rotation is the same, adding 2Pi to the angle doesn't change the rotation
 
     void print() const;
 };
@@ -386,12 +391,12 @@ public:
 
 //_________________________________________________________________________
 
-/// 4x4-Matrix Rotation und einer Translation
+/// 4x4-Matrix Rotation and translation
 class Matrix4D {
 public:
     double r[4][4];
 
-    Matrix4D(); ///< no rotation, not translation
+    Matrix4D(); ///< no rotation, no translation
     Matrix4D(const Matrix3D& rot, const Vector3D& trans);
     Matrix4D(double* arr); ///< arr[16], left to right, top  to bottom
     Matrix4D(const Matrix4D& other);
@@ -401,7 +406,9 @@ public:
 
     Matrix4D scale(const double &factor) const;
     Matrix4D mMult(const Matrix4D& right) const;
-    Matrix4D invert() const; ///< inverted rotation and translation
+    Matrix4D invert() const; ///< inverted rotation and translation, does NOT invert arbitrary matrices
+    
+    bool equals(Matrix4D& other);       //Returns true if all elements are (nearly) equal
 
     void print() const;
 };
@@ -411,17 +418,17 @@ public:
 
 
 
-/** karstesisches Koordinatensystems im euklidischem Raum
-      3 orthogonale Einheitsvektoren x,y und z + ein Urpsrung */
+/** Cartesian coordinate system in Euclidian space
+      3 orthogonal unit vectors x, y, z and 1 origin, x, y and z must form a right handed system and must be orthogonal */
 class CoordinateFrame3D {
 public:
-    Vector3D x; ///< Einheitsvektor in x-Richtung
-    Vector3D y; ///< Einehitsvektor in y-Richtung
-    Vector3D z; ///< Einheitsvektor in z-Richtung
-    Vector3D origin; ///< Ursprung des Koordinatensystems
+    Vector3D x; ///< Unit vector in x-direction
+    Vector3D y; ///< Unit vector in y-direction
+    Vector3D z; ///< Unit vector in z-direction
+    Vector3D origin; ///< Origin of the system
 
-    CoordinateFrame3D(); ///< all elements as unit vectors
-    CoordinateFrame3D(const Vector3D& x, const Vector3D& y, const Vector3D& z, const Vector3D& origin);
+    CoordinateFrame3D(); ///< all elements as unit vectors, origin at (0,0,0)
+    CoordinateFrame3D(const Vector3D& x, const Vector3D& y, const Vector3D& z, const Vector3D& origin); //WARNING: Does NOT check, if x, y and z are unit vector and orthogonal
     CoordinateFrame3D(const Vector3D& x, const Vector3D& y, const Vector3D& origin); ///< z will be generated ortogonal to x, y
     CoordinateFrame3D(const CoordinateFrame3D& other);
 
@@ -445,19 +452,21 @@ public:
     Complex(const Complex& other);
     Complex(const double &Re, const double &Im);
     Complex cAdd(const Complex& other) const;
-    Complex cSub(const Complex& other) const;
+    Complex cSub(const Complex& other) const;       //WARNING: calculates other - this
     Complex cScale(const double &scale) const;
     Complex cMult(const Complex& other) const;
-    Complex cPow(const int &exponent) const; ///< Complex z = (a+bi)^exponent
+    Complex cPow(const int &exponent) const; ///< Complex z = (a+bi)^exponent, WARNING exponent MUST be >= 0
     Complex cExp() const;                    ///< Complex z = e^(*this) */
 };
 
 inline Complex operator+ (const Complex &left, const Complex &right) { return left.cAdd(right); }
-inline Complex operator- (const Complex &left, const Complex &right) { return left.cSub(right); }
+inline Complex operator- (const Complex &left, const Complex &right) { return right.cSub(left); }
 inline Complex operator* (const double  &left, const Complex &right) { return right.cScale(left); }
 inline Complex operator* (const Complex &left, const double  &right) { return left.cScale(right); }
+inline Complex operator* (const Complex &left, const Complex &right) { return left.cMult(right); }
 inline Complex operator/ (const Complex &left, const double  &right) { return left.cScale(1.0/right); }
-
+inline bool operator==   (const Complex &left, const Complex &right) { return (isAlmost0(left.Re - right.Re) && isAlmost0(left.Im - right.Im));}
+inline bool operator!=   (const Complex &left, const Complex &right) { return !(left == right);}
 
 //_________________________________________________________________________
 
@@ -508,6 +517,8 @@ class Vector6D {
     Vector6D vecAdd(const Vector6D& other) const;
     Vector6D vecSub(const Vector6D& other) const;
     Vector6D matVecMult(const Matrix6D& M) const;
+    
+    bool equals(const Vector6D& other) const;
 };
 
 /*******************        operators       **********************/
@@ -517,6 +528,8 @@ inline Vector6D operator*(double value, const Vector6D& right) { return right.sc
 inline Vector6D operator*(const Vector6D& left, const double &value) { return left.scale(value); }
 inline Vector6D operator/(const Vector6D &left, const double &right) { return left.scale(1.0/right); }
 
+inline bool operator==(const Vector6D& left, const Vector6D& right) { return left.equals(right);}
+inline bool operator!=(const Vector6D& left, const Vector6D& right) { return !left.equals(right);}
 /*******************        functions       **********************/
 double dotProduct(const Vector6D& left, const Vector6D& right);
 
@@ -549,6 +562,8 @@ public:
     Matrix3D upperRight() const;
     Matrix3D lowerLeft() const;
     Matrix3D lowerRight() const;
+    
+    bool equals(const Matrix6D& other) const;
 };
 
 
@@ -558,7 +573,7 @@ bool ludcmp(Matrix6D &a, Vector6D &indx, double &d);
 void lubksb(Matrix6D &a, Vector6D &indx, Vector6D &b);
 
 /* findRotationsAngleAxis
- *  When we use only one vector to rate a body, we get an ambiguous rotation
+ *  When we use only one vector to rotate a body, we get an ambiguous rotation
  *  which has one degree of freedom open.
  *  To get an unambiguous rotation we have to use two not co-linear vectors of the
  *  body. This functions finds the unit rotation which satisfied the rotation
@@ -571,7 +586,7 @@ void lubksb(Matrix6D &a, Vector6D &indx, Vector6D &b);
 Result<AngleAxis>  findRotationsAngleAxis(Vector3D fromA, Vector3D toA, Vector3D fromB, Vector3D toB);
 
 /* cos_direction_matrix_from_vectors
- *  when we use only one vector to rate a body, we get an ambiguous rotation
+ *  when we use only one vector to rotate a body, we get an ambiguous rotation
  *  which has one degree of freedom open.
  *  To get an unambiguous rotation we have to use two not co-linear vectors of the
  *  body. This functions finds the unit rotation which satisfied the rotation
@@ -591,7 +606,10 @@ inline Matrix6D operator-(const Matrix6D& left, const Matrix6D& right) { return 
 inline Matrix6D operator*(const Matrix6D& left, const Matrix6D& right) { return left.mMult(right); }
 inline Matrix6D operator*(const Vector6D &left, const Vector6D &right) { return dyadic(left, right); }
 inline Vector6D operator*(const Matrix6D& left, const Vector6D& right) { return right.matVecMult(left); }
-Matrix6D operator/(const Matrix6D& Mat, double value);
+
+inline bool operator==(const Matrix6D& left, const Matrix6D& right) { return left.equals(right); }
+inline bool operator!=(const Matrix6D& left, const Matrix6D& right) { return !left.equals(right); }
+//Matrix6D operator/(const Matrix6D& Mat, double value);
 
 //_________________________________________________________________________
 
@@ -627,7 +645,7 @@ double eciToECEF(int64_t utcNanoseconds);  //DEPRECATED
 Vector3D eciToECEF(const Vector3D ecef, int64_t  utcNanoseconds); ///<(meter, meter, meter) -> (meter, meter, meter)
 Vector3D ecefToECI(const Vector3D eci, int64_t  utcNanoseconds);///<(meter, meter, meter) -> (meter, meter, meter)
 
-Vector3D geodeticToECEF(const Polar& polar); ///< Warning! Earth-surface (meter, rad, rad) -> Eart-center (meter, meter, meter)
+Vector3D geodeticToECEF(const Polar& polar); ///< WARNING! Earth-surface (meter, rad, rad) -> Eart-center (meter, meter, meter)
 
 /**
 Converts cartesian coordinates to ellipsoidal.
@@ -640,7 +658,7 @@ Converts cartesian coordinates to ellipsoidal.
    Computation time is only slightly worse than for the
    Bowring direct formula but accuracy is better.
 */
-Polar    ecefToGeodetic(const Vector3D& other);     ///< Warning! Eart-center (meter, meter, meter) -> Earth-surface (meter, rad, rad)
+Polar    ecefToGeodetic(const Vector3D& other);     ///< WARNING! Earth-center (meter, meter, meter) -> Earth-surface (meter, rad, rad)
 
 
 Matrix3D skewSymmetricMatrix(const Vector3D &v);

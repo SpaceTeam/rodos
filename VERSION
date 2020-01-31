@@ -50,6 +50,7 @@ RODOS Versioning
             beginning of test suite
         h:  add cmake
         i:  instead of include "rodos.h" in src & apis : include-what-you-use
+        j:  Bug corrections in matlib
 
 
 

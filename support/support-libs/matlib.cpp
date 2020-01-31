@@ -171,8 +171,8 @@ Vector3D Vector3D::matVecMult(const Matrix3D& r) const { // M*v
 }
 //_________________________________________________________________
 
-Vector3D Vector3D::qRotate(const Quaternion& rotQuat) const { // w = qvq^* Vektor rotiert um Frame
-    Quaternion v(0,(*this)); // ohne normalize()
+Vector3D Vector3D::qRotate(const Quaternion& rotQuat) const { // w = qvq^ Rotates the vector
+    Quaternion v(0,(*this)); // no normalize()
     Quaternion w  = rotQuat * v * -rotQuat;
 
     return w.q;
@@ -210,7 +210,6 @@ Vector4D Vector3D::to4D() const {
     v.x=this->x;
     v.y=this->y;
     v.z=this->z;
-    v.scale=1;
     return v;
 }
 //_________________________________________________________________
@@ -279,7 +278,7 @@ bool Rotor::resetIfNAN() {
     if(error) cosAngle = axis.x = axis.y = axis.z = 1.0;
     return error;
 }
-//================  R(oll) P(itch) Y(aw) as subclas of Vector3D  ============
+//================  R(oll) P(itch) Y(aw) as subclass of Vector3D  ============
 
 RPY::RPY(const Quaternion& q) {
     double m21 = 2*q.q.x*q.q.y + 2*q.q0*q.q.z;
@@ -423,24 +422,22 @@ AngleAxis RPY::toAngleAxis() const {
 }
 
 
-//======================Implementierung Vector4D==============================
+//======================Implementation Vector4D==============================
 
 Vector4D::Vector4D() {
     this->x=0;
     this->y=0;
     this->z=0;
-    this->scale=1;
 }
 
-
-Vector4D::Vector4D (const double &x, const double &y, const double &z, const double &scale) {
+Vector4D::Vector4D (const double &x, const double &y, const double &z) {
     this->x=x;
     this->y=y;
     this->z=z;
-    this->scale=scale;
 }
 
-Vector4D::Vector4D(const Vector4D& other) : Vector3D(other.x, other.y, other.z), scale(other.scale) { }
+
+Vector4D::Vector4D(const Vector4D& other) : Vector3D(other.x, other.y, other.z) { }
 
 // base class 'class RODOS::Vector3D' should be explicitly initialized in the copy constructor [-Wextra]
 //Vector4D::Vector4D(const Vector4D& other) {
@@ -454,7 +451,6 @@ Vector4D::Vector4D (double* arr) {
     this->x = arr[0];
     this->y = arr[1];
     this->z = arr[2];
-    this->scale=arr[3];
 }
 
 //_________________________________________________________________
@@ -463,7 +459,7 @@ Vector4D Vector4D::matVecMult(const Matrix4D& r) const {
     double x = r.r[0][0]*this->x + r.r[0][1]*this->y + r.r[0][2]*this->z+r.r[0][3];
     double y = r.r[1][0]*this->x + r.r[1][1]*this->y + r.r[1][2]*this->z+r.r[1][3];
     double z = r.r[2][0]*this->x + r.r[2][1]*this->y + r.r[2][2]*this->z+r.r[2][3];
-    Vector4D result(x,y,z,1);
+    Vector4D result(x,y,z);
     return result;
 }
 //_________________________________________________________________
@@ -481,13 +477,12 @@ Vector4D Vector4D::mRotate(const Matrix4D& r) const {
 //_________________________________________________________________
 
 void Vector4D::print() const {
-    PRINTF("(%3.3f \t %3.3f \t %3.3f \t %3.3f)\n",this->x,this->y,this->z,this->scale);
-
+    PRINTF("(%3.3f \t %3.3f \t %3.3f)\n",this->x,this->y,this->z);
 }
 //_________________________________________________________________
 
 
-//==================Implementierung Quaternion===============================
+//==================Implementation Quaternion===============================
 
 
 //====Standardkonstruktor====
@@ -534,7 +529,7 @@ Quaternion::Quaternion(const Rotor& rot) {
 }
 
 
-Quaternion::Quaternion(const Matrix3D& other) {  //Algorithmus 1
+Quaternion::Quaternion(const Matrix3D& other) {  //Algorithm 1
 
     double q0,q1,q2,q3;
     q0 = q1 = q2 = q3 = 0;
@@ -543,11 +538,11 @@ Quaternion::Quaternion(const Matrix3D& other) {  //Algorithmus 1
     double c3 = 1- other.r[0][0] + other.r[1][1] - other.r[2][2];
     double c4 = 1- other.r[0][0] - other.r[1][1] + other.r[2][2];
     double c = c1;
-    // Finde das Maximum
+    // Find the maximum
     if(c2>c) c = c2;
     if(c3>c) c = c3;
     if(c4>c) c = c4;
-    //Fallunterscheidung
+    //Distinction of cases
     if(c==c1) {
         c = 0.5 * sqrt(c);
         q0 = c;
@@ -721,8 +716,8 @@ Quaternion Quaternion::qMult(const Quaternion& other) const {
 
     mult.q0 = left.q0 * right.q0 - dotProduct(left.q, right.q);
 
-    mult.q  = left.q  * right.q0 + // Warning: vectro ops
-              right.q * left.q0  + // warning: operator +, * etc
+    mult.q  = left.q  * right.q0 + // WARNING: vectro ops
+              right.q * left.q0  + // WARNING: operator +, * etc
               crossProduct(left.q, right.q);
     return mult;
 }
@@ -730,7 +725,7 @@ Quaternion Quaternion::qMult(const Quaternion& other) const {
 
 //==== invert,conjugate,qdivide====
 Quaternion Quaternion::invert() const {
-    double revNorm = 1/this->getLen();
+    double revNorm = 1/(this->getLen() * this->getLen());
     return this->conjugate().scale(revNorm);
 }
 //_________________________________________________________________
@@ -772,7 +767,7 @@ bool Quaternion::isNormalized() const {
 //_________________________________________________________________
 
 bool Quaternion::equals(const Quaternion& other) const {
-    return(q0 == other.q0 && q.equals(other.q));
+    return(isAlmost0(q0 - other.q0) && q.equals(other.q));
 }
 //_________________________________________________________________
 
@@ -855,9 +850,9 @@ Quaternion operator*(const Matrix4D &left, const Quaternion &right) {
 }
 
 
-//========================Implementierung Matrix3D=============================
+//========================Implementation Matrix3D=============================
 
-//====Konstruktoren====
+//====Constructors====
 Matrix3D::Matrix3D() {
     //column1
     r[0][0] = 1.0;
@@ -915,7 +910,7 @@ Matrix3D::Matrix3D(const Matrix3D& other) {
 }
 //_________________________________________________________________
 
-Matrix3D::Matrix3D(const Vector3D& init) { //diagonalmatrix aus vektor
+Matrix3D::Matrix3D(const Vector3D& init) { //diagonalmatrix from vector
     //column 1
     r[0][0] = init.x;
     r[1][0] = 0.0;
@@ -977,7 +972,7 @@ Matrix3D::Matrix3D(const RPY& rpy) {
 }
 //_________________________________________________________________
 
-Matrix3D::Matrix3D(const AngleAxis& other) { // allgemeine Rotationsmatrix
+Matrix3D::Matrix3D(const AngleAxis& other) { // general rotation matrix
     Vector3D u = other.u;
     double phi = other.phi;
     double cp  = cos(phi);
@@ -1039,7 +1034,7 @@ Vector3D Matrix3D::getVec() const {
 }
 //_________________________________________________________________
 
-//====Getter für Spalten bzw Zeilen ====
+//====Getter for columns and rows ====
 Vector3D Matrix3D::getRow1() const {
     Vector3D row1(this->r[0][0],this->r[0][1],this->r[0][2]);
     return row1;
@@ -1076,7 +1071,7 @@ Vector3D Matrix3D::getColumn3() const {
 }
 //_________________________________________________________________
 
-//====Setter für Spalten und Reihen =====
+//====Setter for columns and rows =====
 void Matrix3D::setRow1(const Vector3D& row) {
     this->r[0][0]= row.x;
     this->r[0][1]= row.y;
@@ -1187,7 +1182,7 @@ Matrix3D Matrix3D::adjoint() const {
 }
 //_________________________________________________________________
 double Matrix3D::trace() const {
-    return this->r[0][0] * this->r[1][1] * this->r[2][2];
+    return this->r[0][0] + this->r[1][1] + this->r[2][2];
 }
 //_________________________________________________________________
 Matrix3D Matrix3D::invert() const {
@@ -1226,7 +1221,7 @@ Matrix3D Matrix3D::mDivide(const Matrix3D& other) const {
     return divide;
 }
 //_________________________________________________________________
-//====Fundamentalrotationen====
+//====Fundamentalrotations====
 
 void Matrix3D::rotationX(const double &angle) {
     Vector3D c1(1.0, 0.0, 0.0);
@@ -1280,7 +1275,7 @@ bool Matrix3D::isOrthogonal() const {
 bool Matrix3D::equals(const Matrix3D& other) const {
     for(int i = 0 ; i<3; i++) {
         for(int j = 0; j<3; j++) {
-            if(other.r[i][j] != this->r[i][j]) {
+            if(!isAlmost0(this->r[i][j] - other.r[i][j])) {
                 return false;
             }
         }
@@ -1299,11 +1294,11 @@ Quaternion Matrix3D::toQuaternion() const {
     double c3 = 1- this->r[0][0] + this->r[1][1] - this->r[2][2];
     double c4 = 1- this->r[0][0] - this->r[1][1] + this->r[2][2];
     double c = c1;
-    // Finde das Maximum
+    // Find the maximum
     if(c2>c) c = c2;
     if(c3>c) c = c3;
     if(c4>c) c = c4;
-    //Fallunterscheidung
+    //Dis of cases
     if(c==c1) {
         c = 0.5 * sqrt(c);
         q0 = c;
@@ -1364,7 +1359,7 @@ RPY Matrix3D::toRPY() const {
     double m32 = this->r[2][1];
     double m33 = this->r[2][2];
     rpy.x     = atan2(m32, m33);
-    rpy.y     = atan2(-m31, sqrt(m11*m11 + m21*m21)); // WARNING: are y and z worng? please check
+    rpy.y     = atan2(-m31, sqrt(m11*m11 + m21*m21));
     rpy.z     = atan2(m21, m11);
 
     return rpy;
@@ -1399,7 +1394,7 @@ void Matrix3D::print() const {
 //_________________________________________________________________
 
 
-//=============Implementierung YPR============================================
+//=============Implementation YPR============================================
 
 YPR::YPR() {
     this->yaw   = 0;
@@ -1475,7 +1470,7 @@ YPR  YPR::scale(const double &factor) const {
     return scale;
 }
 
-//_________________________________________________________________ BIS HIER ---
+//_________________________________________________________________
 
 Matrix3D YPR::toMatrix3D() const {
     Matrix3D M;
@@ -1545,10 +1540,10 @@ void YPR::print() const {
 //_________________________________________________________________
 
 
-//==================Implementierung AngleAxis================================
+//==================Implementation AngleAxis================================
 
 
-//==== Konstruktoren=====
+//==== Constructors=====
 AngleAxis::AngleAxis() {
     Vector3D u(1,0,0);
     this->u   = u;
@@ -1635,7 +1630,7 @@ Quaternion AngleAxis::toQuaternion() const {
 }
 //_________________________________________________________________
 
-Matrix3D AngleAxis::toMatrix3D() const { // allgemeine Rotataionsmatrix
+Matrix3D AngleAxis::toMatrix3D() const { // General rotation matrix
     Matrix3D R;
     Vector3D u = this->u;
     double phi = this->phi;
@@ -1688,7 +1683,7 @@ RPY AngleAxis::toRPY() const {
     double m33 = u.z *u.z *(1-cos(phi)) + cos(phi);
 
     rpy.x = atan2(m32 , m33);
-    rpy.y = atan2(-m31,sqrt(m11*m11+m21*m21)); // WARNING: SInd veileicht x und y vertauscht???
+    rpy.y = atan2(-m31,sqrt(m11*m11+m21*m21)); 
     rpy.z = atan2(m21 , m11);
 
     return rpy;
@@ -1698,16 +1693,24 @@ RPY AngleAxis::toRPY() const {
 
 //_________________________________________________________________
 
+bool AngleAxis::equals(AngleAxis& other) {
+    if (isAlmost0(FMod2p(this->phi - other.phi + M_PI) - M_PI) && this->u.equals(other.u)) return true;
+    
+    if (isAlmost0(FMod2p(this->phi + other.phi + M_PI) - M_PI) && this->u.equals(-1 * other.u)) return true;
+    
+    return false;
+}
+
 void AngleAxis::print() const {
     PRINTF("[%3.3f*PI \t %3.3f \t %3.3f \t %3.3f]\n",phi/M_PI, u.x, u.y, u.z);
 }
 //_________________________________________________________________
 
 
-//========================Implementierung Matrix4D============================
+//========================Implementation Matrix4D============================
 
 
-//====Konstruktoren====
+//====Constructors====
 Matrix4D::Matrix4D() {
     //column1
     r[0][0] = 1.0;
@@ -1795,8 +1798,10 @@ Vector3D Matrix4D::getTranslation() const {
 
 Matrix4D Matrix4D::scale(const double &factor) const {
     Matrix4D scale;
-    for(int i = 0 ; i<3; i++) {
-        scale.r[i][i]=this->r[i][i]*factor;
+    for(int i = 0 ; i<4; i++) {
+        for (int j = 0; j < 4; j++) {
+            scale.r[i][j]=this->r[i][j]*factor;
+        }
     }
     return scale;
 }
@@ -1827,6 +1832,17 @@ Matrix4D Matrix4D::invert() const {
     return inverse;
 }
 //_________________________________________________________________
+
+bool Matrix4D::equals(Matrix4D& other) {
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            if (!isAlmost0(this->r[i][j] - other.r[i][j])) return false;
+        }
+    }
+    
+    return true;
+}
+//-----------------------------------------------------------------
 
 void Matrix4D::print() const {
     for(int k=0; k<4; k++) {
@@ -1878,10 +1894,10 @@ Matrix4D operator/(const Matrix4D &left, const double   &right) {
 }
 
 
-//==================Implementierung CoordinateFrame3D========================
+//==================Implementation CoordinateFrame3D========================
 
 
-//====Konstruktoren====
+//====Constructors====
 
 //changed to orthogonal normalized coordinate system
 CoordinateFrame3D::CoordinateFrame3D(){
@@ -1921,7 +1937,7 @@ CoordinateFrame3D::CoordinateFrame3D(const CoordinateFrame3D& other) {
 }
 //_________________________________________________________________
 
-//====methoden=======
+//====methods=======
 Matrix4D CoordinateFrame3D::mapTo(const CoordinateFrame3D& rotated) const { // derives rotation matrix A : [v]r = A[v]f [v]f given
     Matrix3D R;
     //column1
@@ -1980,7 +1996,7 @@ CoordinateFrame3D CoordinateFrame3D::rotate(const Quaternion& q) const {
 //_________________________________________________________________
 
 
-//=====================Implementierung Complex================================
+//=====================Implementation Complex================================
 
 
 Complex::Complex() {
@@ -2060,7 +2076,7 @@ Complex Complex::cExp() const {
 //_________________________________________________________________
 
 
-//============Implementierung Klasse Polar====================================
+//============Implementation Polar====================================
 
 Polar::Polar() {
     this->r     = 0;
@@ -2093,7 +2109,7 @@ Polar::Polar(const Vector3D& other) {
 Vector3D Polar::toCartesian() const {
     double x = this->r*sin(this->theta)*cos(this->phi);
     double y = this->r*sin(this->theta)*sin(this->phi);
-    double z = this->r*sin(this->theta);
+    double z = this->r*cos(this->theta);
     Vector3D cartesian(x,y,z);
 
     return cartesian;
@@ -2106,7 +2122,7 @@ void Polar::print() const {
 //_________________________________________________________________
 
 
-//=====================================================Implementierung Globale Methoden============================================
+//=====================================================Implementation global methods============================================
 
 int64_t faculty(const int &x) {
     uint64_t faculty = 1;
@@ -2157,7 +2173,7 @@ Vector3D rotateZ(const Vector3D& s,const double &angle) {
 //_________________________________________________________________
 
 
-//===Rn nach WGS84
+//===Rn according to WGS84
 // angle in rad
 double R_n(const double angle) {
     double a,e2,f;
@@ -2443,7 +2459,15 @@ double dotProduct(const Vector6D& left, const Vector6D& right) {
     return Sum;
 }
 
-//=====================================================Vector6D============================================
+bool Vector6D::equals(const Vector6D& other) const {
+    for (int i = 0; i < 6; i++) {
+        if (!isAlmost0(this->v[i] - other.v[i])) return false;
+    }
+    
+    return true;
+}
+
+//=====================================================Matrix6D============================================
 
 Matrix6D::Matrix6D() {
 
@@ -2716,6 +2740,15 @@ Matrix6D dyadic(const Vector6D& left, const Vector6D& right) {
     return Mat;
 }
 
+bool Matrix6D::equals(const Matrix6D& other) const {
+    for (int i = 0; i < 6; i++) {
+        for (int j = 0; j < 6; j++) {
+            if (!isAlmost0(this->r[i][j] - other.r[i][j])) return false;
+        }
+    }
+    
+    return true;
+}
 
 /*! \brief LU-decomposition of a matrix
  * \param a the matrix which is decomposed
