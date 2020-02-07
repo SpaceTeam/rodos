@@ -6,7 +6,6 @@
 #include "monitoringMsg.h"
 #include "random.h"
 #include "ringbuffer.h"
-#include "shiftlist.h"
 #include "sortedlist.h"
 #include "allocableobjects.h"
 #include "stream-bytesex.h"
