@@ -14,6 +14,7 @@ let doit = (target: env: env.mkDerivation {
       make coverage
       mkdir $out
       mv coverage $out/
+      mv coverage.info $out/
     '';
 });
 

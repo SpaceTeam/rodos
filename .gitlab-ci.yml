@@ -20,10 +20,9 @@ coverage-build:
   stage: build
   script:
     - nix-build with-cmake.nix
-    - mv result/coverage public
-  artifacts:
-    paths:
-      - public
-    expire_in: 1 week
+    - nix-env -i curl
+    - nix-env -i bash
+    - curl https://codecov.io/bash -o codecov
+    - bash codecov -f result/coverage.info
   only:
     - coverage
