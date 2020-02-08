@@ -7,6 +7,15 @@ add_compile_options( $<$<COMPILE_LANGUAGE:CXX>:-fno-rtti> $<$<COMPILE_LANGUAGE:C
 
 project(rodos C CXX ASM)
 
+if (COVERAGE)
+  if (NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE "Debug")
+    message(STATUS "Coverage enabled, setting build type to Debug")
+  endif()
+  include(cmake/CodeCoverage.cmake)
+  append_coverage_compiler_flags()
+endif()
+
 #___________________________________________________________________
 file(GLOB_RECURSE independent_sources
     src/independent/*.cpp
@@ -59,3 +68,16 @@ if (EXECUTABLE)
   include(cmake/executable.cmake)
   add_subdirectory(tutorials)
 endif ()
+
+
+if (COVERAGE)
+  setup_target_for_coverage_lcov(
+    NAME coverage
+    LCOV_ARGS "--no-external"
+    EXECUTABLE "${CMAKE_COMMAND}" --build "${CMAKE_BINARY_DIR}"
+                                  --config $<CONFIG>
+                                  --target test)
+    message("Generate coverage report with 'make coverage'")
+endif()
+enable_testing()
+add_subdirectory(test-suite)
