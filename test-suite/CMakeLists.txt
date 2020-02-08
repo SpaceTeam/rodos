@@ -15,7 +15,7 @@ list(FILTER test_files
 
 # Fixture for the tests, making sure that all test executables are
 # build before attempting to run them.
-add_custom_target(test-suite-build)
+add_custom_target(test-suite-build ALL)
 add_test(test-suite-build-run
   "${CMAKE_COMMAND}"
   --build "${CMAKE_BINARY_DIR}"
