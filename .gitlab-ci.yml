@@ -20,20 +20,10 @@ coverage-build:
   stage: build
   script:
     - nix-build with-cmake.nix
-  artifacts:
-    paths:
-      - result/coverage
-    expire_in: 1 week
-
-coverage-deploy:
-  stage: deploy
-  dependencies:
-    - coverage-build
-  script:
     - mv result/coverage public
   artifacts:
     paths:
       - public
-    expire_in: 30 days
+    expire_in: 1 week
   only:
     - coverage
