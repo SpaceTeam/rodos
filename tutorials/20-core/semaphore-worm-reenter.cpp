@@ -34,10 +34,10 @@ class worm : public Thread {
 
   public:
     worm() {
-        x       = randomTT800Positive() % RIGHT_LIMIT;
-        y       = randomTT800Positive() % MAX_Y + 1;
-        speed_x = (randomTT800Positive() % 3) - 1;
-        speed_y = (randomTT800Positive() % 3) - 1;
+        x       =  uint32Rand() % RIGHT_LIMIT;
+        y       =  uint32Rand() % MAX_Y + 1;
+        speed_x = (uint32Rand() % 3) - 1;
+        speed_y = (uint32Rand() % 3) - 1;
         letter  = wormLetter++;
     }
 
@@ -60,9 +60,9 @@ class worm : public Thread {
 
 
             // Change speed randomly
-            if(randomTT800Positive() % 10 < 2) {
-                speed_x = (randomTT800Positive() % 3) - 1;
-                speed_y = (randomTT800Positive() % 3) - 1;
+            if(uint32Rand() % 10 < 2) {
+                speed_x = (uint32Rand() % 3) - 1;
+                speed_y = (uint32Rand() % 3) - 1;
                 if(speed_x == 0 && speed_y == 0) speed_y = 1;
             }
 

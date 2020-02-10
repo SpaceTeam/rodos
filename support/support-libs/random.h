@@ -1,38 +1,23 @@
-
+#include <stdint.h>
 
 /**
-* 
-* @date 2008/06/17 10:46
-* @author Sergio MOntenegro
 *
+* @date 2008/06/17 , 2020/02/02
+* @author Sergio Montenegro
 *
-* @brief simple misc functions
+* @brief Random functions
 */
 
-#pragma once
 
-
-#ifndef NO_RODOS_NAMESPACE
 namespace RODOS {
-#endif
 
+extern uint64_t uint64Rand(); // in this implementation https://de.wikipedia.org/wiki/KISS_(Zufallszahlengenerator)
+extern uint32_t uint32Rand(); // the lower bits from uint64Rand()
 
-/** 32 bit random set, a value -2G .. + 2G **/
-int32_t randomTT800();
+extern double drandPositive();            // 0 ..1
+extern double drandPositive(double gain); // 0 .. gain
+extern double drand();                    // -1 .. 1
+extern double drand(double gain);         // -gain .. gain
+extern void   setRandSeed(uint64_t x);    // sets only one of 4 possible seeds
 
-/** 32 bit random set, a value 0 ...  2G **/
-inline uint32_t  randomTT800Positive() { return randomTT800() & 0x7fffffff; }
-
-static const int32_t MAX_RANDOM_TT800 = 2147483647;
-
-// Double values normalized 0 ..1 or -1 .. 1 
-inline double drandPositive()              { return (double)randomTT800Positive()  / (double)MAX_RANDOM_TT800; }
-inline double drandPositive(double gain)   { return drandPositive() * gain; }
-inline double drand()                      { return (double)randomTT800()  / (double)MAX_RANDOM_TT800; }
-inline double drand(double gain)           { return drand()*gain; }
-
-
-#ifndef NO_RODOS_NAMESPACE
-}
-#endif
-
+} // namespace RODOS

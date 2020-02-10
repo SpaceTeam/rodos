@@ -22,9 +22,13 @@ echo "__________________________________________________________ Embedded test p
 execute-all.sh   linux        embedded-test     tmp-embedded
 
 
-echo "__________________________________________________________ Diffs "
-echo " ++++ preemptiontest-and-ceiler ist not deterministric compare by hand"
 
-diff -rq                    expected-outputs  tmp
-diff -rq                    expected-embedded-outputs tmp-embedded
+cat << EOT
+__________________________________________________________ Diffs
+ ++++ preemptiontest-and-ceiler and combuffer-test are not deterministric 
+      compare by hand
+ please compare (diff -rq or meld) :
+ diff -rq   expected-outputs           tmp
+ diff -rq   expected-embedded-outputs  tmp-embedded
+_________________________________________________________________
 
