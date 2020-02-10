@@ -20,7 +20,7 @@ class Requester : public Thread {
         PRINTF("Deadlock will come...\n");
 
         TIME_LOOP(0, 100 * MILLISECONDS) {
-            int action = randomTT800Positive() % 4;
+            int action = uint32Rand() % 4;
             switch(action) {
                 case 0:
                     if(s1Lock) break;

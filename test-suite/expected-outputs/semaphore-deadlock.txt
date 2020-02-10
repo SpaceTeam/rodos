@@ -29,17 +29,11 @@ This run (test) will be terminated in 40 Seconds
 Deadlock will come...
 Deadlock will come...
 Deadlock will come...
-A enter 2
-B enter 1
-A leave 2
-A enter 1
-B enter 2
-C enter 2
-B leave 2
 C enter 1
-B leave 1
 A enter 2
-B enter 1
+C enter 2
+B enter 2
+A enter 1
 
 This run (test) terminates now! but first error log:
 time(secs)         id  text/name
