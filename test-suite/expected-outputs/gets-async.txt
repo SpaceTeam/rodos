@@ -24,7 +24,7 @@ BigEndianity = 0, cpu-Arc = x86, Basis-Os = baremetal, Cpu-Speed (K-Loops/sec) =
 Default internal MAIN
 --------------- Application running ------------
 
-This run (test) will be terminated in 40 Seconds
+This run (test) will be terminated in 4 Seconds
 Please type string of characters. Run at least 0.04 seconds
 I call getsnowait -> topic deactivated! 
 I call getsnowait -> topic deactivated! 

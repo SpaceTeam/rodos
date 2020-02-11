@@ -23,7 +23,7 @@ BigEndianity = 0, cpu-Arc = x86, Basis-Os = baremetal, Cpu-Speed (K-Loops/sec) =
 Default internal MAIN
 --------------- Application running ------------
 
-This run (test) will be terminated in 40 Seconds
+This run (test) will be terminated in 4 Seconds
 remove the semaphore and try again!
 remove the semaphore and try again!
 Hello world, I am here

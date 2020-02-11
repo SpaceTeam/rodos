@@ -25,7 +25,7 @@ BigEndianity = 0, cpu-Arc = x86, Basis-Os = baremetal, Cpu-Speed (K-Loops/sec) =
 Default internal MAIN
 --------------- Application running ------------
 
-This run (test) will be terminated in 40 Seconds
+This run (test) will be terminated in 4 Seconds
 A2    0.100000
 A1    0.200000
 A2    0.300000
