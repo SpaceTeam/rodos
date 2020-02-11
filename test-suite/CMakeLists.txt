@@ -30,6 +30,7 @@ set_tests_properties(test-suite-build-run
 # executable.  Setup test dependencies (using the fixture) to ensure
 # test exectuables are built before testing.
 foreach(test_file ${test_files})
+  get_filename_component(filename ${test_file} NAME_WE)
   string(REGEX REPLACE "[^A-Za-z0-9_]" "_" test_name ${test_file})
   add_executable("${test_name}-bin" EXCLUDE_FROM_ALL
     ${test_file} terminate-test.cpp)
@@ -38,7 +39,8 @@ foreach(test_file ${test_files})
   add_test(NAME "${test_name}-run"
     COMMAND
     ${CMAKE_CURRENT_SOURCE_DIR}/test-runner.sh
-    $<TARGET_FILE:${test_name}-bin>)
+    $<TARGET_FILE:${test_name}-bin>
+    ${CMAKE_CURRENT_SOURCE_DIR}/expected-outputs/${filename}.txt)
   set_tests_properties("${test_name}-run"
     PROPERTIES FIXTURES_REQUIRED test-suite-build-fixture)
 endforeach()
