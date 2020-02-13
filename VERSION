@@ -52,6 +52,7 @@ RODOS Versioning
         i:  instead of include "rodos.h" in src & apis : include-what-you-use
         j:  Bug corrections in matlib
         k:  substitute TT8000 Random by KISS
+        l:  substitute abort() by exit(0) in hwReset
 
 
 

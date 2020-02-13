@@ -160,3 +160,4 @@ id  text/name
      0  In the loop
      0  In the loop
      0  In the loop
+hw_resetAndReboot() -> exit

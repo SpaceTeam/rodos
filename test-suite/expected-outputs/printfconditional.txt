@@ -20,3 +20,4 @@ My location in source code : core-fast/printfconditional.cpp : 19
  ------- mask/id all in 1
  ------- mask/id all in 1
  ------- mask/id all in 1
+hw_resetAndReboot() -> exit

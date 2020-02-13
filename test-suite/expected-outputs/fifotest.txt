@@ -187,3 +187,4 @@ Sending 97
 Sending 98
 Sending 99
 Fifo full
+hw_resetAndReboot() -> exit

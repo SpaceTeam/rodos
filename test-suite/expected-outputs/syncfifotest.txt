@@ -231,3 +231,4 @@ sent 100
 read 100
 Sender Waiting 0.03 seconds
 Receiver wait 0.15 seconds
+hw_resetAndReboot() -> exit

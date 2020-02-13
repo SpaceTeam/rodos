@@ -49,3 +49,4 @@ Publisher01 sending Counter1 10
 ReceiverPutter -  msgLen: 4 data: 10 topicId: 11555
 Publisher01 sending Counter1 11
 ReceiverPutter -  msgLen: 4 data: 11 topicId: 11555
+hw_resetAndReboot() -> exit

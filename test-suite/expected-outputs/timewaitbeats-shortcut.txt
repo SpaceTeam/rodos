@@ -36,3 +36,4 @@ in 0.02 seconds beat:   0.800000000
 in 0.02 seconds beat:   0.900000000
 in 0.02 seconds beat:   1.000000000
 in 0.02 seconds beat:   1.100000000
+hw_resetAndReboot() -> exit

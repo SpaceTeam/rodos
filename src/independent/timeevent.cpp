@@ -12,7 +12,7 @@
 #include "listelement.h"
 #include "rodos-debug.h"
 #include "timeevent.h"
-
+#include "misc-rodos-funcs.h"
 
 namespace RODOS {
 
@@ -25,6 +25,7 @@ TimeEvent::TimeEvent(const char* name) : ListElement(TimeEvent::timeEventList,na
 
 /* destructor */
 TimeEvent::~TimeEvent() {
+    if(isShuttingDown) return;
     RODOS_ERROR("Time EventHandler deleted");
 }
 

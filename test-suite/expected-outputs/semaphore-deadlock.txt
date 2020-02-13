@@ -40,3 +40,4 @@ time(secs)         id  text/name
 ---------------------------------
 
 This run (test) terminates now! (terminate-test.cpp : 20)
+hw_resetAndReboot() -> exit

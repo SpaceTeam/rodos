@@ -37,3 +37,4 @@ This run (test) will be terminated in 40 Seconds
 
  If you want to see what happens if the buffer is really that small, just change the buffer size.
  If you are lucky on your platform you get a segmentation fault, otherwise you just wrote memory that is not yours!
+hw_resetAndReboot() -> exit

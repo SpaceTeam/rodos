@@ -33,3 +33,4 @@ Time now:   0.400000000
 Deepsleep now
 Time now:   0.500000000
 Wake up
+hw_resetAndReboot() -> exit

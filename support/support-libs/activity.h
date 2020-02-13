@@ -1,5 +1,7 @@
 #pragma once
 
+#include "misc-rodos-funcs.h"
+
 class Activity : public ListElement {
 public:
     static List activityList;
@@ -11,7 +13,10 @@ public:
     int32_t priority;
 
     Activity(const char* name = "anonymActiviy", int prio=100, int64_t startAt=END_OF_TIME, int64_t _period=0);
-    ~Activity() { RODOS_ERROR("activity deleted"); }
+    ~Activity() { 
+        if(RODOS::isShuttingDown) return;
+        RODOS_ERROR("activity deleted");
+    }
 
     void activateAt(const int64_t time) { suspendedUntil = time; }
     void activatePeriodic(const int64_t startAt, const int64_t _periode) {

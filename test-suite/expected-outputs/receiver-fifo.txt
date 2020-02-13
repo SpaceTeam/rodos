@@ -50,3 +50,4 @@ Publisher01 sending Counter1 10
 ReceiverSync - counter1: 10
 Publisher01 sending Counter1 11
 ReceiverSync - counter1: 11
+hw_resetAndReboot() -> exit

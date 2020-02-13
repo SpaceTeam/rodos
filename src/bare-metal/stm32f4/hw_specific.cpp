@@ -161,6 +161,7 @@ void initRtcInterrupt() {
  */
 void hwResetAndReboot() {
     //NVIC_SystemReset();
+    isShuttingDown = true;
     hwInitWatchdog(0);
     while(1){}
 }

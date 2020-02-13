@@ -72,3 +72,4 @@ Publisher01 sending Counter1 11
 ReceiverComBuffer - counter1: 10
 ReceiverComBuffer - counter1: 11
 ReceiverComBuffer - counter1: 11
+hw_resetAndReboot() -> exit

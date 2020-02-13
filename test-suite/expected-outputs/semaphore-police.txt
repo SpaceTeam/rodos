@@ -142,3 +142,4 @@ This run (test) will be terminated in 40 Seconds
  only one, I am -- 17 -- ,time   9.800000000
  only one, I am -- 18 -- ,time   9.900000000
  only one, I am -- 19 -- ,time  10.000000000
+hw_resetAndReboot() -> exit

@@ -24,3 +24,4 @@ Default internal MAIN
 
 This run (test) will be terminated in 40 Seconds
 Hello World!
+hw_resetAndReboot() -> exit

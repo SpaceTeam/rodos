@@ -15,6 +15,7 @@
 
 namespace RODOS {
 
+extern bool isShuttingDown; // set by hwResetAndReboot(), read by destructors
 
 /**
  * if a network and a gateway are present, my node number

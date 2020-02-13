@@ -153,3 +153,4 @@ This run (test) will be terminated in 40 Seconds
  8052100, After 0.02 Seconds  :   9.800000000 25
  805214C, After 0.02 Seconds  :   9.900000000 25
  8052198, After 0.02 Seconds  :  10.000000000 25
+hw_resetAndReboot() -> exit

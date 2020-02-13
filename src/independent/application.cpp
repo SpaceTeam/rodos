@@ -13,7 +13,7 @@
 #include "application.h"
 #include "listelement.h"
 #include "rodos-debug.h"
-
+#include "misc-rodos-funcs.h"
 
 namespace RODOS {
 
@@ -28,6 +28,7 @@ Application::Application(const char* name_, const int32_t id) :
 
 
 Application::~Application() {
+  if(isShuttingDown) return;
   RODOS_ERROR("Application deleted");
 }
 

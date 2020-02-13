@@ -1,6 +1,6 @@
 #pragma once
 
-
+#include "misc-rodos-funcs.h"
 
 class Activity1PPS : public ListElement {
 public:
@@ -23,7 +23,10 @@ public:
         frequency = freq;
         this->associatedThread = associatedThreadP;
     }
-    ~Activity1PPS() { RODOS_ERROR("activity deleted"); }
+    ~Activity1PPS() { 
+        if(isShuttingDown) return;
+        RODOS_ERROR("activity deleted");
+    }
 
     virtual void init() { }
     virtual void step(int64_t timeNow) { }

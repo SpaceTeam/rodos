@@ -49,3 +49,4 @@ Publisher01 sending Counter1 10
 SimpleSub - Length: 4 Data: 10 TopicId: 11555 
 Publisher01 sending Counter1 11
 SimpleSub - Length: 4 Data: 11 TopicId: 11555 
+hw_resetAndReboot() -> exit

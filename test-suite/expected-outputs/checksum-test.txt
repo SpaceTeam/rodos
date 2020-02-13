@@ -520,3 +520,4 @@ Checksum of 99: -5928524059183951505
   hash; 32063
 
 This run (test) terminates now! (core-fast/checksum-test.cpp : 32)
+hw_resetAndReboot() -> exit

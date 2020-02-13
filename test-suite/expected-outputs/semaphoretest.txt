@@ -881,4 +881,30 @@ ddd before protector
 ccc after protector getScheduleCounter()  663 
 ------- bbb entered at   9.500000000 
 ccc
-          bbb 1
+          bbb 1.yield. getScheduleCounter()  666
+ccc before protector 
+          bbb 2.yield. getScheduleCounter() 668
+          bbb 3.yield. getScheduleCounter() 668
+          bbb 4.yield. getScheduleCounter() 668
+-------- bbb leavs getScheduleCounter() 668
+bbb after protector getScheduleCounter()  670 
+------- aaa entered at   9.599999999 
+bbb
+          aaa 1.yield. getScheduleCounter()  673
+bbb before protector 
+          aaa 2.yield. getScheduleCounter() 675
+          aaa 3.yield. getScheduleCounter() 675
+          aaa 4.yield. getScheduleCounter() 675
+-------- aaa leavs getScheduleCounter() 675
+aaa after protector getScheduleCounter()  677 
+------- ddd entered at   9.699999999 
+aaa
+          ddd 1.yield. getScheduleCounter()  680
+aaa before protector 
+          ddd 2.yield. getScheduleCounter() 682
+          ddd 3.yield. getScheduleCounter() 682
+          ddd 4.yield. getScheduleCounter() 682
+-------- ddd leavs getScheduleCounter() 682
+ddd after protector getScheduleCounter()  684 
+------- ccc entered at   9.800000000 
+hw_resetAndReboot() -> exit

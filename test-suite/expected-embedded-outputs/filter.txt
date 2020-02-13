@@ -830,3 +830,4 @@ Publish cnt1 99000199.
 Filter changed the value
 
 This run (test) terminates now! (embedded-test/filter.cpp : 64)
+hw_resetAndReboot() -> exit

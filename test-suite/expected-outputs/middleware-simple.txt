@@ -730,3 +730,4 @@ Publish cnt1 199.
   receiver1-1 199
 
 This run (test) terminates now! (middleware-tests/middleware-simple.cpp : 29)
+hw_resetAndReboot() -> exit

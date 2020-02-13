@@ -20,3 +20,4 @@ Threads in System:
 BigEndianity = 0, cpu-Arc = x86, Basis-Os = baremetal, Cpu-Speed (K-Loops/sec) = 313330 yeildtim (ns) 990
 -----------------------------------------------------
 please write some lines
+hw_resetAndReboot() -> exit

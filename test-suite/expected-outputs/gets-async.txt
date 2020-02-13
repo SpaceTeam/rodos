@@ -126,4 +126,4 @@ I call getsnowait -> topic deactivated!
 I call getsnowait -> topic deactivated! 
 I call getsnowait -> topic deactivated! 
 I call getsnowait -> topic deactivated! 
--------------------------------------------------------------
+-------------------------------------------------------------hw_resetAndReboot() -> exit

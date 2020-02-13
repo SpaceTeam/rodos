@@ -49,6 +49,7 @@ HAL_UART uart_stdout(UART_DEBUG);
  *  abort execution
  */
 void hwResetAndReboot() {
+    isShuttingDown = true;
     NVIC_SystemReset();
     //hwInitWatchdog(0);
     while(1) {}
