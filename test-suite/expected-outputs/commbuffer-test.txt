@@ -27,3 +27,4 @@ This run (test) will be terminated in 40 Seconds
 No new data
 
 This run (test) terminates now! (core-fast/commbuffer-test.cpp : 21)
+hw_resetAndReboot() -> exit

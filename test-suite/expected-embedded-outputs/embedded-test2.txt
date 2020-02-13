@@ -130,3 +130,4 @@ ReceiverSync - counter1: 12
 ReceiverComBuffer - counter1: 12
 Publisher01 sending Counter1 13
 FINISHED----------------------
+hw_resetAndReboot() -> exit

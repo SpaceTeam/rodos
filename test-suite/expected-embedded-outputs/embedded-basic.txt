@@ -26,3 +26,4 @@ Default internal MAIN
 This run (test) will be terminated in 40 Seconds
 MAINTEST
 TEST1
+hw_resetAndReboot() -> exit

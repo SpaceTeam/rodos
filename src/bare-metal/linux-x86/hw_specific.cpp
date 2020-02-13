@@ -15,12 +15,11 @@
 #include "rodos.h"
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <stdint.h>
 #include <signal.h>
 #include <unistd.h>
 #include <time.h> // only for nanosleep
-
-extern "C" void abort();
 
 namespace RODOS {
 
@@ -40,8 +39,9 @@ void hwInit() {
 
 //_____________________________________________________
 void hwResetAndReboot() {
-    xprintf("hw_resetAndReboot() -> exit");
-    abort();
+    isShuttingDown = true;
+    xprintf("hw_resetAndReboot() -> exit\n");
+    exit(0);
 }
 
 //_____________________________________________________

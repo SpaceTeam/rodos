@@ -316,3 +316,4 @@ B 24 21
 A 13 25 
 C 28 4 
 A 14 25 
+hw_resetAndReboot() -> exit

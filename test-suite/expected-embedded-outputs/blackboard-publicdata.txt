@@ -43,3 +43,4 @@ Sending 8
 Sending 9
     got 9
     got 9
+hw_resetAndReboot() -> exit

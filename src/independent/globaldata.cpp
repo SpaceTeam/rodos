@@ -19,6 +19,8 @@ namespace RODOS {
 
 /*********************************************/
 
+bool isShuttingDown = false; // set by hwResetAndReboot(), read by destructors
+
 /**
  * In case a network is avialable, the corresponding node nr.
  */

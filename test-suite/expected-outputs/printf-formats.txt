@@ -38,3 +38,4 @@ as b:  01010101
 
 
 as s: 'this is a string'
+hw_resetAndReboot() -> exit

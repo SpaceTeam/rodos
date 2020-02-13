@@ -108,7 +108,10 @@ public:
     Subscriber(TopicInterface &topic, const char* name = "anonymThreadSubscriber");
 
     /// Destructor, should not be called in nominal operation.
-    virtual ~Subscriber() { RODOS_ERROR("Subscriber deleted"); }
+    virtual ~Subscriber() { 
+        if(isShuttingDown) return;
+        RODOS_ERROR("Subscriber deleted");
+    }
 
     /** returns true if InputPort is enabled and wants to receive messages for
     *   given topicId

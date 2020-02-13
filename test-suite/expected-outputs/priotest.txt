@@ -46,3 +46,4 @@ This run (test) will be terminated in 40 Seconds
   hi pri cnt = 9
   hi pri cnt = 9
   hi pri cnt = 10
+hw_resetAndReboot() -> exit

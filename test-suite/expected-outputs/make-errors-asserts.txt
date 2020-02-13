@@ -49,3 +49,4 @@ id  text/name
      0  core-fast/make-errors-asserts.cpp : 44
      0  core-fast/make-errors-asserts.cpp : 49
      0  core-fast/make-errors-asserts.cpp : 29
+hw_resetAndReboot() -> exit

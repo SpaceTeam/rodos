@@ -5,3 +5,4 @@ Loaded Applications:
 Calling Initiators and Application Initiators
  This will be done before any thread begins
  Doing so you do not need to use MAIN
+hw_resetAndReboot() -> exit

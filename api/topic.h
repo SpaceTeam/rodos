@@ -15,6 +15,7 @@
 #include "listelement.h"
 #include "rodos-debug.h"
 #include "gateway/networkmessage.h"
+#include "misc-rodos-funcs.h"
 
 namespace RODOS {
 
@@ -67,7 +68,10 @@ public:
 
     TopicInterface(long id, long len, const char* name, bool _onlyLocal = false);
 
-    virtual ~TopicInterface() { RODOS_ERROR("Topic Deleted"); }
+    virtual ~TopicInterface() { 
+        if(isShuttingDown) return;
+        RODOS_ERROR("Topic Deleted");
+    }
 
     /** publish/distribute the message to all listeners to the given serviceId.
      * if shallSendToNetwork the message will be forwarded to gateways too (default).
@@ -150,6 +154,7 @@ public:
     Topic(long id, const char* name, bool _onlyLocal = false) : TopicInterface(id, sizeof(Type), name, _onlyLocal) { }
 
     ~Topic() {
+        if(isShuttingDown) return;
         RODOS_ERROR("topic deleted");
     }
 

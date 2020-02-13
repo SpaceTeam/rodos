@@ -47,3 +47,4 @@ Periodic Time Event at   2.000000000
 activateIn Time Event at   2.100000000, reactivation in 0.02 seconds
 Periodic Time Event at   2.200000000
 Terminating
+hw_resetAndReboot() -> exit

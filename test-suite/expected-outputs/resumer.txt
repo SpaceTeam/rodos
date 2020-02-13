@@ -25,4 +25,4 @@ Default internal MAIN
 --------------- Application running ------------
 
 This run (test) will be terminated in 40 Seconds
-*...*..*..*..*...*..*..*..*..*...*..*..*..*..*...*..*..*..*
+*...*..*..*..*...*..*..*..*..*...*..*..*..*..*...*..*..*..*hw_resetAndReboot() -> exit

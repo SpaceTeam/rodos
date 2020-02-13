@@ -1030,3 +1030,4 @@ sending 3 topics:
   1100    101000   10.99
 terminate Signal:  -  1  -      1  - 1.00
 Sender terminates
+hw_resetAndReboot() -> exit

@@ -13,6 +13,7 @@
 #include "hw_specific.h"
 #include "rodos.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include <signal.h>
 #include <unistd.h>
 #include <time.h>
@@ -45,8 +46,9 @@ void hwInit() {
 *  abort execution
 */
 void hwResetAndReboot() {
-    xprintf("hw_resetAndReboot() -> exit");
-    abort();
+    isShuttingDown = true;
+    xprintf("hw_resetAndReboot() -> exit\n");
+    exit(0);
 }
 
 // cpu core and periferis off until extern interrupt or time "until"

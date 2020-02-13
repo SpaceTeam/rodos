@@ -17,7 +17,7 @@
 #include "rodos-assert.h"
 #include "rodos-debug.h"
 #include "thread.h"
-
+#include "misc-rodos-funcs.h"
 
 namespace RODOS {
 
@@ -42,6 +42,7 @@ void ListElement::append(List& list) {
 *  destructor
 */
 ListElement::~ListElement() {
+    if(isShuttingDown) return;
     RODOS_ERROR("ListElement deleted");
 }
 

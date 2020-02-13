@@ -36,3 +36,4 @@ After 0.02 Seconds  :   0.700000000 7
 After 0.02 Seconds  :   0.800000000 8
 After 0.02 Seconds  :   0.900000000 9
 After 0.02 Seconds  :   1.000000000 10
+hw_resetAndReboot() -> exit

@@ -169,6 +169,7 @@ void hwInit() {
  *  abort execution
  */
 void hwResetAndReboot() {
+    isShuttingDown = true;
     xprintf("hw_resetAndReboot() not implemented yet\n");
 }
 

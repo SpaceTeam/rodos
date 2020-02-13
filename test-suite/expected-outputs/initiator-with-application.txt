@@ -7,3 +7,4 @@ Calling Initiators and Application Initiators
  This will be done before any thread begins
  Doing so you do not need to use MAIN
  This is the initator from applicasions
+hw_resetAndReboot() -> exit

@@ -65,3 +65,4 @@ Suspend and wait until some one resumes me
    Time Event at   1.900000000
    Testwaiter resumed from me
 testwaiter running again at   2.000000000
+hw_resetAndReboot() -> exit

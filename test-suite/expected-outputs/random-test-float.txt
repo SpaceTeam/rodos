@@ -33,3 +33,4 @@ min: 0.0000   max: 9.9999   mean  5.0002
 min: 0.0000   max: 9.9999   mean  4.9977
 min: 0.0000   max: 9.9999   mean  4.9985
 min: 0.0000   max: 9.9999   mean  5.0015
+hw_resetAndReboot() -> exit

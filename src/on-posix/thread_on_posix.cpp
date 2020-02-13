@@ -60,6 +60,7 @@ Thread::Thread(const char* name,
 }
 
 Thread::~Thread() {
+    if(isShuttingDown) return;
     PRINTF("%s:", getName());
     RODOS_ERROR("Thread deleted");
 }

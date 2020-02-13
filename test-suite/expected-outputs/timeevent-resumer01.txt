@@ -36,3 +36,4 @@ in 0.05 seconds beat: 0
 in 0.05 seconds beat: 0 
 in 0.05 seconds beat: 0 
 in 0.05 seconds beat: 1 
+hw_resetAndReboot() -> exit

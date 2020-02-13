@@ -1029,3 +1029,4 @@ doubltop:   10.98
 doubltop:   10.99
 doubltop: -  1.00
 signal to terminate
+hw_resetAndReboot() -> exit

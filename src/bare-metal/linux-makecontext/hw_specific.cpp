@@ -15,12 +15,11 @@
 
 #include <stdio.h>
 #include <stdint.h>
+#include <stdlib.h>
 #include <signal.h>
 #include <unistd.h>
 #include <time.h> // only for nanosleep
 #include <ucontext.h> // for makecontext & co
-
-extern "C" void abort();
 
 namespace RODOS {
 
@@ -46,8 +45,9 @@ void hwInit() {
 
 //_____________________________________________________
 void hwResetAndReboot() {
-    xprintf("hw_resetAndReboot() -> exit");
-    abort();
+    isShuttingDown = true;
+    xprintf("hw_resetAndReboot() -> exit\n");
+    exit(0);
 }
 
 //_____________________________________________________
@@ -93,7 +93,8 @@ long* hwInitContext(long* stack, void* object) {
     contextT->uc_stack.ss_flags = 0;
     if(sigemptyset(&contextT->uc_sigmask) < 0) {
         perror("sigemptyset");
-        abort();
+        isShuttingDown = true;
+        exit(1);
     }
     makecontext(contextT, (void (*)())threadStartupWrapper, 1, object);
 

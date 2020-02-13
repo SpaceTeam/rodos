@@ -192,3 +192,4 @@ Publish cnt1 19000039.
 Filter changed the value
 
 This run (test) terminates now! (middleware-tests/filter.cpp : 63)
+hw_resetAndReboot() -> exit

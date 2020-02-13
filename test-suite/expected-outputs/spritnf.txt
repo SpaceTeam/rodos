@@ -26,3 +26,4 @@ This run (test) will be terminated in 40 Seconds
  prints from string: 
   = 'str = 10 20'
 -- DONE--
+hw_resetAndReboot() -> exit

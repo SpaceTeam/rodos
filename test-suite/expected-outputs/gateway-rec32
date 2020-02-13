@@ -1029,3 +1029,4 @@ int32top: 1099
 int32top: 1100
 int32top: -  1
 signal to terminate
+hw_resetAndReboot() -> exit

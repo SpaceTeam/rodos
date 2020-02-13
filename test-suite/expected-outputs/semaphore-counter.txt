@@ -44,3 +44,4 @@ Default internal MAIN
 This run (test) will be terminated in 40 Seconds
  20 from 20 Threads finished -> terminate
 counter am Ende = 2000000000
+hw_resetAndReboot() -> exit

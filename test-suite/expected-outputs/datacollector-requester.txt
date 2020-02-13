@@ -47,3 +47,4 @@ Colleting data
 Collected:90 91 92 93 94 95 96 97 98 99 9A 9B 9C 9D 9E 9F A0 A1 A2 A3 
 
 This run (test) terminates now! (middleware-tests/datacollector-requester.cpp : 25)
+hw_resetAndReboot() -> exit

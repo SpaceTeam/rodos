@@ -117,3 +117,4 @@ ddd before protector
           ddd 4.yield. getScheduleCounter() 2
 -------- ddd leavs getScheduleCounter() 2
 ddd after protector getScheduleCounter()  2 
+hw_resetAndReboot() -> exit
