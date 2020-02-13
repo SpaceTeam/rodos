@@ -22,5 +22,5 @@ in
 
   map (cfg: doit (builtins.elemAt cfg 0) (builtins.elemAt cfg 1))
   [
-  ["posix" pkgsi686Linux.stdenv]
+  ["linux-x86" pkgsi686Linux.stdenv]
   ]
