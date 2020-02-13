@@ -17,7 +17,7 @@ class TerminateTest : public Thread {
         AT(TIME_TO_END*SECONDS);
         PRINTF("\nThis run (test) terminates now! but first error log:\n");
         errorLog.printAll();
-        PRINTF("\nThis run (test) terminates now! (%s)\n", LOCATION);
+        PRINTF("\nThis run (test) terminates now!\n");
         hwResetAndReboot();
     }
 };

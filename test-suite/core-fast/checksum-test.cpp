@@ -29,7 +29,7 @@ class ChecksumTester : public Thread {
             PRINTF("  hash; %d\n", hash(buff));
         }
 
-        PRINTF("\nThis run (test) terminates now! (%s)\n", LOCATION);
+        PRINTF("\nThis run (test) terminates now!\n");
         hwResetAndReboot();
     }
 } checksumsTester;

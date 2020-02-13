@@ -39,5 +39,5 @@ This run (test) terminates now! but first error log:
 time(secs)         id  text/name
 ---------------------------------
 
-This run (test) terminates now! (terminate-test.cpp : 20)
+This run (test) terminates now!
 hw_resetAndReboot() -> exit

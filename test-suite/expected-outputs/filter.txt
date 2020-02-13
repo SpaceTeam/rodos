@@ -191,5 +191,5 @@ Publish cnt1 19000039.
   receiver1-1 20000039
 Filter changed the value
 
-This run (test) terminates now! (middleware-tests/filter.cpp : 63)
+This run (test) terminates now!
 hw_resetAndReboot() -> exit

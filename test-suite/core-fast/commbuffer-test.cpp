@@ -18,7 +18,7 @@ class CommBufferTester : public Thread {
         } else {
             PRINTF("No new data\n");     //Must end here
         }
-        PRINTF("\nThis run (test) terminates now! (%s)\n", LOCATION);
+        PRINTF("\nThis run (test) terminates now!\n");
         hwResetAndReboot();
 
     }

@@ -36,5 +36,5 @@ read success 0, data 3
 read success 0, data 3
 read success 0, data 3
 
-This run (test) terminates now! (core-fast/fifo-test.cpp : 37)
+This run (test) terminates now!
 hw_resetAndReboot() -> exit

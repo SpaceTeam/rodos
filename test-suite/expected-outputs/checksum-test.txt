@@ -519,5 +519,5 @@ Checksum of 99: -5928524059183951505
   chcksumxor -868059224
   hash; 32063
 
-This run (test) terminates now! (core-fast/checksum-test.cpp : 32)
+This run (test) terminates now!
 hw_resetAndReboot() -> exit

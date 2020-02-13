@@ -829,5 +829,5 @@ Publish cnt1 99000199.
   receiver1-1 100000199
 Filter changed the value
 
-This run (test) terminates now! (embedded-test/filter.cpp : 64)
+This run (test) terminates now!
 hw_resetAndReboot() -> exit
