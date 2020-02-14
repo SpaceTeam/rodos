@@ -11,7 +11,10 @@ list(FILTER test_files
   EXCLUDE REGEX "core-fast/make-errors-asserts.cpp")
 list(FILTER test_files
   EXCLUDE REGEX "core-fast/timepoints-errlog.cpp")
-
+if (COVERAGE)
+  list(FILTER test_files
+    EXCLUDE REGEX "core-fast/timeevents.cpp")
+endif()
 
 # Fixture for the tests, making sure that all test executables are
 # build before attempting to run them.
