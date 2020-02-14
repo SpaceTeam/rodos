@@ -10,16 +10,14 @@ bool Tokenizer::isSeparator(char c) {
 }
 
 char* Tokenizer::next() {
-    if(!valid()) return 0;
-    // find begin of tocken
+    if(!isValid()) return 0;
+    // find begin of token
     while(isSeparator(*ptr)) ptr++;
 
     if(*ptr == 0) return 0;
     char* retVal = ptr;
-
-    // mark end of tocken
+    // mark end of token
     while(*ptr != 0 && !isSeparator(*ptr)) ptr++;
-
     if(*ptr != 0) {
         *ptr = 0;
         ptr++;
@@ -29,7 +27,7 @@ char* Tokenizer::next() {
 
 
 
-//terminated by 0
+//converts s to int, s MUST start with '-' or '0' to '9'. Terminates by a non digit.
 int64_t s2int(char *s) {
     int64_t retVal = 0;
     bool negativ = false;
