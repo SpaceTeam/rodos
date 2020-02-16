@@ -7,6 +7,10 @@ add_compile_options( $<$<COMPILE_LANGUAGE:CXX>:-fno-rtti> $<$<COMPILE_LANGUAGE:C
 
 project(rodos C CXX ASM)
 
+if(NOT DEFINED port_dir)
+  message(FATAL_ERROR "port not correct (CMAKE_TOOCHAIN_FILE, see readme)")
+endif()
+
 #___________________________________________________________________
 file(GLOB_RECURSE independent_sources
     src/independent/*.cpp
