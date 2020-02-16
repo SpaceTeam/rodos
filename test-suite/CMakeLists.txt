@@ -48,7 +48,7 @@ foreach(test_file ${test_files})
     $<TARGET_FILE:${test_name}-bin>
     ${CMAKE_CURRENT_SOURCE_DIR}/expected-outputs/${filename}.txt
     DEPENDS
-    ${test_name}-bin
+    ${test_name}-bin test-runner.sh
     coverage_prepare)
   list(APPEND diff_files "${test_name}-bin.diff")
 
@@ -67,3 +67,10 @@ foreach(test_file ${test_files})
 endforeach()
 
 add_custom_target(generate-diffs DEPENDS "${diff_files}")
+
+add_custom_command(
+  OUTPUT test-report.txt
+  COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/test-collector.sh "${diff_files}"
+  DEPENDS generate-diffs test-collector.sh
+  VERBATIM)
+add_custom_target(test-report DEPENDS test-report.txt)
