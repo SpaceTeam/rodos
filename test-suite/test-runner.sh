@@ -9,3 +9,5 @@ linecount=`wc -l < "$2"`
 pattern="-----------------------------------------------------"
 grep -h -B 0 -A $linecount -e $pattern $1.output > $1.output_trimmed || true
 grep -h -B 0 -A $linecount -e $pattern $2 > $1.expected_trimmed || true
+
+diff -ruh $1.output_trimmed $1.expected_trimmed > $1.diff || true

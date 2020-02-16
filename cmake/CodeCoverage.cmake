@@ -59,6 +59,10 @@
 # 2019-12-19, FeRD (Frank Dana)
 # - Rename Lcov outputs, make filtered file canonical, fix cleanup for targets
 #
+# 2020-02-17, musteresel (Daniel Jour)
+# - Rewrite setup_target_for_coverage_lcov to setup_lcov_coverage to allow
+#   more control over coverage generation.
+#
 # USAGE:
 #
 # 1. Copy this file into your cmake modules path.
@@ -158,27 +162,34 @@ if(CMAKE_C_COMPILER_ID STREQUAL "GNU")
     link_libraries(gcov)
 endif()
 
-# Defines a target for running and collection code coverage information
-# Builds dependencies, runs the given executable and outputs reports.
-# NOTE! The executable should always have a ZERO as exit code otherwise
-# the coverage generation will not complete.
+
+# Defines 3 targets to help with coverage generation:
 #
-# setup_target_for_coverage_lcov(
-#     NAME testrunner_coverage                    # New target name
-#     EXECUTABLE testrunner -j ${PROCESSOR_COUNT} # Executable in PROJECT_BINARY_DIR
-#     DEPENDENCIES testrunner                     # Dependencies to build first
+# - NAME_prepare: Add to this target a dependency for each
+#   executable/library/code compiled that shall be included in the
+#   coverage report.  Depend on this target (i.e. run after it) for
+#   each executable which generates coverage information.
+#
+# - NAME_collect: Add to this target a dependency for each exectuable
+#   which generates coverage information.
+#
+# - NAME_reset: Add commands which clean up (ensure that the
+#   exectuable is run again)
+#
+# setup_lcov_coverage(
+#     NAME name
+#     DEPENDENCIES deps                           # build before NAME_prepare
 #     BASE_DIRECTORY "../"                        # Base directory for report
 #                                                 #  (defaults to PROJECT_SOURCE_DIR)
 #     EXCLUDE "src/dir1/*" "src/dir2/*"           # Patterns to exclude (can be relative
 #                                                 #  to BASE_DIRECTORY, with CMake 3.4+)
 #     NO_DEMANGLE                                 # Don't demangle C++ symbols
-#                                                 #  even if c++filt is found
 # )
-function(setup_target_for_coverage_lcov)
+function(setup_lcov_coverage)
 
     set(options NO_DEMANGLE)
     set(oneValueArgs BASE_DIRECTORY NAME)
-    set(multiValueArgs EXCLUDE EXECUTABLE EXECUTABLE_ARGS DEPENDENCIES LCOV_ARGS GENHTML_ARGS)
+    set(multiValueArgs EXCLUDE DEPENDENCIES LCOV_ARGS GENHTML_ARGS)
     cmake_parse_arguments(Coverage "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
 
     if(NOT LCOV_PATH)
@@ -211,16 +222,25 @@ function(setup_target_for_coverage_lcov)
       set(GENHTML_EXTRA_ARGS "--demangle-cpp")
     endif()
 
+    add_custom_target(${Coverage_NAME}_reset)
+
     # Setup target
-    add_custom_target(${Coverage_NAME}
+    add_custom_target(${Coverage_NAME}_prepare
 
         # Cleanup lcov
         COMMAND ${LCOV_PATH} ${Coverage_LCOV_ARGS} --gcov-tool ${GCOV_PATH} -directory . -b ${BASEDIR} --zerocounters
         # Create baseline to make sure untouched files show up in the report
         COMMAND ${LCOV_PATH} ${Coverage_LCOV_ARGS} --gcov-tool ${GCOV_PATH} -c -i -d . -b ${BASEDIR} -o ${Coverage_NAME}.base
 
-        # Run tests
-        COMMAND ${Coverage_EXECUTABLE} ${Coverage_EXECUTABLE_ARGS}
+        BYPRODUCTS
+            ${Coverage_NAME}.base
+
+        WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
+        DEPENDS ${Coverage_DEPENDENCIES}
+        COMMENT "Resetting code coverage counters to zero.")
+
+
+      add_custom_target(${Coverage_NAME}_collect
 
         # Capturing lcov counters and generating report
         COMMAND ${LCOV_PATH} ${Coverage_LCOV_ARGS} --gcov-tool ${GCOV_PATH} --directory . -b ${BASEDIR} --capture --output-file ${Coverage_NAME}.capture
@@ -234,30 +254,29 @@ function(setup_target_for_coverage_lcov)
 
         # Set output files as GENERATED (will be removed on 'make clean')
         BYPRODUCTS
-            ${Coverage_NAME}.base
             ${Coverage_NAME}.capture
             ${Coverage_NAME}.total
             ${Coverage_NAME}.info
             ${Coverage_NAME}  # report directory
 
         WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
-        DEPENDS ${Coverage_DEPENDENCIES}
-        COMMENT "Resetting code coverage counters to zero.\nProcessing code coverage counters and generating report."
+        DEPENDS ${Coverage_NAME}.base
+        COMMENT "Processing code coverage counters and generating report."
     )
 
     # Show where to find the lcov info report
-    add_custom_command(TARGET ${Coverage_NAME} POST_BUILD
+    add_custom_command(TARGET ${Coverage_NAME}_collect POST_BUILD
         COMMAND ;
         COMMENT "Lcov code coverage info report saved in ${Coverage_NAME}.info."
     )
 
     # Show info where to find the report
-    add_custom_command(TARGET ${Coverage_NAME} POST_BUILD
+    add_custom_command(TARGET ${Coverage_NAME}_collect POST_BUILD
         COMMAND ;
         COMMENT "Open ./${Coverage_NAME}/index.html in your browser to view the coverage report."
     )
 
-endfunction() # setup_target_for_coverage_lcov
+endfunction() # setup_lcov_coverage
 
 # Defines a target for running and collection code coverage information
 # Builds dependencies, runs the given executable and outputs reports.
