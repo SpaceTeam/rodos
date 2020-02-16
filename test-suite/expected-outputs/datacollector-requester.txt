@@ -23,8 +23,6 @@ BigEndianity = 0, cpu-Arc = x86, Basis-Os = baremetal, Cpu-Speed (K-Loops/sec) =
 -----------------------------------------------------
 Default internal MAIN
 --------------- Application running ------------
-
-This run (test) will be terminated in 4 Seconds
 Colleting data
 Collected:00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 10 11 12 13 
 Colleting data

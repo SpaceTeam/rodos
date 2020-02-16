@@ -21,8 +21,6 @@ BigEndianity = 0, cpu-Arc = x86, Basis-Os = baremetal, Cpu-Speed (K-Loops/sec) =
 -----------------------------------------------------
 Default internal MAIN
 --------------- Application running ------------
-
-This run (test) will be terminated in 4 Seconds
 min: 0.0000   max: 9.9999   mean  4.9997
 min: 0.0000   max: 9.9999   mean  4.9995
 min: 0.0000   max: 9.9999   mean  4.9982

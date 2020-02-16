@@ -23,8 +23,6 @@ BigEndianity = 0, cpu-Arc = x86, Basis-Os = baremetal, Cpu-Speed (K-Loops/sec) =
  in MAIN... Produces an error 
  error done!
 --------------- Application running ------------
-
-This run (test) will be terminated in 4 Seconds
 Errors prior to my execution: id  text/name
 ---------------------------------
      0  null pointer setPrioCurrentRunner

@@ -23,8 +23,6 @@ BigEndianity = 0, cpu-Arc = x86, Basis-Os = baremetal, Cpu-Speed (K-Loops/sec) =
 -----------------------------------------------------
 Default internal MAIN
 --------------- Application running ------------
-
-This run (test) will be terminated in 4 Seconds
 Bob sending greetings 'i wish you would be here'
 Alice got date 111:  msg: i wish you would be here
 Alice got date 111:  msg: I wish you would be here

@@ -35,8 +35,9 @@ set_tests_properties(test-suite-build-run
 foreach(test_file ${test_files})
   get_filename_component(filename ${test_file} NAME_WE)
   string(REGEX REPLACE "[^A-Za-z0-9_]" "_" test_name ${test_file})
-  add_executable("${test_name}-bin" EXCLUDE_FROM_ALL
-    ${test_file} terminate-test.cpp)
+  add_executable("${test_name}-bin" EXCLUDE_FROM_ALL ${test_file})
+  target_include_directories("${test_name}-bin"
+    PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
   target_link_libraries("${test_name}-bin" PUBLIC rodos)
   add_dependencies(test-suite-build "${test_name}-bin")
   add_test(NAME "${test_name}-run"

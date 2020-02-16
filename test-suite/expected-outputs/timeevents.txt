@@ -23,8 +23,6 @@ BigEndianity = 0, cpu-Arc = x86, Basis-Os = baremetal, Cpu-Speed (K-Loops/sec) =
 -----------------------------------------------------
 Default internal MAIN
 --------------- Application running ------------
-
-This run (test) will be terminated in 4 Seconds
 activateIn Time Event at   0.200000000, reactivation in 0.02 seconds
 Periodic Time Event at   0.300000000
 SINGLE Time Event at   0.400000000

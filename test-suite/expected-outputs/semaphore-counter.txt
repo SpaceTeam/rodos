@@ -40,8 +40,6 @@ BigEndianity = 0, cpu-Arc = x86, Basis-Os = baremetal, Cpu-Speed (K-Loops/sec) =
 -----------------------------------------------------
 Default internal MAIN
 --------------- Application running ------------
-
-This run (test) will be terminated in 4 Seconds
  20 from 20 Threads finished -> terminate
 counter am Ende = 2000000000
 hw_resetAndReboot() -> exit

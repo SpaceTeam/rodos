@@ -14,7 +14,7 @@
 #include <stdint.h>
 #include "rodos.h"
 
-extern int32_t secondsNowCnt;
+int32_t secondsNowCnt = 1;
 #define CNT_SECONDS_NOW() (((double)secondsNowCnt++) / 10.0)
 #define INT_SECONDS_NOW() (double)((int32_t)SECONDS_NOW())
 

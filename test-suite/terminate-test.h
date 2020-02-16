@@ -1,3 +1,6 @@
+#ifndef TERMINATE_TEST_H
+#define TERMINATE_TEST_H 1
+
 #include "rodos.h"
 
 #ifndef TIME_TO_END
@@ -5,7 +8,7 @@
 #endif
 
 #include "prt-seconds-now.h"
-int32_t secondsNowCnt = 1;
+
 
 static Application terminateTestApp("terminateTest");
 
@@ -25,3 +28,4 @@ class TerminateTest : public Thread {
 static TerminateTest terminateTest;
 
 
+#endif // TERMINATE_TEST_H
