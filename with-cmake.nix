@@ -11,7 +11,7 @@ let doit = (target: env: env.mkDerivation {
   ];
   installPhase =
     ''
-      make coverage
+      make coverage_collect
       mkdir $out
       mv coverage $out/
       mv coverage.info $out/
