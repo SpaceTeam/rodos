@@ -27,6 +27,9 @@ add_test(test-suite-build-run
 set_tests_properties(test-suite-build-run
   PROPERTIES FIXTURES_SETUP test-suite-build-fixture)
 
+add_test(NAME "only-run-tests"
+  COMMAND "${CMAKE_COMMAND}" -E echo
+  "Only ran tests; didn't check output")
 
 # Create a test for each test file: Create an executable from the test
 # file and a test case which uses the test-runner.sh to run that
@@ -45,6 +48,20 @@ foreach(test_file ${test_files})
     ${CMAKE_CURRENT_SOURCE_DIR}/test-runner.sh
     $<TARGET_FILE:${test_name}-bin>
     ${CMAKE_CURRENT_SOURCE_DIR}/expected-outputs/${filename}.txt)
+  add_test(NAME "${test_name}-cmp"
+    COMMAND
+    ${CMAKE_COMMAND} -E compare_files
+    $<TARGET_FILE:${test_name}-bin>.output_trimmed
+    $<TARGET_FILE:${test_name}-bin>.expected_trimmed)
   set_tests_properties("${test_name}-run"
     PROPERTIES FIXTURES_REQUIRED test-suite-build-fixture)
+  set_tests_properties("${test_name}-run"
+    PROPERTIES FIXTURES_SETUP "${test_name}-run-fixture")
+  set_tests_properties("${test_name}-cmp"
+    PROPERTIES FIXTURES_REQUIRED "${test_name}-run-fixture")
+  list(APPEND only-run-tests-fixtures "${test_name}-run-fixture")
 endforeach()
+
+set_tests_properties("only-run-tests"
+  PROPERTIES FIXTURES_REQUIRED "${only-run-tests-fixtures}")
+
