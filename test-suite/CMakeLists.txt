@@ -7,13 +7,19 @@ file(GLOB test_files
   middleware-tests/*.cpp)
 
 # These tests are known to currently fail / hang, so do not use them.
-list(FILTER test_files
-  EXCLUDE REGEX "core-fast/make-errors-asserts.cpp")
-list(FILTER test_files
-  EXCLUDE REGEX "core-fast/timepoints-errlog.cpp")
+#
+# TODO: Make these tests useable!
+#
+list(REMOVE_ITEM test_files
+  "core-fast/make-errors-asserts.cpp"
+  "core-fast/timepoints-errlog.cpp")
 if (COVERAGE)
-  list(FILTER test_files
-    EXCLUDE REGEX "core-fast/timeevents.cpp")
+  list(REMOVE_ITEM test_files
+    "core-fast/timeevents.cpp"
+    "core-slow/preemptiontest-and-ceiler.cpp"
+    "core-slow/priotest.cpp"
+    "core-fast/gets-async.cpp"
+    "core-fast/getsnowiat.cpp")
 endif()
 
 # Fixture for the tests, making sure that all test executables are
