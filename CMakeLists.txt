@@ -74,9 +74,7 @@ if (COVERAGE)
   setup_target_for_coverage_lcov(
     NAME coverage
     LCOV_ARGS "--no-external"
-    EXECUTABLE "${CMAKE_COMMAND}" --build "${CMAKE_BINARY_DIR}"
-                                  --config $<CONFIG>
-                                  --target test)
+    EXECUTABLE "${CMAKE_CTEST_COMMAND}" -R only-run-tests)
     message("Generate coverage report with 'make coverage'")
 endif()
 enable_testing()
