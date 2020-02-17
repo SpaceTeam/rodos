@@ -19,7 +19,8 @@ if (COVERAGE)
     "core-slow/preemptiontest-and-ceiler.cpp"
     "core-slow/priotest.cpp"
     "core-fast/gets-async.cpp"
-    "core-fast/getsnowiat.cpp")
+    "core-fast/getsnowiat.cpp"
+    "core-fast/semaphore-scope-protector.cpp")
 endif()
 
 
