@@ -11,16 +11,19 @@ let doit = (target: env: env.mkDerivation {
   ];
   installPhase =
     ''
-      make coverage_collect
+      make coverage_collect test-report
       mkdir $out
       mv coverage $out/
       mv coverage.info $out/
+      mv test-suite/test-report.txt $out/
+      cat $out/test-report.txt
     '';
 });
 
 in
 
-  map (cfg: doit (builtins.elemAt cfg 0) (builtins.elemAt cfg 1))
-  [
-  ["linux-x86" pkgsi686Linux.stdenv]
-  ]
+{
+  linux-x86 = doit "linux-x86" pkgsi686Linux.stdenv;
+  linux-makecontext = doit "linux-makecontext" pkgsi686Linux.stdenv;
+  posix = doit "posix" pkgsi686Linux.stdenv;
+}

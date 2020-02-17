@@ -1,28 +1,27 @@
 image: nixos/nix:latest
 
-#  launches NixOS in a docker image; runs nix-build default.nix and 
-#  collects all build tgz files as build artifacts. These can be downloaded.
-
-build-all:
+.tmpl:
   stage: build
   script:
-   - nix-build -k default.nix
-   - RET=$?
-   - find -L result* -type f -name '*.tgz' -exec cp '{}' . '+'
-   - (exit $RET)
+    - nix-build with-cmake.nix -A $TARGET
   artifacts:
     paths:
-      - "*.tgz"
+    - result/coverage.info
+    - result/test-report.txt
     when: always
     expire_in: 1 week
 
-coverage-build:
-  stage: build
-  script:
-    - nix-build with-cmake.nix
-    - nix-env -i curl
-    - nix-env -i bash
-    - curl https://codecov.io/bash -o codecov
-    - bash codecov -f result/coverage.info
-  only:
-    - coverage
+linux-x86:
+  extends: .tmpl
+  variables:
+    TARGET: linux-x86
+
+linux-makecontext:
+  extends: .tmpl
+  variables:
+    TARGET: linux-makecontext
+
+posix:
+  extends: .tmpl
+  variables:
+    TARGET: posix

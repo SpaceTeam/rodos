@@ -73,4 +73,7 @@ add_custom_command(
   COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/test-collector.sh "${diff_files}"
   DEPENDS generate-diffs test-collector.sh
   VERBATIM)
-add_custom_target(test-report DEPENDS test-report.txt)
+add_custom_target(test-report
+  COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/test-collector.sh "${diff_files}"
+  VERBATIM
+  DEPENDS generate-diffs test-collector.sh)

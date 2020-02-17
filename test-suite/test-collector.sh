@@ -1,4 +1,5 @@
 rm test-report.txt &>/dev/null || true
+touch test-report.txt
 for diff in ${@//;/ }
 do
     if [ -s "$diff" ]
