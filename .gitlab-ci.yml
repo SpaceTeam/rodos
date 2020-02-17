@@ -36,4 +36,11 @@ coverage:
   variables:
     GIT_STRATEGY: none
   script:
-    - ls -la
+    - nix-env -i lcov binutils
+    - lcov -a $(echo */coverage.info | sed -e 's@ @ -a @g') --output-file coverage.info
+    - genhtml --demangle-cpp -o coverage coverage.info
+  artifacts:
+    paths:
+    - coverage.info
+    - coverage
+    expire_in: 1 week
