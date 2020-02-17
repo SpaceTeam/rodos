@@ -2,7 +2,13 @@ echo "::: Running $1 against $2"
 set -e
 # Kill test executable (with SIGKILL) after 8 seconds.  Necessary
 # because sometimes tests might deadlock.
-timeout -s 9 8 $1 > "$1.output"
+if timeout -s 9 8 $1 > "$1.output"
+then
+    true
+else
+    cat $1.output
+    exit 1
+fi
 
 # Remove header / intro from output and expected output
 linecount=`wc -l < "$2"`
