@@ -33,8 +33,6 @@ posix:
 
 coverage:
   stage: results
-  variables:
-    GIT_STRATEGY: none
   script:
     - nix-env -i lcov binutils
     - lcov -a $(echo */coverage.info | sed -e 's@ @ -a @g') --output-file coverage.info
