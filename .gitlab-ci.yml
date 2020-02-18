@@ -5,6 +5,13 @@ stages:
  - results
  - deploy
 
+
+
+
+# Template for a job which compiles rodos, runs the test suite and
+# collects both the test report as well as coverage information.  This
+# job does NOT fail when a test case has output different from the
+# expected output.  It DOES fail if any compilation fails.
 .cov_tmpl:
   stage: build_test
   script:
@@ -17,11 +24,17 @@ stages:
     when: always
     expire_in: 1 week
 
+# Template for a job which compiles rodos only, failing if any
+# compilation fails.
 .compile_tmpl:
   stage: build_test
   script:
     - nix-build with-cmake.nix -A $TARGET
 
+
+
+
+# Jobs for the actual ports, using one of the templates from above.
 linux-x86:
   extends: .cov_tmpl
   variables:
@@ -52,6 +65,12 @@ stm32f4:
   variables:
     TARGET: stm32f4
 
+
+
+
+# Job collecting coverage results from coverage generating jobs from
+# the build_test stage.  Runs even when a compile only job fails.
+# Merges the collected coverage information into a combined report.
 coverage:
   stage: results
   needs:
@@ -71,6 +90,9 @@ coverage:
     - coverage
     expire_in: 1 week
 
+# Job inspecting the test reports of jobs which have run the test
+# suite.  Fails if any of these test reports shows an error.  Depends
+# ("needs") only on jobs generating a test report.
 test-report:
   stage: results
   needs:
@@ -87,6 +109,10 @@ test-report:
     - for r in */test-report.txt; do if [ ! -s $r ]; then echo "$r error free!"; else echo "$r contains ERRORS!"; failures=yes; fi; done
     - if [ $failures != None ]; then exit 1; fi
 
+
+
+
+# Job uploading merged coverage report to codecov.io
 codecov.io:
   stage: deploy
   variables:

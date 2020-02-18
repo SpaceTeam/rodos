@@ -38,7 +38,8 @@ foreach(test_file ${test_files})
   target_link_libraries("${test_name}-bin" PUBLIC rodos)
 
   # Command to run rodos test application, generating output files
-  # including diff
+  # including diff; this also generates coverage information if
+  # coverage reporting is enabled.
   add_custom_command(
     OUTPUT
     "${test_name}-bin.output"
@@ -51,7 +52,7 @@ foreach(test_file ${test_files})
     ${CMAKE_CURRENT_SOURCE_DIR}/expected-outputs/${filename}.txt
     DEPENDS
     ${test_name}-bin test-runner.sh
-    ${coverage_prepare_dep})
+    ${coverage_prepare_dep}) # dependency: coverage_prepare <-- run of test
   list(APPEND diff_files "${test_name}-bin.diff")
 
   add_custom_target(${test_name}-clean
@@ -64,6 +65,13 @@ foreach(test_file ${test_files})
 
   add_custom_target(${test_name}-run DEPENDS "${test_name}-bin.diff")
   if (COVERAGE)
+    # test-clean <--- coverage_reset
+    #
+    # build of test <-- run of test <--- coverage_collect
+    # build of test <-- coverage_prepare
+    #
+    # NOTE: Additional dependency coverage_prepare <-- run of test
+    # required, established above!
     add_dependencies(coverage_collect ${test_name}-run)
     add_dependencies(coverage_prepare ${test_name}-bin)
     add_dependencies(coverage_reset ${test_name}-clean)
