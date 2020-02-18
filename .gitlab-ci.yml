@@ -5,7 +5,7 @@ stages:
  - results
  - deploy
 
-.tmpl:
+.cov_tmpl:
   stage: build_test
   script:
     - nix-build with-cmake.nix -A $TARGET
@@ -17,23 +17,50 @@ stages:
     when: always
     expire_in: 1 week
 
+.compile_tmpl:
+  stage: build_test
+  script:
+    - nix-build with-cmake.nix -A $TARGET
+
 linux-x86:
-  extends: .tmpl
+  extends: .cov_tmpl
   variables:
     TARGET: linux-x86
 
 linux-makecontext:
-  extends: .tmpl
+  extends: .cov_tmpl
   variables:
     TARGET: linux-makecontext
 
 posix:
-  extends: .tmpl
+  extends: .cov_tmpl
   variables:
     TARGET: posix
 
+sf2:
+  extends: .compile_tmpl
+  variables:
+    TARGET: sf2
+
+raspberrypi3:
+  extends: .compile_tmpl
+  variables:
+    TARGET: raspberrypi3
+
+stm32f4:
+  extends: .compile_tmpl
+  variables:
+    TARGET: stm32f4
+
 coverage:
   stage: results
+  needs:
+    - job: linux-x86
+      artifacts: true
+    - job: linux-makecontext
+      artifacts: true
+    - job: posix
+      artifacts: true
   script:
     - nix-env -i lcov binutils
     - lcov -a $(echo */coverage.info | sed -e 's@ @ -a @g') --output-file coverage.info
@@ -46,6 +73,13 @@ coverage:
 
 test-report:
   stage: results
+  needs:
+    - job: linux-x86
+      artifacts: true
+    - job: linux-makecontext
+      artifacts: true
+    - job: posix
+      artifacts: true
   variables:
     GIT_STRATEGY: none
   script:
