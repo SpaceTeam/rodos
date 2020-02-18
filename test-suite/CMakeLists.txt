@@ -21,6 +21,7 @@ if (COVERAGE)
     "core-fast/gets-async.cpp"
     "core-fast/getsnowiat.cpp"
     "core-fast/semaphore-scope-protector.cpp")
+  set(coverage_prepare_dep "coverage_prepare")
 endif()
 
 
@@ -50,7 +51,7 @@ foreach(test_file ${test_files})
     ${CMAKE_CURRENT_SOURCE_DIR}/expected-outputs/${filename}.txt
     DEPENDS
     ${test_name}-bin test-runner.sh
-    coverage_prepare)
+    ${coverage_prepare_dep})
   list(APPEND diff_files "${test_name}-bin.diff")
 
   add_custom_target(${test_name}-clean
@@ -62,9 +63,11 @@ foreach(test_file ${test_files})
     "${test_name}-bin.diff")
 
   add_custom_target(${test_name}-run DEPENDS "${test_name}-bin.diff")
-  add_dependencies(coverage_collect ${test_name}-run)
-  add_dependencies(coverage_prepare ${test_name}-bin)
-  add_dependencies(coverage_reset ${test_name}-clean)
+  if (COVERAGE)
+    add_dependencies(coverage_collect ${test_name}-run)
+    add_dependencies(coverage_prepare ${test_name}-bin)
+    add_dependencies(coverage_reset ${test_name}-clean)
+  endif()
 endforeach()
 
 add_custom_target(generate-diffs DEPENDS "${diff_files}")

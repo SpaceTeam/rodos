@@ -1,6 +1,8 @@
 with import <nixpkgs> {};
 
-let doit = (target: env: env.mkDerivation {
+let
+
+cov_test = (target: env: env.mkDerivation {
   name = "rodos-${target}";
   src = ./.;
   buildInputs = [cmake lcov];
@@ -19,10 +21,29 @@ let doit = (target: env: env.mkDerivation {
     '';
 });
 
+compile_only = (target: env: env.mkDerivation {
+  name = "rodos-${target}";
+  src = ./.;
+  nativeBuildInputs = [cmake];
+  cmakeFlags = [
+    "-DCMAKE_TOOLCHAIN_FILE=../cmake/port/${target}.cmake"
+    "-DEXECUTABLE=ON"
+  ];
+  installPhase =
+    ''
+      mkdir $out
+      touch $out/did-compile
+    '';
+});
+
 in
 
 {
-  linux-x86 = doit "linux-x86" pkgsi686Linux.stdenv;
-  linux-makecontext = doit "linux-makecontext" pkgsi686Linux.stdenv;
-  posix = doit "posix" pkgsi686Linux.stdenv;
+  linux-x86 = cov_test "linux-x86" pkgsi686Linux.stdenv;
+  linux-makecontext = cov_test "linux-makecontext" pkgsi686Linux.stdenv;
+  posix = cov_test "posix" pkgsi686Linux.stdenv;
+  stm32f4 = compile_only "stm32f4" pkgsCross.arm-embedded.stdenv;
+  raspberrypi3 = compile_only "raspberrypi3" pkgsCross.arm-embedded.stdenv;
+  sf2 = compile_only "sf2" pkgsCross.arm-embedded.stdenv;
+
 }
