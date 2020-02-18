@@ -16,6 +16,10 @@ if (COVERAGE)
   append_coverage_compiler_flags()
 endif()
 
+if(NOT DEFINED port_dir)
+  message(FATAL_ERROR "port not correct (CMAKE_TOOCHAIN_FILE, see readme)")
+endif()
+
 #___________________________________________________________________
 file(GLOB_RECURSE independent_sources
     src/independent/*.cpp
