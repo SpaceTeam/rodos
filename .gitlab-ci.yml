@@ -3,6 +3,7 @@ image: nixos/nix:latest
 stages:
  - build_test
  - results
+ - deploy
 
 .tmpl:
   stage: build_test
@@ -51,3 +52,16 @@ test-report:
     - failures=None
     - for r in */test-report.txt; do if [ ! -s $r ]; then echo "$r error free!"; else echo "$r contains ERRORS!"; failures=yes; fi; done
     - if [ $failures != None ]; then exit 1; fi
+
+codecov.io:
+  stage: deploy
+  variables:
+    GIT_STRATEGY: none
+  script:
+    - nix-env -i curl
+    - nix-env -i bash
+    - curl https://codecov.io/bash -o codecov
+    - bash codecov -f coverage.info
+  needs:
+    - job: coverage
+      artifacts: true
