@@ -42,3 +42,12 @@ coverage:
     - coverage.info
     - coverage
     expire_in: 1 week
+
+test-report:
+  stage: results
+  variables:
+    GIT_STRATEGY: none
+  script:
+    - failures=None
+    - for r in */test-report.txt; do if [ ! -s $r ]; then echo "$r error free!"; else echo "$r contains ERRORS!"; failures=yes; fi; done
+    - if [ $failures != None ]; then exit 1; fi

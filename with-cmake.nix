@@ -16,7 +16,6 @@ let doit = (target: env: env.mkDerivation {
       mv coverage $out/
       mv coverage.info $out/
       mv test-suite/test-report.txt $out/
-      cat $out/test-report.txt
     '';
 });
 
