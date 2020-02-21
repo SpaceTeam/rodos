@@ -6,8 +6,7 @@ if timeout -s 9 8 $1 > "$1.output"
 then
     true
 else
-    cat $1.output
-    exit 1
+    echo ":: KILLED BY TIMEOUT" >> "$1.output"
 fi
 
 # Remove header / intro from output and expected output
