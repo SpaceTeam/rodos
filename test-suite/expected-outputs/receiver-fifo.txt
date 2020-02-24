@@ -1,7 +1,6 @@
 RODOS RODOS-200.0 OS Version Linux-x86
 Loaded Applications:
          10 -> 'Topics & Middleware'
-       1000 -> 'terminateTest'
        1400 -> 'ReciverSync'
        1100 -> 'Publisher 01 simple'
 Calling Initiators and Application Initiators
@@ -19,7 +18,6 @@ List of Middleware Topics:
 Event servers:
 Threads in System:
    Prio =       0 Stack =  32000 IdleThread: yields all the time
-   Prio =    1003 Stack =  32000 TerminateTest: 
    Prio =     100 Stack =  32000 AnonymThread: 
    Prio =     100 Stack =  32000 SenderSimple: 
 BigEndianity = 0, cpu-Arc = x86, Basis-Os = baremetal, Cpu-Speed (K-Loops/sec) = 313330 yeildtim (ns) 990

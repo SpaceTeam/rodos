@@ -1,7 +1,6 @@
 
 #include "rodos.h"
 #include "gateway.h"
-#include "terminate-test.h"
 
 static UDPInOut udp(-50000);
 static LinkinterfaceUDP linkinterfaceUDP(&udp);

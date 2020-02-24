@@ -1,7 +1,6 @@
 RODOS RODOS-200.0 OS Version Linux-x86
 Loaded Applications:
          10 -> 'Topics & Middleware'
-       1000 -> 'terminateTest'
        2000 -> 'initatorApplic'
 Calling Initiators and Application Initiators
  This will be done before any thread begins
