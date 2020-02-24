@@ -1,6 +1,6 @@
 rm test-report.txt &>/dev/null || true
 touch test-report.txt
-for diff in ${@//;/ }
+for diff in $(printf '%s' "$@" | tr ';' ' ')
 do
     if [ -s "$diff" ]
     then
