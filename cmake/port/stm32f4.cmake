@@ -10,8 +10,10 @@ set(OSC_CLK 8000000)
 
 add_compile_definitions(HSE_VALUE=${OSC_CLK} STM32F40_41xxx USE_STM32_DISCOVERY USE_STDPERIPH_DRIVER)
 
+set(compile_and_link_options -mcpu=cortex-m4 -mfloat-abi=softfp -mfpu=fpv4-sp-d16)
 add_compile_options(-nostdlib -gdwarf-2)
-add_compile_options(-mcpu=cortex-m4 -mthumb -mfloat-abi=softfp -mfpu=fpv4-sp-d16)
+add_compile_options(${compile_and_link_options} -mthumb)
+add_link_options(${compile_and_link_options})
 add_link_options(-T${RODOS_DIR}/src/bare-metal/stm32f4/scripts/stm32_flash.ld)
 add_link_options(-nostartfiles -nodefaultlibs -nostdlib -Xlinker --gc-sections -fno-unwind-tables -fno-asynchronous-unwind-tables)
 
