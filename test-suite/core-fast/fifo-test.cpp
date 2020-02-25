@@ -34,7 +34,7 @@ class FiFoTester : public Thread {
             PRINTF("read success %d, data %d\n", ok, tmp);
         }
 
-        PRINTF("\nThis run (test) terminates now! (%s)\n", LOCATION);
+        PRINTF("\nThis run (test) terminates now!\n");
         hwResetAndReboot();
     }
 } fifoTester;

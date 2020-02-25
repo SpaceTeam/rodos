@@ -10,7 +10,7 @@ set(LINK_SCRIPT debug-in-microsemi-smartfusion2-envm_w_ddr.ld)
 
 add_compile_definitions(MICROSEMI_STDIO_THRU_UART MULTICAST)
 
-add_compile_options(-Wno-format -fsigned-char -ffunction-sections)
+add_compile_options(-fsigned-char -ffunction-sections)
 add_compile_options(-fdata-sections --specs=nano.specs)
 add_compile_options(-mcpu=cortex-m3 -mthumb)
 

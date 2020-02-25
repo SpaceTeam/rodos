@@ -1,7 +1,6 @@
 RODOS RODOS-200.0 OS Version Linux-x86
 Loaded Applications:
          10 -> 'Topics & Middleware'
-       1000 -> 'terminateTest'
        1000 -> 'semaphoretest'
 Calling Initiators and Application Initiators
 Distribute Subscribers to Topics
@@ -16,15 +15,12 @@ List of Middleware Topics:
 Event servers:
 Threads in System:
    Prio =       0 Stack =  32000 IdleThread: yields all the time
-   Prio =    1003 Stack =  32000 TerminateTest: 
    Prio =     201 Stack =  32000 Worm: 
    Prio =     101 Stack =  32000 Worm: 
    Prio =       1 Stack =  32000 Worm: 
 BigEndianity = 0, cpu-Arc = x86, Basis-Os = baremetal, Cpu-Speed (K-Loops/sec) = 313330 yeildtim (ns) 990
 -----------------------------------------------------
 [2J[0;21H:[1;21H:[2;21H:[3;21H:[4;21H:[5;21H:[6;21H:[7;21H:[8;21H:[9;21H:[10;21H:[11;21H:[12;21H:[13;21H:[14;21H:[15;21H:[16;21H:[17;21H:[18;21H:[19;21H:[20;21H:[21;21H:[22;21H:[23;21H:[24;21H:[25;21H:[26;21H:[27;21H:[28;21H:[29;21H:--------------- Application running ------------
-
-This run (test) will be terminated in 40 Seconds
 C 3 11 
 B 4 13 
 A 26 8 

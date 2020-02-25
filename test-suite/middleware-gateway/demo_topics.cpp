@@ -1,4 +1,3 @@
-
 #include "rodos.h"
 
 /** topic id == -1 -> generate a number from name, else take the nr **/

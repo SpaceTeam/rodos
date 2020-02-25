@@ -1,7 +1,6 @@
 RODOS RODOS-200.0 OS Version Linux-x86
 Loaded Applications:
          10 -> 'Topics & Middleware'
-       1000 -> 'terminateTest'
        1000 -> 'TestTimeEvents'
 Calling Initiators and Application Initiators
 Distribute Subscribers to Topics
@@ -18,13 +17,10 @@ activateIn( 12*MILLISECONDS) now=  0.100000000
 	3 TimeEvent managers
 Threads in System:
    Prio =       0 Stack =  32000 IdleThread: yields all the time
-   Prio =    1003 Stack =  32000 TerminateTest: 
 BigEndianity = 0, cpu-Arc = x86, Basis-Os = baremetal, Cpu-Speed (K-Loops/sec) = 313330 yeildtim (ns) 990
 -----------------------------------------------------
 Default internal MAIN
 --------------- Application running ------------
-
-This run (test) will be terminated in 40 Seconds
 activateIn Time Event at   0.200000000, reactivation in 0.02 seconds
 Periodic Time Event at   0.300000000
 SINGLE Time Event at   0.400000000

@@ -7,6 +7,15 @@ add_compile_options( $<$<COMPILE_LANGUAGE:CXX>:-fno-rtti> $<$<COMPILE_LANGUAGE:C
 
 project(rodos C CXX ASM)
 
+if (COVERAGE)
+  if (NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE "Debug")
+    message(STATUS "Coverage enabled, setting build type to Debug")
+  endif()
+  include(cmake/CodeCoverage.cmake)
+  append_coverage_compiler_flags()
+endif()
+
 if(NOT DEFINED port_dir)
   message(FATAL_ERROR "port not correct (CMAKE_TOOCHAIN_FILE, see readme)")
 endif()
@@ -63,3 +72,19 @@ if (EXECUTABLE)
   include(cmake/executable.cmake)
   add_subdirectory(tutorials)
 endif ()
+
+
+if (COVERAGE)
+  setup_lcov_coverage(
+    NAME coverage
+    LCOV_ARGS "--no-external")
+  message("Generate coverage report with 'make coverage_collect'")
+  add_custom_command(TARGET coverage_collect POST_BUILD
+        COMMAND sed -ie "s@SF:${CMAKE_CURRENT_SOURCE_DIR}/\\(.*\\)@SF:\\1@g"
+        ${CMAKE_CURRENT_BINARY_DIR}/coverage.info
+        COMMENT "Changing paths in coverage.info to relative paths."
+        VERBATIM
+    )
+endif()
+enable_testing()
+add_subdirectory(test-suite)

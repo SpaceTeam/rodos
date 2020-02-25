@@ -1,7 +1,6 @@
 RODOS RODOS-200.0 OS Version Linux-x86
 Loaded Applications:
          10 -> 'Topics & Middleware'
-       1000 -> 'terminateTest'
        2000 -> 'PreemptiveTest'
 Calling Initiators and Application Initiators
 Distribute Subscribers to Topics
@@ -16,13 +15,10 @@ List of Middleware Topics:
 Event servers:
 Threads in System:
    Prio =       0 Stack =  32000 IdleThread: yields all the time
-   Prio =    1003 Stack =  32000 TerminateTest: 
    Prio =      10 Stack =  32000 LowPriority:  lopri = '.'
    Prio =      25 Stack =  32000 HiPriority:  hipri = '*'
 BigEndianity = 0, cpu-Arc = x86, Basis-Os = baremetal, Cpu-Speed (K-Loops/sec) = 313330 yeildtim (ns) 990
 -----------------------------------------------------
 Default internal MAIN
 --------------- Application running ------------
-
-This run (test) will be terminated in 40 Seconds
 *...*..*..*..*...*..*..*..*..*...*..*..*..*..*...*..*..*..*hw_resetAndReboot() -> exit

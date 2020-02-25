@@ -23,7 +23,7 @@ do
     printf "$NOW: %50s -> $3/$BASE.txt\n"  $i
 
     \rm -f tst
-    rodos-executable.sh $1 $TEST_LEN  -I. $i  terminate-test.cpp
+    rodos-executable.sh $1 $TEST_LEN  -I. $i
     {
         tst  |  grep -v "Node Number" > $3/$BASE.txt 
     } &> /dev/null &

@@ -5,20 +5,22 @@
 static Application module01("TestTime");
 
 class TestTime : public Thread {
+  private:
+    int id;
   public:
-    TestTime() : Thread("waitfor") {}
+  TestTime(int id) : Thread("waitfor"), id(id) {}
     void run() {
         int cnt = 0;
         while(1) {
             cnt++;
             suspendCallerUntil();
-            PRINTF(" %x, After 0.02 Seconds  : %3.9f %d\n", (int)((int64_t)this & 0x0fffffff), CNT_SECONDS_NOW(), cnt);
+            PRINTF(" %x, After 0.02 Seconds  : %3.9f %d\n", id, CNT_SECONDS_NOW(), cnt);
         }
     }
 };
 
 
-TestTime t[4];
+TestTime t[] = {1, 2, 3, 4};
 
 
 class MySchedluler : public Thread {

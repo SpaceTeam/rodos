@@ -1,11 +1,14 @@
+#ifndef TERMINATE_TEST_H
+#define TERMINATE_TEST_H 1
+
 #include "rodos.h"
 
 #ifndef TIME_TO_END
-#define TIME_TO_END 40
+#define TIME_TO_END 4
 #endif
 
 #include "prt-seconds-now.h"
-int32_t secondsNowCnt = 1;
+
 
 static Application terminateTestApp("terminateTest");
 
@@ -17,7 +20,7 @@ class TerminateTest : public Thread {
         AT(TIME_TO_END*SECONDS);
         PRINTF("\nThis run (test) terminates now! but first error log:\n");
         errorLog.printAll();
-        PRINTF("\nThis run (test) terminates now! (%s)\n", LOCATION);
+        PRINTF("\nThis run (test) terminates now!\n");
         hwResetAndReboot();
     }
 };
@@ -25,3 +28,4 @@ class TerminateTest : public Thread {
 static TerminateTest terminateTest;
 
 
+#endif // TERMINATE_TEST_H

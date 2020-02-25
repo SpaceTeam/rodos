@@ -1,5 +1,6 @@
 #include "rodos.h"
 #include "random.h"
+#include "terminate-test.h"
 
 static Application module("semaphordeadlok");
 
