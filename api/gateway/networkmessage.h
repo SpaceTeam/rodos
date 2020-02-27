@@ -121,7 +121,7 @@ public:
 
     /// returns the size needed for transmission
     int numberOfBytesToSend() { return (sizeof(long) + numberOfTopics * sizeof(topicList[0])); }
-};
+} __attribute__((packed));
 
 
 }  // namespace
