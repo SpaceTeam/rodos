@@ -150,8 +150,8 @@ public:
     }
 
     virtual void put(Type &msg) {if(receiverFunc) (*receiverFunc)(msg); };
-    virtual void put(Type &msg, const NetMsgInfo& netMsgInfo) {put(msg);};
-    long put(const long topicId, const long len, const void* data, const NetMsgInfo& netMsgInfo) { 
+    virtual void put(Type &msg, [[gnu::unused]] const NetMsgInfo& netMsgInfo) {put(msg);};
+    long put([[gnu::unused]] const long topicId, [[gnu::unused]] const long len, const void* data, const NetMsgInfo& netMsgInfo) { 
         put(*(Type*)data,netMsgInfo);
         return 1;
     }
@@ -166,10 +166,11 @@ public:
 
 class TopicFilter {
 public:
+    virtual ~TopicFilter() = default;
     /// will  be called before all subscribers
-    virtual void prolog (const long topicId, const long len, const void* data, const NetMsgInfo& netMsgInfo) { }
+    virtual void prolog ([[gnu::unused]] const long topicId, [[gnu::unused]] const long len, [[gnu::unused]] const void* data, [[gnu::unused]] const NetMsgInfo& netMsgInfo) { }
     /// will  be called after all subscribers
-    virtual void epilog(const long topicId, const long len, const void* data, const NetMsgInfo& netMsgInfo) { }
+    virtual void epilog([[gnu::unused]] const long topicId, [[gnu::unused]] const long len, [[gnu::unused]] const void* data, [[gnu::unused]] const NetMsgInfo& netMsgInfo) { }
 };
 
 

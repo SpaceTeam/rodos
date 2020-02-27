@@ -42,7 +42,7 @@ void Application::deactivate() {
 	isActivated = false;
 }
 
-int32_t Application::request(void* requestMsg, int len, void* answerMsg, int maxlen) {
+int32_t Application::request(void*, int, void*, int) {
 	return -1;
 }
 

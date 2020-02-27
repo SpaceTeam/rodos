@@ -29,13 +29,13 @@ Router::Router(bool forwardTopicReports_, Gateway* gateway1, Gateway* gateway2, 
 }
 
 
-long Router::put(const long topicId, const long len, const void* data, const NetMsgInfo& netMsgInfo) {
+long Router::put(const long, const long, const void* data, const NetMsgInfo& netMsgInfo) {
     routeMsg(*((NetworkMessage*)data),netMsgInfo.linkId);
     return 1;
 }
 
 bool Router::putGeneric(const long topicId, const unsigned int len,
-                        const void* msg, const NetMsgInfo& netMsgInfo) {
+                        const void* msg, const NetMsgInfo&) {
 
     protector.enter();
     prepareNetworkMessage(localMessage,topicId,msg,len);
@@ -57,7 +57,7 @@ void Router::routeMsg(NetworkMessage& msg,long linkid) {
     }
 }
 
-bool Router::shouldRouteThisMsg(NetworkMessage& msg,long linkid) {
+bool Router::shouldRouteThisMsg(NetworkMessage& msg, long) {
     if(msg.get_maxStepsToForward() <= 0)               return false;
     if(msg.get_topicId() == 0 && !forwardTopicReports) return false;
     return true;

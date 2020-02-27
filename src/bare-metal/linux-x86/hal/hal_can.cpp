@@ -98,7 +98,7 @@ void HW_HAL_CAN::setupFilters() {
 }
 
 
-HAL_CAN::HAL_CAN(CAN_IDX canIdx, GPIO_PIN rxPin, GPIO_PIN txPin) {
+HAL_CAN::HAL_CAN(CAN_IDX canIdx, GPIO_PIN, GPIO_PIN) {
     context              = new(xmalloc(sizeof(HW_HAL_CAN))) HW_HAL_CAN();
     context->devName     = canDeviceNames[canIdx];
     context->rxFifoEmpty = true;
@@ -110,7 +110,7 @@ HAL_CAN::HAL_CAN(CAN_IDX canIdx, GPIO_PIN rxPin, GPIO_PIN txPin) {
     numHalCanInstances++;
 }
 
-int HAL_CAN::init(unsigned int baudrate) {
+int HAL_CAN::init(unsigned int) {
 
     if(context->s > 0) {
         close(context->s);
@@ -150,7 +150,7 @@ void HAL_CAN::reset() {
     context->s = 0;
 }
 
-int HAL_CAN::config(CAN_PARAMETER_TYPE type, int paramVal) {
+int HAL_CAN::config(CAN_PARAMETER_TYPE type, int) {
     switch(type) {
         case CAN_PARAMETER_BAUDRATE:
 
@@ -274,7 +274,7 @@ int HAL_CAN::read(char* recBuf, uint32_t* canID, bool* isExtID, bool* rtr) {
 }
 
 
-void can_sig_io_handler(int signo) {
+void can_sig_io_handler(int) {
     //PRINTF("UART IRQ\n");
     can_frame f;
     bool      dataReady;

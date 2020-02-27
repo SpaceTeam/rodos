@@ -63,7 +63,7 @@ extern void *signal_stack;
 /**
 * the signal handler for SIGVTALRM (timer signal)
 */
-void timerSignalHandler(int j, siginfo_t *si, void *old_context) {
+void timerSignalHandler(int, siginfo_t *, void *) {
 
    if(!isSchedulingEnabled) return;
    long long timeNow = NOW();  // comment this out to improve performance, but: no time events any more

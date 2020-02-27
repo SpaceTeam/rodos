@@ -69,7 +69,7 @@ public:
    * msgLen doesn't match the size of the template type the method is never
    * successful.
    */
-  bool putGeneric(const long topicId, const unsigned int len, const void* msg, const NetMsgInfo& netMsgInfo) {
+  bool putGeneric([[gnu::unused]] const long topicId, const unsigned int len, const void* msg, [[gnu::unused]] const NetMsgInfo& netMsgInfo) {
     RODOS_ASSERT_IFNOT_RETURN(len <= sizeof(Type), false);
     put(*(Type*)msg);
     return true;

@@ -55,7 +55,7 @@ public:
     }
 
     /** implements the generic interface of putter */
-    bool putGeneric(const long topicId, const unsigned int msgLen, const void* msg, const NetMsgInfo& netMsgInfo) {
+    bool putGeneric([[gnu::unused]] const long topicId, const unsigned int msgLen, const void* msg, [[gnu::unused]] const NetMsgInfo& netMsgInfo) {
         RODOS_ASSERT_IFNOT_RETURN(msgLen <= sizeof(Type), false);
         return put(*(Type*)msg);
     }
@@ -130,7 +130,7 @@ public:
     * Implements the generic interface of putter:
     * Warning does not suspends if fifo full
     */
-    bool putGeneric(const long topicId, const unsigned int msgLen, const void* msg, const NetMsgInfo& netMsgInfo) {
+    bool putGeneric([[gnu::unused]] const long topicId, const unsigned int msgLen, const void* msg, [[gnu::unused]] const NetMsgInfo& netMsgInfo) {
         RODOS_ASSERT_IFNOT_RETURN(msgLen <= sizeof(Type), false);
 
         bool ok = this->put(*(Type*)msg);
@@ -237,7 +237,7 @@ public:
     }
 
     /** implements the generic interface of putter */
-    bool putGeneric(const long topicId, const unsigned int msgLen, const void* msg, const NetMsgInfo& netMsgInfo) {
+    bool putGeneric([[gnu::unused]] const long topicId, const unsigned int msgLen, const void* msg, [[gnu::unused]] const NetMsgInfo& netMsgInfo) {
         RODOS_ASSERT_IFNOT_RETURN(msgLen <= sizeof(Type), false);
         return put(*(Type*)msg);
     }

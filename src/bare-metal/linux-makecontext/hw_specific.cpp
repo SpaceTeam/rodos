@@ -77,7 +77,7 @@ void hwEnableInterrupts() {
 
 //_____________________________________________________
 static int64_t timeOfLastTriggerWatchdog = 0;
-void hwInitWatchdog(long intervalMilliseconds) { }
+void hwInitWatchdog(long) { }
 void hwTriggerWatchdog() { timeOfLastTriggerWatchdog = NOW(); }
 
 //_____________________________________________________

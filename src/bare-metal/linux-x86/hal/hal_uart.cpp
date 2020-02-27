@@ -31,7 +31,7 @@ const char* uartDeviceNames[MAX_NUM_UARTS] = { "/dev/ttyUSB0", "/dev/ttyUSB1", "
 //================================================================================
 
 
-void uart_sig_io_handler(int signo);
+void uart_sig_io_handler(int);
 
 
 bool signal_init = false;
@@ -53,7 +53,7 @@ class HW_HAL_UART {
 HW_HAL_UART UART_contextArray[MAX_NUM_UARTS];
 
 // constructor with pin assignment - dummy on Linux
-HAL_UART::HAL_UART(UART_IDX uartIdx, GPIO_PIN txPin, GPIO_PIN rxPin, GPIO_PIN rtsPin, GPIO_PIN ctsPin) : HAL_UART(uartIdx) {
+HAL_UART::HAL_UART(UART_IDX uartIdx, GPIO_PIN, GPIO_PIN, GPIO_PIN, GPIO_PIN) : HAL_UART(uartIdx) {
 }
 
 HAL_UART::HAL_UART(UART_IDX uartIdx) {
@@ -255,7 +255,7 @@ bool HAL_UART::isDataReady() {
 }
 
 
-void uart_sig_io_handler(int signo) {
+void uart_sig_io_handler(int) {
     //PRINTF("UART IRQ\n");
     for(int i = 0; i < MAX_NUM_UARTS; i++) {
         HAL_UART* uart = UART_contextArray[i].hal_uart;
