@@ -25,8 +25,8 @@ struct Result {
     Result(const ErrorCode& e, const Type& v)  { err = e;             val = v; }
     Result(const ErrorCode& e, const Type&& v) { err = e;             val = v; } //  add support for rvalues for v
 
-    bool    isOk()                       { return err == ErrorCode::OK; }
-    int32_t getErr()                     { return (int32_t)err; }
+    bool    isOk() const                 { return err == ErrorCode::OK; }
+    int32_t getErr() const               { return (int32_t)err; }
     void    setErr(int32_t iErr)         { err = (ErrorCode)iErr; }
 
     operator Type() { // Dangerous! But for compatibility with older code
