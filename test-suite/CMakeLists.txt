@@ -3,7 +3,6 @@ file(GLOB test_files
   RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
   core-slow/*.cpp
   core-fast/*.cpp
-  embedded-tests/*.cpp
   middleware-tests/*.cpp)
 
 # These tests are known to currently fail / hang, so do not use them.
