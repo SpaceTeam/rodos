@@ -5,7 +5,7 @@ scriptName=$_
 if [ $scriptName == $0 ]
 then
    echo "_____________________________________________________ ERROR"
-   echo "ERROR: Pleas call this script as source, and not as subshell"
+   echo "ERROR: Please call this script as source, and not as subshell"
    echo "like this:"
    echo "      %source $scriptName"
    echo "___________________________________________________________"
