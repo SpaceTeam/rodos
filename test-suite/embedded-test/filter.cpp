@@ -61,7 +61,7 @@ class Sender : public Thread {
 
         
         AT(500*MILLISECONDS);
-        PRINTF("\nThis run (test) terminates now! (%s)\n", LOCATION);
+        PRINTF("\nThis run (test) terminates now!\n");
         hwResetAndReboot();
 
     }
