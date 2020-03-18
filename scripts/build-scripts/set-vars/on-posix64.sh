@@ -4,7 +4,8 @@
 
 # runs on Posix using 64 bit mode
 
-export ARCH=posix64
+export TARGET_LIB=on-posix64   #used as name for the generated lib
+export ARCH=posix64         #used to select compile directories
 
 SRCS[1]="${RODOS_SRC}/on-posix"
 SRCS[2]="${RODOS_SRC}/on-posix/hal"
@@ -12,7 +13,7 @@ SRCS[2]="${RODOS_SRC}/on-posix/hal"
 export INCLUDES=${INCLUDES}" -I ${RODOS_SRC}/on-posix "  # only for platform-parameter.h 
 export INCLUDES_TO_BUILD_LIB=" "
 
-export LINKFLAGS=" -L ${RODOS_LIBS}/${ARCH} -lrodos -lm -lrt -lpthread "
+export LINKFLAGS=" -L ${RODOS_LIBS}/${TARGET_LIB} -lrodos -lm -lrt -lpthread "
 
 #__________________________ Select one: gcc or clang, clang is better to detect warnings but slower
 #export CPP_COMP="g++ "

@@ -21,11 +21,18 @@ do
     rodos-executable.sh linux-makecontext $i
 done
 
-echo "   __________________________________________________________ stm32f4 "
+echo "   __________________________________________________________ stm32f4 discovery"
 for i in *.cpp
 do
     # echo $i
-    rodos-executable.sh stm32f4 $i
+    rodos-executable.sh discovery $i
+done
+
+echo "   __________________________________________________________ stm32f4 skith"
+for i in *.cpp
+do
+    # echo $i
+    rodos-executable.sh skith $i
 done
 
 echo "   __________________________________________________________ sf2 "

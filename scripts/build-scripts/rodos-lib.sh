@@ -18,7 +18,7 @@ rm -rf  ${RODOS_TO_LINK}
 mkdir   ${RODOS_BUILD}        2> /dev/null
 mkdir   ${RODOS_TO_LINK}      2> /dev/null
 mkdir   ${RODOS_LIBS}         2> /dev/null
-mkdir   ${RODOS_LIBS}/${ARCH} 2> /dev/null
+mkdir   ${RODOS_LIBS}/${TARGET_LIB} 2> /dev/null
 
 #___________________________________ compile to .o files
 
@@ -44,8 +44,8 @@ source generic-compile-directory.sh ${RODOS_SUPPORT_LIBS}/ccsds
 echo "  --------- create rodoslib.a ---------"
 
 cd ${RODOS_TO_LINK}
-rm -f ${RODOS_LIBS}/${ARCH}/librodos.a
-${AR:-ar} rc ${RODOS_LIBS}/${ARCH}/librodos.a */*.o || exit 1
+rm -f ${RODOS_LIBS}/${TARGET_LIB}/librodos.a
+${AR:-ar} rc ${RODOS_LIBS}/${TARGET_LIB}/librodos.a */*.o || exit 1
 cd ..
 
 \rm -rf ${RODOS_TO_LINK}   # left my workspace clean
