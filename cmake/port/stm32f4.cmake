@@ -1,3 +1,7 @@
+if(NOT board)
+  message(FATAL_ERROR "Do not use stm32f4 directly; instead, use a board port file.")
+endif()
+
 set(port_dir "bare-metal/stm32f4")
 set(is_port_baremetal TRUE)
 
@@ -27,4 +31,5 @@ set(sources_to_add
 set(directories_to_include
     ${RODOS_DIR}/src/bare-metal/stm32f4/STM32F4xx_StdPeriph_Driver/inc
     ${RODOS_DIR}/src/bare-metal/stm32f4/CMSIS/Device/ST/STM32F4xx/Include
-    ${RODOS_DIR}/src/bare-metal/stm32f4/CMSIS/Include)
+    ${RODOS_DIR}/src/bare-metal/stm32f4/CMSIS/Include
+    ${RODOS_DIR}/src/bare-metal/stm32f4/platform-parameter/${board})
