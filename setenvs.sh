@@ -18,6 +18,7 @@ export RODOS_ROOT=$RODOS_DIR  # sorry! Some times so, some times so!
 
 export RODOS_BUILD_SCRIPTS=${RODOS_DIR}/scripts/build-scripts
 export RODOS_HELP_SCRIPTS=${RODOS_DIR}/scripts/help-scrips
+export RODOS_VARS_DIR=${RODOS_BUILD_SCRIPTS}/set-vars
 
 export RODOS_BUILD=${RODOS_DIR}/build       # place the build dir any where you want
 export RODOS_TO_LINK=${RODOS_BUILD}/to_link
@@ -50,7 +51,7 @@ ______________________________________________________
    Now I know where RODOS is, you may use the rodos shell scripts
    from anywhere, and come back here using "cdrodos"
 ....
-   if you are using git I recomment to use: 
+   if you are using git I recommend to use: 
    source ${RODOS_HELP_SCRIPTS}/set-git-aware-promt.sh
 ______________________________________________________
 EOT2

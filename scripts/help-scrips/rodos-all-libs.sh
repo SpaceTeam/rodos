@@ -7,13 +7,13 @@ echo "templates for new ports"
 rodos-lib.sh template
 
 echo "linux-lib"
-rodos-lib.sh linux
+rodos-lib.sh linux-x86
 echo "linuxMC-lib"
-rodos-lib.sh linuxMC
+rodos-lib.sh linux-makecontext
 echo "posix-lib"
-rodos-lib.sh posix
+rodos-lib.sh on-posix
 echo "posix64-lib"
-rodos-lib.sh posix64
+rodos-lib.sh on-posix64
 echo "stm32f4-lib"
 rodos-lib.sh stm32f4
 echo "sf2-lib"

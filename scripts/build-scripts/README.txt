@@ -35,17 +35,20 @@ This will set path variable and other environment variables.
 Then you may call any other script from ANYWHERE. 
 They will use the absolute paths defined in setenvs.sh
 
-Here there are some generic schrtips:
+Here there are some generic scripts:
     generic-*.sh  (do not use directly)
     rodos-*.sh
 They need some variables which shall be set in
-    xxx-set-vars.sh
-where xxx is the name of the target architecture
-for example linux, linuxMC (MC stands for MakeContext librarie)
-posix, posix64, arm, stm32f4, sf2, ppc, sparc, leon etc etc.
+    set-vars/*
+e.g.
+    set-vars/xxx.sh
+
+here xxx is the name of the target architecture
+for example linux-x86, linux-makeContext
+on-posix, on-posix64, stm32f4, sf2, ppc, sparc, leon etc etc.
 
 The scripts rodos-*.sh requires as first parameter the name
-of the target architecture. eg.
+of the target architecture. e.g.
     rodos-lib.sh stm32f4
 please note, a file named xxx-set-vars.sh, in this example
 stem32f4-set-vars.sh has to exist.

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VARS_FILE=$(dirname $0)/${1}-set-vars.sh
+VARS_FILE=$RODOS_VARS_DIR/${1}.sh
 
 if [ ! -e $VARS_FILE ]; then
   cat << EOT
@@ -10,6 +10,7 @@ if [ ! -e $VARS_FILE ]; then
   ***   expected one parameter: name of the target achitecture 
   ***   Architectur $1 not defined
   ***   file $VARS_FILE not found
+  ***   see files in $RODOS_VARS_DIR
   ****************************************************
 
 EOT

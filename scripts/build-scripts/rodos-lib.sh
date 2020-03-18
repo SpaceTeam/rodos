@@ -7,7 +7,7 @@
 source $(dirname $0)/../quit-if-environment-is-wrong.sh
 source $(dirname $0)/../quit-if-arch-is-wrong.sh $1
 
-source $VARS_FILE  # set in quit-if-arch-is-wrong.sh as $1-set-vars.sh
+source $RODOS_VARS_DIR/${1}.sh
 
 export INCLUDES="${INCLUDES} ${INCLUDES_TO_BUILD_LIB} "
 
