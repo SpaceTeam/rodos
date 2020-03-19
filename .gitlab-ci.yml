@@ -60,10 +60,15 @@ raspberrypi3:
   variables:
     TARGET: raspberrypi3
 
-stm32f4:
+discovery:
   extends: .compile_tmpl
   variables:
-    TARGET: stm32f4
+    TARGET: discovery
+
+skith:
+  extends: .compile_tmpl
+  variables:
+    TARGET: skith
 
 
 
@@ -93,21 +98,21 @@ coverage:
 # Job inspecting the test reports of jobs which have run the test
 # suite.  Fails if any of these test reports shows an error.  Depends
 # ("needs") only on jobs generating a test report.
-test-report:
-  stage: results
-  needs:
-    - job: linux-x86
-      artifacts: true
-    - job: linux-makecontext
-      artifacts: true
-    - job: posix
-      artifacts: true
-  variables:
-    GIT_STRATEGY: none
-  script:
-    - failures=None
-    - for r in */test-report.txt; do if [ ! -s $r ]; then echo "$r error free!"; else echo "$r contains ERRORS!"; failures=yes; fi; done
-    - if [ $failures != None ]; then exit 1; fi
+#test-report:
+#  stage: results
+#  needs:
+#    - job: linux-x86
+#      artifacts: true
+#    - job: linux-makecontext
+#      artifacts: true
+#    - job: posix
+#      artifacts: true
+#  variables:
+#    GIT_STRATEGY: none
+#  script:
+#    - failures=None
+#    - for r in */test-report.txt; do if [ ! -s $r ]; then echo "$r error free!"; else echo "$r contains ERRORS!"; failures=yes; fi; done
+#    - if [ $failures != None ]; then exit 1; fi
 
 
 
