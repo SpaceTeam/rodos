@@ -1,0 +1,1 @@
+efr32fg1p.sh
