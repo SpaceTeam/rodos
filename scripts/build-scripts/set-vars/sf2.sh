@@ -1,6 +1,7 @@
 #!/bin/bash
 
-export ARCH=sf2
+export TARGET_LIB=sf2   #used as name for the generated lib
+export ARCH=sf2         #used to select compile directories
 
 SRCS[1]="${RODOS_SRC}/bare-metal-generic"
 SRCS[2]="${RODOS_SRC}/bare-metal/${ARCH}/CMSIS"
@@ -37,7 +38,7 @@ export CFLAGS=" ${CFLAGS_BASICS} ${HWCFLAGS} "
 export LINKFLAGS=" -T${RODOS_SRC}/bare-metal/${ARCH}/CMSIS/startup_gcc/${LINKSCRIPT} -nostartfiles -nostdlib \
                    -fno-unwind-tables -fno-asynchronous-unwind-tables -ffunction-sections -g3 \
                    -fdata-sections -Xlinker --gc-sections -Wl,-Map,sf2.map \
-                   -L${RODOS_LIBS}/${ARCH} ${APP_LIBS} -lrodos -lm"
+                   -L${RODOS_LIBS}/${TARGET_LIB} ${APP_LIBS} -lrodos -lm"
 
 #export ARM_TOOLS="/opt/arm-tools/bin/"
 if [ -z ${ARM_TOOLS} ]; then

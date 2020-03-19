@@ -4,7 +4,8 @@
 
 # runs on Posix for mac computers using 32 bit mode
 
-export ARCH=posixmac
+export TARGET_LIB=on-posixmac   #used as name for the generated lib
+export ARCH=posixmac         #used to select compile directories
 
 SRCS[1]="${RODOS_SRC}/on-posix-mac"
 SRCS[2]="${RODOS_SRC}/on-posix-mac/hal"
@@ -13,7 +14,7 @@ export INCLUDES=${INCLUDES}" -I ${RODOS_SRC}/on-posix-mac "  # only for platform
 export INCLUDES_TO_BUILD_LIB=" "
 
 export CFLAGS=${CFLAGS}" -m32 "
-export LINKFLAGS=" -L ${RODOS_LIBS}/${ARCH} -lrodos -lm -lrt -lpthread "
+export LINKFLAGS=" -L ${RODOS_LIBS}/${TARGET_LIB} -lrodos -lm -lrt -lpthread "
 
 
 

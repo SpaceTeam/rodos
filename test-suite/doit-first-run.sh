@@ -4,20 +4,20 @@
 \rm -rf expected-outputs
 
 echo "__________________________________________________________ core fast test programs"
-execute-all.sh   linux        core-fast       expected-outputs
+execute-all.sh   linux-x86        core-fast       expected-outputs
 
 echo "__________________________________________________________ core slow test programs"
-execute-all.sh   linux        core-slow       expected-outputs
+execute-all.sh   linux-x86        core-slow       expected-outputs
 
 echo "__________________________________________________________ middleware test programs"
-execute-all.sh   linux        middleware-tests expected-outputs
+execute-all.sh   linux-x86        middleware-tests expected-outputs
 
 echo "__________________________________________________________ middleware gateway"
 cd middleware-gateway
-./executeit.sh   linux                         expected-outputs
+./executeit.sh   linux-x86                         expected-outputs
 cd ..
 
 echo "__________________________________________________________ Embedded test programs"
-execute-all.sh   linux        embedded-test     expected-embedded-outputs
+execute-all.sh   linux-x86        embedded-test     expected-embedded-outputs
 
 

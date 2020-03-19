@@ -6,16 +6,18 @@ rodos-clear.sh
 echo "templates for new ports"
 rodos-lib.sh template
 
-echo "linux-lib"
-rodos-lib.sh linux
-echo "linuxMC-lib"
-rodos-lib.sh linuxMC
-echo "posix-lib"
-rodos-lib.sh posix
-echo "posix64-lib"
-rodos-lib.sh posix64
-echo "stm32f4-lib"
-rodos-lib.sh stm32f4
+echo "linux-x86-lib"
+rodos-lib.sh linux-x86
+echo "linux-makecontext-lib"
+rodos-lib.sh linux-makecontext
+echo "on-posix-lib"
+rodos-lib.sh on-posix
+echo "on-posix64-lib"
+rodos-lib.sh on-posix64
+echo "discovery-lib"
+rodos-lib.sh discovery
+echo "skith-lib"
+rodos-lib.sh skith
 echo "sf2-lib"
 rodos-lib.sh sf2
 echo "raspberrypi3"

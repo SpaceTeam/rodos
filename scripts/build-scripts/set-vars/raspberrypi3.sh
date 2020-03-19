@@ -4,7 +4,8 @@
 
 # to create a boot SD card, see doc/how-to-make-a-boot-SD-card-for-Raspberry.md
 
-export ARCH=raspberrypi3
+export TARGET_LIB=raspberrypi3   #used as name for the generated lib
+export ARCH=raspberrypi3         #used to select compile directories
 
 SRCS[1]="${RODOS_SRC}/bare-metal-generic"
 SRCS[2]="${RODOS_SRC}/bare-metal/${ARCH}"
@@ -31,7 +32,7 @@ export LINKFLAGS="-Wl,-T${RODOS_SRC}/bare-metal/${ARCH}/scripts/linkerscript.ld 
     -nodefaultlibs -nostdlib \
     -ffreestanding -fno-strict-aliasing -ffunction-sections -fdata-sections\
     -fno-unwind-tables -fno-asynchronous-unwind-tables \
-    -L${RODOS_LIBS}/${ARCH} \
+    -L${RODOS_LIBS}/${TARGET_LIB} \
     -lrodos -lm -lgcc"
 
 # Check if the U-Boot tool 'mkimage' is available (package 'u-boot-tools')

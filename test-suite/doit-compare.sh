@@ -5,21 +5,21 @@
 \rm -rf tmp
 
 echo "__________________________________________________________ core fast test programs"
-execute-all.sh   linux        core-fast       tmp
+execute-all.sh   linux-x86        core-fast       tmp
 
 echo "__________________________________________________________ core slow test programs"
-execute-all.sh   linux        core-slow       tmp
+execute-all.sh   linux-x86        core-slow       tmp
 
 echo "__________________________________________________________ middleware test programs"
-execute-all.sh   linux        middleware-tests tmp
+execute-all.sh   linux-x86        middleware-tests tmp
 
 echo "__________________________________________________________ middleware gateway"
 cd middleware-gateway
-./executeit.sh   linux                         tmp
+./executeit.sh   linux-x86                         tmp
 cd ..
 
 echo "__________________________________________________________ Embedded test programs"
-execute-all.sh   linux        embedded-test     tmp-embedded
+execute-all.sh   linux-x86        embedded-test     tmp-embedded
 
 
 
