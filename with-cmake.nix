@@ -42,7 +42,8 @@ in
   linux-x86 = cov_test "linux-x86" pkgsi686Linux.stdenv;
   linux-makecontext = cov_test "linux-makecontext" pkgsi686Linux.stdenv;
   posix = cov_test "posix" pkgsi686Linux.stdenv;
-  stm32f4 = compile_only "stm32f4" pkgsCross.arm-embedded.stdenv;
+  discovery = compile_only "discovery" pkgsCross.arm-embedded.stdenv;
+  skith = compile_only "skith" pkgsCross.arm-embedded.stdenv;
   raspberrypi3 = compile_only "raspberrypi3" pkgsCross.arm-embedded.stdenv;
   sf2 = compile_only "sf2" pkgsCross.arm-embedded.stdenv;
 
