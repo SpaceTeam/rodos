@@ -12,3 +12,5 @@ tmp
 *~
 *.o
 *.a
+!src/bare-metal/efr32fg1p/librail_efr32xg1_gcc_release.a
+
