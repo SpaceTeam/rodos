@@ -55,3 +55,6 @@ ______________________________________________________
    source ${RODOS_HELP_SCRIPTS}/set-git-aware-promt.sh
 ______________________________________________________
 EOT2
+
+complete -W "efr32fg1p gecko linux linuxMC posix posix64 posixmac sf2 stm32f4" rodos-lib.sh
+complete -W "efr32fg1p gecko linux linuxMC posix posix64 posixmac sf2 stm32f4" rodos-executable.sh
