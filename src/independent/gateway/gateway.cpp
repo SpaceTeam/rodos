@@ -118,7 +118,7 @@ bool Gateway::messageSeen(NetworkMessage& msg) {
 
 /** Forward the message to the interface **/
 
-long Gateway::put(const long topicId, const long len, const void* data, const NetMsgInfo& netMsgInfo) {
+long Gateway::put(const long topicId, const long len, const void* data, const NetMsgInfo&) {
     if(!isEnabled) return 0;
     // if(topicId == 0) return 0;
 

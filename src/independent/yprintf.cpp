@@ -67,14 +67,6 @@ void Yprintf::vaprintf(const char *fmt) {
         if(c == 0) return; //SM: Bad format eg "cnt =%" or "%3" etc
 
         switch (c) {
-        case 'c':
-            c = va_arg(ap, int);	// char promoted to int
-        /* no break */
-
-        default:
-            yputc(c);
-            continue;
-
         case 's':
             ptr = (unsigned char *) va_arg(ap, char *);
             while ((c = *ptr++)) {
@@ -116,6 +108,13 @@ void Yprintf::vaprintf(const char *fmt) {
         case 'b':
             base = 2;
             break;
+
+        default:
+            if (c == 'c') {
+                c = va_arg(ap, int);	// char promoted to int
+            }
+            yputc(c);
+            continue;
         }
 
         // Number output

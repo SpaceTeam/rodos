@@ -43,7 +43,7 @@ private:
   long stackSize; 	  ///< size of the thread's stack in bytes
   long* stack; 		  ///< pointer to the thread's stack (beginning high, growing low)
   char* stackBegin;	  ///< stack grows down, this is the lower limit
-  volatile long* context; ///< pointer to stored context
+  long* volatile context; ///< pointer to stored context
 
   // Activation control
   /**  priority of thread, higher values are serverd first  */

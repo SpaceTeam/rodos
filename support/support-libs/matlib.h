@@ -61,6 +61,7 @@ public:
     Vector3D (const double &x, const double &y, const double &z);
     Vector3D(const Vector3D& other); ///< copy from vector
     Vector3D (double* arr);          ///< like Vector3D (arr[0],arr[1],arr[2])
+    inline Vector3D& operator=   (const Vector3D &other) = default;
 
     bool resetIfNAN(); ///< sets to (0,0,0) if any component is infinite or NAN
 
@@ -147,6 +148,7 @@ public:
     RPY(const Matrix3D& M);
     RPY(const AngleAxis& other);
     RPY(const Rotor& rot);
+    inline RPY& operator= (const RPY& other) = default;
 
     RPY accumulateRotation(RPY& increment); ///<  converts both to quaternion, mulitply and back to RPY
 
@@ -176,6 +178,7 @@ public:
     Vector4D(); ///< creates (0,0,0,1)
     Vector4D (const double &x, const double &y, const double &z);
     Vector4D(const Vector4D& other);
+    inline Vector4D& operator= (const Vector4D& other) = default;
     Vector4D (double* arr); ///< like Vector4D(arr[0],arr[1],arr[2],arr[3])
     Vector4D matVecMult(const Matrix4D& M) const; // WARNING: bottom row of the matrix MUST be 0, 0, 0, 1 as it is used for homogenous transformations.
     Vector3D to3D() const; ///< returns (x,y,z)
@@ -202,6 +205,7 @@ public:
     Quaternion(const Matrix3D& other);
     Quaternion(const RPY& other);
     Quaternion(const YPR& other); ///< DEPRECATED
+    inline Quaternion& operator= (const Quaternion& other) = default;
 
     bool resetIfNAN(); ///< sets to (1,(0,0,0)) if any component is infinit or NAN
 
@@ -262,6 +266,7 @@ public:
     Matrix3D(const YPR& other);        ///< DEPRECATED
     Matrix3D(const AngleAxis& other);  ///< corresponding rotation matrix
     Matrix3D(const Quaternion& other); ///< corresponding rotation matrix
+    inline Matrix3D& operator= (const Matrix3D& other) = default;
 
 
     Vector3D getVec() const; ///< return the rotations axis which is coded in the matrix
@@ -377,6 +382,7 @@ public:
     AngleAxis(const Matrix3D& M);
     AngleAxis(const RPY& rpy);
     AngleAxis(const YPR& ypr); ///< DEPRECATED
+    inline AngleAxis& operator= (const AngleAxis& other) = default;
 
     Quaternion toQuaternion() const;
     Matrix3D toMatrix3D() const;
@@ -431,6 +437,7 @@ public:
     CoordinateFrame3D(const Vector3D& x, const Vector3D& y, const Vector3D& z, const Vector3D& origin); //WARNING: Does NOT check, if x, y and z are unit vector and orthogonal
     CoordinateFrame3D(const Vector3D& x, const Vector3D& y, const Vector3D& origin); ///< z will be generated ortogonal to x, y
     CoordinateFrame3D(const CoordinateFrame3D& other);
+    inline CoordinateFrame3D& operator= (const CoordinateFrame3D& other) = default;
 
     Matrix4D mapTo(const CoordinateFrame3D& other) const; ///< rotation and translation from this to other
 
@@ -450,6 +457,7 @@ public:
 
     Complex(); ///< (0,0)
     Complex(const Complex& other);
+    inline Complex& operator= (const Complex& other) = default;
     Complex(const double &Re, const double &Im);
     Complex cAdd(const Complex& other) const;
     Complex cSub(const Complex& other) const;       //WARNING: calculates other - this
@@ -480,6 +488,7 @@ public:
     Polar(const double &r, const double &phi, const double &theta);
     Polar(const Polar& other);
     Polar(const Vector3D& other); ///< corresponding polar to equivalent (x,y,z)
+    inline Polar& operator= (const Polar& other) = default;
 
     Vector3D toCartesian() const;
 
@@ -545,6 +554,7 @@ public:
     Matrix6D(const Vector6D& diag);
     Matrix6D(const double* arr);
     Matrix6D(const Matrix3D &upperLeft, const Matrix3D &upperRight, const Matrix3D &lowerLeft, const Matrix3D &lowerRight);
+    inline Matrix6D& operator= (const Matrix6D& other) = default;
 
     Vector6D getColumn(const int &j) const;
     Vector6D getRow(const int &i) const;

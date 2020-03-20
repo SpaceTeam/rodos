@@ -60,7 +60,7 @@ HAL_Sharedmemory::HAL_Sharedmemory(Sharedmemory_IDX shmIdx) {
     context->hal_shm = this;
 }
 
-void sharedmemorySignalHandler(int signum) {
+void sharedmemorySignalHandler(int) {
     for(int i = 0; i < MAX_NUM_SHM; i++) {
         HAL_Sharedmemory* shm = sharedMemoryContext[i].hal_shm;
         if(shm) {

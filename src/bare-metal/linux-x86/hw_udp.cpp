@@ -55,7 +55,7 @@ static Topic<GenericMsgRef>* asyncInputSocketAssociatedTopic[MAX_UDP_PORTS];
 static char                  inputBuf[1400]; // as long as a UDP packet can be
 
 void udpReader(int a);
-void udpReader(int a) {
+void udpReader(int) {
 
     GenericMsgRef msgRef;
     msgRef.msgPtr = inputBuf;

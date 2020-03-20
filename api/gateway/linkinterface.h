@@ -62,7 +62,7 @@ public:
      *@param numberOfReceivedBytes When return=true this contains the number of Bytes really received or -1 if it is unknown.
      *		Should be ==Networkmessage.numberOfBytesToSend() in case of no error.
      */
-    virtual bool getNetworkMsg(NetworkMessage &inMsg,int32_t &numberOfReceivedBytes)   { return false; }
+    virtual bool getNetworkMsg([[gnu::unused]] NetworkMessage &inMsg, [[gnu::unused]] int32_t &numberOfReceivedBytes)   { return false; }
 
     /**
      * Returns if all buffered Messages have been transmittet on the wire.
@@ -75,7 +75,7 @@ public:
      *  Sends NetworkMessage over the Link. May block. When it returns the Message should be send out or have been buffered.
      * @param The Message to send
      */
-    virtual bool sendNetworkMsg(NetworkMessage& outgoingMessage) { return true;  }
+    virtual bool sendNetworkMsg([[gnu::unused]] NetworkMessage& outgoingMessage) { return true;  }
     inline long getLinkdentifier() const                { return this->linkIdentifier; }
 
     /**

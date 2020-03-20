@@ -22,7 +22,7 @@ static bool initialized = false;
  */
 
 static char inputBuf[500];
-static void charReader(int signo) {
+static void charReader(int) {
     fd_set         read_set;
     struct timeval timeout_value;
 

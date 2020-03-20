@@ -15,7 +15,7 @@ class S3pEncoder {
 
   public:
     // ___________________________________________________ You shall override these methods
-    virtual void putByte(uint8_t c) {} // override to send or store encoded messages (maybe you shall proctedt with semaphore?)
+    virtual void putByte([[gnu::unused]] uint8_t c) {} // override to send or store encoded messages (maybe you shall proctedt with semaphore?)
     // __________________________________________________________
 
     bool mayPutBytes = true; // your putByte() shall wait to send until this is true, see STOP/CONTINUE from receiver
@@ -67,8 +67,8 @@ class S3pEncoder {
 
     //_____________________________________ To decode messages Alternative 2: as interrupt server
 
-    virtual void appendByte(uint8_t c) {} // upcallOnInputChar()  will call this method, each time It gives you a byte for your message
-    virtual void endOfMessage(int len) {} // upcallOnInputChar()  will call this method when one message is ready. It gives you the length
+    virtual void appendByte([[gnu::unused]] uint8_t c) {} // upcallOnInputChar()  will call this method, each time It gives you a byte for your message
+    virtual void endOfMessage([[gnu::unused]] int len) {} // upcallOnInputChar()  will call this method when one message is ready. It gives you the length
 
     void upcallOnInputChar(uint8_t inputChar); // the interrupt server shall call this for each arrived byte
 };
