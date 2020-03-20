@@ -3,8 +3,8 @@
 # Author Marcelo Alves (Uni Minho), Oct 2019
 # 	 Jorge Oliveira (Uni Minho)
 
-export ARCH=efr32fg1p
-
+export ARCH=efr32fg1p    #used to select compile directories
+export TARGET_LIB=gecko  #used as name for the generated lib
 
 #---------------------------------------------- from here the same for all sub architectures
 
