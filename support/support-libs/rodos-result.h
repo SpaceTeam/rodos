@@ -18,11 +18,11 @@ struct Result {
     ErrorCode err;
     Type      val;
 
-    Result() : err(ErrorCode::OK) {}
-    Result(const Type& v) : err(ErrorCode::OK), val(v) {}
-    Result(const Type&& v) : err(ErrorCode::OK), val(v) {} //  add support for rvalues for v
-    Result(const ErrorCode& e) : err(e) {}
-    Result(const ErrorCode& e, const Type& v) : err(e), val(v) {}
+    Result()                                   : err(ErrorCode::OK) {}
+    Result(const Type& v)                      : err(ErrorCode::OK), val(v) {}
+    Result(const Type&& v)                     : err(ErrorCode::OK), val(v) {} //  add support for rvalues for v
+    Result(const ErrorCode& e)                 : err(e) {}
+    Result(const ErrorCode& e, const Type& v)  : err(e), val(v) {}
     Result(const ErrorCode& e, const Type&& v) : err(e), val(v) {} //  add support for rvalues for v
 
     bool    isOk() const                 { return err == ErrorCode::OK; }
