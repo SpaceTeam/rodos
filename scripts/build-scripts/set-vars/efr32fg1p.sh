@@ -95,7 +95,7 @@ export INCLUDES_TO_BUILD_LIB=" -I ${RODOS_SRC}/bare-metal-generic \
 export CFLAGS_BASICS_COMMON=" -g3 -gdwarf-2 -DHSE_VALUE=${OSC_CLK} "
 export CFLAGS_BASICS="${CFLAGS_BASICS_COMMON} -DCORTEXM3 -DCORTEXM3_EFR32_MICRO -DCORTEXM3_EFR32 -DEFR32FG1P -DEFR32FG1P133F256GM48 -DEFR32_SERIES1_CONFIG1_MICRO"
 export HWCFLAGS=" -mcpu=cortex-m4 -mthumb -mfloat-abi=softfp -mfpu=fpv4-sp-d16 -specs=nano.specs -specs=nosys.specs"
-export LINKFLAGS=" -T${RODOS_ARCH_SRC1}/scripts/efr32fg1p.ld -I${RODOS_ARCH_SRC1}/scripts/ -nostartfiles -Xlinker --gc-sections -L${RODOS_LIBS}/${ARCH} -fno-unwind-tables -fno-asynchronous-unwind-tables -lm -lgcc -L${RODOS_SRC}/bare-metal/${ARCH} -lrodos -lrail_efr32xg1_gcc_release "
+export LINKFLAGS=" -T${RODOS_ARCH_SRC1}/scripts/efr32fg1p.ld -I${RODOS_ARCH_SRC1}/scripts/ -nostartfiles -Xlinker --gc-sections -L${RODOS_LIBS}/${TARGET_LIB} -fno-unwind-tables -fno-asynchronous-unwind-tables -lm -lgcc -L${RODOS_SRC}/bare-metal/${ARCH} -lrodos -lrail_efr32xg1_gcc_release "
 export CFLAGS=${CFLAGS}" ${CFLAGS_BASICS} ${HWCFLAGS} "
 
 export ARM_TOOLS=""
