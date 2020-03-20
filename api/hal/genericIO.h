@@ -23,9 +23,9 @@ public:
 
 class GenericIOInterface {
 private:
-    Thread* callerReadFinished;
-    Thread* callerWriteFinished;
-    Thread* callerDataReady;
+    StacklessThread* callerReadFinished;
+    StacklessThread* callerWriteFinished;
+    StacklessThread* callerDataReady;
 
 protected:
     IOEventReceiver* ioEventReceiver;

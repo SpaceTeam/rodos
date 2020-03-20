@@ -16,7 +16,7 @@ namespace RODOS {
 
 template <class Type> class SyncCommBuffer : private CommBuffer<Type> {
 protected:
-  Thread* suspendedReader;
+  StacklessThread* suspendedReader;
 
 public:
   using CommBuffer<Type>::get;
@@ -69,15 +69,15 @@ public:
     {
       PRIORITY_CEILER_IN_SCOPE();
       if (!this->newDataAvailable) {
-        suspendedReader = Thread::getCurrentThread();
+        suspendedReader = StacklessThread::getCurrentThread();
         switch (timeout) {
         case 0:
           break;
         case END_OF_TIME:
-          Thread::suspendCallerUntil(END_OF_TIME);
+          StacklessThread::suspendCallerUntil(END_OF_TIME);
           break;
         default:
-          Thread::suspendCallerUntil(NOW() + timeout);
+          StacklessThread::suspendCallerUntil(NOW() + timeout);
         }
         suspendedReader = 0;
       }

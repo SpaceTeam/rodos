@@ -66,8 +66,8 @@ void enterSleepMode();
 /***********************************/
 
 
-class Thread;
-extern void threadStartupWrapper(Thread* thread);
+class StacklessThread;
+extern void threadStartupWrapper(StacklessThread* thread);
 
 
 /** create context on stack and return a pointer to it */

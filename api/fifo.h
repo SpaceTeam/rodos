@@ -115,8 +115,8 @@ public:
 template <class Type, int len> class SyncFifo : public Fifo<Type, len> {
 
 protected:
-    Thread* suspendedReader;
-    Thread* suspendedWriter;
+    StacklessThread* suspendedReader;
+    StacklessThread* suspendedWriter;
 
 public:
 
@@ -148,15 +148,15 @@ public:
             PRIORITY_CEILER_IN_SCOPE();
             ok = this->put(val);
             if (!ok) {
-                suspendedWriter = 	Thread::getCurrentThread();
+                suspendedWriter = 	StacklessThread::getCurrentThread();
                 switch (timeout) {
                 case 0:
                     break;
                 case END_OF_TIME:
-                    Thread::suspendCallerUntil(END_OF_TIME);
+                    StacklessThread::suspendCallerUntil(END_OF_TIME);
                     break;
                 default:
-                    Thread::suspendCallerUntil(NOW() + timeout);
+                    StacklessThread::suspendCallerUntil(NOW() + timeout);
                 }
                 suspendedWriter = 0; // after suspend, after resume
             }
@@ -177,15 +177,15 @@ public:
             PRIORITY_CEILER_IN_SCOPE();
             ok= this->get(val);
             if (!ok) {
-                suspendedReader = Thread::getCurrentThread();
+                suspendedReader = StacklessThread::getCurrentThread();
                 switch (timeout) {
                 case 0:
                     break;
                 case END_OF_TIME:
-                    Thread::suspendCallerUntil(END_OF_TIME);
+                    StacklessThread::suspendCallerUntil(END_OF_TIME);
                     break;
                 default:
-                    Thread::suspendCallerUntil(NOW() + timeout);
+                    StacklessThread::suspendCallerUntil(NOW() + timeout);
                 }
                 suspendedReader = 0;
             }

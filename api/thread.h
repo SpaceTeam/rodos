@@ -17,6 +17,7 @@
 #include "timemodel.h"
 #include "default-platform-parameter.h"
 
+#include <stddef.h>
 
 namespace RODOS {
 
@@ -24,14 +25,15 @@ extern "C" {
   void schedulerWrapper(long* ctx);
 }
 
+long* hwInitContext(long* stack, void* thread);
 
 /**
 * @class Thread
 * @brief %Thread provides stack and context management
 */
-class Thread : public ListElement {
+class StacklessThread : public ListElement {
   friend void schedulerWrapper(long* ctx);
-  friend void threadStartupWrapper(Thread*);
+  friend void threadStartupWrapper(StacklessThread*);
   friend void initSystem();
   friend void startIdleThread();
   friend class Scheduler;
@@ -47,25 +49,26 @@ private:
 
   // Activation control
   /**  priority of thread, higher values are serverd first  */
-  volatile long priority;
+  volatile long priority = 0;
 
   /** It will be activated only after this time */
-  volatile int64_t suspendedUntil;
+  volatile int64_t suspendedUntil = 0;
 
   /** if waiting for reactivation from someone, eg semaphore */
-  void* waitingFor;
+  void* waitingFor = nullptr;
 
-  int64_t nextBeat;  ///<  the next time to awake (used in wait)
-  int64_t period;    ///<  To repeate every period localTime units
+  int64_t nextBeat = END_OF_TIME;  ///<  the next time to awake (used in wait)
+  int64_t period = 0;    ///<  To repeate every period localTime units
 
   void create(); ///< called in main() after all constuctors, to create/init thread
 
   // Used only by the Scheduler and ThreadManager (friends)
-  volatile unsigned long long lastActivation; ///< used by scheduling algorithm
+  volatile unsigned long long lastActivation = 0; ///< used by scheduling algorithm
   void activate(); ///< continue the execution of the thread
+  void initializeStack();
 
   static void initializeThreads(); ///< call the init method of all threads
-  static Thread* currentThread; ///< pointer to currently running thread
+  static StacklessThread* currentThread; ///< pointer to currently running thread
 
 public:
 
@@ -81,12 +84,21 @@ public:
    * @see DEFAULT_THREAD_PRIORITY
    * @see DEFAULT_STACKSIZE
    */
-  Thread(const char* name = "AnonymThread",
-         const long priority = DEFAULT_THREAD_PRIORITY,
-         const long stackSize = DEFAULT_STACKSIZE);
+  template<size_t STACK_SIZE>
+  StacklessThread(char (&stack)[STACK_SIZE], 
+         const char* name = "AnonymThread",
+         const long priority = DEFAULT_THREAD_PRIORITY) 
+  : ListElement(threadList,name) {
+    this->stackSize = STACK_SIZE;
+    this->stackBegin = stack;
+    this->stack = (long*)((unsigned long)(stack + (stackSize - 4)) & (~7));
+    this->priority = priority;
+
+    initializeStack();
+  }
 
   /// Destructor
-  virtual ~Thread();
+  virtual ~StacklessThread();
 
   /**
    * Entry point for user code. The thread activities shall implement by overloading this method.
@@ -191,7 +203,7 @@ public:
    *
    * @return Pointer to the currently running thread.
    */
-  static Thread* getCurrentThread();
+  static StacklessThread* getCurrentThread();
 
   /**
    * Search over all threads and select the one with the highest priority which is ready to run
@@ -200,7 +212,7 @@ public:
    *
    * @see resume
    */
-  static Thread* findNextToRun(int64_t timeNow);
+  static StacklessThread* findNextToRun(int64_t timeNow);
 
   /**
    * Search over all threads and select the one with the highest priority which is not ready to run
@@ -210,7 +222,7 @@ public:
    *
    * @return Pointer to the highest priorized thread waiting on the signaler.
    */
-  static Thread* findNextWaitingFor(void* signaler);
+  static StacklessThread* findNextWaitingFor(void* signaler);
 
   /**
    * Get the schedule counter.
@@ -240,6 +252,17 @@ public:
 
 };
 
+
+template <size_t STACK_SIZE>
+class ThreadWithStack : public StacklessThread {
+    char stack alignas(8)[STACK_SIZE];
+public:
+    ThreadWithStack(const char* name = "AnonymThread", const long priority = DEFAULT_THREAD_PRIORITY)
+     : StacklessThread(stack, name, priority) {}
+};
+
+using Thread = ThreadWithStack<DEFAULT_STACKSIZE>;
+
 /******************************************************
  * Shortcuts for often used constructs
  *******************************************************/
@@ -248,7 +271,7 @@ public:
  * A pointer to the currently running thread.
  **/
 
-#define RUNNER() Thread::getCurrentThread()
+#define RUNNER() StacklessThread::getCurrentThread()
 
 
 /**
@@ -267,8 +290,8 @@ public:
  * AT(END_OF_TIME);
  */
 
-inline void AT(int64_t _time)     { Thread::suspendCallerUntil(_time); }
-inline void AT_UTC(int64_t _time) { Thread::suspendCallerUntil(sysTime.UTC2LocalTime(_time)); }
+inline void AT(int64_t _time)     { StacklessThread::suspendCallerUntil(_time); }
+inline void AT_UTC(int64_t _time) { StacklessThread::suspendCallerUntil(sysTime.UTC2LocalTime(_time)); }
 inline void BUSY_WAITING_UNTIL(int64_t endWaitingTime) { while(NOW() < (endWaitingTime)) ; }
 
 

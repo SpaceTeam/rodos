@@ -32,9 +32,9 @@ long long timeAtStartup = 0LL;
 /****************** src global variables **************/
 
 
-Thread* Thread::currentThread   = 0;
+StacklessThread* StacklessThread::currentThread   = 0;
 
-List Thread::threadList         = 0;
+List StacklessThread::threadList         = 0;
 List TimeEvent::timeEventList   = 0;
 List Initiator::initiatorList   = 0;
 List Subscriber::subscriberList = 0;

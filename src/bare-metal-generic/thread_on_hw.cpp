@@ -8,7 +8,7 @@
 *
 * A Thread is a schedulable object with own context and stack
 *
-* @brief %Thread handling
+* @brief %StacklessThread handling
 */
 
 #include "rodos.h"
@@ -25,59 +25,41 @@
 
 namespace RODOS {
 
-//List Thread::threadList = 0;
-//Thread* Thread::currentThread = 0;
+//List StacklessThread::threadList = 0;
+//StacklessThread* StacklessThread::currentStacklessThread = 0;
 long long oldTimerInterval = -1; // used for sleep mode
 
-/** constructor */
-Thread::Thread(const char* name,
-               const long priority,
-               const long _stackSize) :
-    ListElement(threadList, name) {
-
-    this->stackSize = _stackSize;
-    stackBegin = (char*)xmalloc(stackSize);
-    stack = (long*) ((unsigned long) (stackBegin + (stackSize-4)) & (~7)); // align 8 byte
-
-    //Paint the stack space; TODO: Comment out for faster start up
+void StacklessThread::initializeStack() {
+    //Paint the stack space
     uint32_t* stackPaint = (uint32_t*)stack;
-    while((uint32_t)stackPaint >= (uint32_t)stackBegin){
-    	*stackPaint = EMPTY_MEMORY_MARKER;
-    	stackPaint--;
+    while((uint32_t)stackPaint >= (uint32_t)stackBegin) {
+        *stackPaint = EMPTY_MEMORY_MARKER;
+        stackPaint--;
     }
 
-    context = hwInitContext(stack,  this);
-
-    lastActivation = 0;
-    this->priority = priority;
-
-    suspendedUntil = 0;		  // Ready to run
-    waitingFor     = 0;		  // not waiting for any one
-    nextBeat = END_OF_TIME ;        // no period defined
-    period   = 0 ;
-
+    context = hwInitContext(stack, this);
 }
 
-Thread::~Thread() {
+StacklessThread::~StacklessThread() {
     if(isShuttingDown) return;
     PRINTF("%s:",getName());
     RODOS_ERROR("Thread deleted");
 }
 
 /* called in main() after all constuctors, to create/init thread */
-void Thread::create() {
+void StacklessThread::create() {
     // only required when implementig in on the top of posix, rtems, freertos, etc
 }
 
 extern bool isSchedulingEnabled; // from scheduler
 
 /** pause execution of this thread and call scheduler */
-void Thread::yield() {
+void StacklessThread::yield() {
     if(!isSchedulingEnabled) return; // I really do not like This! but required
 
     /** Optimisation: Avoid unnecesary context swtichs: see Scheduler::schedule()  ***/
     long long timeNow = NOW(); 
-    Thread* preselection = findNextToRun(timeNow); 
+    StacklessThread* preselection = findNextToRun(timeNow); 
     if(preselection == getCurrentThread()) return;
 
     // schedule is required, The scheduler shall not repeate my computations: 
@@ -90,7 +72,7 @@ void Thread::yield() {
 }
 
 /* restore context of this thread and continue execution of this thread */
-void Thread::activate() {
+void StacklessThread::activate() {
     currentThread = this;
     if (taskRunning < 0xfffff) taskRunning++; // just a very big (impossible) limit
     if(oldTimerInterval > 0) {
@@ -105,16 +87,16 @@ void Thread::activate() {
 /*******************************************************************/
 
 /* get priority of the thread */
-long Thread::getPriority() const {
+long StacklessThread::getPriority() const {
     return priority;
 }
 
 /* set priority of the thread */
-void Thread::setPriority(const long prio) {
+void StacklessThread::setPriority(const long prio) {
     priority = prio;
 }
 
-Thread* Thread::getCurrentThread() {
+StacklessThread* StacklessThread::getCurrentThread() {
     return currentThread;
 }
 
@@ -122,7 +104,7 @@ Thread* Thread::getCurrentThread() {
 long long timeToTryAgainToSchedule = 0; // set when looking for the next to execute
 
 /* resume the thread */
-void Thread::resume() {
+void StacklessThread::resume() {
     timeToTryAgainToSchedule = 0;
     waitingFor     = 0;
     suspendedUntil = 0;
@@ -130,9 +112,9 @@ void Thread::resume() {
 }
 
 /* suspend the thread */
-bool Thread::suspendCallerUntil(const int64_t reactivationTime, void* signaler) {
+bool StacklessThread::suspendCallerUntil(const int64_t reactivationTime, void* signaler) {
 
-    Thread* caller =  getCurrentThread();
+    StacklessThread* caller =  getCurrentThread();
     {
         PRIORITY_CEILER_IN_SCOPE();
         caller->waitingFor = signaler;
@@ -148,29 +130,29 @@ bool Thread::suspendCallerUntil(const int64_t reactivationTime, void* signaler) 
 
 
 
-void Thread::initializeThreads() {
+void StacklessThread::initializeThreads() {
     xprintf("Threads in System:");
-    ITERATE_LIST(Thread, threadList) {
+    ITERATE_LIST(StacklessThread, threadList) {
         xprintf("\n   Prio = %7ld Stack = %6ld %s: ", iter->priority, iter->stackSize, iter->getName());
         iter->init();
         iter->suspendedUntil = 0;
     }
     xprintf("\n");
-    ITERATE_LIST(Thread, threadList) {
+    ITERATE_LIST(StacklessThread, threadList) {
         iter->create();
     }
 }
 
 // not used in this implementation, the scheduler activates thread
-void Thread::startAllThreads() { }
+void StacklessThread::startAllThreads() { }
 
 
 /** non-static C++ member functions cannot be used like normal
    C function pointers. www.function-pointer.org suggests using a
    wrapper function instead. */
 
-void threadStartupWrapper(Thread* thread) {
-    Thread::currentThread = thread;
+void threadStartupWrapper(StacklessThread* thread) {
+    StacklessThread::currentThread = thread;
     thread->suspendedUntil = 0;
 
     thread->run();
@@ -186,7 +168,7 @@ void threadStartupWrapper(Thread* thread) {
 }
 
 
-unsigned long long Thread::getScheduleCounter() {
+unsigned long long StacklessThread::getScheduleCounter() {
     return Scheduler::getScheduleCounter();
 }
 
@@ -202,7 +184,7 @@ unsigned long long Thread::getScheduleCounter() {
  */
 class IdleThread : public Thread {
 public:
-    IdleThread() : Thread("IdleThread", 0, DEFAULT_STACKSIZE) {
+    IdleThread() : Thread("IdleThread", 0) {
     }
     void run();
     void init();
@@ -237,17 +219,17 @@ void IdleThread::init() {
  * The idle thread.
  */
 IdleThread idlethread;
-Thread* idlethreadP = &idlethread;
+StacklessThread* idlethreadP = &idlethread;
 
 
 /*********************************************************************************/
 
 #define EARLIER(a,b) ((a) < (b) ? (a) : (b) )
 
-Thread* Thread::findNextToRun(int64_t timeNow) {
-    Thread* nextThreadToRun = &idlethread; // Default, if no one else wants
+StacklessThread* StacklessThread::findNextToRun(int64_t timeNow) {
+    StacklessThread* nextThreadToRun = &idlethread; // Default, if no one else wants
     timeToTryAgainToSchedule = timeNow + TIME_SLICE_FOR_SAME_PRIORITY;
-    ITERATE_LIST(Thread, threadList) {
+    ITERATE_LIST(StacklessThread, threadList) {
         if (iter->suspendedUntil < timeNow) { // in the past
 			// - thread with highest prio will be executed immediately when this scheduler-call ends
             // - other threads with lower prio will be executed after next scheduler-call
@@ -284,10 +266,10 @@ Thread* Thread::findNextToRun(int64_t timeNow) {
 #undef EARLIER
 
 
-Thread* Thread::findNextWaitingFor(void* signaler) {
-    Thread* nextWaiter = &idlethread; // Default, if no one else wants to run
+StacklessThread* StacklessThread::findNextWaitingFor(void* signaler) {
+    StacklessThread* nextWaiter = &idlethread; // Default, if no one else wants to run
 
-    ITERATE_LIST(Thread, threadList) {
+    ITERATE_LIST(StacklessThread, threadList) {
         if (iter->waitingFor == signaler) {
             if (iter->getPriority() > nextWaiter->getPriority()) {
                 nextWaiter = iter;
@@ -306,8 +288,8 @@ Thread* Thread::findNextWaitingFor(void* signaler) {
     return nextWaiter;
 }
 
-int32_t Thread::getMaxStackUsage(){
-	Thread* currentThread = getCurrentThread();
+int32_t StacklessThread::getMaxStackUsage(){
+	StacklessThread* currentThread = getCurrentThread();
 
 	//Go to the beginning of the stack(lowest addres)
 	uint32_t* stackScan = (uint32_t*)currentThread->stack;

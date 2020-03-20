@@ -88,7 +88,7 @@ public:
 
   /**
    * Handle the event. The default implementation of handle search for all threads
-   * waiting on this event. This is the case, if the thread calls Thread::suspendCallerUntil
+   * waiting on this event. This is the case, if the thread calls StacklessThread::suspendCallerUntil
    * with parameter signaler a pointer to this event. The user can overload the method with
    * an own processing of the event.
    *
@@ -97,7 +97,7 @@ public:
    * So do it very short and avoid blocking functionalities inside the implementation of handle
    * like semaphores, IO activities and so on.
    *
-   * @see Thread::suspendCallerUntil
+   * @see StacklessThread::suspendCallerUntil
    */
   virtual void handle(void) { }
 

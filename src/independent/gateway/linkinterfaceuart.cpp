@@ -45,7 +45,7 @@ void LinkinterfaceUART::putcharEncoded(const bool mark, const char c) {
     /** first check if we were stoped by control flow commands **/
 
     for(int i = 0; i < 5 && !maySend; i++) // ^s-> stop ? but with a limit
-        Thread::suspendCallerUntil(NOW() + 200*MILLISECONDS); // no more than 5 times, (one second)
+        StacklessThread::suspendCallerUntil(NOW() + 200*MILLISECONDS); // no more than 5 times, (one second)
 
     maySend = true; // in case the receiver is dead.
 
@@ -144,9 +144,9 @@ bool LinkinterfaceUART::sendUartBuffer(char* buf, int size){
             if (errCnt > 100){
                 return false;
             }
-            Thread::suspendCallerUntil(NOW() + 1*MILLISECONDS);
+            StacklessThread::suspendCallerUntil(NOW() + 1*MILLISECONDS);
         }else if ( retVal != (size-txBytes) ){ // the whole buffer couldn't be sent -> wait a moment and send the rest
-            Thread::suspendCallerUntil(NOW() + 1*MILLISECONDS);
+            StacklessThread::suspendCallerUntil(NOW() + 1*MILLISECONDS);
             txBytes += retVal;
             errCnt = 0;
         }else{

@@ -31,7 +31,7 @@ extern "C" {
 
 /** count all calls to the scheduler */
 unsigned long long Scheduler::scheduleCounter=0;
-Thread* Scheduler::preSelectedNextToRun = 0;
+StacklessThread* Scheduler::preSelectedNextToRun = 0;
 long long Scheduler::preSelectedTime = 0;
 
 bool isSchedulingEnabled = true; ///< will be checked before some one calls scheduler::schedule
@@ -41,18 +41,18 @@ bool globalAtomarUnlock() { isSchedulingEnabled = true;  return true; }
 
 
 void schedulerWrapper(long* ctx) {
-  Thread::currentThread->context=ctx;
+  StacklessThread::currentThread->context=ctx;
   Scheduler::schedule();
 }
 
-extern Thread* idlethreadP;
+extern StacklessThread* idlethreadP;
 
 /** activate idle thread */
 void Scheduler::idle() {
   idlethreadP->suspendedUntil = 0;
 
 
-  Thread::currentThread = idlethreadP;
+  StacklessThread::currentThread = idlethreadP;
   taskRunning = 1;  /* a bit to early, but no later place possible */
 
   /* - the order of activate() and startIdleThread() is important -> don't change
@@ -68,17 +68,17 @@ void Scheduler::idle() {
 void Scheduler::schedule() {
   Scheduler::scheduleCounter++;
 
-  /** Optimisations: if Thread::yield() prepared time and next to run, use it, but only once! **/
-  int64_t timeNow = preSelectedTime;  // Eventually set by Thread::yield()
+  /** Optimisations: if StacklessThread::yield() prepared time and next to run, use it, but only once! **/
+  int64_t timeNow = preSelectedTime;  // Eventually set by StacklessThread::yield()
   if(timeNow == 0) timeNow = NOW(); // Obviously not set, then recompute
   preSelectedTime = 0;              // use only once
 
   // time events to call?
   // now obsolete! call directly from timer!! TimeEvent::propagate(timeNow);
 
-  /** select the next thread to run: Do we have a preselection from Thread::yield()? **/
-  Thread* nextThreadToRun = preSelectedNextToRun; // eventually set by Thread::yield()
-  if(nextThreadToRun == 0)  nextThreadToRun = Thread::findNextToRun(timeNow); // not the case
+  /** select the next thread to run: Do we have a preselection from StacklessThread::yield()? **/
+  StacklessThread* nextThreadToRun = preSelectedNextToRun; // eventually set by StacklessThread::yield()
+  if(nextThreadToRun == 0)  nextThreadToRun = StacklessThread::findNextToRun(timeNow); // not the case
   preSelectedNextToRun = 0;                      // use only once
 
   // now activate the selected thread

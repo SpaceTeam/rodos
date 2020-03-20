@@ -18,10 +18,10 @@ class ThreadChecker : public Thread {
         PRINTF(" ****** to use this, set EMPTY_MEMORY_MARKER in thread_on_hw.cpp to 0 and recompile rodos\n");
         PRINTF(" ******************************************\n");
         long    minStack        = DEFAULT_STACKSIZE;
-        Thread* dangerousThread = 0;
+        StacklessThread* dangerousThread = 0;
         TIME_LOOP(0, 3 * SECONDS) {
             PRINTF("TST: Threads and stacks:\n");
-            ITERATE_LIST(Thread, Thread::threadList) {
+            ITERATE_LIST(StacklessThread, StacklessThread::threadList) {
                 long  index = 0;
                 char* stk   = iter->stackBegin;
                 for(index = 16; index < iter->stackSize; index++)
@@ -72,9 +72,9 @@ void stackUser(int len) {
 
 /** Consumes more an more stack until it crases *****/
 
-class StackConsumer : public Thread {
+class StackConsumer : public ThreadWithStack<2000> {
   public:
-    StackConsumer() : Thread("StackConsumer", 400, 2000) {}
+    StackConsumer() : ThreadWithStack<2000>("StackConsumer", 400) {}
     void run() {
         long consumer = 1000;
         TIME_LOOP(6 * SECONDS, 1 * SECONDS) {

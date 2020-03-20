@@ -21,14 +21,14 @@ namespace RODOS {
  *  Constructor
  */
 Semaphore::Semaphore() :
-  owner(0), ownerEnterCnt(0), ownerPriority(0), context(0) { }
+  ownerEnterCnt(0), owner(0), ownerPriority(0), context(0) { }
 
 /**
  * caller will be blocked if semaphore is occupied
  * The owner may reenter the semaphore without deadlock
  */
 void Semaphore::enter() {
-  Thread* caller = Thread::getCurrentThread();
+  StacklessThread* caller = StacklessThread::getCurrentThread();
   long callerPriority = caller->getPriority();
   {
     PRIORITY_CEILER_IN_SCOPE();
@@ -40,7 +40,7 @@ void Semaphore::enter() {
         owner->setPriority(callerPriority);
       }
       // Sleep until wake up by leave
-      while(owner != 0 && owner != caller) Thread::suspendCallerUntil(END_OF_TIME, this);
+      while(owner != 0 && owner != caller) StacklessThread::suspendCallerUntil(END_OF_TIME, this);
       ownerEnterCnt = 0;
     }
     owner = caller;
@@ -54,8 +54,8 @@ void Semaphore::enter() {
  *  caller does not block. resumes one waiting thread (enter)
  */
 void Semaphore::leave() {
-  Thread* caller = Thread::getCurrentThread();
-  Thread* waiter = 0;
+  StacklessThread* caller = StacklessThread::getCurrentThread();
+  StacklessThread* waiter = 0;
 
   if (owner != caller) { // User Programm error: What to do? Nothing!
     return; 
@@ -69,7 +69,7 @@ void Semaphore::leave() {
   {
     PRIORITY_CEILER_IN_SCOPE();
     owner = 0;
-    waiter = Thread::findNextWaitingFor(this);
+    waiter = StacklessThread::findNextWaitingFor(this);
 
     if (waiter != 0) {
       owner = waiter; // set new owner, so that no other thread can grep the semaphore before thread switch
@@ -80,7 +80,7 @@ void Semaphore::leave() {
   //   priority of current thread might have been increased in enter() due to a semaphore access
   //   of another thread with higher priority
   //   If so, restore the original priority
-  Thread::setPrioCurrentRunner(ownerPriority);
+  StacklessThread::setPrioCurrentRunner(ownerPriority);
   ownerPriority = 0;
 
   /* 

@@ -126,13 +126,13 @@ void HAL_I2C::reset() {
     GPIO_Init(context->I2C_SCL_GPIO_PORT, &GPIO_InitStructure);
 
     if(isSchedulerRunning()){
-    	Thread::suspendCallerUntil(NOW()+1*MILLISECONDS);
+    	StacklessThread::suspendCallerUntil(NOW()+1*MILLISECONDS);
 
     	for(int i=0;i<8;i++){
 			GPIO_ResetBits(context->I2C_SCL_GPIO_PORT,context->I2C_SCL_PIN);
-			Thread::suspendCallerUntil(NOW()+1*MILLISECONDS);
+			StacklessThread::suspendCallerUntil(NOW()+1*MILLISECONDS);
 			GPIO_SetBits(context->I2C_SCL_GPIO_PORT,context->I2C_SCL_PIN);
-			Thread::suspendCallerUntil(NOW()+1*MILLISECONDS);
+			StacklessThread::suspendCallerUntil(NOW()+1*MILLISECONDS);
     	}
     }
 

@@ -77,7 +77,7 @@ swint:
 *
 * context_switch is called from the ISR of the software interrupt
 * (when the swi number matches SWI_CONTEXT_SWITCH)
-* This software interrupt is raised when Thread::yield has been called.
+* This software interrupt is raised when StacklessThread::yield has been called.
 * In swi the interrupts are disabled*/
 context_switch:
     /* Step 1: save old context */

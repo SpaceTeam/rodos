@@ -79,7 +79,7 @@ unsigned long TopicInterface::publishMsgPart(void* data, unsigned int lenToSend,
         localmsgInfo.linkId=RODOS_LOCAL_BROADCAST;
         localmsgInfo.sentTime     = NOW();
         localmsgInfo.senderNode   = getNodeNumber();
-        intptr_t ptr=reinterpret_cast<intptr_t>(Thread::getCurrentThread());
+        intptr_t ptr=reinterpret_cast<intptr_t>(StacklessThread::getCurrentThread());
         localmsgInfo.senderThreadId=static_cast<uint32_t>(ptr);
         netMsgInfo= & localmsgInfo;
     }

@@ -18,13 +18,13 @@ namespace RODOS {
 
 /********************************************/
 
-void Thread::setPeriodicBeat(const int64_t begin,
-                             const int64_t period) {
+void StacklessThread::setPeriodicBeat(const int64_t begin,
+                                      const int64_t period) {
     nextBeat = begin;
     this->period = period;
 }
 
-void Thread::suspendUntilNextBeat() {
+void StacklessThread::suspendUntilNextBeat() {
     while (period == 0) {
         RODOS_ERROR("Thead with Period 0 waiting for next beat");
         suspendCallerUntil(); // WRONG! Period shall not be 0 for beats
@@ -39,8 +39,8 @@ void Thread::suspendUntilNextBeat() {
 /********************************************************/
 
 
-long Thread::setPrioCurrentRunner(long newPrio) {
-    Thread* runner = getCurrentThread();
+long StacklessThread::setPrioCurrentRunner(long newPrio) {
+    StacklessThread* runner = getCurrentThread();
     if(runner==0) {
         errorLog.addRaw("null pointer setPrioCurrentRunner");
         return 0;
