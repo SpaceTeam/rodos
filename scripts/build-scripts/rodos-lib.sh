@@ -26,11 +26,9 @@ echo "  --------- rodos core ----------------"
 source generic-compile-directory.sh ${RODOS_DIR}/src/independent 
 source generic-compile-directory.sh ${RODOS_DIR}/src/independent/gateway  
 
-for i in {1..10}
+for SRC_X in "${SRCS[@]}"
 do
-  if [ ! -z  ${SRCS[$i]} ] ; then  # list of source directories set in $1-set-vars.sh
-    source generic-compile-directory.sh ${SRCS[$i]}
-  fi
+  source generic-compile-directory.sh ${SRC_X}
 done
 
 
