@@ -14,40 +14,6 @@
 
 #include <stdint.h>
 
-// Note: changing any of the values below requires recompilation of all system devices.
-
-// Absolute time (in microseconds, from boot) when first poll is sent.
-static const int32_t TIME_START_TX = 5000;
-
-// Time interval (in microseconds) during which a single device (Master or Slave) is allowed to transmit DATA.
-// This value must be able to accommodate the size of the DATA packet (see MAX_PACKET_LENGTH).
-static const int32_t DATA_TIMESLOT_INTERVAL = 7400;
-
-// Time interval (in microseconds) during which a Master is allowed to transmit a POLL.
-// This value must be able to accommodate the size of the POLL packet (see MAX_NUMBER_SLAVES).
-static const int32_t POLL_TIMESLOT_INTERVAL = 500;
-
-// The master stops his packet reception mode a few microsends before the next poll is transmitted.
-// used in HAL_RADIO_MASTER::listen(), in hal_radio_mstrslv.cpp
-static const int32_t LISTEN_INTERVAL = 500;
-
-// The maximum number of Slaves. A slave’s ID must be between 0 and MAX_NUMBER_SLAVES-1.
-static const int32_t MAX_NUMBER_SLAVES = 50;
-
-// The number of Slaves the Master polls by default. Can be changed in runtime using HAL_MASTER::config()
-// Note: The value of this macro must not be higher than MAX_NUMBER_SLAVES.
-static const int32_t INIT_NUMBER_SLAVES = 5;
-
-// Size of internal TX and RX FIFOs in bytes
-static const int32_t TX_FIFO_SIZE = 2048;
-static const int32_t RX_FIFO_SIZE = 2048;
-
-// Maximum length of a data packet
-static const int32_t MAX_PACKET_LENGTH = MAX_NETWORK_MESSAGE_LENGTH;
-
-// Length of packet header, in bytes, containing length information.
-static const int32_t PACKET_HEADER_LEN = 2;
-
 namespace RODOS {
 
 extern "C" {
@@ -90,7 +56,7 @@ class HAL_RADIO : public GenericIOInterface {
     int pollChannel = 0;  // different radio chanels to poll and data transmission
     int dataChannel = 1;  // slaves hear pollChanel, master hears dataChannel
 
-    uint8_t rxPtr[MAX_PACKET_LENGTH];
+    uint8_t rxPtr[MAX_NETWORK_MESSAGE_LENGTH];
 
     // RAIL Callback flags
     bool packetSent = false;
@@ -101,7 +67,7 @@ class HAL_RADIO : public GenericIOInterface {
     bool sendData  = false;
     bool dataReady = false;
     // Temporary buffer to store the data to be sent
-    uint8_t tempBuff[MAX_PACKET_LENGTH];
+    uint8_t tempBuff[MAX_NETWORK_MESSAGE_LENGTH];
     int     tempBuffLength = 0;
 
     virtual void storeReceivedPackets(uint16_t bytesAvailable) = 0;
@@ -110,7 +76,7 @@ class HAL_RADIO : public GenericIOInterface {
     uint16_t rxReceived = 0; // bytes Received
 
     // Last received data packet
-    uint8_t  lastDataPacket[MAX_PACKET_LENGTH];
+    uint8_t  lastDataPacket[MAX_NETWORK_MESSAGE_LENGTH];
     uint16_t lastDataPacketLength;
 
     // Only for Debug purposes.

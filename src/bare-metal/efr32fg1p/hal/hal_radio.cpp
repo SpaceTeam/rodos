@@ -98,7 +98,7 @@ RADIO_STATUS_TYPE HAL_RADIO::init (void)
  */
 RADIO_STATUS_TYPE HAL_RADIO::write(const char* sendBuff, int len)
 {
-	if (len > MAX_PACKET_LENGTH) 
+	if (len > MAX_NETWORK_MESSAGE_LENGTH) 
 		return RADIO_STATUS_ERROR;
 
 	memcpy(tempBuff, sendBuff, len);
@@ -120,8 +120,8 @@ int HAL_RADIO::read(char* recBuf )
 
 	dataReady = false;
 
-	if (lastDataPacketLength > MAX_PACKET_LENGTH)
-		lastDataPacketLength = MAX_PACKET_LENGTH;
+	if (lastDataPacketLength > MAX_NETWORK_MESSAGE_LENGTH)
+		lastDataPacketLength = MAX_NETWORK_MESSAGE_LENGTH;
 	
 	// Only copy data after protocol header (first 3 bytes)	
 	memcpy(recBuf, &lastDataPacket[3], lastDataPacketLength-3);

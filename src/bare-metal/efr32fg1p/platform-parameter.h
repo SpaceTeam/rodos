@@ -10,6 +10,7 @@
 
 #pragma once
 
+#include <stdint.h>
 // ___________________  only defines, not in namespace
 
 /** Version Number */
@@ -60,4 +61,35 @@
 #undef		MAX_NETWORK_MESSAGE_LENGTH	
 #define		MAX_NETWORK_MESSAGE_LENGTH		1536
 
+//______________________________________________________________________________________________
 
+/***************************** Radio communicatio  parameter ************************************/
+
+// WARNING!! All time intervals for RAIL  (GECKO lib) are in Microseconds !!!!
+// =========
+
+// Time interval (in microseconds) during which a single device (Master or Slave) is allowed to transmit DATA.
+// This value must be able to accommodate the size of the DATA packet (see MAX_NETWORK_MESSAGE_LENGTH).
+static const int32_t DATA_TIMESLOT_INTERVAL = 7400;
+
+// Time interval (in microseconds) during which a Master is allowed to transmit a POLL.
+// This value must be able to accommodate the size of the POLL packet (see MAX_NUMBER_SLAVES).
+static const int32_t POLL_TIMESLOT_INTERVAL = 500;
+
+// The master stops his packet reception mode a few microsends before the next poll is transmitted.
+// used in HAL_RADIO_MASTER::listen(), in hal_radio_mstrslv.cpp
+static const int32_t LISTEN_INTERVAL = 500;
+
+// The maximum number of Slaves. A slave’s ID must be between 0 and MAX_NUMBER_SLAVES-1.
+static const int32_t MAX_NUMBER_SLAVES = 50;
+
+// The number of Slaves the Master polls by default. Can be changed in runtime using HAL_MASTER::config()
+// Note: The value of this macro must not be higher than MAX_NUMBER_SLAVES.
+static const int32_t INIT_NUMBER_SLAVES = 5;
+
+// Size of internal TX and RX FIFOs in bytes
+static const int32_t TX_FIFO_SIZE = 2048;
+static const int32_t RX_FIFO_SIZE = 2048;
+
+// Length of RAIL packet header, in bytes, contains only the length
+static const int32_t PACKET_HEADER_LEN = 2;
