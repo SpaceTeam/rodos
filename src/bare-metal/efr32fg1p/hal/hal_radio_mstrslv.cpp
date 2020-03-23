@@ -45,6 +45,9 @@ namespace RODOS {
  *
  * @return 1 if a state switch occurs, otherwise returns 0.
  */
+
+RAIL_Time_t timeForNextTransmission = 5000; // microseconds, all RAIL_time are microseconts
+
 bool HAL_RADIO_MASTER::switchState()
 {
 	switch(currentState) {	
@@ -62,7 +65,7 @@ bool HAL_RADIO_MASTER::switchState()
 			{
 				if (sendData == false)
 				{
-					tx_time += DATA_TIMESLOT_INTERVAL;
+					timeForNextTransmission += DATA_TIMESLOT_INTERVAL;
 					currentState = MASTER_STATE_POLL;
 					return true;
 				} 
@@ -104,10 +107,10 @@ void HAL_RADIO_MASTER::poll()
 	// Initialize TX FIFO with header information of the poll packet.
 	initPoll();
 
-	// Schedule transmission of poll at the instant "tx_time", which corresponds to the beginning of the first Slave’s timeslot.
+	// Schedule transmission of poll at the instant, which corresponds to the beginning of the first Slave’s timeslot.
 	RAIL_ScheduleTxConfig_t scheduleTxConfig;
 
-	scheduleTxConfig.when		= tx_time;
+	scheduleTxConfig.when		= timeForNextTransmission;
 	scheduleTxConfig.mode		= RAIL_TIME_ABSOLUTE;
 	scheduleTxConfig.txDuringRx = RAIL_SCHEDULED_TX_DURING_RX_POSTPONE_TX;
 
@@ -121,7 +124,7 @@ void HAL_RADIO_MASTER::poll()
 	}
 	
 	// Next poll/data transmission will only happen after the Slave’s timeslots have elapsed.
-	tx_time += DATA_TIMESLOT_INTERVAL*numberOfSlaves + POLL_TIMESLOT_INTERVAL;
+	timeForNextTransmission += DATA_TIMESLOT_INTERVAL*numberOfSlaves + POLL_TIMESLOT_INTERVAL;
 }
 
 /**
@@ -135,7 +138,7 @@ void HAL_RADIO_MASTER::listen()
 
 	RAIL_StartRx(railHandle, dataChannel, NULL);
 	
-	RAIL_SetTimer(railHandle, tx_time-LISTEN_INTERVAL, RAIL_TIME_ABSOLUTE, NULL); 
+	RAIL_SetTimer(railHandle, timeForNextTransmission-LISTEN_INTERVAL, RAIL_TIME_ABSOLUTE, NULL); 
 }
 
 /**
@@ -149,9 +152,9 @@ void HAL_RADIO_MASTER::data()
 	// Append data contained in tempBuff to the TX FIFO. 
 	RAIL_WriteTxFifo(railHandle, tempBuff, tempBuffLength, false);
 
-	// Schedule transmission of data at the instant "tx_time", which corresponds to the beginning of the Master’s timeslot.
+	// Schedule transmission of data at the instant "timeForNextTransmission", which corresponds to the beginning of the Master’s timeslot.
 	RAIL_ScheduleTxConfig_t scheduleTxConfig;
-	scheduleTxConfig.when		= tx_time;
+	scheduleTxConfig.when		= timeForNextTransmission;
 	scheduleTxConfig.mode		= RAIL_TIME_ABSOLUTE;
 	scheduleTxConfig.txDuringRx = RAIL_SCHEDULED_TX_DURING_RX_POSTPONE_TX;
 
@@ -166,7 +169,7 @@ void HAL_RADIO_MASTER::data()
 	}
 	
 	// Next poll transmission will only happen after the Master’ timeslots have elapsed.
-	tx_time += DATA_TIMESLOT_INTERVAL;
+	timeForNextTransmission += DATA_TIMESLOT_INTERVAL;
 }
 
 /**
@@ -370,7 +373,7 @@ void HAL_RADIO_SLAVE::data()
 	// Append data contained in tempBuff to the TX FIFO. 
 	RAIL_WriteTxFifo(railHandle, tempBuff, tempBuffLength, false);
 	
-	// Schedule transmission of data at the instant "tx_time", which corresponds to the beginning of this Slave’s timeslot.
+	// Schedule transmission of data at the instant "timeForNextTransmission", which corresponds to the beginning of this Slave’s timeslot.
 	// Note: While the master uses absolute timing, the slave uses relative timing (delay) to schedule it’s transmissions
 	RAIL_ScheduleTxConfig_t scheduleTxConfig;
 	scheduleTxConfig.when		= tx_delay;

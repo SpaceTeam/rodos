@@ -17,7 +17,6 @@ class HAL_RADIO_MASTER : public HAL_RADIO {
   private:
     int         numberOfSlaves = INIT_NUMBER_SLAVES;
     int         slave_rx_counter[MAX_NUMBER_SLAVES];
-    RAIL_Time_t tx_time = TIME_START_TX;
 
     void poll();
     void listen();
