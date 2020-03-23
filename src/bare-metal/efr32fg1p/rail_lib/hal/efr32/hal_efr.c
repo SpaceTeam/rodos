@@ -36,7 +36,6 @@
 #include "em_cmu.h"
 #include "em_emu.h"
 #include "em_ldma.h"
-#include "dmadrv.h"
 #include "bsp.h"
 #include "bsp_init.h"
 #include "em_chip.h"

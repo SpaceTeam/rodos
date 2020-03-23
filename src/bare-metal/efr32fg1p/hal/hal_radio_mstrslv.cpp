@@ -20,7 +20,6 @@ extern "C" {
 #include "em_gpio.h"
 #include "em_emu.h"
 #include "bsp.h"
-#include "gpiointerrupt.h"
 }
 
 // Finite State Machine of Master devices.
