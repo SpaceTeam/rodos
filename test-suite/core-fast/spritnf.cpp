@@ -1,7 +1,7 @@
 #include "rodos.h"
 
 
-class TestPrint : public Thread {
+class TestPrint : public StaticThread<> {
   public:
     void run() {
         char outbuf[100];

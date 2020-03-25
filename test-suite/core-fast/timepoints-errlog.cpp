@@ -11,9 +11,9 @@
 
 static Application module01("TestErrorLog");
 
-class TestErrorLog : public Thread {
+class TestErrorLog : public StaticThread<> {
   public:
-    TestErrorLog() : Thread("TestErrorLog") {}
+    TestErrorLog() : StaticThread<>("TestErrorLog") {}
 
     void run() {
         if(!errorLog.isEmpty()) {

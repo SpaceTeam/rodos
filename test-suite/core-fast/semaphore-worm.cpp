@@ -26,12 +26,12 @@ static char wormLetter = 'A';
 
 static int prio = 1;        //Priorität des Threads, priority ist bereits in Rodos vergeben
 
-class worm : public Thread {
+class worm : public StaticThread<> {
     int  x, y, speed_x, speed_y;
     char letter;
 
   public:
-    worm() : Thread("Worm", prio) {
+    worm() : StaticThread<>("Worm", prio) {
         x       =  uint32Rand() % RIGHT_LIMIT;
         y       =  uint32Rand() % MAX_Y + 1;
         speed_x = (uint32Rand() % 3) - 1;

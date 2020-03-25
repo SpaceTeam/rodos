@@ -2,7 +2,7 @@
 
 #include "fifo.h"
 
-class FiFoTester : public Thread {
+class FiFoTester : public StaticThread<> {
 
   public:
     void run() {

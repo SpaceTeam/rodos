@@ -18,7 +18,7 @@ void veryLowSpeedPrinter(const char* text) {
 
 Semaphore protector;
 
-class TestThread : public Thread {
+class TestThread : public StaticThread<> {
     void run() {
         PRINTF("remove the semaphore and try again!\n");
         protector.enter();

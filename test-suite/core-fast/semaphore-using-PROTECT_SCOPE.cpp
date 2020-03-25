@@ -8,7 +8,7 @@ static Application module("semaphoretest");
 
 Semaphore protector;
 
-class TestThread : public Thread {
+class TestThread : public StaticThread<> {
 public:
     
     void run() {
@@ -40,7 +40,7 @@ public:
         hwResetAndReboot();
     }
 
-    TestThread(const char* name) : Thread(name, prio) {prio++;}
+    TestThread(const char* name) : StaticThread<>(name, prio) {prio++;}
 };
 
 

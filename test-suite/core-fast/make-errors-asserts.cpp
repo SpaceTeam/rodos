@@ -30,9 +30,9 @@ int testReturnWithAssert() {
     return 30;
 }
 
-class MakeError : public Thread {
+class MakeError : public StaticThread<> {
   public:
-    MakeError() : Thread("makeError") {}
+    MakeError() : StaticThread<>("makeError") {}
 
     void run() {
         if(!errorLog.isEmpty()) {

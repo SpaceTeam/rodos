@@ -3,7 +3,7 @@
 
 uint64_t toBeTested;
 
-class ChecksumTester : public Thread {
+class ChecksumTester : public StaticThread<> {
 
   public:
     void run() {

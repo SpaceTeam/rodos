@@ -26,7 +26,7 @@ static Resumer resumer;
 
 /** A thread which has to be resumed by some one else */
 
-class TestTimeBeat : public Thread {
+class TestTimeBeat : public StaticThread<> {
   public:
     void run() {
         for (int i = 0; i < 10; i++) {

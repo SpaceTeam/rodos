@@ -4,7 +4,7 @@
 
 static Application module01("resumefromEvent");
 
-class TestWaiter : public Thread {
+class TestWaiter : public StaticThread<> {
   public:
     void run() {
         for (int i = 0; i < 10; i++) {

@@ -32,12 +32,12 @@ void MAIN() {
 
 static char wormLetter = 'A';
 
-class worm : public Thread {
+class worm : public StaticThread<> {
     int  x, y, speed_x, speed_y;
     char letter;
 
   public:
-    worm() : Thread("Worm", prio) {
+    worm() : StaticThread<>("Worm", prio) {
         x       =  uint32Rand() % RIGHT_LIMIT;
         y       =  uint32Rand() % MAX_Y + 1;
         speed_x = (uint32Rand() % 3) - 1;

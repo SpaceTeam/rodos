@@ -5,7 +5,7 @@
 #define FAIL {PRINTF("FAILED at line %d in file %s\n", __LINE__, __FILE__); failed++;};
 
 
-class ScanfSubTests: public Thread {
+class ScanfSubTests: public StaticThread<> {
     void run() {
         int failed = 0;
     

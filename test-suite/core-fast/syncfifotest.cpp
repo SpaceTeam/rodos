@@ -2,7 +2,7 @@
 
 SyncFifo<int, 10> fifo;
 
-class Sender : public Thread {
+class Sender : public StaticThread<> {
     void run() {
         int cnt = 0;
         suspendCallerUntil(NOW() + 0.05 * SECONDS);
@@ -23,7 +23,7 @@ class Sender : public Thread {
     }
 };
 
-class Receiver : public Thread {
+class Receiver : public StaticThread<> {
     void run() {
         int cntIn = 0;
         int cnt   = 0;

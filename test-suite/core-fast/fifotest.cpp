@@ -4,11 +4,11 @@ static Application applic("FifoTest");
 
 Fifo<int, 10> fifo;
 
-class Sender : public Thread {
+class Sender : public StaticThread<> {
     
 public:
     
-    Sender() : Thread("Sender", 25) {}
+    Sender() : StaticThread<>("Sender", 25) {}
     
     void run() {
         int cnt = 0;
@@ -30,11 +30,11 @@ public:
     }
 };
 
-class Receiver : public Thread {
+class Receiver : public StaticThread<> {
 
 public:
     
-    Receiver() : Thread("Receiver", 10) {}
+    Receiver() : StaticThread<>("Receiver", 10) {}
     
     void run() {
         int cnt;

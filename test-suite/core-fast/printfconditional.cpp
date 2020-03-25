@@ -8,7 +8,7 @@
 uint32_t printfMask = 0; //Be aware: it is outside of namepsace RODOS
 
 
-class TestPrint : public Thread {
+class TestPrint : public StaticThread<> {
   public:
     void run() {
         int loopCnt = 0;

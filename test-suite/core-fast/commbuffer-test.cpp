@@ -2,7 +2,7 @@
 
 #include "commbuffer.h"
 
-class CommBufferTester : public Thread {
+class CommBufferTester : public StaticThread<> {
 
   public:
     void run() {

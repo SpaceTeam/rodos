@@ -4,9 +4,9 @@
 
 static Application module01("PreemptiveTest", 2000);
 
-class HighPriorityThread01 : public Thread {
+class HighPriorityThread01 : public StaticThread<> {
   public:
-    HighPriorityThread01() : Thread("HiPriority", 25) {
+    HighPriorityThread01() : StaticThread<>("HiPriority", 25) {
     }
 
     void init() {
@@ -25,9 +25,9 @@ class HighPriorityThread01 : public Thread {
 HighPriorityThread01 highPriorityThread01;
 
 
-class LowPriorityThread : public Thread {
+class LowPriorityThread : public StaticThread<> {
   public:
-    LowPriorityThread() : Thread("LowPriority", 10) {
+    LowPriorityThread() : StaticThread<>("LowPriority", 10) {
     }
 
     void init() {

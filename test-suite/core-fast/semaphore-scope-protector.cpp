@@ -14,7 +14,7 @@ int myFunction() {
     return 3;
 }
 
-class TestThread : public Thread {
+class TestThread : public StaticThread<> {
     int id;
 
   public:

@@ -2,9 +2,9 @@
 
 static Application module01("Testgetchar");
 
-class TestGets : public Thread {
+class TestGets : public StaticThread<> {
   public:
-    TestGets() : Thread("testgetchar") {}
+    TestGets() : StaticThread<>("testgetchar") {}
     void run() {
         char* s;
         PRINTF("Please type string of characters. Run at least 0.04 seconds\n");

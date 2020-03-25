@@ -4,11 +4,11 @@
 
 static Application module01("TestTime");
 
-class TestTime : public Thread {
+class TestTime : public StaticThread<> {
   private:
     int id;
   public:
-  TestTime(int id) : Thread("waitfor"), id(id) {}
+  TestTime(int id) : StaticThread<>("waitfor"), id(id) {}
     void run() {
         int cnt = 0;
         while(1) {
@@ -23,9 +23,9 @@ class TestTime : public Thread {
 TestTime t[] = {1, 2, 3, 4};
 
 
-class MySchedluler : public Thread {
+class MySchedluler : public StaticThread<> {
   public:
-    MySchedluler() : Thread("mySchedluler", 10) {}
+    MySchedluler() : StaticThread<>("mySchedluler", 10) {}
     void run() {
         int cnt = 0;
         TIME_LOOP(0.1 * SECONDS, 0.02 * SECONDS) {

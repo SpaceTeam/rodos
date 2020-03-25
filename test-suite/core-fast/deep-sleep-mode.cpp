@@ -4,7 +4,7 @@
 
 static Application module01("deepsleepmode");
 
-class TestTimeBeat : public Thread {
+class TestTimeBeat : public StaticThread<> {
   public:
     void run() {
         TIME_LOOP(0.01 * SECONDS, 0.01 * SECONDS) {
@@ -13,7 +13,7 @@ class TestTimeBeat : public Thread {
     }
 } testTimeBeat;
 
-class Sleeper : public Thread {
+class Sleeper : public StaticThread<> {
   public:
     void run() {
         PRINTF("In 0.05 Seconds, Sleep for 0.10 Seconds\n");

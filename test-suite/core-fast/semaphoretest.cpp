@@ -8,10 +8,10 @@ Semaphore protector;
 
 static int prio = 1;        //Priorität des Threads, priority ist bereits in Rodos vergeben
 
-class TestThread : public Thread {
+class TestThread : public StaticThread<> {
 
 public:
-    TestThread() : Thread("TestThread", prio) {prio += 10;}
+    TestThread() : StaticThread<>("TestStaticThread<>", prio) {prio += 10;}
     
     void run() {
         for (int i = 0; i < 25; i++) {
@@ -41,7 +41,7 @@ public:
     }
 
   public:
-    TestThread(const char* name) : Thread(name) {}
+    TestThread(const char* name) : StaticThread<>(name) {}
 };
 
 

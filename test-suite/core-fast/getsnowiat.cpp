@@ -2,9 +2,9 @@
 
 static Application module01("Testgetchar");
 
-class TestGets : public Thread {
+class TestGets : public StaticThread<> {
   public:
-    TestGets() : Thread("testgetchar") {}
+    TestGets() : StaticThread<>("testgetchar") {}
     void run() {
         int cnt = 0;
         char* s;

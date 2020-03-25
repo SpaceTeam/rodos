@@ -4,7 +4,7 @@
 
 static Application module01("TestTimebeats & events 01");
 
-class TestTimeBeat : public Thread {
+class TestTimeBeat : public StaticThread<> {
   public:
     void run() {
         PRINTF("First beat in 0.05 seconds, period 0.05 seconds\n");

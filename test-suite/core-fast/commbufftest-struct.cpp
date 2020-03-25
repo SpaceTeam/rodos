@@ -9,7 +9,7 @@ struct Position {
 
 CommBuffer<Position> buf;
 
-class Sender : public Thread {
+class Sender : public StaticThread<> {
 public:
     void run() {
         Position pos;
@@ -28,7 +28,7 @@ public:
     }
 };
 
-class Receiver : public Thread {
+class Receiver : public StaticThread<> {
 public:
     void run() {
         Position mypos;
