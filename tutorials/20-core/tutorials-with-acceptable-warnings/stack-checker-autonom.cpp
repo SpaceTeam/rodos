@@ -7,20 +7,20 @@
 
 namespace RODOS { // may not be in a nams spcae
 
-class ThreadChecker : public Thread {
+class ThreadChecker : public StaticThread<> {
   public:
-    ThreadChecker() : Thread("ThreadChecker") {}
+    ThreadChecker() : StaticThread<>("StaticThread<>Checker") {}
 
-    void init() { xprintf(SCREEN_RED "NOT TO FLY!!!!! checks stack of all threads " SCREEN_RESET); }
+    void init() { xprintf(SCREEN_RED "NOT TO FLY!!!!! checks stack of all StaticThread<>s " SCREEN_RESET); }
 
     void run() {
         PRINTF(" \n\n\n****************************************** IMPORTANT \n");
-        PRINTF(" ****** to use this, set EMPTY_MEMORY_MARKER in thread_on_hw.cpp to 0 and recompile rodos\n");
+        PRINTF(" ****** to use this, set EMPTY_MEMORY_MARKER in StaticThread<>_on_hw.cpp to 0 and recompile rodos\n");
         PRINTF(" ******************************************\n");
         long    minStack        = DEFAULT_STACKSIZE;
         Thread* dangerousThread = 0;
         TIME_LOOP(0, 3 * SECONDS) {
-            PRINTF("TST: Threads and stacks:\n");
+            PRINTF("TST: StaticThread<>s and stacks:\n");
             ITERATE_LIST(Thread, Thread::threadList) {
                 long  index = 0;
                 char* stk   = iter->stackBegin;
@@ -42,19 +42,19 @@ class ThreadChecker : public Thread {
 
 
 /**************************************************/
-class Innocent1 : public Thread {
+class Innocent1 : public StaticThread<> {
   public:
-    Innocent1() : Thread("Innocent1") {}
+    Innocent1() : StaticThread<>("Innocent1") {}
     void run() {}
 } innocent1;
-class Innocent2 : public Thread {
+class Innocent2 : public StaticThread<> {
   public:
-    Innocent2() : Thread("Innocent2") {}
+    Innocent2() : StaticThread<>("Innocent2") {}
     void run() {}
 } innocent2;
-class Innocent3 : public Thread {
+class Innocent3 : public StaticThread<> {
   public:
-    Innocent3() : Thread("Innocent3") {}
+    Innocent3() : StaticThread<>("Innocent3") {}
     void run() {}
 } innocent3;
 
@@ -62,7 +62,7 @@ class Innocent3 : public Thread {
 /*************************/
 
 
-/*********** Otehre Threads to test stack occupation ***/
+/*********** Otehre StaticThread<>s to test stack occupation ***/
 
 void stackUser(int len) {
     char variableOnStack[len];

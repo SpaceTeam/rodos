@@ -14,9 +14,9 @@
 static const long NUM_OF_LOOPS  = 1000 * 1000 * 10;
 volatile long long cnt = 0;
 
-class SpeedTest : public Thread {
+class SpeedTest : public StaticThread<> {
 public:
-    SpeedTest() : Thread("SpeedTest", 10) { }
+    SpeedTest() : StaticThread<>("SpeedTest", 10) { }
 
     void run() {  // because of low priority, this will wait until yieldtest concludes
 
@@ -48,7 +48,7 @@ public:
 Semaphore printProtect;
 
 long long  yieldGlobal = 0;
-class TestThread : public Thread {
+class TestThread : public StaticThread<> {
   long long yieldCnt;
   void run(){
 
@@ -68,9 +68,9 @@ class TestThread : public Thread {
   }
   //constructor
 public:
-  TestThread (const char* name ="xx") : Thread(name) { yieldCnt = 0; }
+  TestThread (const char* name ="xx") : StaticThread<>(name) { yieldCnt = 0; }
 
-  void init() { PRINTF(" Thread activated"); }
+  void init() { PRINTF(" StaticThread<> activated"); }
 };
 
 /*****************************/

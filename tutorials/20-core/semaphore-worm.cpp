@@ -22,7 +22,7 @@ void MAIN() {
 
 static char wormLetter = 'A';
 
-class worm : public Thread {
+class worm : public StaticThread<> {
     int  x, y, speed_x, speed_y;
     char letter;
 

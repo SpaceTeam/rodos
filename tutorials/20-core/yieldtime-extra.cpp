@@ -2,7 +2,7 @@
 
 static Application module01("YieldTime-extra");
 
-class SimpleThread : public Thread {
+class SimpleThread : public StaticThread<> {
     long long yieldCnt;
     void      run() {
         while(1) {
@@ -21,8 +21,8 @@ class SimpleThread : public Thread {
     }
 
   public:
-    SimpleThread() : Thread("Simple") { yieldCnt = 0; }
-    void init() { PRINTF(" Simple Thread activated"); }
+    SimpleThread() : StaticThread<>("Simple") { yieldCnt = 0; }
+    void init() { PRINTF(" Simple StaticThread<> activated"); }
 };
 
 /*****************************/

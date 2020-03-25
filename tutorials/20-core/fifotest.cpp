@@ -4,7 +4,7 @@ static Application applic("FifoTest");
 
 Fifo<int, 10> fifo;
 
-class Sender : public Thread {
+class Sender : public StaticThread<> {
     void run() {
         int cnt = 0;
         xprintf("sender\n");
@@ -24,7 +24,7 @@ class Sender : public Thread {
     }
 };
 
-class Receiver : public Thread {
+class Receiver : public StaticThread<> {
     void run() {
         int cnt;
         xprintf("receiver\n");

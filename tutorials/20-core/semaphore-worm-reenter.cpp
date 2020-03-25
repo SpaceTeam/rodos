@@ -3,7 +3,7 @@
 
 
 /** Warning:
-	this test shows if a thread may reenter
+	this test shows if a StaticThread<> may reenter
 	a semaphore severaltimes without deadlock.
 **/
 
@@ -28,7 +28,7 @@ void MAIN() {
 
 static char wormLetter = 'A';
 
-class worm : public Thread {
+class worm : public StaticThread<> {
     int  x, y, speed_x, speed_y;
     char letter;
 

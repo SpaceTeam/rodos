@@ -2,7 +2,7 @@
 
 static Application module01("TestTimebeats & events 01");
 
-class TestTimeBeat : public Thread {
+class TestTimeBeat : public StaticThread<> {
   public:
     void run() {
         PRINTF("First beat in 5 seconds, period 5 seconds\n");

@@ -14,7 +14,7 @@ int myFunction() {
     return 3;
 }
 
-class TestThread : public Thread {
+class TestThread : public StaticThread<> {
     int id;
 
   public:
@@ -22,7 +22,7 @@ class TestThread : public Thread {
 
     void run() {
         for(;;) {
-            PRINTF("Thread %d: %d\n", id, myFunction());
+            PRINTF("StaticThread<> %d: %d\n", id, myFunction());
         }
     }
 };

@@ -10,13 +10,13 @@
 
 static Application module01("TestTimePoints");
 
-class TestThread : public Thread {
+class TestThread : public StaticThread<> {
 
   private:
     TimePoints<30> tp;
 
   public:
-    TestThread(const char* name = "TestThread") : Thread(name) {}
+    TestThread(const char* name = "TestThread") : StaticThread<>(name) {}
 
     void run() {
         int i = 0;

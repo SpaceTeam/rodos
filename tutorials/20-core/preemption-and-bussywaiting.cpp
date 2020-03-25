@@ -1,9 +1,9 @@
 #include "rodos.h"
 
 
-class LowPriorityThread : public Thread {
+class LowPriorityThread : public StaticThread<> {
   public:
-    LowPriorityThread() : Thread("LowPriority", 100) {}
+    LowPriorityThread() : StaticThread<>("LowPriority", 100) {}
 
     void run() {
         volatile int64_t cnt             = 0;
@@ -21,9 +21,9 @@ class LowPriorityThread : public Thread {
 
 //__________________________________________________________
 
-class HiPriorityThread : public Thread {
+class HiPriorityThread : public StaticThread<> {
   public:
-    HiPriorityThread() : Thread("HiPriority", 200) {}
+    HiPriorityThread() : StaticThread<>("HiPriority", 200) {}
 
     void run() {
         volatile int64_t cnt             = 0;

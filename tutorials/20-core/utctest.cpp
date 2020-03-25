@@ -14,9 +14,9 @@ void MAIN() {
 
 static Application module01("utcprinter");
 
-class PrintTime : public Thread {
+class PrintTime : public StaticThread<> {
   public:
-    PrintTime() : Thread("printtime") {}
+    PrintTime() : StaticThread<>("printtime") {}
     void init() { PRINTF("Waiting 2 seconds"); }
     void run();
 };

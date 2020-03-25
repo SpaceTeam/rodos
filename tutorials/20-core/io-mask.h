@@ -10,7 +10,7 @@ const char* screen[] = {
     "04.                                                                      --",
     "05. -----------------------------------------------------------------------",
     "06.",
-    "07. counter from Thread aa [      ]         counter from Thread bb [      ] ",
+    "07. counter from StaticThread<> aa [      ]         counter from StaticThread<> bb [      ] ",
     "09. ",
     "10.                   last input line [                                   ]",
     "11.",

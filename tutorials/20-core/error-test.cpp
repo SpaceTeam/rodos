@@ -18,7 +18,7 @@ enum class AnomalyId : uint32_t {
 };
 
 
-class TestError : public Thread {
+class TestError : public StaticThread<> {
     void run() {
         PRINTF("\n\n________________________________- Error log (shall be empty)\n");
         if(!errorLog.isEmpty()) errorLog.printAll();

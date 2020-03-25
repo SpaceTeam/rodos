@@ -6,7 +6,7 @@ static Application module("semaphordeadlok");
 Semaphore s1, s2;
 
 
-class Requester : public Thread {
+class Requester : public StaticThread<> {
     char id;
 
   public:

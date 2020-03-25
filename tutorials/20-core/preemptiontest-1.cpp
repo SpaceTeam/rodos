@@ -4,11 +4,11 @@
 
 static Application module01("PreemptiveTest", 2000);
 
-class LowPriorityThread : public Thread {
+class LowPriorityThread : public StaticThread<> {
     char symbol;
 
   public:
-    LowPriorityThread(char symbol) : Thread("LowPriority", 20) {
+    LowPriorityThread(char symbol) : StaticThread<>("LowPriority", 20) {
         this->symbol = symbol;
     }
 

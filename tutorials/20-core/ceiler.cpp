@@ -2,9 +2,9 @@
 
 static Application module02("PriorityCeiling", 3000);
 
-class PriorityCeiler : public Thread {
+class PriorityCeiler : public StaticThread<> {
   public:
-    PriorityCeiler() : Thread("PriotyCeiler", 20) {
+    PriorityCeiler() : StaticThread<>("PriotyCeiler", 20) {
     }
 
     void init() {

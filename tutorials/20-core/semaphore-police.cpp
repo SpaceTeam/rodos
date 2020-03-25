@@ -4,7 +4,7 @@
 Semaphore onlyOne;
 int       globalCnt = 0;
 
-class Watcher : public Thread {
+class Watcher : public StaticThread<> {
   public:
     void run() {
         onlyOne.enter();

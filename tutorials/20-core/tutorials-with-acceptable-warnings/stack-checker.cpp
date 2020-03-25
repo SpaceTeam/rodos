@@ -6,9 +6,9 @@
 /** Checks percent usage of each stack **/
 
 /**************************************************/
-class Innocent : public Thread {
+class Innocent : public StaticThread<> {
   public:
-    Innocent(const char* name) : Thread(name) {}
+    Innocent(const char* name) : StaticThread<>(name) {}
     void run() {
         TIME_LOOP(1 * SECONDS, 1 * SECONDS) { PRINTF("Innocent %s\n", name); }
     }
@@ -19,7 +19,7 @@ Innocent ino2("2");
 Innocent ino3("3");
 Innocent ino4("4");
 
-/*********** Otehre Threads to test stack occupation ***/
+/*********** Otehre StaticThread<>s to test stack occupation ***/
 
 char dummyWriter;
 void stackUser() {
@@ -29,15 +29,15 @@ void stackUser() {
     for(int i = 0; i < 100; i++) variableOnStack[i] = 0x5a;
     dummyWriter = variableOnStack[10];
     PRINTF("Stackconsumer using %d\n", consumed);
-    Thread::suspendCallerUntil(NOW() + 1 * SECONDS);
+    StaticThread<>::suspendCallerUntil(NOW() + 1 * SECONDS);
     stackUser();
 }
 
 
 /** Consumes more an more stack until it crases *****/
 
-class StackConsumer : public Thread {
+class StackConsumer : public StaticThread<2000> {
   public:
-    StackConsumer() : Thread("StackConsumer", 400, 2000) {}
+    StackConsumer() : StaticThread<2000>("StackConsumer", 400) {}
     void run() { stackUser(); }
 } stackConsumer;

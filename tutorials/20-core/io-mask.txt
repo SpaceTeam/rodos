@@ -4,7 +4,7 @@
 04.                                                                      --
 05. -----------------------------------------------------------------------
 06.
-07. counter from Thread aa [CNTAA ]         counter from Thread bb [CNTBB ] 
+07. counter from StaticThread<> aa [CNTAA ]         counter from StaticThread<> bb [CNTBB ] 
 09. 
 10.                   last input line [READ                               ]
 11.

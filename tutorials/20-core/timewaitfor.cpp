@@ -2,9 +2,9 @@
 
 static Application module01("TestTime");
 
-class TestTime : public Thread {
+class TestTime : public StaticThread<> {
   public:
-    TestTime() : Thread("waitfor") {}
+    TestTime() : StaticThread<>("waitfor") {}
     void run() {
         int cnt = 0;
         while(1) {

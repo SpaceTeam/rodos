@@ -3,15 +3,15 @@
 static Application module01("TestTimebeats & events 02");
 
 
-/** A time event to resume a thread **/
+/** A time event to resume a StaticThread<> **/
 
 class Resumer : public TimeEvent {
-    Thread* toBeResumed;
+    StaticThread<>* toBeResumed;
 
   public:
     Resumer() { toBeResumed = 0; }
 
-    void resumeThreadAt(Thread* who, const int64_t when) {
+    void resumeThreadAt(StaticThread<>* who, const int64_t when) {
         toBeResumed = who;
         activateAt(when);
     }
@@ -22,9 +22,9 @@ class Resumer : public TimeEvent {
 };
 static Resumer resumer;
 
-/** A thread which has to be resumed by some one else */
+/** A StaticThread<> which has to be resumed by some one else */
 
-class TestTimeBeat : public Thread {
+class TestTimeBeat : public StaticThread<> {
   public:
     void run() {
         while(1) {

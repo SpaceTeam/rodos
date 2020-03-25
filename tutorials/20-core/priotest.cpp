@@ -7,9 +7,9 @@
 static Application module01("priorityTest", 3000);
 
 
-class HiPriorityThread : public Thread {
+class HiPriorityThread : public StaticThread<> {
   public:
-    HiPriorityThread() : Thread("HiPriority", 100) {
+    HiPriorityThread() : StaticThread<>("HiPriority", 100) {
     }
 
     void init() {
@@ -32,9 +32,9 @@ class HiPriorityThread : public Thread {
 
 /******************/
 
-class LowPriorityThread : public Thread {
+class LowPriorityThread : public StaticThread<> {
   public:
-    LowPriorityThread() : Thread("LowPriority", 30) {
+    LowPriorityThread() : StaticThread<>("LowPriority", 30) {
     }
 
     void init() {

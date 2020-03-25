@@ -1,7 +1,7 @@
 #include "rodos.h"
 
 
-class IdelCntPrinter : public Thread {
+class IdelCntPrinter : public StaticThread<> {
   public:
     void run() {
         double  cpuLoad;

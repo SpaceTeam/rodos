@@ -2,7 +2,7 @@
 
 static Application module01("resumefromEvent");
 
-class TestWaiter : public Thread {
+class TestWaiter : public StaticThread<> {
   public:
     void run() {
         while(1) {

@@ -4,7 +4,7 @@ static Application module("semaphoretest");
 
 Semaphore protector;
 
-class TestThread : public Thread {
+class TestThread : public StaticThread<> {
     void run() {
         while(1) {
             xprintf("%s\n", getName());
@@ -32,7 +32,7 @@ class TestThread : public Thread {
     }
 
   public:
-    TestThread(const char* name) : Thread(name) {}
+    TestThread(const char* name) : StaticThread<>(name) {}
 };
 
 

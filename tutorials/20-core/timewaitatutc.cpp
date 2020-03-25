@@ -2,10 +2,10 @@
 
 static Application module02("TestTimeAT");
 
-static class TestTime : public Thread {
+static class TestTime : public StaticThread<> {
 
   public:
-    TestTime() : Thread("waitAT") {}
+    TestTime() : StaticThread<>("waitAT") {}
     void run() {
         sysTime.setUTC(100 * SECONDS);
         PRINTF("Starting and waiting until 3th second\n");

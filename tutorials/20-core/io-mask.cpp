@@ -7,7 +7,7 @@ void MAIN() {
 }
 
 /***** outpus ********/
-class ThreadAA : public Thread {
+class ThreadAA : public StaticThread<> {
   public:
     void run() {
         int cnt = 0;
@@ -16,7 +16,7 @@ class ThreadAA : public Thread {
 } aa;
 
 
-class ThreadBB : public Thread {
+class ThreadBB : public StaticThread<> {
   public:
     void run() {
         int cnt = 0;

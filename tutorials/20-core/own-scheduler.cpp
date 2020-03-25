@@ -2,9 +2,9 @@
 
 static Application module01("TestTime");
 
-class TestTime : public Thread {
+class TestTime : public StaticThread<> {
   public:
-    TestTime() : Thread("waitfor") {}
+    TestTime() : StaticThread<>("waitfor") {}
     void run() {
         int cnt = 0;
         while(1) {
@@ -19,9 +19,9 @@ class TestTime : public Thread {
 TestTime t[4];
 
 
-class MySchedluler : public Thread {
+class MySchedluler : public StaticThread<> {
   public:
-    MySchedluler() : Thread("mySchedluler", 10) {}
+    MySchedluler() : StaticThread<>("mySchedluler", 10) {}
     void run() {
         TIME_LOOP(1 * SECONDS, 2 * SECONDS) {
             PRINTF("-----------------------------------\n");

@@ -2,7 +2,7 @@
 
 static Application module01("TestTime02");
 
-class TestTimeBeat : public Thread {
+class TestTimeBeat : public StaticThread<> {
   public:
     void run() {
         int cnt = 0;

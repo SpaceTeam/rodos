@@ -5,7 +5,7 @@ static Application module01("YieldTimeMeassure");
 Semaphore printProtect;
 
 long long yieldGlobal = 0;
-class TestThread : public Thread {
+class TestThread : public StaticThread<> {
     long long yieldCnt;
     void      run() {
         while(1) {
@@ -28,9 +28,9 @@ class TestThread : public Thread {
     }
     //constructor
   public:
-    TestThread(const char* name = "xx") : Thread(name) { yieldCnt = 0; }
+    TestThread(const char* name = "xx") : StaticThread<>(name) { yieldCnt = 0; }
 
-    void init() { PRINTF(" Thread activated"); }
+    void init() { PRINTF(" StaticThread<> activated"); }
 };
 
 /*****************************/
