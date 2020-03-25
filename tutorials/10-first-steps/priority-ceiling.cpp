@@ -2,9 +2,9 @@
 
 static Application module01("Priority");
 
-class HighPriorityThread : public Thread {
+class HighPriorityThread : public StaticThread<> {
   public:
-    HighPriorityThread() : Thread("HiPriority", 25) {}
+    HighPriorityThread() : StaticThread<>("HiPriority", 25) {}
 
     void init() {
         PRINTF(" hipri = '*'");
@@ -19,9 +19,9 @@ class HighPriorityThread : public Thread {
 };
 
 
-class LowPriorityThread : public Thread {
+class LowPriorityThread : public StaticThread<> {
   public:
-    LowPriorityThread() : Thread("LowPriority", 10) {}
+    LowPriorityThread() : StaticThread<>("LowPriority", 10) {}
 
     void init() {
         PRINTF(" lopri = '.'");

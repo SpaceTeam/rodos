@@ -9,11 +9,11 @@ uint64_t var4 = 000;
 
 static Application application("MemTest");
 
-class MemTest : public Thread {
+class MemTest : public StaticThread<> {
 
   public:
     // Constructor
-    MemTest() : Thread("mem-test") {}
+    MemTest() : StaticThread<>("mem-test") {}
 
 
     void init() {

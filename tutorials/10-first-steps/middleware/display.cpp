@@ -6,7 +6,7 @@ static CommBuffer<double> speedbuf;
 static Subscriber         namenotimportant1(position, posbuf,   "posreceiverbuf");
 static Subscriber         namenotimportant2(speed,    speedbuf, "speedreceiverbuf");
 
-class Display : public Thread {
+class Display : public StaticThread<> {
     void run() {
         TIME_LOOP(1*SECONDS, 1*SECONDS) {
             Pos    p;

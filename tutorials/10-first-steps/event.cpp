@@ -2,7 +2,7 @@
 
 static Application nameNotImportantEV("resumefromEvent");
 
-class TestWaiter : public Thread {
+class TestWaiter : public StaticThread<> {
   public:
     void run() {
         while(1) {

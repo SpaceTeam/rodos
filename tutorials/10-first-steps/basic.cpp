@@ -2,10 +2,10 @@
 
 static Application nameNotImportantHW("HelloWorld");
 
-class HelloWorld : public Thread {
+class HelloWorld : public StaticThread<> {
 
   public:
-    HelloWorld() : Thread("HelloWorld") {}
+    HelloWorld() : StaticThread<>("HelloWorld") {}
 
     void init() {
         PRINTF(SCREEN_RED "This is init() for Printing Hello World" SCREEN_RESET);

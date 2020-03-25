@@ -3,7 +3,7 @@
 Semaphore onlyOne;
 char      globalCnt = 'A';
 
-class Watcher : public Thread {
+class Watcher : public StaticThread<> {
   public:
     void run() {
 

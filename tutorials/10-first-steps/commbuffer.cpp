@@ -4,7 +4,7 @@ static Application nameNotImportantCB("ComBufTest");
 
 CommBuffer<int> buf;
 
-class Sender : public Thread {
+class Sender : public StaticThread<> {
     void run() {
         int cnt = 0;
         while(1) {
@@ -16,7 +16,7 @@ class Sender : public Thread {
     }
 };
 
-class Receiver : public Thread {
+class Receiver : public StaticThread<> {
     void run() {
         int cnt;
         while(1) {

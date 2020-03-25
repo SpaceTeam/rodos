@@ -2,9 +2,9 @@
 #include "topics.h"
 #include "random.h"
 
-class PositionSensor : public Thread {
+class PositionSensor : public StaticThread<> {
   public:
-    PositionSensor() : Thread("PositionSensor") {}
+    PositionSensor() : StaticThread<>("PositionSensor") {}
 
     void run() {
         Pos p = { 0.0, 0.0, 0.0 };

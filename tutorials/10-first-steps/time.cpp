@@ -2,10 +2,10 @@
 
 static Application nameNotImportantTM("TestTimeAT");
 
-static class TestTime : public Thread {
+static class TestTime : public StaticThread<> {
 
   public:
-    TestTime() : Thread("waitAT") {}
+    TestTime() : StaticThread<>("waitAT") {}
 
     void run() {
 
