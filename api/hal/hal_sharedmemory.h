@@ -52,7 +52,7 @@ class HAL_Sharedmemory : public GenericIOInterface {
     void ensureLock() {
         while(!lock()) {
             if(isSchedulerRunning()) {
-                StacklessThread::yield();
+                Thread::yield();
             }
         }
     }

@@ -33,10 +33,10 @@ extern "C" {
 */
 class Scheduler {
 
-friend class StacklessThread;
+friend class Thread;
 private:
   static unsigned long long scheduleCounter;
-  static StacklessThread* preSelectedNextToRun;  // used only to optimese yield time
+  static Thread* preSelectedNextToRun;  // used only to optimese yield time
   static long long  preSelectedTime;    // used only to optimese yield time
 
 public:

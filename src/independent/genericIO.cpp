@@ -25,10 +25,10 @@ void GenericIOInterface::suspendUntilReadFinished(int64_t reactivationTime) {
         hwEnableInterrupts();
         return;
     }
-    callerReadFinished =  StacklessThread::getCurrentThread();
+    callerReadFinished =  Thread::getCurrentThread();
     callerReadFinished->suspendedUntil = reactivationTime;
     hwEnableInterrupts();
-    StacklessThread::yield();
+    Thread::yield();
 }
 
 
@@ -38,10 +38,10 @@ void GenericIOInterface::suspendUntilWriteFinished(int64_t reactivationTime) {
         hwEnableInterrupts();
         return;
     }
-    callerWriteFinished =  StacklessThread::getCurrentThread();
+    callerWriteFinished =  Thread::getCurrentThread();
     callerWriteFinished->suspendedUntil = reactivationTime;
     hwEnableInterrupts();
-    StacklessThread::yield();
+    Thread::yield();
 }
 
 
@@ -51,10 +51,10 @@ void GenericIOInterface::suspendUntilDataReady(int64_t reactivationTime) {
         hwEnableInterrupts();
         return;
     }
-    callerDataReady =  StacklessThread::getCurrentThread();
+    callerDataReady =  Thread::getCurrentThread();
     callerDataReady->suspendedUntil = reactivationTime;
     hwEnableInterrupts();
-    StacklessThread::yield();
+    Thread::yield();
 }
 
 

@@ -99,8 +99,8 @@ void Scheduler::idle() {
     sigdelset(&newset, SIGINT); // keep CTRL-C working
     pthread_sigmask(SIG_SETMASK, &newset, 0);
 
-	StacklessThread::startAllThreads();
-	Timer::start();
+    Thread::startAllThreads();
+    Timer::start();
 
     signalprocessLoop();
 

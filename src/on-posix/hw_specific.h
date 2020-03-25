@@ -37,8 +37,8 @@ void sp_partition_yield();
 /***********************************/
 
 
-class StacklessThread;
-extern void threadStartupWrapper(StacklessThread*);
+class Thread;
+extern void threadStartupWrapper(Thread*);
 
 
 /** create context on stack and return a pointer to it */

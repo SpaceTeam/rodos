@@ -33,7 +33,7 @@ void LinkinterfaceUDP::init() {
     Linkinterface::init();
     // WARNING: here we shall get a unique node number, we can not now
     // we just take the defaoult from hwInt
-    threadToResume= StacklessThread::getCurrentThread();
+    threadToResume= Thread::getCurrentThread();
     udpFromNetwork->setAsync(&udpAsyncTopic); // Distribute incomming messages asyncromous to topic defaultga....
 }
 
@@ -57,7 +57,7 @@ bool LinkinterfaceUDP::getNetworkMsg(NetworkMessage &inMsg,int32_t &numberOfRece
 
 void LinkinterfaceUDP::suspendUntilDataReady(int64_t reactivationTime){
 	//Not yet race condition safe
-	StacklessThread::suspendCallerUntil(reactivationTime);
+	Thread::suspendCallerUntil(reactivationTime);
 }
 
 }

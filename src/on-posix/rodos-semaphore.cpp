@@ -30,7 +30,7 @@ pthread_mutex_t globalAtomar = PTHREAD_MUTEX_INITIALIZER;
  *  Constructor
  */
 Semaphore::Semaphore() :
-  ownerEnterCnt(0), owner(0), ownerPriority(0)  {
+  owner(0), ownerEnterCnt(0), ownerPriority(0)  {
 
 	pthread_mutex_t *mutexp = new pthread_mutex_t;
 	*mutexp = pthreadMutexInitialisation;
@@ -43,7 +43,7 @@ Semaphore::Semaphore() :
 * Owner may reenter withput deadlock
 */
 void Semaphore::enter() {
-  StacklessThread* caller = StacklessThread::getCurrentThread();
+  Thread* caller = Thread::getCurrentThread();
   if(owner == caller) {
 	ownerEnterCnt++;
 	return;
@@ -58,7 +58,7 @@ void Semaphore::enter() {
 *  caller does not block. resumes one waiting trhead (enter)
 */
 void Semaphore::leave() {
-  StacklessThread* caller = StacklessThread::getCurrentThread();
+  Thread* caller = Thread::getCurrentThread();
   if (owner != caller) { // User Programm error: What to do? Nothing!
     return;
   }

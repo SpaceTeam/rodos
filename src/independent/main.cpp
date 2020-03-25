@@ -91,7 +91,7 @@ void initSystem() {
     num = TimeEvent::initAllElements();
     if (num != 0) xprintf("	%ld TimeEvent managers\n", num);
 
-    StacklessThread::initializeThreads();
+    Thread::initializeThreads();
 }
 
 

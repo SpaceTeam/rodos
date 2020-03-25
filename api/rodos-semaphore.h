@@ -31,10 +31,10 @@ namespace RODOS {
 class Semaphore {
 
 private:
+  Thread* volatile owner;
   volatile int ownerEnterCnt;
 
 protected:
-  StacklessThread* volatile owner;
   volatile long ownerPriority;
   void* context; ///< used only on posix and on host-os
 

@@ -285,7 +285,7 @@ void prepareNetworkMessage(NetworkMessage& netMsg, const long topicId,const void
     netMsg.put_topicId(topicId);     // ID of calling topic
     netMsg.put_sentTime(NOW());      // Timestamp
     netMsg.put_maxStepsToForward(10);
-    intptr_t ptr=reinterpret_cast<intptr_t>(StacklessThread::getCurrentThread());
+    intptr_t ptr=reinterpret_cast<intptr_t>(Thread::getCurrentThread());
     netMsg.put_senderThreadId(static_cast<uint32_t>(ptr));
     netMsg.setUserData(data, len);
     netMsg.setCheckSum();

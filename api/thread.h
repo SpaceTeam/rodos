@@ -31,9 +31,9 @@ long* hwInitContext(long* stack, void* thread);
 * @class Thread
 * @brief %Thread provides stack and context management
 */
-class StacklessThread : public ListElement {
+class Thread : public ListElement {
   friend void schedulerWrapper(long* ctx);
-  friend void threadStartupWrapper(StacklessThread*);
+  friend void threadStartupWrapper(Thread*);
   friend void initSystem();
   friend void startIdleThread();
   friend class Scheduler;
@@ -68,7 +68,7 @@ private:
   void initializeStack();
 
   static void initializeThreads(); ///< call the init method of all threads
-  static StacklessThread* currentThread; ///< pointer to currently running thread
+  static Thread* currentThread; ///< pointer to currently running thread
 
 public:
 
@@ -84,21 +84,40 @@ public:
    * @see DEFAULT_THREAD_PRIORITY
    * @see DEFAULT_STACKSIZE
    */
-  template<size_t STACK_SIZE>
-  StacklessThread(char (&stack)[STACK_SIZE], 
-         const char* name = "AnonymThread",
-         const long priority = DEFAULT_THREAD_PRIORITY) 
-  : ListElement(threadList,name) {
-    this->stackSize = STACK_SIZE;
-    this->stackBegin = stack;
-    this->stack = (long*)((unsigned long)(stack + (stackSize - 4)) & (~7));
-    this->priority = priority;
+  [[deprecated("consider using StaticThread!")]]
+  Thread(const char* name      = "AnonymThread",
+         const long  priority  = DEFAULT_THREAD_PRIORITY,
+         const long  stackSize = DEFAULT_STACKSIZE);
 
-    initializeStack();
+  /**
+   * Initialization of the thread. A user should use a meaningful name for the thread.
+   *
+   * @param stack Reference to the allocated space to be used as stack of this thread.
+   *        This has to reference a char array of size STACK_SIZE!
+   * @param name Name of the thread.
+   * @param priority The priority for the thread. Only the thread with the highest value from
+   *        several runnable threads at a time get computing resources.
+   * 
+   * @tparam STACK_SIZE The size of the stack memory for the thread.
+   *
+   * @see DEFAULT_THREAD_PRIORITY
+   * @see DEFAULT_STACKSIZE
+   */
+  template <size_t STACK_SIZE>
+  Thread(char (&stack)[STACK_SIZE],
+         const char* name     = "AnonymThread",
+         const long  priority = DEFAULT_THREAD_PRIORITY)
+    : ListElement(threadList, name) {
+      this->stackSize  = STACK_SIZE;
+      this->stackBegin = stack;
+      this->stack      = (long*)((unsigned long)(stack + (stackSize - 4)) & (~7));
+      this->priority   = priority;
+
+      initializeStack();
   }
 
   /// Destructor
-  virtual ~StacklessThread();
+  virtual ~Thread();
 
   /**
    * Entry point for user code. The thread activities shall implement by overloading this method.
@@ -203,7 +222,7 @@ public:
    *
    * @return Pointer to the currently running thread.
    */
-  static StacklessThread* getCurrentThread();
+  static Thread* getCurrentThread();
 
   /**
    * Search over all threads and select the one with the highest priority which is ready to run
@@ -212,7 +231,7 @@ public:
    *
    * @see resume
    */
-  static StacklessThread* findNextToRun(int64_t timeNow);
+  static Thread* findNextToRun(int64_t timeNow);
 
   /**
    * Search over all threads and select the one with the highest priority which is not ready to run
@@ -222,7 +241,7 @@ public:
    *
    * @return Pointer to the highest priorized thread waiting on the signaler.
    */
-  static StacklessThread* findNextWaitingFor(void* signaler);
+  static Thread* findNextWaitingFor(void* signaler);
 
   /**
    * Get the schedule counter.
@@ -253,15 +272,13 @@ public:
 };
 
 
-template <size_t STACK_SIZE>
-class ThreadWithStack : public StacklessThread {
+template <size_t STACK_SIZE = DEFAULT_STACKSIZE>
+class StaticThread : public Thread {
     char stack alignas(8)[STACK_SIZE];
 public:
-    ThreadWithStack(const char* name = "AnonymThread", const long priority = DEFAULT_THREAD_PRIORITY)
-     : StacklessThread(stack, name, priority) {}
+    StaticThread(const char* name = "AnonymThread", const long priority = DEFAULT_THREAD_PRIORITY)
+     : Thread(stack, name, priority) {}
 };
-
-using Thread = ThreadWithStack<DEFAULT_STACKSIZE>;
 
 /******************************************************
  * Shortcuts for often used constructs
@@ -271,7 +288,7 @@ using Thread = ThreadWithStack<DEFAULT_STACKSIZE>;
  * A pointer to the currently running thread.
  **/
 
-#define RUNNER() StacklessThread::getCurrentThread()
+#define RUNNER() Thread::getCurrentThread()
 
 
 /**
@@ -290,8 +307,8 @@ using Thread = ThreadWithStack<DEFAULT_STACKSIZE>;
  * AT(END_OF_TIME);
  */
 
-inline void AT(int64_t _time)     { StacklessThread::suspendCallerUntil(_time); }
-inline void AT_UTC(int64_t _time) { StacklessThread::suspendCallerUntil(sysTime.UTC2LocalTime(_time)); }
+inline void AT(int64_t _time)     { Thread::suspendCallerUntil(_time); }
+inline void AT_UTC(int64_t _time) { Thread::suspendCallerUntil(sysTime.UTC2LocalTime(_time)); }
 inline void BUSY_WAITING_UNTIL(int64_t endWaitingTime) { while(NOW() < (endWaitingTime)) ; }
 
 

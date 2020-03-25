@@ -20,10 +20,7 @@
 // #include <stdlib.h>
 namespace RODOS {
 
-#define EMPTY_MEMORY_MARKER 0xDEADBEEF
-
 pthread_mutex_t threadDataProtector = PTHREAD_MUTEX_INITIALIZER;
-
 
 struct ThreadOnPosixContext{
 	pthread_t pt;
@@ -34,16 +31,29 @@ struct ThreadOnPosixContext{
 /*********** dummy signal händler für all threads ***/
 void threadSigtermHandler(int sig) { } 
 
-//List StacklessThread::threadList = 0;
-//Thread* StacklessThread::currentThread = 0;
+//List Thread::threadList = 0;
+//Thread* Thread::currentThread = 0;
 
-StacklessThread::~StacklessThread() {
+/** old style constructor */
+Thread::Thread(const char* name,
+               const long priority,
+               const long _stackSize) :
+    ListElement(threadList, name) {
+
+    this->stackSize = _stackSize;
+    this->priority = priority;
+
+    //Paint the stack space; TODO: Comment out for faster start up
+    initializeStack();
+}
+
+Thread::~Thread() {
     if(isShuttingDown) return;
     PRINTF("%s:", getName());
     RODOS_ERROR("Thread deleted");
 }
 
-void StacklessThread::initializeStack() {
+void Thread::initializeStack() {
     ThreadOnPosixContext* ctx =  new ThreadOnPosixContext;
     pthread_mutex_init(&ctx->mutex,0);
     pthread_cond_init(&ctx->condition,0);
@@ -56,15 +66,15 @@ void StacklessThread::initializeStack() {
  */
 
 pthread_mutex_t threadsGO = PTHREAD_MUTEX_INITIALIZER; // to wait until all threads are ready
-void* posixThreadEntryPoint(void *param) {
-	pthread_mutex_lock(&threadsGO);
-	pthread_mutex_unlock(&threadsGO);
-	threadStartupWrapper((StacklessThread*)param);
-	return 0;
+void*           posixThreadEntryPoint(void *param) {
+    pthread_mutex_lock(&threadsGO);
+    pthread_mutex_unlock(&threadsGO);
+    threadStartupWrapper((Thread*)param);
+    return 0;
 }
 
 /* called in main() after all constuctors, to create/init thread */
-void StacklessThread::create() {
+void Thread::create() {
 
     /** Posix code **/
     static pthread_attr_t pthreadCreationAttr;
@@ -103,9 +113,9 @@ void checkSuspend(volatile int64_t* reactivationTime, pthread_cond_t* cond, pthr
 
 
 /** pause execution of this thread and call scheduler */
-void StacklessThread::yield() {
-	//Make suspendUntil.. in genericIO work
-    StacklessThread* caller =  getCurrentThread();
+void Thread::yield() {
+    //Make suspendUntil.. in genericIO work
+    Thread*               caller =  getCurrentThread();
     ThreadOnPosixContext* context = (ThreadOnPosixContext*)(caller->context);
 
     pthread_mutex_lock(&context->mutex);
@@ -121,7 +131,7 @@ void StacklessThread::yield() {
 
 /* restore context of this thread and continue execution of this thread */
 /** not used in posix?? */
-// void StacklessThread::activate() {
+// void Thread::activate() {
 // currentThread = this;
 // taskRunning = 1;  /* a bit to early, but no later place possible */
 // }
@@ -130,13 +140,13 @@ void StacklessThread::yield() {
 /*******************************************************************/
 
 /* get priority of the thread */
-long StacklessThread::getPriority() const {
+long Thread::getPriority() const {
     return priority;
 }
 
 /* set priority of the thread */
-void StacklessThread::setPriority(const long prio) {
-	//
+void Thread::setPriority(const long prio) {
+    //
     // posix priorities range from 1 to 99
     // rodos priorities range from 0 to 2G
     // normaly user uses from 0 to 1000, therfore convert best guess
@@ -164,10 +174,10 @@ void StacklessThread::setPriority(const long prio) {
     /************************/
 }
 
-StacklessThread* StacklessThread::getCurrentThread() {
+Thread* Thread::getCurrentThread() {
     pthread_t posixCaller = pthread_self();
 
-    StacklessThread* me = 0;
+    Thread* me = 0;
     while(me == 0) {
         ITERATE_LIST(Thread, threadList) {
             pthread_t pthread = ((ThreadOnPosixContext*)iter->context)->pt;
@@ -187,9 +197,9 @@ StacklessThread* StacklessThread::getCurrentThread() {
 
 
 /* resume the thread */
-void StacklessThread::resume() {
-	ThreadOnPosixContext* c = (ThreadOnPosixContext*)context;
-	pthread_mutex_lock(&c->mutex);
+void Thread::resume() {
+    ThreadOnPosixContext* c = (ThreadOnPosixContext*)context;
+    pthread_mutex_lock(&c->mutex);
     suspendedUntil = 0;
     waitingFor     = 0;
     pthread_cond_signal(&c->condition);
@@ -198,9 +208,9 @@ void StacklessThread::resume() {
 
 
 /* suspend the thread */
-bool StacklessThread::suspendCallerUntil(const int64_t reactivationTime, void* signaler) {
+bool Thread::suspendCallerUntil(const int64_t reactivationTime, void* signaler) {
 
-    StacklessThread* caller =  getCurrentThread();
+    Thread* caller =  getCurrentThread();
     ThreadOnPosixContext* context = (ThreadOnPosixContext*)(caller->context);
 
     pthread_mutex_lock(&context->mutex);
@@ -221,9 +231,9 @@ bool StacklessThread::suspendCallerUntil(const int64_t reactivationTime, void* s
 
 /******************************/
 
-void StacklessThread::initializeThreads() {
+void Thread::initializeThreads() {
     xprintf("Threads in System:");
-    ITERATE_LIST(StacklessThread, threadList) {
+    ITERATE_LIST(Thread, threadList) {
         xprintf("\n   Prio = %7ld Stack = %6ld %s: ", iter->priority, iter->stackSize, iter->getName());
         iter->init();
         iter->suspendedUntil = 0;
@@ -231,7 +241,7 @@ void StacklessThread::initializeThreads() {
     xprintf("\n");
 }
 
-void StacklessThread::startAllThreads() {
+void Thread::startAllThreads() {
 
     pthread_mutex_lock(&threadsGO);
 
@@ -246,8 +256,8 @@ void StacklessThread::startAllThreads() {
    C function pointers. www.function-pointer.org suggests using a
    wrapper function instead. */
 
-void threadStartupWrapper(StacklessThread* thread) {
-    StacklessThread::currentThread = thread;
+void threadStartupWrapper(Thread* thread) {
+    Thread::currentThread  = thread;
     thread->suspendedUntil = 0;
 
     thread->run();
@@ -263,7 +273,7 @@ void threadStartupWrapper(StacklessThread* thread) {
 }
 
 
-unsigned long long StacklessThread::getScheduleCounter() {
+unsigned long long Thread::getScheduleCounter() {
     return Scheduler::getScheduleCounter();
 }
 
@@ -273,12 +283,12 @@ unsigned long long StacklessThread::getScheduleCounter() {
 /*********************************************************************************/
 
 // not used in posix: posix has its own scheluder
-//StacklessThread* StacklessThread::findNextToRun(TTime timeNow) { }
+//Thread* Thread::findNextToRun(int64_t timeNow) { }
 
-StacklessThread* StacklessThread::findNextWaitingFor(void* signaler) {
-    StacklessThread* nextWaiter = 0;
+Thread* Thread::findNextWaitingFor(void* signaler) {
+    Thread* nextWaiter = 0;
 
-    ITERATE_LIST(StacklessThread, threadList) {
+    ITERATE_LIST(Thread, threadList) {
         if (iter->waitingFor == signaler) {
 	    if(nextWaiter == 0 ||
               (iter->getPriority() > nextWaiter->getPriority()) ) {
@@ -289,6 +299,6 @@ StacklessThread* StacklessThread::findNextWaitingFor(void* signaler) {
     return nextWaiter;
 }
 
-int32_t StacklessThread::getMaxStackUsage(){ return 0; }
+int32_t Thread::getMaxStackUsage() { return 0; }
 
 } // namespace RODOS

@@ -31,7 +31,7 @@ protected:
 
     /// Gateway which has to be connected to the network / interface.
     const long linkIdentifier;
-    StacklessThread* threadToResume;
+    Thread* threadToResume;
 
 public:
     bool isBroadcastLink;
