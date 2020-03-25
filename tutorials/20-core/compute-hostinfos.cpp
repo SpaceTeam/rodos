@@ -70,7 +70,7 @@ class TestThread : public StaticThread<> {
 public:
   TestThread (const char* name ="xx") : StaticThread<>(name) { yieldCnt = 0; }
 
-  void init() { PRINTF(" StaticThread<> activated"); }
+  void init() { PRINTF(" Thread activated"); }
 };
 
 /*****************************/

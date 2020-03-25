@@ -19,7 +19,7 @@ Innocent ino2("2");
 Innocent ino3("3");
 Innocent ino4("4");
 
-/*********** Otehre StaticThread<>s to test stack occupation ***/
+/*********** Other Threads to test stack occupation ***/
 
 char dummyWriter;
 void stackUser() {
@@ -29,7 +29,7 @@ void stackUser() {
     for(int i = 0; i < 100; i++) variableOnStack[i] = 0x5a;
     dummyWriter = variableOnStack[10];
     PRINTF("Stackconsumer using %d\n", consumed);
-    StaticThread<>::suspendCallerUntil(NOW() + 1 * SECONDS);
+    Thread::suspendCallerUntil(NOW() + 1 * SECONDS);
     stackUser();
 }
 

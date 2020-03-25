@@ -11,7 +11,7 @@ static int prio = 1;        //Priorität des Threads, priority ist bereits in Ro
 class TestThread : public StaticThread<> {
 
 public:
-    TestThread() : StaticThread<>("TestStaticThread<>", prio) {prio += 10;}
+    TestThread() : StaticThread<>("TestThread", prio) {prio += 10;}
     
     void run() {
         for (int i = 0; i < 25; i++) {

@@ -5,7 +5,7 @@
 class MyInitiator : public Initiator {
   public:
     void init() {
-        xprintf(" This will be done before any StaticThread<> begins\n");
+        xprintf(" This will be done before any thread begins\n");
         xprintf(" Doing so you do not need to use MAIN\n");
     }
 } myInitiator;

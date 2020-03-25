@@ -22,7 +22,7 @@ class SimpleThread : public StaticThread<> {
 
   public:
     SimpleThread() : StaticThread<>("Simple") { yieldCnt = 0; }
-    void init() { PRINTF(" Simple StaticThread<> activated"); }
+    void init() { PRINTF(" Simple Thread activated"); }
 };
 
 /*****************************/

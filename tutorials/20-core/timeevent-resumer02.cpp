@@ -3,7 +3,7 @@
 static Application module01("TestTimebeats & events 02");
 
 
-/** A time event to resume a StaticThread<> **/
+/** A time event to resume a thread **/
 
 class Resumer : public TimeEvent {
     StaticThread<>* toBeResumed;
@@ -22,7 +22,7 @@ class Resumer : public TimeEvent {
 };
 static Resumer resumer;
 
-/** A StaticThread<> which has to be resumed by some one else */
+/** A thread which has to be resumed by some one else */
 
 class TestTimeBeat : public StaticThread<> {
   public:

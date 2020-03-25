@@ -9,18 +9,18 @@ namespace RODOS { // may not be in a nams spcae
 
 class ThreadChecker : public StaticThread<> {
   public:
-    ThreadChecker() : StaticThread<>("StaticThread<>Checker") {}
+    ThreadChecker() : StaticThread<>("ThreadChecker") {}
 
-    void init() { xprintf(SCREEN_RED "NOT TO FLY!!!!! checks stack of all StaticThread<>s " SCREEN_RESET); }
+    void init() { xprintf(SCREEN_RED "NOT TO FLY!!!!! checks stack of all threads " SCREEN_RESET); }
 
     void run() {
         PRINTF(" \n\n\n****************************************** IMPORTANT \n");
-        PRINTF(" ****** to use this, set EMPTY_MEMORY_MARKER in StaticThread<>_on_hw.cpp to 0 and recompile rodos\n");
+        PRINTF(" ****** to use this, set EMPTY_MEMORY_MARKER in thread_on_hw.cpp to 0 and recompile rodos\n");
         PRINTF(" ******************************************\n");
         long    minStack        = DEFAULT_STACKSIZE;
         Thread* dangerousThread = 0;
         TIME_LOOP(0, 3 * SECONDS) {
-            PRINTF("TST: StaticThread<>s and stacks:\n");
+            PRINTF("TST: Threads and stacks:\n");
             ITERATE_LIST(Thread, Thread::threadList) {
                 long  index = 0;
                 char* stk   = iter->stackBegin;
@@ -62,7 +62,7 @@ class Innocent3 : public StaticThread<> {
 /*************************/
 
 
-/*********** Otehre StaticThread<>s to test stack occupation ***/
+/*********** Other Threads to test stack occupation ***/
 
 void stackUser(int len) {
     char variableOnStack[len];

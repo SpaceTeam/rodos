@@ -22,7 +22,7 @@ class TestThread : public StaticThread<> {
 
     void run() {
         for(;;) {
-            PRINTF("StaticThread<> %d: %d\n", id, myFunction());
+            PRINTF("Thread %d: %d\n", id, myFunction());
         }
     }
 };
