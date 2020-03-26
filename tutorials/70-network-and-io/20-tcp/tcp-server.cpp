@@ -4,7 +4,7 @@
 
 RODOS::TCPServer tcpServer;
 
-class TcpServerTest : public Thread {
+class TcpServerTest : public StaticThread<> {
 
     void run() {
 

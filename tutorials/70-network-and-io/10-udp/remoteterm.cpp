@@ -6,7 +6,7 @@ static Application  receiverName("remoteterm");
 static UDPIn in(-6001); // negative to allow several to listen the same port
 static UDPOut out(-6001); // Negative port means broadcast to this port
 
-class Term : public Thread {
+class Term : public StaticThread<> {
     char userData[2000];
     char *s;
     unsigned long senderIp;

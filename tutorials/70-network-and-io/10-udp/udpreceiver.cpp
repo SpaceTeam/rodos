@@ -5,7 +5,7 @@ static Application  receiverName("UDPReceiver");
 
 static UDPIn in(5001);
 
-class Receiver : public Thread {
+class Receiver : public StaticThread<> {
 
 	char userData[2000];
 

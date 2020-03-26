@@ -16,7 +16,7 @@ void MAIN() {
     PRINTF("    netcat -u localhost 5003\n");
 }
 
-class ReceiverPolling : public Thread {
+class ReceiverPolling : public StaticThread<> {
     char userData[2000];
     void run () {
         TIME_LOOP(1*SECONDS, 1*SECONDS) {

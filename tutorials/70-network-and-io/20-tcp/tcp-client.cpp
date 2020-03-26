@@ -4,7 +4,7 @@
 
 TCPClient tcpClient;
 
-class TcpClientTest : public Thread {
+class TcpClientTest : public StaticThread<> {
 
 public:
     char strCnt[90];

@@ -36,10 +36,10 @@ void MAIN() {
 /******************************/
 
 // Use this async receiver implementation on bare-metal !
-class Udpreceiver :  public Thread, Subscriber {
+class Udpreceiver :  public StaticThread<>, Subscriber {
 public:
     Udpreceiver() :
-    	Thread("udpReceiver- Thread)"),
+    	StaticThread<>("udpReceiver- StaticThread<>)"),
     	Subscriber(udpMessages, "udpReceiver") { }
 
     void putFromInterrupt(const long topicId, const void* data, int len) {

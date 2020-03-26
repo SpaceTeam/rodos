@@ -10,7 +10,7 @@ static Application  receiverName("UDPReceiver");
 /** 
  * A simple UDP receiver, listens to the port by polling in short time intervalls.
  */
-class Receiver : public Thread {
+class Receiver : public StaticThread<> {
     
     static const int BUFFSIZE = 200;
     char userData[BUFFSIZE];      // input data buffer

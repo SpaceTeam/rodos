@@ -5,7 +5,7 @@ static Application  receiverName("UDPReciver with resumer");
 
 static UDPIn in(5001);
 
-class Receiver : public Thread {
+class Receiver : public StaticThread<> {
 
     static const int DATALEN = 200;
     char userData[DATALEN];

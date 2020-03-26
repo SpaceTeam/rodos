@@ -11,7 +11,7 @@
 
 static Application module02("externalEvents03");
 
-class MyThread2 : public Thread {
+class MyThread2 : public StaticThread<> {
     void run() {
         while(1) {
             PRINTF("In other Term, please call killall tst. Last msg at %3.9f\n", SECONDS_NOW());

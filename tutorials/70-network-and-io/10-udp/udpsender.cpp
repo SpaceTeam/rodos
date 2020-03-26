@@ -6,7 +6,7 @@ static Application senderName("UDPSender");
 
 static UDPOut out(5001);
 
-class Sender : public Thread {
+class Sender : public StaticThread<> {
 	char outbuf[200];
 
 	void run () {

@@ -24,7 +24,7 @@ public:
 
 /// Class to add a simple event handler to the system.
 
-class MyThread : public Thread {
+class MyThread : public StaticThread<> {
     void run() {
         PRINTF("In other window call killall tst\n");
         TIME_LOOP(0, 1*SECONDS) {
