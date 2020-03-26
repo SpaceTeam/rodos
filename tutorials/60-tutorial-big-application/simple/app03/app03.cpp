@@ -5,9 +5,9 @@ namespace APP03 {
 
 Application application("APP03", 3);
 
-class AppT: public Thread {
+class AppT: public StaticThread<> {
 public:
-    AppT() : Thread("AppT03:", 400)  { }
+    AppT() : StaticThread<>("AppT03:", 400)  { }
     void run() {
         TIME_LOOP(1*SECONDS, 1*SECONDS) {
             PRINTF("APP3:  counter2: %d\n", Common::counter2);

@@ -3,9 +3,9 @@
 
 namespace APP04 {
 
-class AppT2: public Thread {
+class AppT2: public StaticThread<> {
 public:
-    AppT2() : Thread("AppT04-2:", 400)  { }
+    AppT2() : StaticThread<>("AppT04-2:", 400)  { }
     void run() {
         TIME_LOOP(1300*MILLISECONDS, 1*SECONDS) {
             PRINTF("    APP4-2:\n");
