@@ -1,4 +1,4 @@
 set -e
-rodos-executable.sh linux subsCopyToObj-*.cpp
+rodos-executable.sh linux-x86 subsCopyToObj-*.cpp
 tst
 

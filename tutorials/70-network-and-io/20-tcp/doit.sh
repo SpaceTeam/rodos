@@ -3,8 +3,8 @@
 # for embedded you have to compile and link to client and server
 
 
-rodos-executable.sh linux tcp-server.cpp
+rodos-executable.sh linux-x86 tcp-server.cpp
 xterm -e tst &
 
-rodos-executable.sh linux tcp-client.cpp
+rodos-executable.sh linux-x86 tcp-client.cpp
 tst

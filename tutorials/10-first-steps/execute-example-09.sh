@@ -1,3 +1,3 @@
-cd gps
+cd middleware
 executeit.sh
 

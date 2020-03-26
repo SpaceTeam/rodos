@@ -1,2 +1,3 @@
-rodos-executable.sh linuxMC helloworld-old-fashioned.cpp
+echo "remember: this is an old fasion example, DEPRECATED!"
+rodos-executable.sh linux-makecontext helloworld-old-fashioned.cpp
 tst
