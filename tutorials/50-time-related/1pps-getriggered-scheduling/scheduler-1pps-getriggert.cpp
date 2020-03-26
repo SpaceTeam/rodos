@@ -7,9 +7,9 @@ List Activity1PPS::activityList = 0;
 
 /*******************************************/
 
-class ActivityExecuter : public Thread {
+class ActivityExecuter : public StaticThread<> {
   public:
-    ActivityExecuter() : Thread("ActivityExecuter") {}
+    ActivityExecuter() : StaticThread<>("ActivityExecuter") {}
     void init();
     void run();
 } activityExecuter;

@@ -7,9 +7,9 @@ extern int32_t myNodeIdAssignedByServer;
 /**
  * Sends a message in the TTP network every 1 second.
  */
-class TTPSender : public Thread {
+class TTPSender : public StaticThread<> {
   public:
-    TTPSender() : Thread("ttpSenderTh") { messageCnt = 0; }
+    TTPSender() : StaticThread<>("ttpSenderTh") { messageCnt = 0; }
 
     void run() {
 

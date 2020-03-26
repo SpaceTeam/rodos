@@ -17,10 +17,10 @@ int32_t myNodeIdAssignedByServer = 0;
  *
  * @author Chavdar Iliev (uni Würzburg)
  */
-class TimeSyncClient : public Subscriber, public Thread, public Putter {
+class TimeSyncClient : public Subscriber, public StaticThread<>, public Putter {
   public:
     double timeAtInterrupt = 0;
-    TimeSyncClient() : Subscriber(serverResponse, "timeSyncClient"), Thread("timeSyncClientTh"),
+    TimeSyncClient() : Subscriber(serverResponse, "timeSyncClient"), StaticThread<>("timeSyncClientTh"),
                        nodeNumber(0), requestCnt(0), ownTS{ 0, 0 } {}
 
     /** here we send the request to the server */

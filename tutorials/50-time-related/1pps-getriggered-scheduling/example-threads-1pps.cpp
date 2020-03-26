@@ -3,7 +3,7 @@
 
 
 /***************************************/
-class T1 : public Thread {
+class T1 : public StaticThread<> {
   public:
     void run() {
         while(1) {
@@ -15,7 +15,7 @@ class T1 : public Thread {
 Activity1PPS at1(1, 100*MILLISECONDS, &t1, "at1");
 
 /***************************************/
-class T2 : public Thread {
+class T2 : public StaticThread<> {
   public:
     void run() {
         while(1) {

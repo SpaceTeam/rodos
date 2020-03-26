@@ -47,7 +47,7 @@ static Subscriber nameNotImportant(interruptSigterm, timeSyncServer, "resumeFrom
 
 
 ///Displays time
-class TimeDisplay : public Thread {
+class TimeDisplay : public StaticThread<> {
     void run() {
         TIME_LOOP(1*SECONDS, 100*MILLISECONDS) {
             PRINTF(UTC_TIME "%3.6f", (double)sysTime.getUTC()/SECONDS);

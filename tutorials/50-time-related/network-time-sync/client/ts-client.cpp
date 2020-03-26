@@ -16,10 +16,10 @@ static Application receiverName("timeSyncClientApp", 1100);
  * @author Chavdar Iliev (uni Würzburg)
  */
 
-class TimeSyncClient : public Subscriber, public Thread, public Putter {
+class TimeSyncClient : public Subscriber, public StaticThread<>, public Putter {
   public:
     double timeAtInterrupt = 0;
-    TimeSyncClient() : Subscriber(serverResponse, "timeSyncClient"), Thread("timeSyncClientTh"),
+    TimeSyncClient() : Subscriber(serverResponse, "timeSyncClient"), StaticThread<>("timeSyncClientTh"),
                        nodeNumber(0), requestCnt(0), ownTS{ 0, 0 } {}
 
     /** here we send the request to the server */
@@ -70,7 +70,7 @@ static Subscriber nameNotImportant01(interruptSigterm, timeSyncClient, "resumeFr
 
 
 ///Displays time
-class TimeDisplay : public Thread {
+class TimeDisplay : public StaticThread<> {
     void run() {
         TIME_LOOP(5*SECONDS, 100*MILLISECONDS) {
             PRINTF(UTC_TIME "%3.6f", (double)sysTime.getUTC()/SECONDS);
