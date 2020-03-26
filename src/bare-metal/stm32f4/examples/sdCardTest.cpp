@@ -17,9 +17,9 @@ extern	__IO uint32_t SDCardOperation;	// defined in sd_tests.c
 #endif
 
 
-class SDCardThread : public Thread {
+class SDCardThread : public StaticThread<> {
 public:
-	SDCardThread(const char* name):Thread(name){}
+	SDCardThread(const char* name):StaticThread<>(name){}
 
 	void run(){
 		  /* Interrupt Config */

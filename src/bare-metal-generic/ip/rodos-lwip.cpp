@@ -79,7 +79,7 @@ IPStack* IPStack::instance;
 
 
 
-IPStack::IPStack(HAL_ETH* _eth,IPAddr* _ip,IPAddr* _mask,IPAddr* _gw): Thread("TCP/IP Thread", 400){
+IPStack::IPStack(HAL_ETH* _eth,IPAddr* _ip,IPAddr* _mask,IPAddr* _gw): StaticThread<>("TCP/IP Thread", 400){
 	if(instance) RODOS_ERROR("Only one IP Stack is allowed");
 
 	eth=_eth;

@@ -17,11 +17,11 @@
 
 HAL_PWM pwm10(PWM_IDX10); // Timer 3 Chan 3
 
-class MotorCtrlThread: public Thread {
+class MotorCtrlThread: public StaticThread<> {
 	long long periode;
 public:
 	MotorCtrlThread(const char* name, long long periode) :
-			Thread(name) {
+			StaticThread<>(name) {
 		this->periode = periode;
 	}
 

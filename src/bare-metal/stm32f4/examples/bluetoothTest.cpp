@@ -14,11 +14,11 @@
 
 HAL_UART uart2(UART_IDX2);
 
-class BluetoothTest: public Thread {
+class BluetoothTest: public StaticThread<> {
 	long long periode;
 public:
 	BluetoothTest(const char* name, long long periode) :
-			Thread(name) {
+			StaticThread<>(name) {
 		this->periode = periode;
 	}
 

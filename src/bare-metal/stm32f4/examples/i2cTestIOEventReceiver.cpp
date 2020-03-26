@@ -40,9 +40,9 @@ public:
 
 
 
-class I2CTest: public Thread {
+class I2CTest: public StaticThread<> {
 public:
-	I2CTest(const char* name) : Thread(name) {}
+	I2CTest(const char* name) : StaticThread<>(name) {}
 
 	void init() {
 		i2c1.init();

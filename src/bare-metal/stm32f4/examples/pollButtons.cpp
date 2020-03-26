@@ -14,12 +14,12 @@
 #include <stdio.h>
 
 
-class PollButtonsThread: public Thread {
+class PollButtonsThread: public StaticThread<> {
 	long long periode;
 	unsigned int pin;
 public:
 	PollButtonsThread(const char* name, long long periode) :
-			Thread(name) {
+			StaticThread<>(name) {
 		this->periode = periode;
 	}
 

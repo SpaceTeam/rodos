@@ -22,7 +22,7 @@ struct IPAddr {
 	uint8_t d;
 };
 
-class IPStack : Thread {
+class IPStack : StaticThread<> {
 	void run();
 
 public:

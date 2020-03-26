@@ -15,14 +15,14 @@
 #include "hal_pwm.h"
 
 
-class ServoCtrlThread: public Thread {
+class ServoCtrlThread: public StaticThread<> {
 	long long periode;
 	HAL_PWM* pwm;
 	int pwmStartValue;
 public:
 	ServoCtrlThread(const char* name, long long periode, HAL_PWM* pwm,
 			int pwmStartValue) :
-			Thread(name) {
+			StaticThread<>(name) {
 		this->periode = periode;
 		this->pwm = pwm;
 		this->pwmStartValue = pwmStartValue;

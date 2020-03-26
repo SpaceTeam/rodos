@@ -6,7 +6,7 @@ HAL_GPIO ledRed(GPIO_061);
 HAL_GPIO ledOrange(GPIO_062);
 HAL_GPIO ledGreen(GPIO_063);
 
-class LEDTest: public Thread {
+class LEDTest: public StaticThread<> {
 public:
 	void init() {
 

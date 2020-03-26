@@ -34,9 +34,9 @@ public:
 
 UartIOEventReceiver uartIOEventReceiver;
 
-class UartReceiver: public Thread{
+class UartReceiver: public StaticThread<>{
 public:
-    UartReceiver(const char* name) :	Thread(name) {
+    UartReceiver(const char* name) :	StaticThread<>(name) {
 	}
 
 	void init(){
@@ -65,9 +65,9 @@ UartReceiver uartRX("UartTestRX");
 
 
 
-class UartTransmitter: public Thread {
+class UartTransmitter: public StaticThread<> {
 public:
-    UartTransmitter(const char* name) :    Thread(name) {
+    UartTransmitter(const char* name) :    StaticThread<>(name) {
     }
 
     void init(){
