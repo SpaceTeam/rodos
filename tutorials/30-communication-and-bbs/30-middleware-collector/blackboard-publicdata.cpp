@@ -48,10 +48,10 @@ SubscriberReceiver<int64_t>    naneNotImportant06(collectVar02,  collectVar02Cal
 
 /**********************************************************/
 
-class Sender : public Thread {
+class Sender : public StaticThread<> {
 public:
     SharedData myData;
-    Sender() : Thread("Sender") { }
+    Sender() : StaticThread<>("Sender") { }
     void run () {
         myData.versionNr = 0;
         TIME_LOOP(1*SECONDS, 1*SECONDS) {
@@ -63,10 +63,10 @@ public:
     }
 } sender;
 
-class Receiver : public Thread {
+class Receiver : public StaticThread<> {
 public:
     SharedData myData;
-    Receiver() : Thread("Receiver") { }
+    Receiver() : StaticThread<>("Receiver") { }
     void run () {
         TIME_LOOP(3500*MILLISECONDS, 3*SECONDS) {
             collectShared.requestLocal(myData);

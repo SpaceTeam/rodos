@@ -29,7 +29,7 @@ class Charly : public TopicFilter {
 
 /************************************************************ Bob ***/
 
-class Bob : public Thread {
+class Bob : public StaticThread<> {
     Greetings greetings;
 
   public:

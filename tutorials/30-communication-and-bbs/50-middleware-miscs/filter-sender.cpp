@@ -3,11 +3,11 @@
 #include "filter-topics.h"
 
 
-class MyPublisher05 : public Thread {
+class MyPublisher05 : public StaticThread<> {
     Vector3D vec;
     double   doub;
 public:
-    MyPublisher05() : Thread("send for filtering", 150) { }
+    MyPublisher05() : StaticThread<>("send for filtering", 150) { }
     void run () {
         doub = 0;
         TIME_LOOP(1*SECONDS, 1*SECONDS) {

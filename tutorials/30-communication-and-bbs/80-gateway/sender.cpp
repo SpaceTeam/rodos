@@ -3,9 +3,9 @@
 
 /******************************/
 
-class MyPublisher : public Thread {
+class MyPublisher : public StaticThread<> {
 public:
-    MyPublisher() : Thread("sender") { }
+    MyPublisher() : StaticThread<>("sender") { }
     void run () {
         int32_t cnt1 = 8000;
         int32_t cnt2 = 9000;

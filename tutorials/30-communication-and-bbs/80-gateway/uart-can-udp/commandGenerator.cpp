@@ -7,9 +7,9 @@ static Application senderName("command-generator", 2016);
 
 UserCmd cmdToSend;
 
-class CommandGenerator : public Thread {
+class CommandGenerator : public StaticThread<> {
 public:
-    CommandGenerator() : Thread("CommandGenerator") { }
+    CommandGenerator() : StaticThread<>("CommandGenerator") { }
     void run () {
         char* s;
         PRINTF("Enter Command:");

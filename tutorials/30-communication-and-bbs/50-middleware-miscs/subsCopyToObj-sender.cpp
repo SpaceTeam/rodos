@@ -3,9 +3,9 @@
 
 static Position myPos;
 
-class MyPublisher04 : public Thread {
+class MyPublisher04 : public StaticThread<> {
 public:
-    MyPublisher04() : Thread("SenderPosition", 150) { }
+    MyPublisher04() : StaticThread<>("SenderPosition", 150) { }
     void run () {
         int32_t cnt = 100;
         TIME_LOOP(3500*MILLISECONDS, 3*SECONDS) {

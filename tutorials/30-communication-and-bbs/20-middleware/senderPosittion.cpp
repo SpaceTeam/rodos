@@ -7,9 +7,9 @@
 static Application senderName("Publisher 03 Position", 1300);
 static Position myPos;
 
-class MyPublisher03 : public Thread {
+class MyPublisher03 : public StaticThread<> {
 public:
-	MyPublisher03() : Thread("SenderPosition") { }
+	MyPublisher03() : StaticThread<>("SenderPosition") { }
 	void run () {
 		long cnt = 10000;
 		TIME_LOOP(3*SECONDS, 3*SECONDS) {

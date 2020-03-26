@@ -9,7 +9,7 @@ LowpassFilterObject<Vector3D> vectFilter;
 Subscriber nameNotImportant06(topicDoub, doubFilter, "dobub06");
 Subscriber nameNotImportant07(topicVect, vectFilter, "vect07");
 
-class ReceiverFilter : public Thread {
+class ReceiverFilter : public StaticThread<> {
     void run () {
         doubFilter.historyLen = 4;
         doubFilter.historyLen = 4;

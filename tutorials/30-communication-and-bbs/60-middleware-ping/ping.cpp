@@ -7,9 +7,9 @@
 static Application senderName("Publisher ping", 2011);
 
 int64_t tSend, tReceive;
-class PingSender : public Thread, Subscriber {
+class PingSender : public StaticThread<>, Subscriber {
 public:
-   PingSender(): Thread("ppingsender"), Subscriber (pong, "pongReceiver") { }
+   PingSender(): StaticThread<>("ppingsender"), Subscriber (pong, "pongReceiver") { }
    void run () {
 	long pingCnt = 0;
 	TIME_LOOP(0, 1*SECONDS) {

@@ -6,9 +6,9 @@
 
 static Application senderName("Publisher 12", 2012);
 
-class MyPublisher12 : public Thread {
+class MyPublisher12 : public StaticThread<> {
 public:
-    MyPublisher12() : Thread("sender12") { }
+    MyPublisher12() : StaticThread<>("sender12") { }
     void run () {
         long cnt = 20000;
         TIME_LOOP(0,  1300*MILLISECONDS) {

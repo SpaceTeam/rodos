@@ -4,7 +4,7 @@
 
 static Application  receiverName("ReciverThread", 1500);
 
-struct ReceiverThread :  public Subscriber,  public Thread  {
+struct ReceiverThread :  public Subscriber,  public StaticThread<>  {
 
   CommBuffer<long> inputMsgBuffer;
 
