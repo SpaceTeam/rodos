@@ -80,9 +80,9 @@ extern "C"{
 void EnableDMAClock();
 
 
-class ReceiveTrigger : Thread {
+class ReceiveTrigger : StaticThread<> {
 public:
-	ReceiveTrigger():Thread("UARTRecvTrigger"){}
+	ReceiveTrigger():StaticThread<>("UARTRecvTrigger"){}
 private:
 	void run();
 };
