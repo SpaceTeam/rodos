@@ -4,9 +4,9 @@ Topic<long> counter1(-1, "counter1");
 
 static Application senderName("Publisher 01 simple", 1100);
 
-class MyPublisher01 : public Thread {
+class MyPublisher01 : public StaticThread<> {
   public:
-    MyPublisher01() : Thread("SenderSimple") {}
+    MyPublisher01() : StaticThread<>("SenderSimple") {}
 
     void run() {
         long cnt = 0;
@@ -26,7 +26,7 @@ static Application receiverName("ReciverSync", 1400);
 static SyncFifo<long, 5> fifo;
 static Subscriber        nameNotImportant02(counter1, fifo, "fifo");
 
-class ReceiverSync : public Thread {
+class ReceiverSync : public StaticThread<> {
     void run() {
         long cnt = 0;
         while(1) {

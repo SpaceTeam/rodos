@@ -5,7 +5,7 @@
 
 #define RUNS 10000000
 
-class RandomTests : public Thread {
+class RandomTests : public StaticThread<> {
     void run() {
         for(int i = 0; i < 10; i++) {
             setRandSeed(123345);

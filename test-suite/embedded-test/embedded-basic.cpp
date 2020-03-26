@@ -12,22 +12,22 @@
  */
 
 // FIND_MainTest 
-class MainTest : public Thread {
+class MainTest : public StaticThread<> {
     
 public:
     
-    MainTest() : Thread("MainTest") {}
+    MainTest() : StaticThread<>("MainTest") {}
     void run();
     
 }maintest;
 
 
 // FIND_Test1
-class Test1 : public Thread {
+class Test1 : public StaticThread<> {
     
 public:
     
-    Test1() : Thread("Test1") {}
+    Test1() : StaticThread<>("Test1") {}
     
     void run() {
         suspendCallerUntil();

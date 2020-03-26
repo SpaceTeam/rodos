@@ -11,9 +11,9 @@ int threadsFinisched = 0;
 
 Semaphore protector;
 
-class CountThread : public Thread {
+class CountThread : public StaticThread<> {
 public:
-  CountThread() : Thread() { }
+  CountThread() : StaticThread<>() { }
   void run() {
     protector.enter();
     for(int64_t i = 0; i < COUNT_LIMIT; i++) {

@@ -12,11 +12,11 @@
  */
 
 // FIND_MainTest 
-class MainTest : public Thread {
+class MainTest : public StaticThread<> {
     
 public:
     
-    MainTest() : Thread("MainTest") {}
+    MainTest() : StaticThread<>("MainTest") {}
     void run();
     
 }maintest;
@@ -28,7 +28,7 @@ Topic<int> counter2(21, "counter2");
 
 //Publisher for both topics
 // FIND_Middleware_Sender
-class Sender : public Thread {
+class Sender : public StaticThread<> {
     
     int c1 = 0;
     int c2 = 1000;
@@ -120,7 +120,7 @@ public:
 /************************************************************ Bob ***/
 
 // FIND_Bob
-class Bob : public Thread {
+class Bob : public StaticThread<> {
     Greetings greetings;
     
 public:

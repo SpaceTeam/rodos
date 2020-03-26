@@ -19,11 +19,11 @@
  */
 
 // FIND_MainTest 
-class MainTest : public Thread {
+class MainTest : public StaticThread<> {
     
 public:
     
-    MainTest() : Thread("MainTest") {}
+    MainTest() : StaticThread<>("MainTest") {}
     void run();
     
 }maintest;
@@ -36,7 +36,7 @@ CommBuffer<int> combufTest;
 
 
 // FIND_CommBufferReceiver
-class CommBufferReceiver : public Thread {
+class CommBufferReceiver : public StaticThread<> {
 public:
     void run() {
         suspendCallerUntil();
@@ -56,11 +56,11 @@ public:
 
 
 // FIND_CommBufferSender
-class CommBufferSender : public Thread {
+class CommBufferSender : public StaticThread<> {
     
 public:
     
-    CommBufferSender() : Thread("CommBufferSender") {}
+    CommBufferSender() : StaticThread<>("CommBufferSender") {}
     
     void run() {
         suspendCallerUntil();
@@ -81,11 +81,11 @@ public:
 Fifo<int, NUMBER_OF_TESTS/2> fifo;
 
 // FIND_FiFoReceiver
-class FiFoReceiver : public Thread {
+class FiFoReceiver : public StaticThread<> {
     
 public:
     
-    FiFoReceiver() : Thread("FiFoReceiver") {}
+    FiFoReceiver() : StaticThread<>("FiFoReceiver") {}
     
     void run() {
         suspendCallerUntil();
@@ -109,11 +109,11 @@ public:
 
 
 // FIND_FiFoSender
-class FiFoSender : public Thread {
+class FiFoSender : public StaticThread<> {
     
 public:
     
-    FiFoSender() : Thread("FiFo-Sender") {}
+    FiFoSender() : StaticThread<>("FiFo-Sender") {}
     
     void run() {
         suspendCallerUntil();
@@ -144,7 +144,7 @@ public:
 //PRINTF specifier test section------------------------------------------------
 
 // FIND_TestPrint
-class TestPrint : public Thread {
+class TestPrint : public StaticThread<> {
 public:
     void run() {
         suspendCallerUntil();
@@ -187,7 +187,7 @@ union Data {
     uint8_t data[4];
 };
 
-class ChecksumTester : public Thread {
+class ChecksumTester : public StaticThread<> {
 
   public:
     void run() {
@@ -216,7 +216,7 @@ class ChecksumTester : public Thread {
 //Resume from event section----------------------------------------------------
 
 // FIND_Resume_TestWaiter
-class TestWaiter : public Thread {
+class TestWaiter : public StaticThread<> {
 public:
     void run() {
         suspendCallerUntil();

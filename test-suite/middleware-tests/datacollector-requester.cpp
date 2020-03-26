@@ -8,9 +8,9 @@ Topic<char[20]>   	collectData(-1, "CollectData");
 
 /******************************/
 
-class Collector : public Thread {
+class Collector : public StaticThread<> {
 public:
-    Collector() : Thread("Collector") { }
+    Collector() : StaticThread<>("Collector") { }
 
     void run () {
         char buf[20];

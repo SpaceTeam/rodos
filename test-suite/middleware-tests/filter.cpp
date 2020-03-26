@@ -20,7 +20,7 @@ class Filter : public TopicFilter {
 
 
 //Publisher for both topics
-class Sender : public Thread {
+class Sender : public StaticThread<> {
 
     int c1 = 0;
     int c2 = 1000;

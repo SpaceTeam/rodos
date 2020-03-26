@@ -2,9 +2,9 @@
 #include "demo_topics.h"
 
 
-class MyPublisher11 : public Thread {
+class MyPublisher11 : public StaticThread<> {
 public:
-    MyPublisher11() : Thread("sender11") { }
+    MyPublisher11() : StaticThread<>("sender11") { }
     void run () {
         int32_t cnt32      = 100;
         int64_t cnt64      = 100000;

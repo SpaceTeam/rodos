@@ -4,7 +4,7 @@ Topic<int> counter1(20, "counter1");
 Topic<int> counter2(21, "counter2");
 
 //Publisher for both topics
-class Sender : public Thread {
+class Sender : public StaticThread<> {
 
     int c1 = 0;
     int c2 = 1000;

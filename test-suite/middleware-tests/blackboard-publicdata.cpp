@@ -29,10 +29,10 @@ SubscriberReceiver<SharedData> naneNotImportant02(collectShared, collectSharedCa
 
 /**********************************************************/
 
-class Sender : public Thread {
+class Sender : public StaticThread<> {
 public:
     SharedData myData;
-    Sender() : Thread("Sender") { }
+    Sender() : StaticThread<>("Sender") { }
     void run () {
         myData.versionNr = 0;
         for (int i = 0; i < 10; i++) {
@@ -47,10 +47,10 @@ public:
     }
 } sender;
 
-class Receiver : public Thread {
+class Receiver : public StaticThread<> {
 public:
     SharedData myData;
-    Receiver() : Thread("Receiver") { }
+    Receiver() : StaticThread<>("Receiver") { }
     void run () {
         AT(NOW() + 0.05 * SECONDS);
         for (int i = 0; i < 5; i++) {

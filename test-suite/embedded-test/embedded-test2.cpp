@@ -12,11 +12,11 @@
  */
 
 // FIND_MainTest 
-class MainTest : public Thread {
+class MainTest : public StaticThread<> {
     
 public:
     
-    MainTest() : Thread("MainTest") {}
+    MainTest() : StaticThread<>("MainTest") {}
     void run();
     
 }maintest;
@@ -31,7 +31,7 @@ public:
 Semaphore sema;
 int tmp = 0;
 
-class Thread1 : public Thread {
+class Thread1 : public StaticThread<> {
     
 public:
     void run() {
@@ -75,9 +75,9 @@ Topic<long> counter1(-1, "counter1");
 
 static Application senderName("Publisher 01 simple", 1100);
 
-class MyPublisher01 : public Thread {
+class MyPublisher01 : public StaticThread<> {
   public:
-    MyPublisher01() : Thread("SenderSimple") {}
+    MyPublisher01() : StaticThread<>("SenderSimple") {}
 
     void run() {
         suspendCallerUntil();
@@ -129,7 +129,7 @@ static Subscriber nameNotImportant01(counter1, justPrint, "justprint01");
 static SyncFifo<long, 5> fifo;
 static Subscriber        nameNotImportant02(counter1, fifo, "fifo");
 
-class ReceiverSync : public Thread {
+class ReceiverSync : public StaticThread<> {
     void run() {
         long cnt = 0;
         while(1) {
@@ -144,7 +144,7 @@ class ReceiverSync : public Thread {
 static CommBuffer<long> buf;
 static Subscriber       receiverBuf(counter1, buf, "receiverbuf");
 
-class ReceiverBuf : public Thread {
+class ReceiverBuf : public StaticThread<> {
     void run() {
         long cnt;
         suspendCallerUntil();
