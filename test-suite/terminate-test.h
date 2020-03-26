@@ -12,9 +12,9 @@
 
 static Application terminateTestApp("terminateTest");
 
-class TerminateTest : public Thread {
+class TerminateTest : public StaticThread<> {
   public:
-    TerminateTest() : Thread("TerminateTest", CEILING_PRIORITY) {}
+    TerminateTest() : StaticThread<>("TerminateTest", CEILING_PRIORITY) {}
     void run() {
         PRINTF("\nThis run (test) will be terminated in %d Seconds\n", TIME_TO_END);
         AT(TIME_TO_END*SECONDS);
