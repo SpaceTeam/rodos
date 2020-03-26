@@ -10,7 +10,7 @@ struct TestObj : SortedChainable {
 AllocableObejcts<TestObj, 20> allocableTestObjs;
 
 
-class TestAllocs : public Thread {
+class TestAllocs : public StaticThread<> {
   public:
     TestObj* tmp[300];
     void     run();

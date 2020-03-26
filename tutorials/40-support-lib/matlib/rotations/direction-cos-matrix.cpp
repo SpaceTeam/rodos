@@ -19,7 +19,7 @@
 
 static const int NUM_OF_ROTATIONS_TO_TEST = 1000;
 
-class TestRotation : public Thread {
+class TestRotation : public StaticThread<> {
     void run();
 } testRotation;
 

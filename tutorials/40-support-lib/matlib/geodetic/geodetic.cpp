@@ -6,7 +6,7 @@
   This thread creates 1000 randomized polar coordinates and tests
   the conversion to ECEF and backwards.
 */
-class Transformer : public Thread{
+class Transformer : public StaticThread<>{
 long max = 500E3; //m  
 long c = 0;  
 void init(){

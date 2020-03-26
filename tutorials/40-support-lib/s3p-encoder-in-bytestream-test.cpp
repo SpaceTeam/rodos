@@ -56,7 +56,7 @@ class S3pReceiverPolling : public S3pEncoder {
 // Test all sender and both receivers
 
 
-class S3P_Test : public Thread {
+class S3P_Test : public StaticThread<> {
     uint8_t dataToSend[MAX_LEN];
     uint8_t dataToReceive[MAX_LEN];
 

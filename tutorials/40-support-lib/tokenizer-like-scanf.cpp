@@ -9,7 +9,7 @@ char cmdName[16];
 
 #define MAX_PARAMS 8
 
-static class CmdDec : public Thread {
+static class CmdDec : public StaticThread<> {
 public:
     void run() {
         PRINTF("Enter command and parameter\n");

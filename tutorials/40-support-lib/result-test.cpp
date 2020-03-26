@@ -48,7 +48,7 @@ Result<double> f6(int num) {
 
 //__________________________________________________________ example for calling functions which return "Result"
 
-class TestResults : public Thread {
+class TestResults : public StaticThread<> {
     void run() {
         printErrorReports = false; // aktivate/deactivate this line and test again
         Result<int32_t> x;
