@@ -1,2 +1,2 @@
-rodos-executable.sh linuxMC fifo.cpp
+rodos-executable.sh linux-makecontext fifo.cpp
 tst

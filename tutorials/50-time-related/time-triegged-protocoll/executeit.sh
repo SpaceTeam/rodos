@@ -3,11 +3,11 @@ set -e
 
 cd client/
   mask-generator-splitt < mask.txt
-  rodos-executable.sh linux  *.cpp ../gateway.cpp  ../topics.cpp 
+  rodos-executable.sh linux-x86  *.cpp ../gateway.cpp  ../topics.cpp 
 cd ..
 
 cd server/
-  rodos-executable.sh linux  *.cpp ../gateway.cpp  ../topics.cpp 
+  rodos-executable.sh linux-x86  *.cpp ../gateway.cpp  ../topics.cpp 
 cd ..
 
 xterm -fg green -bg black -title "TTP Receiver" -e server/tst &

@@ -2,14 +2,14 @@
 set -e
 
 cd server
-rodos-executable.sh linuxMC ../gateway.cpp clearscreen.cpp ../topics.cpp ts-server.cpp
+rodos-executable.sh linux-x86 ../gateway.cpp clearscreen.cpp ../topics.cpp ts-server.cpp
 xterm -bg white -fg black -title "TimeSync Server" -e tst &
 cd ..
 echo "server running, wait 3 seconds to start each client"
 sleep 3
 
 cd client
-rodos-executable.sh linuxMC ../gateway.cpp clearscreen.cpp ../topics.cpp ts-client.cpp
+rodos-executable.sh linux-x86 ../gateway.cpp clearscreen.cpp ../topics.cpp ts-client.cpp
 xterm -bg white -fg black -title "TimeSync Client [1]" -e tst &
 
 sleep 3

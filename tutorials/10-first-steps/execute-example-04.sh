@@ -1,2 +1,2 @@
-rodos-executable.sh linuxMC priority.cpp
+rodos-executable.sh linux-makecontext priority.cpp
 tst

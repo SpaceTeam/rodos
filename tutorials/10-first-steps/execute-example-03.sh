@@ -1,2 +1,2 @@
-rodos-executable.sh linuxMC time.cpp
+rodos-executable.sh linux-makecontext time.cpp
 tst

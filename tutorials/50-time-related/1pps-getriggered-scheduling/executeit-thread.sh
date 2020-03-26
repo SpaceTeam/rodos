@@ -1,7 +1,7 @@
 
 set -e
 
-rodos-executable.sh  linux scheduler-1pps-getriggert.cpp  example-threads-1pps.cpp
+rodos-executable.sh  linux-x86 scheduler-1pps-getriggert.cpp  example-threads-1pps.cpp
 
 cat << EOT
 ______________________________________________

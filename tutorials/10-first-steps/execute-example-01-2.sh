@@ -1,2 +1,2 @@
-rodos-executable.sh linuxMC helloworld-multiple.cpp
+rodos-executable.sh linux-makecontext helloworld-multiple.cpp
 tst

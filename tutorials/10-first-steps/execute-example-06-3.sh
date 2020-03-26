@@ -1,2 +1,2 @@
-rodos-executable.sh linuxMC semaphore-deadlock.cpp
+rodos-executable.sh linux-makecontext semaphore-deadlock.cpp
 tst

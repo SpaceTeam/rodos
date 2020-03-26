@@ -1,4 +1,4 @@
 set -e
-rodos-executable.sh linux filter-*.cpp
+rodos-executable.sh linux-x86 filter-*.cpp
 tst
 

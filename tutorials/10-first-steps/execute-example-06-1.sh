@@ -1,2 +1,2 @@
-rodos-executable.sh linuxMC semaphore.cpp
+rodos-executable.sh linux-makecontext semaphore.cpp
 tst

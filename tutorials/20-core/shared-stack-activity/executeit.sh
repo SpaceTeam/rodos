@@ -1,3 +1,3 @@
-rodos-executable.sh linux  example-*
+rodos-executable.sh linux-x86  example-*
 tst
 
