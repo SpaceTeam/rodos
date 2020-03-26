@@ -8,7 +8,7 @@ public:
     void step(int64_t timeNow); 
 } a3;
 
-void A3::step(int64_t timeNow) {
+void A3::step([[gnu::unused]] int64_t timeNow) {
     GOTO_LAST_YIELD;
     PRINTF("A3.1\n");
     YIELD_UNTIL(NOW() + 1*SECONDS);
@@ -27,7 +27,7 @@ public:
     void step(int64_t timeNow); 
 } a4;
 
-void A4::step(int64_t timeNow) {
+void A4::step([[gnu::unused]] int64_t timeNow) {
     GOTO_LAST_YIELD;
     PRINTF("A4 Initialisation\n");
     while(1) {

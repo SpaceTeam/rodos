@@ -54,7 +54,7 @@ extern bool      isSchedulingEnabled;
 * the signal handler for SIGVTALRM (timer signal)
 */
 void timerSignalHandler(int ignore);
-void timerSignalHandler(int ignore) {
+void timerSignalHandler([[gnu::unused]] int ignore) {
 
     if(!isSchedulingEnabled) return;
     long long timeNow = NOW();     // comment this out to improve performance, but: no time events any more

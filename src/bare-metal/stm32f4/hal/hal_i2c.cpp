@@ -516,7 +516,7 @@ int32_t HW_HAL_I2C::mstrReadNoStart(const uint8_t addr, uint8_t* rxBuf, uint32_t
 	return rxBufSize;
 }
 
-void HW_HAL_I2C::initMembers(HAL_I2C* halI2C, I2C_IDX i2cIdx, GPIO_PIN sclPin, GPIO_PIN sdaPin){
+void HW_HAL_I2C::initMembers([[gnu::unused]] HAL_I2C* halI2C, I2C_IDX i2cIdx, GPIO_PIN sclPin, GPIO_PIN sdaPin){
   IsMaster = true;
   switch(i2cIdx) {
   case I2C_IDX1:

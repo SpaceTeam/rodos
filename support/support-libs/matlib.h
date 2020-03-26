@@ -356,6 +356,9 @@ public:
     YPR(const Matrix3D& M);
     YPR(const AngleAxis& other);
 
+    YPR& operator=(const YPR&) = default;
+    YPR& operator=(YPR&&) = default;
+
     YPR  scale(const double &factor) const;
 
     Matrix3D toMatrix3D() const;

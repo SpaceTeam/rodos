@@ -100,7 +100,7 @@ static Application receiverSimple("ReceiverSimple", 1100);
 class SimpleSub : public Subscriber {
   public:
     SimpleSub() : Subscriber(counter1, "simplesub") {}
-    long put(const long topicId, const long len, const void* data, const NetMsgInfo& netMsgInfo) {
+    long put(const long topicId, const long len, const void* data, [[gnu::unused]] const NetMsgInfo& netMsgInfo) {
         PRINTF("SimpleSub - Length: %ld Data: %ld TopicId: %ld \n", len, *(long*)data, topicId);
         return 1;
     }
@@ -116,7 +116,7 @@ static Application receiverName("ReciverPutter", 1100);
 class JustPrint : public Putter {
 
     /// Implements the complete generic interface of putter
-    bool putGeneric(const long topicId, unsigned int msgLen, const void* msg, const NetMsgInfo& netMsgInfo) {
+    bool putGeneric(const long topicId, unsigned int msgLen, const void* msg, [[gnu::unused]] const NetMsgInfo& netMsgInfo) {
         PRINTF("ReceiverPutter -  msgLen: %d data: %ld topicId: %ld\n", msgLen, *(long*)msg, topicId);
         return true;
     }

@@ -131,7 +131,7 @@ void Yprintf::vaprintf(const char *fmt) {
                         yputc('n'); yputc('a'); yputc('n');
                         continue;
                     }
-                    char sign = 1;
+                    signed char sign = 1;
                     double tmp = 1;
                     int pow = width - 1;
 

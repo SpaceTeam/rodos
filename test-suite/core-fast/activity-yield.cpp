@@ -10,7 +10,7 @@ public:
     void step(int64_t timeNow); 
 } a3;
 
-void A3::step(int64_t timeNow) {
+void A3::step([[gnu::unused]] int64_t timeNow) {
     printfMask = 1;
     GOTO_LAST_YIELD;
     PRINTF("A1\n");
@@ -30,7 +30,7 @@ public:
     void step(int64_t timeNow); 
 } a4;
 
-void A4::step(int64_t timeNow) {
+void A4::step([[gnu::unused]] int64_t timeNow) {
     printfMask = 1;
     static int cnt = 0;
     cnt++;

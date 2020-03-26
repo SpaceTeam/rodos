@@ -22,6 +22,8 @@ Innocent ino4("4");
 /*********** Other Threads to test stack occupation ***/
 
 char dummyWriter;
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Winfinite-recursion"
 void stackUser() {
     static int consumed = 0;
     char       variableOnStack[100];
@@ -32,6 +34,7 @@ void stackUser() {
     Thread::suspendCallerUntil(NOW() + 1 * SECONDS);
     stackUser();
 }
+#pragma GCC diagnostic pop
 
 
 /** Consumes more an more stack until it crases *****/

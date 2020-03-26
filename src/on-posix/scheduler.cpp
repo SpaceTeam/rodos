@@ -86,7 +86,7 @@ void hwEnableInterrupts() {
 }
 
 
-void schedulerWrapper(long* ctx) {
+void schedulerWrapper([[gnu::unused]] long* ctx) {
 }
 
 /** activate idle thread */

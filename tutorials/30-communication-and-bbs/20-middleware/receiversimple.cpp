@@ -8,7 +8,7 @@ static Application  receiverName("ReciverSimple", 1100);
 class SimpleSub :  public Subscriber {
 public:
 	SimpleSub() : Subscriber(counter1, "simplesub") { }
-        long put(const long topicId, const long len, const void* data, const NetMsgInfo& netMsgInfo) {
+        long put(const long topicId, const long len, const void* data, [[gnu::unused]] const NetMsgInfo& netMsgInfo) {
 		PRINTF(E1B "%ld" E1D "%ld" F1 "%ld" F2 "\n", len, *(long*)data, topicId);
 		return 1;
 	}

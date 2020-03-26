@@ -10,7 +10,7 @@ class CharReceiver : public Subscriber {
   public:
     CharReceiver() : Subscriber(charInput, "CharReceiver") {}
 
-    void putFromInterrupt(const long topicId, const void* data, int len) {
+    void putFromInterrupt([[gnu::unused]] const long topicId, const void* data, [[gnu::unused]] int len) {
         GenericMsgRef* msg = (GenericMsgRef*)data;
         xprintf("\n Async: %d %s\n", (int)msg->msgLen, msg->msgPtr); // no PRINTF in interrupts (Sempahore)
     }

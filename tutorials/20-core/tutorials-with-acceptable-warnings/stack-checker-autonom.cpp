@@ -64,10 +64,13 @@ class Innocent3 : public StaticThread<> {
 
 /*********** Other Threads to test stack occupation ***/
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wvla-extension"
 void stackUser(int len) {
     char variableOnStack[len];
     for(int i = 0; i < len; i++) variableOnStack[i] = 0x5a;
 }
+#pragma GCC diagnostic pop
 
 
 /** Consumes more an more stack until it crases *****/

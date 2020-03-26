@@ -183,6 +183,7 @@ void SAI_DeInit(SAI_TypeDef* SAIx)
 {
   /* Check the parameters */
   assert_param(IS_SAI_PERIPH(SAIx));
+  (void)SAIx;
 
   /* Enable SAI1 reset state */
   RCC_APB2PeriphResetCmd(RCC_APB2Periph_SAI1, ENABLE);
@@ -460,6 +461,7 @@ void SAI_Cmd(SAI_Block_TypeDef* SAI_Block_x, FunctionalState NewState)
   */
 void SAI_MonoModeConfig(SAI_Block_TypeDef* SAI_Block_x, uint32_t SAI_Mono_StreoMode)
 {
+  (void)SAI_Mono_StreoMode;
   /* Check the parameters */
   assert_param(IS_SAI_BLOCK_PERIPH(SAI_Block_x));
   assert_param(IS_SAI_BLOCK_MONO_STREO_MODE(SAI_MonoMode));
@@ -486,6 +488,7 @@ void SAI_TRIStateConfig(SAI_Block_TypeDef* SAI_Block_x, uint32_t SAI_TRIState)
   /* Check the parameters */
   assert_param(IS_SAI_BLOCK_PERIPH(SAI_Block_x));
   assert_param(IS_SAI_BLOCK_TRISTATE_MANAGEMENT(SAI_TRIState));
+  (void)SAI_TRIState;
   /* Clear MONO bit */
   SAI_Block_x->CR1 &= ~(SAI_xCR1_MONO);
   /* Set new Mono Mode value */

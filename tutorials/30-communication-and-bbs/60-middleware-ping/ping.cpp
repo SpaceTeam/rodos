@@ -20,7 +20,7 @@ public:
 	}
    }
 
-   long put(const long topicId, const long len, const void* data,  const NetMsgInfo& netMsgInfo) {
+   long put([[gnu::unused]] const long topicId, [[gnu::unused]] const long len, const void* data, [[gnu::unused]] const NetMsgInfo& netMsgInfo) {
         tReceive = NOW();
         long cnt = *(long*)data;
          PRINTF("pong %ld at %lld, dif = %6.3f us\n", cnt, tReceive, (double)(tReceive - tSend)/MICROSECONDS);

@@ -22,7 +22,7 @@ public:
 class FillData : public Subscriber {
 public:
     FillData() :  Subscriber(collectData, "fillData") { }
-        long put(const long topicId, const long len, const void* msg, const NetMsgInfo& netMsgInfo) {
+        long put([[gnu::unused]] const long topicId, [[gnu::unused]] const long len, const void* msg, [[gnu::unused]] const NetMsgInfo& netMsgInfo) {
 		char* toWrite = (char*)msg;
 		static int cnt = 0;
 		for(int i = 0; i < 20; i++) toWrite[i] = cnt*0x10 + i;

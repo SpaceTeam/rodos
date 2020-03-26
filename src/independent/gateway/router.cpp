@@ -29,7 +29,7 @@ Router::Router(bool forwardTopicReports_, Gateway* gateway1, Gateway* gateway2, 
 }
 
 
-long Router::put(const long, const long, const void* data, const NetMsgInfo& netMsgInfo) {
+long Router::put([[gnu::unused]] const long topicId, [[gnu::unused]] const long len, const void* data, const NetMsgInfo& netMsgInfo) {
     routeMsg(*((NetworkMessage*)data),netMsgInfo.linkId);
     return 1;
 }
@@ -57,7 +57,7 @@ void Router::routeMsg(NetworkMessage& msg,long linkid) {
     }
 }
 
-bool Router::shouldRouteThisMsg(NetworkMessage& msg, long) {
+bool Router::shouldRouteThisMsg(NetworkMessage& msg, [[gnu::unused]] long linkid) {
     if(msg.get_maxStepsToForward() <= 0)               return false;
     if(msg.get_topicId() == 0 && !forwardTopicReports) return false;
     return true;

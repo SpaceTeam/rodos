@@ -73,7 +73,7 @@ bool UART::getcharNoWait(char& c) {
     return true;
 }
 
-bool UART::putGeneric(const unsigned int len, const void* msg) {
+bool UART::putGeneric([[gnu::unused]] const long topicId, const unsigned int len, const void* msg, [[gnu::unused]] const NetMsgInfo& netMsgInfo) {
     unsigned int ctr;
     for(ctr = 0; ctr < len; ctr++) {
         writechar(((const char*)msg)[ctr]);

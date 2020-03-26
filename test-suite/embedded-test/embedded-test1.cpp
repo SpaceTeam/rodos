@@ -153,8 +153,8 @@ public:
         
         PRINTF(" Showing different printf formats\n\n\n");
         
-        float  a = 123456.789;
-        float  b = -0.00000000123456789;
+        double  a = 123456.789;
+        double  b = -0.00000000123456789;
         double c;
         *(int64_t*)&c = 0x7FF8000000000000; // nan
         
@@ -166,7 +166,10 @@ public:
         PRINTF("as u:  %u\n", -12);
         PRINTF("as o:  %o\n", 12);
         PRINTF("as x:  %04x\n", 12);
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat-invalid-specifier"
         PRINTF("as b:  %08b\n", 0x55); // please ignore the c++ compile warning
+#pragma GCC diagnostic pop        
         
         PRINTF("\n\n");
         PRINTF("as s: '%s'\n", "this is a string");

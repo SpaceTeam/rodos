@@ -42,7 +42,7 @@ long long Timer::microsecondsInterval = 0;
 * the signal handler for SIGVTALRM (timer signal)
 */
 void timerSignalHandler(int ignore);
-void timerSignalHandler(int ignore) {
+void timerSignalHandler([[gnu::unused]] int ignore) {
 
     // time events to call?
     int64_t timeNow = NOW();       // comment this out to improve performance, but: no time events any more

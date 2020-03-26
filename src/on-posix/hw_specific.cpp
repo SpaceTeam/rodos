@@ -66,13 +66,13 @@ void deepSleepUntil(int64_t until) {
 
 
 static long long timeOfLastTriggerWatchdog = 0;
-void hwInitWatchdog(long intervalMilliseconds) { }
+void hwInitWatchdog([[gnu::unused]] long intervalMilliseconds) { }
 void hwTriggerWatchdog() { timeOfLastTriggerWatchdog = NOW(); }
 
 /**
 * create context on stack and return a pointer to it
 */
-long* hwInitContext(long* stack, void* object) {
+long* hwInitContext([[gnu::unused]] long* stack, [[gnu::unused]] void* object) {
     return (long*)0;
 }
 

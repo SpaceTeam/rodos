@@ -55,7 +55,7 @@ static Topic<GenericMsgRef>* asyncInputSocketAssociatedTopic[MAX_UDP_PORTS];
 static char                  inputBuf[1400]; // as long as a UDP packet can be
 
 void udpReader(int a);
-void udpReader(int a) {
+void udpReader([[gnu::unused]] int a) {
 
     GenericMsgRef msgRef;
     msgRef.msgPtr = inputBuf;
@@ -350,7 +350,7 @@ void sigio_handler(int a) {
 #endif
 }
 
-void dummy_handler(int a) {
+void dummy_handler([[gnu::unused]] int a) {
     xprintf("dummy_handler: should not reach here.\n");
 
     abort();

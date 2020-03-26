@@ -29,7 +29,7 @@ struct ThreadOnPosixContext{
 };
 
 /*********** dummy signal händler für all threads ***/
-void threadSigtermHandler(int sig) { } 
+void threadSigtermHandler([[gnu::unused]] int sig) { } 
 
 //List Thread::threadList = 0;
 //Thread* Thread::currentThread = 0;
@@ -234,7 +234,7 @@ bool Thread::suspendCallerUntil(const int64_t reactivationTime, void* signaler) 
 void Thread::initializeThreads() {
     xprintf("Threads in System:");
     ITERATE_LIST(Thread, threadList) {
-        xprintf("\n   Prio = %7ld Stack = %6ld %s: ", iter->priority, iter->stackSize, iter->getName());
+        xprintf("\n   Prio = %7ld Stack = %6lu %s: ", iter->priority, static_cast<unsigned long>(iter->stackSize), iter->getName());
         iter->init();
         iter->suspendedUntil = 0;
     }

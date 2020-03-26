@@ -4,7 +4,7 @@
 class IdelCntPrinter : public StaticThread<> {
   public:
     void run() {
-        double  cpuLoad;
+        float  cpuLoad;
         int64_t timeToEnd;
 
         getCpuLoad();

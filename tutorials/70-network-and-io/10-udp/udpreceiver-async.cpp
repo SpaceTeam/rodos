@@ -34,7 +34,7 @@ class Udpreceiver :  public Subscriber {
 public:
     Udpreceiver() : Subscriber(udpMessages, "udpReceiver") { }
 
-    void putFromInterrupt(const long topicId, const void* data, int len) {
+    void putFromInterrupt([[gnu::unused]] const long topicId, const void* data, [[gnu::unused]] int len) {
         GenericMsgRef* msg = (GenericMsgRef*)data;
         msg->msgPtr[msg->msgLen] = 0;
         xprintf("\n Async: %d %s\n", msg->msgLen, msg->msgPtr); // no PRINTF in interrupts (Sempahore)

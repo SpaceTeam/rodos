@@ -44,7 +44,7 @@ extern "C" {
  */
 #if 1
 int _close(int file);
-int _close(int file) {
+int _close([[gnu::unused]] int file) {
 	return -1;
 }
 
@@ -52,7 +52,7 @@ char *__env[1] = { 0 };
 char **environ = __env;
 
 int _execve(char *name, char **argv, char **env);
-int _execve(char *name, char **argv, char **env) {
+int _execve([[gnu::unused]] char *name, [[gnu::unused]] char **argv, [[gnu::unused]] char **env) {
 	errno = ENOMEM;
 	return -1;
 }
@@ -64,7 +64,7 @@ int _fork(void) {
 }
 
 int _fstat(int file, struct stat *st);
-int _fstat(int file, struct stat *st) {
+int _fstat([[gnu::unused]] int file, struct stat *st) {
 	st->st_mode = S_IFCHR;
 	return 0;
 }
@@ -75,34 +75,34 @@ int _getpid(void) {
 }
 
 int _isatty(int file);
-int _isatty(int file) {
+int _isatty([[gnu::unused]] int file) {
 	return 1;
 }
 
 int _kill(int pid, int sig);
-int _kill(int pid, int sig) {
+int _kill([[gnu::unused]] int pid, [[gnu::unused]] int sig) {
 	errno = EINVAL;
 	return -1;
 }
 
 int _link(char *old, char *pNew);
-int _link(char *old, char *pNew) {
+int _link([[gnu::unused]] char *old, [[gnu::unused]] char *pNew) {
 	errno = EMLINK;
 	return -1;
 }
 
 int _lseek(int file, int ptr, int dir);
-int _lseek(int file, int ptr, int dir) {
+int _lseek([[gnu::unused]] int file, [[gnu::unused]] int ptr, [[gnu::unused]] int dir) {
 	return 0;
 }
 
 int _open(const char *name, int flags, int mode);
-int _open(const char *name, int flags, int mode) {
+int _open([[gnu::unused]] const char *name, [[gnu::unused]] int flags, [[gnu::unused]] int mode) {
 	return -1;
 }
 
 int _read(int file, char *ptr, int len);
-int _read(int file, char *ptr, int len) {
+int _read([[gnu::unused]] int file, [[gnu::unused]] char *ptr, [[gnu::unused]] int len) {
 	return 0;
 }
 
@@ -156,27 +156,27 @@ caddr_t _sbrk(int incr) {
  }
  */
 int _times(struct tms *buf);
-int _times(struct tms *buf) {
+int _times([[gnu::unused]] struct tms *buf) {
 	return -1;
 }
 
 int _unlink(char *name);
-int _unlink(char *name) {
+int _unlink([[gnu::unused]] char *name) {
 	errno = ENOENT;
 	return -1;
 }
 
 int _wait(int *status);
-int _wait(int *status) {
+int _wait([[gnu::unused]] int *status) {
 	errno = ECHILD;
 	return -1;
 }
 
 int putchar(int ic);
 
-int _write(int file, char *ptr, int len);
-int _write(int file, char *ptr, int len) {
-	int todo;
+size_t _write(int file, char *ptr, size_t len);
+size_t _write([[gnu::unused]] int file, char *ptr, size_t len) {
+	size_t todo;
 
 	for (todo = 0; todo < len; todo++) {
 
@@ -190,12 +190,12 @@ int _write(int file, char *ptr, int len) {
  * reentrant syscalls
  */
 long _write_r(void *reent, int fd, const void *buf, size_t cnt);
-long _write_r(void *reent, int fd, const void *buf, size_t cnt) {
+long _write_r([[gnu::unused]] void *reent, int fd, const void *buf, size_t cnt) {
 	return _write(fd, (char*) buf, cnt);
 }
 
 caddr_t _sbrk_r(void *reent, size_t incr);
-caddr_t _sbrk_r(void *reent, size_t incr) {
+caddr_t _sbrk_r([[gnu::unused]] void *reent, size_t incr) {
 	return _sbrk(incr);
 }
 #endif

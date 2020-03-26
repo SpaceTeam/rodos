@@ -65,7 +65,7 @@ void ActivityExecuter::run(void) {
 class OnePulsePerSecond : public Subscriber {
   public:
     OnePulsePerSecond() : Subscriber(interruptSigterm, "simplesub") {}
-    void putFromInterrupt(const long topicId, const void* any, int len) {
+    void putFromInterrupt([[gnu::unused]] const long topicId, [[gnu::unused]] const void* any, int len) {
         xprintf("external Event at %3.9f datalen %d\n", SECONDS_NOW(), len);
         activityExecuter.resume();
     }

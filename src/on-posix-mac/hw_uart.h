@@ -29,7 +29,7 @@ class UART : public Putter {
     void         writechar(const char c);
     bool         isCharReady();
     bool         getcharNoWait(char& c);
-    virtual bool putGeneric(const unsigned int len, const void* msg);
+    virtual bool putGeneric(const long topicId, const unsigned int len, const void* msg, const NetMsgInfo& netMsgInfo);
 };
 
 
