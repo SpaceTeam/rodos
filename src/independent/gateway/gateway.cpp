@@ -30,7 +30,7 @@ int32_t globalMsgSequenceCounter = 1;
 
 Gateway::Gateway(Linkinterface* linkinterface_, bool forwardall_, bool enable_) :
     Subscriber(defaultGatewayTopic, nopPutter, "Gateway", true),
-    Thread("gateway", NETWORKREADER_PRIORITY) {
+    StaticThread<>("gateway", NETWORKREADER_PRIORITY) {
     this->linkinterface = linkinterface_;
     this->forwardAll = forwardall_;
     this->linkIdentifier = linkinterface_->getLinkdentifier();

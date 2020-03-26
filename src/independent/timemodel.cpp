@@ -125,7 +125,7 @@ void TimeModel::localTime2Calendar(const int64_t localTime,
 }
 
 double TimeModel::localTime2mjd_UTC(const int64_t &localTime) {
-    return (localTime / (1.0f*DAYS)) + 51544.0f;
+    return (localTime / static_cast<float>(DAYS)) + 51544.0f;
 }
 
 /** computes the localTime units fomr 1. January 2000 to given date */

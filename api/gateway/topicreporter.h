@@ -12,7 +12,7 @@
 
 namespace RODOS {
 
-class TopicReporter: public Thread {
+class TopicReporter: public StaticThread<> {
 
     NetworkMessage topicMessage;
 

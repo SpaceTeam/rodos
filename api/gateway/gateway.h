@@ -42,7 +42,7 @@ struct SeenNode {
 };
 
 
-class Gateway : public Subscriber, public Thread {
+class Gateway : public Subscriber, public StaticThread<> {
 
 private:
     Putter nopPutter; ///< inherited from parent but never used, only as placeholder
