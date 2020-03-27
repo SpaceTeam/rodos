@@ -2,10 +2,12 @@
 
 #include "fifo.h"
 
+uint32_t printfMask = 0;
 class FiFoTester : public StaticThread<> {
 
   public:
     void run() {
+        printfMask = 1;
         Fifo<int32_t, 3> fifo; //A maximum of 3-1=2 ints in the Fifo
         int              tmp;
         bool             ok;

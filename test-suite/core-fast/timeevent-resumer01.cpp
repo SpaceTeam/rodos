@@ -2,11 +2,14 @@
 
 #include "../prt-seconds-now.h"
 
+uint32_t printfMask = 0;
+
 static Application module01("TestTimebeats & events 01");
 
 class TestTimeBeat : public StaticThread<> {
   public:
     void run() {
+        printfMask = 1;
         PRINTF("First beat in 0.05 seconds, period 0.05 seconds\n");
         int i = 0;
         TIME_LOOP(0.05*SECONDS, 0.05*SECONDS) {
@@ -15,7 +18,7 @@ class TestTimeBeat : public StaticThread<> {
                 hwResetAndReboot();
             }
             int32_t t0 = CNT_SECONDS_NOW();
-            PRINTF("in 0.05 seconds beat: %d \n", t0);
+            PRINTF("In 0.05 seconds beat: %d \n", t0);
         }
     }
 };

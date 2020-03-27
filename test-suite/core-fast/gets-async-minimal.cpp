@@ -1,6 +1,9 @@
 #include "rodos.h"
 
+uint32_t printfMask = 0;
+
 void MAIN() {
+    printfMask = 1;
     PRINTF("please write some lines\n");
     activateTopicCharInput(); //<........ THIS IS IT!!!!
     hwResetAndReboot();

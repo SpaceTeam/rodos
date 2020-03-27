@@ -6,6 +6,8 @@
 
 Topic<char[20]>   	collectData(-1, "CollectData");
 
+uint32_t printfMask = 0;
+
 /******************************/
 
 class Collector : public StaticThread<> {
@@ -13,6 +15,7 @@ public:
     Collector() : StaticThread<>("Collector") { }
 
     void run () {
+        printfMask = 1;
         char buf[20];
         for (int i = 0; i < 10; i++) {
             PRINTF("Colleting data\n");
@@ -22,7 +25,7 @@ public:
         }
         
         AT(500*MILLISECONDS);
-        PRINTF("\nThis run (test) terminates now!\n");
+        PRINTF("\nThis run (test) terminates now! (%s)\n", LOCATION);
         hwResetAndReboot();
     }
 } collector;

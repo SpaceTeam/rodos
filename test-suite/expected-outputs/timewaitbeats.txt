@@ -1,34 +1,12 @@
-RODOS RODOS-200.0 OS Version Linux-x86
-Loaded Applications:
-         10 -> 'Topics & Middleware'
-       1000 -> 'TestTime02'
-Calling Initiators and Application Initiators
-Distribute Subscribers to Topics
-List of Middleware Topics:
- CharInput  Id = 28449 len = 16.   -- Subscribers:
- SigTermInterrupt  Id = 16716 len = 4.   -- Subscribers:
- UartInterrupt  Id = 15678 len = 4.   -- Subscribers:
- TimerInterrupt  Id = 25697 len = 4.   -- Subscribers:
- routerTopic  Id = 21324 len = 1326.   -- Subscribers:
- gatewayTopic  Id = 0 len = 16.   -- Subscribers:
-
-Event servers:
-Threads in System:
-   Prio =       0 Stack =  32000 IdleThread: yields all the time
-   Prio =     100 Stack =  32000 AnonymThread: 
-BigEndianity = 0, cpu-Arc = x86, Basis-Os = baremetal, Cpu-Speed (K-Loops/sec) = 313330 yeildtim (ns) 990
------------------------------------------------------
-Default internal MAIN
---------------- Application running ------------
 First beat in 0.03 seconds, period 0.02 seconds
-in 0.02 seconds beat:   0.100000000 1
-in 0.02 seconds beat:   0.200000000 2
-in 0.02 seconds beat:   0.300000000 3
-in 0.02 seconds beat:   0.400000000 4
-in 0.02 seconds beat:   0.500000000 5
-in 0.02 seconds beat:   0.600000000 6
-in 0.02 seconds beat:   0.700000000 7
-in 0.02 seconds beat:   0.800000000 8
-in 0.02 seconds beat:   0.900000000 9
-in 0.02 seconds beat:   1.000000000 10
+In 0.02 seconds beat:   0.100000000 1
+In 0.02 seconds beat:   0.200000000 2
+In 0.02 seconds beat:   0.300000000 3
+In 0.02 seconds beat:   0.400000000 4
+In 0.02 seconds beat:   0.500000000 5
+In 0.02 seconds beat:   0.600000000 6
+In 0.02 seconds beat:   0.700000000 7
+In 0.02 seconds beat:   0.800000000 8
+In 0.02 seconds beat:   0.900000000 9
+In 0.02 seconds beat:   1.000000000 10
 hw_resetAndReboot() -> exit

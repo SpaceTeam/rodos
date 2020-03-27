@@ -3,6 +3,8 @@
 
 #include "../prt-seconds-now.h"
 
+uint32_t printfMask = 0;
+
 #define NUMBER_OF_TESTS 10      //Whenever a test runs in a loop, the upper limit of executions is this number
 
 /* Unique Strings to find classes:
@@ -251,6 +253,7 @@ static TimeEventTest te01;
 
 // FIND_MainTest_run
 void MainTest::run() {
+    printfMask = 1;
     PRINTF("MAINTEST\n");
     
     //CommBuffer

@@ -1,9 +1,4 @@
-RODOS RODOS-200.0 OS Version Linux-x86
-Loaded Applications:
-         10 -> 'Topics & Middleware'
-       2000 -> 'initatorApplic'
-Calling Initiators and Application Initiators
  This will be done before any thread begins
  Doing so you do not need to use MAIN
- This is the initator from applicasions
+ This is the initator from applications
 hw_resetAndReboot() -> exit

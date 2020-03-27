@@ -1,11 +1,14 @@
 #include "rodos.h"
 
+uint32_t printfMask = 0;
+
 static Application module01("Testgetchar");
 
 class TestGets : public StaticThread<> {
   public:
     TestGets() : StaticThread<>("testgetchar") {}
     void run() {
+        printfMask = 1;
         char* s;
         PRINTF("Please type string of characters. Run at least 0.04 seconds\n");
 

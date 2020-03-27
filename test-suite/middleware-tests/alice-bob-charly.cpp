@@ -1,6 +1,8 @@
 
 #include "rodos.h"
 
+uint32_t printfMask = 0;
+
 /**************************************************** Common Data ***/
 
 struct Greetings {
@@ -32,6 +34,7 @@ class Bob : public StaticThread<> {
 
   public:
     void run() {
+        printfMask = 1;
         greetings.date = 111;
         strcpy(greetings.msg, "i wish you would be here");
         PRINTF("Bob sending greetings '%s'\n", greetings.msg);

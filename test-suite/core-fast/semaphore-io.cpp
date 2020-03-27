@@ -1,5 +1,7 @@
 #include "rodos.h"
 
+uint32_t printfMask = 0;
+
 /****** Use modulId 2000 just be be found by other example: ceiler **/
 
 void veryLowSpeedPrinter(const char* text) {
@@ -20,6 +22,7 @@ Semaphore protector;
 
 class TestThread : public StaticThread<> {
     void run() {
+        printfMask = 1;
         PRINTF("remove the semaphore and try again!\n");
         protector.enter();
         {

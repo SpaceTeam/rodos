@@ -3,12 +3,15 @@
 
 #include "../prt-seconds-now.h"
 
+uint32_t printfMask = 0;
+
 Semaphore onlyOne;
 int       globalCnt = 0;
 
 class Watcher : public StaticThread<> {
   public:
     void run() {
+        printfMask = 1;
         onlyOne.enter();
         int myId = globalCnt++;
         onlyOne.leave();

@@ -1,5 +1,7 @@
 #include "rodos.h"
 
+uint32_t printfMask = 0;
+
 Topic<int> counter1(20, "counter1");
 Topic<int> counter2(21, "counter2");
 
@@ -11,6 +13,7 @@ class Sender : public StaticThread<> {
 
   public:
     void run() {
+        printfMask = 1;
         for(int i = 0; i < 100; i++) {
             PRINTF("Publish cnt1 %d.\n", c1);
             counter1.publish(c1);

@@ -2,6 +2,8 @@
 
 #include "../prt-seconds-now.h"
 
+uint32_t printfMask = 0;
+
 static Application module02("TestTimeAT");
 
 static class TestTime : public StaticThread<> {
@@ -9,11 +11,13 @@ static class TestTime : public StaticThread<> {
   public:
     TestTime() : StaticThread<>("waitAT") {}
     void run() {
+        printfMask = 1;
+        
         int cnt = 0;
 
         PRINTF("Starting and waiting until 0.03 second\n");
         AT(0.03 * SECONDS);
-        PRINTF("after 0.03 second\n");
+        PRINTF("After 0.03 second\n");
 
         for (int i = 0; i < 10; i++) {
             cnt++;

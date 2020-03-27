@@ -1,12 +1,15 @@
 #include "rodos.h"
 #include "checksumes.h"
 
+uint32_t printfMask = 0;
+
 uint64_t toBeTested;
 
 class ChecksumTester : public StaticThread<> {
 
   public:
     void run() {
+        printfMask = 1;
         toBeTested = 1;
         char buff[80]; //Buffer for printf, a lot longer than needed
 

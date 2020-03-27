@@ -1,5 +1,6 @@
 #include "rodos.h"
 
+uint32_t printfMask = 0;
 
 /* Unique Strings to find classes:
  * MainTest:            FIND_MainTest
@@ -157,6 +158,7 @@ class ReceiverBuf : public StaticThread<> {
 
 // FIND_MainTest_run
 void MainTest::run() {
+    printfMask = 1;
     //Semaphore-Test
     PRINTF("Semaphore-Test----------------\n");
     

@@ -2,11 +2,13 @@
 
 #include "../prt-seconds-now.h"
 
+uint32_t printfMask = 0;
+
 static Application module("semaphoretest");
 
 Semaphore protector;
 
-static int prio = 1;        //Priorität des Threads, priority ist bereits in Rodos vergeben
+static int prio = 1;        //priority of threads, priority is already used in Rodos
 
 class TestThread : public StaticThread<> {
 
@@ -14,6 +16,7 @@ public:
     TestThread() : StaticThread<>("TestThread", prio) {prio += 10;}
     
     void run() {
+        printfMask = 1;
         for (int i = 0; i < 25; i++) {
             xprintf("%s\n", getName());
             yield();
@@ -30,7 +33,7 @@ public:
             yield();
             xprintf("          %s 4.yield. getScheduleCounter() %lld\n", getName(), getScheduleCounter());
             yield();
-            xprintf("-------- %s leavs getScheduleCounter() %lld\n", getName(), getScheduleCounter());
+            xprintf("-------- %s leaves getScheduleCounter() %lld\n", getName(), getScheduleCounter());
             protector.leave();
 
 

@@ -1,5 +1,7 @@
 #include "rodos.h"
 
+uint32_t printfMask = 0;
+
 /****** Use modulId 2000 just be be found by other example: ceiler **/
 
 static Application module01("PreemptiveTest", 2000);
@@ -10,10 +12,13 @@ class HighPriorityThread01 : public StaticThread<> {
     }
 
     void init() {
-        PRINTF(" hipri = '*'");
+        printfMask = 1;
+        PRINTF(" hipri = '*'\n");
+        printfMask = 0;
     }
 
     void run() {
+        printfMask = 1;
         for (int i = 0; i < 100; i++) {
             PRINTF("*");
             FFLUSH();
@@ -31,10 +36,13 @@ class LowPriorityThread : public StaticThread<> {
     }
 
     void init() {
-        PRINTF(" lopri = '.'");
+        printfMask = 1;
+        PRINTF(" lopri = '.'\n");
+        printfMask = 0;
     }
 
     void run() {
+        printfMask = 1;
         long long cnt = 0;
         for (int i = 0; i < 200; i++) {
             cnt++;
@@ -46,6 +54,7 @@ class LowPriorityThread : public StaticThread<> {
                 highPriorityThread01.resume();
             }
         }
+        PRINTF("\n");
         hwResetAndReboot();
     }
 };

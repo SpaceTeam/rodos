@@ -2,6 +2,8 @@
 
 #define NUMBER_OF_TESTS 10      //Whenever a test runs in a loop, the upper limit of executions is this number
 
+uint32_t printfMask = 0;
+
 /* Unique Strings to find classes:
  * MainTest:            FIND_MainTest
  * MainTest run:        FIND_MainTest_run
@@ -136,7 +138,7 @@ public:
         valentine.publish(greetings);
         
         AT(500*MILLISECONDS);
-        PRINTF("\nThis run (test) terminates now!\n");
+        PRINTF("\nThis run (test) terminates now! (%s)\n", LOCATION);
         
         maintest.resume();
     }
@@ -158,6 +160,7 @@ public:
 
 // FIND_MainTest_run
 void MainTest::run() {
+    printfMask = 1;
     PRINTF("MAINTEST\n");
     
     //Middleware

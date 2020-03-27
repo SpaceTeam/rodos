@@ -1,5 +1,6 @@
 #include "rodos.h"
 
+uint32_t printfMask = 0;
 /****** Use modulId 2000 just be be found by other example: ceiler **/
 
 #define LOOPS 100000000
@@ -13,10 +14,13 @@ class HiPriorityThread : public StaticThread<> {
     }
 
     void init() {
-        xprintf(" hipri");
+        printfMask = 1;
+        xprintf(" hipri\n");
+        printfMask = 0;
     }
 
     void run() {
+        printfMask = 1;
         long long loopCnt = 0;
         long long cnt     = 0;
         while(cnt < LOOPS * 10) {
@@ -39,10 +43,13 @@ class LowPriorityThread : public StaticThread<> {
     }
 
     void init() {
-        xprintf(" lopri");
+        printfMask = 1;
+        xprintf(" lopri\n");
+        printfMask = 0;
     }
 
     void run() {
+        printfMask = 1;
         long long loopCnt = 0;
         long long cnt     = 0;
         while(cnt < LOOPS * 10) {

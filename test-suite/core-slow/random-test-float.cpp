@@ -1,12 +1,14 @@
-#include <stdint.h>
-
-#include "random.h"
 #include "rodos.h"
+#include "random.h"
+
+
+uint32_t printfMask = 0;
 
 #define RUNS 10000000
 
 class RandomTests : public StaticThread<> {
     void run() {
+        printfMask = 1;
         for(int i = 0; i < 10; i++) {
             setRandSeed(123345);
             double min  = 1.0;

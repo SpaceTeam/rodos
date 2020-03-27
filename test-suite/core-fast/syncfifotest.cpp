@@ -1,9 +1,12 @@
 #include "rodos.h"
 
+uint32_t printfMask = 0;
+
 SyncFifo<int, 10> fifo;
 
 class Sender : public StaticThread<> {
     void run() {
+        printfMask = 1;
         int cnt = 0;
         suspendCallerUntil(NOW() + 0.05 * SECONDS);
         for (int i = 0; i < 100; i++) {
@@ -25,6 +28,7 @@ class Sender : public StaticThread<> {
 
 class Receiver : public StaticThread<> {
     void run() {
+        printfMask = 1;
         int cntIn = 0;
         int cnt   = 0;
         while(1) {

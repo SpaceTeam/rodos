@@ -1,10 +1,11 @@
 #include "rodos.h"
 #include "random.h"
 
+uint32_t printfMask = 0;
 
 /** Warning:
 	this test shows if a thread may reenter
-	a semaphore severaltimes without deadlock.
+	a semaphore several times without deadlock.
 **/
 
 static Application module("semaphoretest");
@@ -48,6 +49,7 @@ class worm : public StaticThread<> {
     }
 
     void run() {
+        printfMask = 1;
 
         int last_x, last_y;
         for (int i = 0; i < MAX_STEPS; i++) {

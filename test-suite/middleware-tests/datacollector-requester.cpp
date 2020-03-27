@@ -4,6 +4,8 @@
  * In this test, one thread requests data from a subscriber.
  */
 
+uint32_t printfMask = 0;
+
 Topic<char[20]>   	collectData(-1, "CollectData");
 
 /******************************/
@@ -13,6 +15,7 @@ public:
     Collector() : StaticThread<>("Collector") { }
 
     void run () {
+        printfMask = 1;
         char buf[20];
         for (int i = 0; i < 10; i++) {
             PRINTF("Colleting data\n");

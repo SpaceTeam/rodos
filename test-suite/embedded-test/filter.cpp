@@ -3,6 +3,7 @@
 Topic<int> counter1(20, "counter1");
 Topic<int> counter2(21, "counter2");
 
+uint32_t printfMask = 0;
 
 //Filter for counter1
 
@@ -27,6 +28,7 @@ class Sender : public StaticThread<> {
 
   public:
     void run() {
+        printfMask = 1;
         for(int i = 0; i < 50; i++) {
             PRINTF("Publish cnt1 %d.\n", c1);
             counter1.publish(c1);
@@ -61,7 +63,7 @@ class Sender : public StaticThread<> {
 
         
         AT(500*MILLISECONDS);
-        PRINTF("\nThis run (test) terminates now!\n");
+        PRINTF("\nThis run (test) terminates now! (%s)\n", LOCATION);
         hwResetAndReboot();
 
     }

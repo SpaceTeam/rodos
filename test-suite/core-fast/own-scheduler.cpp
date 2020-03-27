@@ -2,6 +2,8 @@
 
 #include "../prt-seconds-now.h"
 
+uint32_t printfMask = 0;
+
 static Application module01("TestTime");
 
 class TestTime : public StaticThread<> {
@@ -10,6 +12,7 @@ class TestTime : public StaticThread<> {
   public:
   TestTime(int id) : StaticThread<>("waitfor"), id(id) {}
     void run() {
+        printfMask = 1;
         int cnt = 0;
         while(1) {
             cnt++;
@@ -27,6 +30,7 @@ class MySchedluler : public StaticThread<> {
   public:
     MySchedluler() : StaticThread<>("mySchedluler", 10) {}
     void run() {
+        printfMask = 1;
         int cnt = 0;
         TIME_LOOP(0.1 * SECONDS, 0.02 * SECONDS) {
             cnt++;

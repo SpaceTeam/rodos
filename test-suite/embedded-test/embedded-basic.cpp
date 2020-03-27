@@ -1,5 +1,7 @@
 #include "rodos.h"
 
+uint32_t printfMask = 0;
+
 /*This programme shows, how two thread can be executed after each other, first maintest then test1.
  * Each thread MUST first call suspendCallerUntil(); and resume maintest at the end.
  * It is useful to have a unique string before the implementation of each class. With this string each implementation can be easily found using the FIND-function of the text editor (e.g. CTRL+F).
@@ -39,6 +41,7 @@ public:
 
 // FIND_MainTest_run
 void MainTest::run() {
+    printfMask = 1;
     PRINTF("MAINTEST\n");
     test1.resume();
     suspendCallerUntil();

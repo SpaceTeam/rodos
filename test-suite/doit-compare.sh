@@ -7,6 +7,9 @@
 echo "__________________________________________________________ core fast test programs"
 execute-all.sh   linux-x86        core-fast       tmp
 
+echo "__________________________________________________________ matlib-test"
+execute-all.sh   linux-x86        matlib-test     tmp
+
 echo "__________________________________________________________ core slow test programs"
 execute-all.sh   linux-x86        core-slow       tmp
 

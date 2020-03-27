@@ -1,7 +1,9 @@
 #include "rodos.h"
 #include "random.h"
 
-#define MAX_STEPS 100      //Maximale Anzahl der Schritte eines Wurms
+uint32_t printfMask = 0;
+
+#define MAX_STEPS 100      //Maximum steps of a worm
 
 static Application module("semaphoretest");
 
@@ -24,7 +26,7 @@ void MAIN() {
 
 static char wormLetter = 'A';
 
-static int prio = 1;        //Priorität des Threads, priority ist bereits in Rodos vergeben
+static int prio = 1;        //Priority of the thread, priority is already used in RODOS
 
 class worm : public StaticThread<> {
     int  x, y, speed_x, speed_y;
@@ -42,6 +44,7 @@ class worm : public StaticThread<> {
     }
 
     void run() {
+        printfMask = 1;
 
         int last_x, last_y;
         for (int i = 0; i < MAX_STEPS; i++) {

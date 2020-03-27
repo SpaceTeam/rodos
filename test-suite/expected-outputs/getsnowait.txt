@@ -1,0 +1,12 @@
+Please type string of characters
+Waiting 0.01 Seconds
+Waiting 0.01 Seconds
+Waiting 0.01 Seconds
+Waiting 0.01 Seconds
+Waiting 0.01 Seconds
+Waiting 0.01 Seconds
+Waiting 0.01 Seconds
+Waiting 0.01 Seconds
+Waiting 0.01 Seconds
+Waiting 0.01 Seconds
+-------------------------------------------------------------hw_resetAndReboot() -> exit

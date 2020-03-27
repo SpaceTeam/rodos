@@ -1,23 +1,3 @@
-RODOS RODOS-200.0 OS Version Linux-x86
-Loaded Applications:
-         10 -> 'Topics & Middleware'
-       1000 -> 'TestErrorLog'
-Calling Initiators and Application Initiators
-Distribute Subscribers to Topics
-List of Middleware Topics:
- CharInput  Id = 28449 len = 16.   -- Subscribers:
- SigTermInterrupt  Id = 16716 len = 4.   -- Subscribers:
- UartInterrupt  Id = 15678 len = 4.   -- Subscribers:
- TimerInterrupt  Id = 25697 len = 4.   -- Subscribers:
- routerTopic  Id = 21324 len = 1326.   -- Subscribers:
- gatewayTopic  Id = 0 len = 16.   -- Subscribers:
-
-Event servers:
-Threads in System:
-   Prio =       0 Stack =  32000 IdleThread: yields all the time
-   Prio =     100 Stack =  32000 TestErrorLog: 
-BigEndianity = 0, cpu-Arc = x86, Basis-Os = baremetal, Cpu-Speed (K-Loops/sec) = 313330 yeildtim (ns) 990
------------------------------------------------------
  in MAIN... Produces an error 
  error done!
 --------------- Application running ------------
@@ -30,8 +10,8 @@ id  text/name
 ---------------------------------
      0  null pointer setPrioCurrentRunner
      0  null pointer setPrioCurrentRunner
-     0  here starts my execution
-     0  core-fast/timepoints-errlog.cpp : 25
+     0  Here starts my execution
+     0  core-fast/timepoints-errlog.cpp : 27
      0  here starts my loop
      0  In the loop
      0  In the loop

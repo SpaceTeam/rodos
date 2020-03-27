@@ -1,6 +1,8 @@
 #include "rodos.h"
 #include "random.h"
-#include "terminate-test.h"
+#include "../terminate-test.h"
+
+uint32_t printfMask = 0;
 
 static Application module("semaphordeadlok");
 
@@ -16,6 +18,7 @@ class Requester : public StaticThread<> {
     }
 
     void run() {
+        printfMask = 1;
         bool s1Lock = false;
         bool s2Lock = false;
         PRINTF("Deadlock will come...\n");

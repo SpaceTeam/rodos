@@ -1,5 +1,7 @@
 #include "rodos.h"
 
+uint32_t printfMask = 0;
+
 Semaphore sema;
 
 int myFunction() {
@@ -21,6 +23,7 @@ class TestThread : public StaticThread<> {
     TestThread(const int id) : id(id) {}
 
     void run() {
+        printfMask = 1;
         for(int i=0; i < 100; i++) {
             PRINTF("Thread %d: %d\n", id, myFunction());
         }

@@ -2,7 +2,9 @@
 
 #include "../prt-seconds-now.h"
 
-static int prio = 1;        //Priorität des Threads, priority ist bereits in Rodos vergeben
+uint32_t printfMask = 0;
+
+static int prio = 1;        //priority of threads, priority is already used in Rodos
 
 static Application module("semaphoretest");
 
@@ -12,6 +14,7 @@ class TestThread : public StaticThread<> {
 public:
     
     void run() {
+        printfMask = 1;
         for (int i = 0; i < 10; i++) {
             PRINTF("%s\n", getName());
             yield();
@@ -30,7 +33,7 @@ public:
                 yield();
                 PRINTF("          %s 4.yield. getScheduleCounter() %lld\n", getName(), getScheduleCounter());
                 yield();
-                PRINTF("-------- %s leavs getScheduleCounter() %lld\n", getName(), getScheduleCounter());
+                PRINTF("-------- %s leaves getScheduleCounter() %lld\n", getName(), getScheduleCounter());
             }
 
 

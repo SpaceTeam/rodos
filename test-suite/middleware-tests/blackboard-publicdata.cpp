@@ -1,5 +1,7 @@
 #include "rodos.h"
 
+uint32_t printfMask = 0;
+
 struct SharedData {
     int  versionNr;
 };
@@ -34,6 +36,7 @@ public:
     SharedData myData;
     Sender() : StaticThread<>("Sender") { }
     void run () {
+        printfMask = 1;
         myData.versionNr = 0;
         for (int i = 0; i < 10; i++) {
             PRINTF("Sending %d\n", myData.versionNr);
@@ -52,6 +55,7 @@ public:
     SharedData myData;
     Receiver() : StaticThread<>("Receiver") { }
     void run () {
+        printfMask = 1;
         AT(NOW() + 0.05 * SECONDS);
         for (int i = 0; i < 5; i++) {
             collectShared.requestLocal(myData);

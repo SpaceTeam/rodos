@@ -1,9 +1,11 @@
 #include "rodos.h"
 
+uint32_t printfMask = 0;
 
 class TestSNPrintf: public StaticThread<> {
 public:
   void run(){
+    printfMask = 1;
 
     char buffer[32] = {};
 

@@ -2,6 +2,8 @@
 
 #include "../prt-seconds-now.h"
 
+uint32_t printfMask = 0;
+
 static Application module01("TestTimebeats & events 02");
 
 
@@ -29,6 +31,7 @@ static Resumer resumer;
 class TestTimeBeat : public StaticThread<> {
   public:
     void run() {
+        printfMask = 1;
         for (int i = 0; i < 10; i++) {
             resumer.resumeThreadAt(this, NOW() + 30 * MILLISECONDS);
             int32_t t0 = CNT_SECONDS_NOW();

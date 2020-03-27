@@ -1,11 +1,13 @@
 #include "rodos.h"
 
+uint32_t printfMask = 0;
 
 class LowPriorityThread : public StaticThread<> {
   public:
     LowPriorityThread() : StaticThread<>("LowPriority", 100) {}
 
     void run() {
+        printfMask = 1;
         volatile int64_t cnt             = 0;
         int64_t          intervalToPrint = 1000000 * 10;
         PRINTF("\nLow prio begins printing '.'\n");
@@ -26,6 +28,7 @@ class HiPriorityThread : public StaticThread<> {
     HiPriorityThread() : StaticThread<>("HiPriority", 200) {}
 
     void run() {
+        printfMask = 1;
         volatile int64_t cnt             = 0;
         int64_t   intervalToPrint = getSpeedKiloLoopsPerSecond() * 10;
         PRINTF("\nHi prio waits 1 second and then print +\n");

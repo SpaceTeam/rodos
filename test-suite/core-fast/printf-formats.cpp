@@ -1,9 +1,11 @@
 #include "rodos.h"
 
+uint32_t printfMask = 0;
 
 class TestPrint : public StaticThread<> {
   public:
     void run() {
+        printfMask = 1;
 
         PRINTF(" Showing differnt printf formats\n\n\n");
 

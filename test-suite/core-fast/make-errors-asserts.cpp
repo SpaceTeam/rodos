@@ -13,6 +13,8 @@
 
 #include "../prt-seconds-now.h"
 
+uint32_t printfMask = 0;
+
 /**
  * I recommend to check periodically errorLog.isEmpty()
  * if it is not true some thing very wrong has occurred. 
@@ -35,6 +37,7 @@ class MakeError : public StaticThread<> {
     MakeError() : StaticThread<>("makeError") {}
 
     void run() {
+        printfMask = 1;
         if(!errorLog.isEmpty()) {
             PRINTF("Errors prior to my execution: ");
             printErrorLog();
@@ -60,6 +63,7 @@ class MakeError : public StaticThread<> {
 } makeError;
 
 void MAIN() {
+    printfMask = 1;
     PRINTF(" in MAIN... Produces an error \n");
     // Scheduler is still not running, Priority ceiling produces an error
     {

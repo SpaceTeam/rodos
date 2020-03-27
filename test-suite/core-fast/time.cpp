@@ -2,6 +2,7 @@
 
 #include "../prt-seconds-now.h"
 
+uint32_t printfMask = 0;
 
 static Application module02("TestTimeAT");
 
@@ -11,21 +12,22 @@ static class TestTime : public StaticThread<> {
     TestTime() : StaticThread<>("waitAT") {}
 
     void run() {
-
-        PRINTF("waiting until 0.01 second after start\n");
+        printfMask = 1;
+        
+        PRINTF("Waiting until 0.01 seconds after start\n");
         AT(0.01 * SECONDS);
-        PRINTF("after 0.01 second\n");
+        PRINTF("After 0.01 seconds\n");
 
-        PRINTF("waiting until 0.015 second has passed\n");
+        PRINTF("Waiting until 0.015 seconds have passed\n");
         AT(NOW() + 0.015 * SECONDS);
-        PRINTF("1 second has pased\n");
+        PRINTF("0.025 second has passed\n");
 
-        PRINTF("print every 0.02 seconds, start at 0.04 seconds\n");
+        PRINTF("Print every 0.02 seconds, start at 0.04 seconds\n");
         
         int cnt = 0;
         
         TIME_LOOP(0.015 * SECONDS, 20 * MILLISECONDS) {
-            PRINTF("current time: %3.9f\n", CNT_SECONDS_NOW());
+            PRINTF("Current time: %3.9f\n", CNT_SECONDS_NOW());     //CNT_SECONDS_NOW only increases a counter, NO real time
             cnt++;
             if (cnt > 10) {
                 hwResetAndReboot();

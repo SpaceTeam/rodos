@@ -1,11 +1,13 @@
 #include "rodos.h"
 #include "demo_topics.h"
 
+uint32_t printfMask = 0;
 
 class MyPublisher11 : public StaticThread<> {
 public:
     MyPublisher11() : StaticThread<>("sender11") { }
     void run () {
+        printfMask = 1;
         int32_t cnt32      = 100;
         int64_t cnt64      = 100000;
         double  cntDouble  = 1.0;

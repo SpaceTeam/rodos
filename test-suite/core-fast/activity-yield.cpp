@@ -1,6 +1,8 @@
 #include "rodos.h"
 #include "activity.h"
 
+uint32_t printfMask = 0;
+
 class A3 : public Activity {
 public:
     A3() : Activity("A") { }
@@ -9,6 +11,7 @@ public:
 } a3;
 
 void A3::step(int64_t timeNow) {
+    printfMask = 1;
     GOTO_LAST_YIELD;
     PRINTF("A1\n");
     YIELD_UNTIL(NOW() + 0.01*SECONDS);
@@ -28,6 +31,7 @@ public:
 } a4;
 
 void A4::step(int64_t timeNow) {
+    printfMask = 1;
     static int cnt = 0;
     cnt++;
     if (cnt > 30) {

@@ -2,11 +2,14 @@
 
 #include "../prt-seconds-now.h"
 
+uint32_t printfMask = 0;
+
 static Application module01("resumefromEvent");
 
 class TestWaiter : public StaticThread<> {
   public:
     void run() {
+        printfMask = 1;
         for (int i = 0; i < 10; i++) {
             PRINTF("Suspend and wait until some one resumes me\n");
             suspendCallerUntil();

@@ -1,5 +1,7 @@
 #include "rodos.h"
 
+uint32_t printfMask = 0;
+
 static Application applic("ComBufTest-struct");
 
 struct Position {
@@ -12,6 +14,7 @@ CommBuffer<Position> buf;
 class Sender : public StaticThread<> {
 public:
     void run() {
+        printfMask = 1;
         Position pos;
         int      cnt = 0;
         while(1) {
@@ -31,6 +34,7 @@ public:
 class Receiver : public StaticThread<> {
 public:
     void run() {
+        printfMask = 1;
         Position mypos;
         suspendCallerUntil(NOW() + 0.01 * SECONDS);
         while(1) {

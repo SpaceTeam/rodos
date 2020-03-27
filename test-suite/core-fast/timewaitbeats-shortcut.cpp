@@ -2,11 +2,15 @@
 
 #include "../prt-seconds-now.h"
 
+uint32_t printfMask = 0;
+
 static Application module01("TestTimebeats02");
 
 class TestTimeBeat : public StaticThread<> {
   public:
     void run() {
+        printfMask = 1;
+        
         PRINTF("First beat in 0.03 seconds, period 0.02 seconds\n");
 
         int cnt = 0;

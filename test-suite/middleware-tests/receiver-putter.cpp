@@ -1,5 +1,7 @@
 #include "rodos.h"
 
+uint32_t printfMask = 0;
+
 Topic<long> counter1(-1, "counter1");
 
 static Application senderName("Publisher 01 simple", 1100);
@@ -9,6 +11,7 @@ class MyPublisher01 : public StaticThread<> {
     MyPublisher01() : StaticThread<>("SenderSimple") {}
 
     void run() {
+        printfMask = 1;
         long cnt = 0;
         TIME_LOOP(0.03 * SECONDS, 0.03 * SECONDS) {
             if (cnt > 10) {

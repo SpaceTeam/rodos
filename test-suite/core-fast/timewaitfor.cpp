@@ -2,12 +2,15 @@
 
 #include "../prt-seconds-now.h"
 
+uint32_t printfMask = 0;
+
 static Application module01("TestTime");
 
 class TestTime : public StaticThread<> {
   public:
     TestTime() : StaticThread<>("waitfor") {}
     void run() {
+        printfMask = 1;
         int cnt = 0;
         for (int i = 0; i < 10; i++) {
             cnt++;

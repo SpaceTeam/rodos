@@ -1,5 +1,7 @@
 #include "rodos.h"
 
+uint32_t printfMask = 0;
+
 /****** Use modulId 2000 just be be found by other example: ceiler **/
 
 static Application module01("PreemptiveTest", 2000);
@@ -10,10 +12,13 @@ class HighPriorityThread : public StaticThread<> {
     }
 
     void init() {
-        xprintf(" hipri = '*'");
+        printfMask = 1;
+        xprintf(" hipri = '*'\n");
+        printfMask = 0;
     }
 
     void run() {
+        printfMask = 1;
         while(1) {
             xprintf("*");
             FFLUSH();
@@ -29,10 +34,13 @@ class LowPriorityThread : public StaticThread<> {
     }
 
     void init() {
-        xprintf(" lopri = '.'");
+        printfMask = 1;
+        xprintf(" lopri = '.'\n");
+        printfMask = 0;
     }
 
     void run() {
+        printfMask = 1;
         volatile int64_t cnt             = 0;
         int64_t          intervalToPrint = getSpeedKiloLoopsPerSecond() * 10;
         while(1) {
@@ -61,11 +69,14 @@ class PriorityCeiler : public StaticThread<> {
     }
 
     void init() {
-        xprintf(" ceiler = '+'");
+        printfMask = 1;
+        xprintf(" ceiler = '+'\n");
+        printfMask = 0;
     }
 
 
     void run() {
+        printfMask = 1;
         suspendCallerUntil(3 * SECONDS);
         int64_t aproxLoopsFor2Seconds = getSpeedKiloLoopsPerSecond() * 1000LL;
         int64_t aproxLoopsForPrint    = aproxLoopsFor2Seconds / 80;
@@ -122,6 +133,7 @@ PriorityCeiler priorityCeiler;
 /******************/
 
 void MAIN() {
+    printfMask = 1;
     if(Application::findApplication(2000) == 0) {
         xprintf("\n\n**********************\n");
         xprintf("To be able to test it compile together with PreemptionTest\n");

@@ -9,6 +9,8 @@
 
 #include "../prt-seconds-now.h"
 
+uint32_t printfMask = 0;
+
 static Application module01("TestErrorLog");
 
 class TestErrorLog : public StaticThread<> {
@@ -21,7 +23,7 @@ class TestErrorLog : public StaticThread<> {
             printErrorLog();
         }
 
-        errorLog.add("here starts my execution");
+        errorLog.add("Here starts my execution");
         errorLog.add(LOCATION);
 
         errorLog.add("here starts my loop");
@@ -42,6 +44,7 @@ class TestErrorLog : public StaticThread<> {
 } testErrorLog;
 
 void MAIN() {
+    printfMask = 1;
     PRINTF(" in MAIN... Produces an error \n");
     // Scheduler is still not running, Priority ceiling produces an error
     {
