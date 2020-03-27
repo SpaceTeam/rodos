@@ -31,4 +31,4 @@ __________________________________________________________ Diffs
  diff -rq   expected-outputs           tmp
  diff -rq   expected-embedded-outputs  tmp-embedded
 _________________________________________________________________
-
+EOT

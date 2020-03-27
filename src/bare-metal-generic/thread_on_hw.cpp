@@ -45,7 +45,7 @@ Thread::Thread(const char* name,
 }
 
 void Thread::initializeStack() {
-    //Paint the stack space
+    //Paint the stack space TODO: Comment out for faster start up
     uint32_t* stackPaint = (uint32_t*)stack;
     while((uint32_t)stackPaint >= (uint32_t)stackBegin) {
         *stackPaint = EMPTY_MEMORY_MARKER;

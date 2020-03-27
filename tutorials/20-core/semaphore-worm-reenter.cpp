@@ -3,7 +3,7 @@
 
 
 /** Warning:
-	this test shows if a StaticThread<> may reenter
+	this test shows if a thread may reenter
 	a semaphore severaltimes without deadlock.
 **/
 
