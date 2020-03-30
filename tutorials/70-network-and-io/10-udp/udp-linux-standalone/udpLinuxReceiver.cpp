@@ -7,7 +7,7 @@
 UDPInLx udpIn(-5001);  // negatrive to allow other to hear the same port
 char  userData[1300];
 
-int main(int argc, char *argv[]) {
+int main([[gnu::unused]] int argc, [[gnu::unused]] char *argv[]) {
 
   printf("UDPInMsg Tester 3.5 waiting\n");
 

@@ -96,7 +96,7 @@ uint32_t CRC::computeCRC(uint8_t* buf, int32_t len, int32_t initialValue) {
  */
 
 uint16_t hash(const char* str) {
-	const uint8_t* buf = (uint8_t*) str;
+	const uint8_t* buf = reinterpret_cast<const uint8_t*>(str);
 	uint16_t crc = (uint16_t)computeCrc(buf, (int32_t)strlen(str), 0xffff);
 
 	/** To make only printable characters, else it were a normal crc value **/

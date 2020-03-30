@@ -62,7 +62,7 @@ public:
 
     /** implements the generic interface of putter, to allow receive from middleware */
     bool putGeneric([[gnu::unused]] const long topicId, [[gnu::unused]] const unsigned int msgLen, const void* msg, [[gnu::unused]] const NetMsgInfo& netMsgInfo) {
-        accumulateNormalizing(*(double*)msg);
+        accumulateNormalizing(*(const double*)msg);
         return true;
     }
 
@@ -83,7 +83,7 @@ public:
 
     inline Type getMean() { return mean*scale; }   
 
-    inline Type accumulateNormalizing(Type& val) { Type scaled = val / scale; return accumulateAsIs(scaled) * scale; }
+    inline Type accumulateNormalizing(const Type& val) { Type scaled = val / scale; return accumulateAsIs(scaled) * scale; }
 
     Type accumulateAsIs(Type& val) {
 
@@ -111,7 +111,7 @@ public:
 
     /** implements the generic interface of putter, to allow receive from middleware */
     bool putGeneric([[gnu::unused]] const long topicId, [[gnu::unused]] const unsigned int msgLen, const void* msg, [[gnu::unused]] const NetMsgInfo& netMsgInfo) {
-        accumulateNormalizing(*(Type*)msg);
+        accumulateNormalizing(*(const Type*)msg);
         return true;
     }
 

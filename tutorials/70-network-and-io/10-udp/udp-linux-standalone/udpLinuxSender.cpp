@@ -3,9 +3,9 @@
 
 #include "UdpHW_common.h"
 
-UDPOutLx udpOut(-5001, (char*)"localhost"); // minus for multicast to this port
+UDPOutLx udpOut(-5001, (const char*)"localhost"); // minus for multicast to this port
 
-int main(int argc, char *argv[]) {
+int main([[gnu::unused]] int argc, [[gnu::unused]] char *argv[]) {
   
   printf("Sending to localhost:xxxx\n");
   char inputline[1300];

@@ -20,17 +20,16 @@ struct DownlinkTFHeader {
     uint32_t segmentLenId        ; //  2  bits  set to 11
     uint32_t firstHeaderPtr      ; // 11  bits  normaly set to 0 , for idle frames set to 11111111110 (0x7fe)
 
-    int serialize(char * const buf) const;
-    int deserialize(char const * const buf);
+    int serialize(uint8_t* buf) const;
+    int deserialize(const uint8_t* buf);
 };
 
 
-inline int DownlinkTFHeader::serialize(char* const b) const {
+inline int DownlinkTFHeader::serialize(uint8_t* buf) const {
     #ifndef NO_RODOS_NAMESPACE
     using namespace RODOS;
     #endif
 
-    unsigned char* buf = (unsigned char*)b;
     setBitField(buf,   0,  2, version);
     setBitField(buf,   2, 10, spaceCraftId);
     setBitField(buf,  12,  3, virtualChanId);
@@ -45,12 +44,11 @@ inline int DownlinkTFHeader::serialize(char* const b) const {
 
     return 6;
 }
-inline int DownlinkTFHeader::deserialize(char const * const b) {
+inline int DownlinkTFHeader::deserialize(const uint8_t * buf) {
     #ifndef NO_RODOS_NAMESPACE
     using namespace RODOS;
     #endif
 
-    unsigned char* buf = (unsigned char*)b; // becouse deserialize is const, but getBitFiled not!
     version          = getBitField(buf,   0,  2);
     spaceCraftId     = getBitField(buf,   2, 10);
     virtualChanId    = getBitField(buf,  12,  3);

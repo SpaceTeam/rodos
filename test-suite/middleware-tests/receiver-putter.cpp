@@ -30,7 +30,7 @@ class JustPrint : public Putter {
 
     /// Implements the complete generic interface of putter
     bool putGeneric(const long topicId, unsigned int msgLen, const void* msg, [[gnu::unused]] const NetMsgInfo& netMsgInfo) {
-        PRINTF("ReceiverPutter -  msgLen: %d data: %ld topicId: %ld\n", msgLen, *(long*)msg, topicId);
+        PRINTF("ReceiverPutter -  msgLen: %d data: %ld topicId: %ld\n", msgLen, *(const long*)msg, topicId);
         return true;
     }
 

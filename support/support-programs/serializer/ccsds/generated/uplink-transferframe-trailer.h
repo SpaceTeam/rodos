@@ -10,27 +10,25 @@ struct UplinkTFTrailer {
     static const int HEADER_SIZE = 2;
     uint32_t crc                 ; // 16  bits  cyclic redundancy code in CCSDS called "FRAME ERROR CONTROL FIELD"
 
-    int serialize(char * const buf) const;
-    int deserialize(char const * const buf);
+    int serialize(uint8_t * buf) const;
+    int deserialize(const uint8_t * buf);
 };
 
 
-inline int UplinkTFTrailer::serialize(char* const b) const {
+inline int UplinkTFTrailer::serialize(uint8_t* buf) const {
     #ifndef NO_RODOS_NAMESPACE
     using namespace RODOS;
     #endif
 
-    unsigned char* buf = (unsigned char*)b;
     uint16_tToBigEndian(buf+0,  crc);
 
     return 2;
 }
-inline int UplinkTFTrailer::deserialize(char const * const b) {
+inline int UplinkTFTrailer::deserialize(const uint8_t * buf) {
     #ifndef NO_RODOS_NAMESPACE
     using namespace RODOS;
     #endif
 
-    unsigned char* buf = (unsigned char*)b; // becouse deserialize is const, but getBitFiled not!
     crc              = bigEndianToUint16_t(buf+0);
 
     return 2;

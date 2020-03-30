@@ -35,7 +35,7 @@ public:
     /*
      * Networkmessages from all Gateway come in here
      */
-    long put(const long topicId, const long len, const void* data, const NetMsgInfo& netMsgInfo);
+    long put(const long topicId, const long len, void* data, const NetMsgInfo& netMsgInfo);
 
     /*
      * Local Topics to send out come in here

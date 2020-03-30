@@ -25,8 +25,8 @@ void collectSharedCaller(SharedData &destination) { LK; destination = blackBoard
 #undef LK
 #undef ULK
 
-SubscriberReceiver<SharedData> naneNotImportant01(deliverShared, deliverSharedCaller);
-SubscriberReceiver<SharedData> naneNotImportant02(collectShared, collectSharedCaller);
+SubscriberReceiver<SharedData> nameNotImportant01(deliverShared, deliverSharedCaller);
+SubscriberReceiver<SharedData> nameNotImportant02(collectShared, collectSharedCaller);
 
 
 /**********************************************************/

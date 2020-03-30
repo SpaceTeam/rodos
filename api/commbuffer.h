@@ -71,7 +71,7 @@ public:
    */
   bool putGeneric([[gnu::unused]] const long topicId, const unsigned int len, const void* msg, [[gnu::unused]] const NetMsgInfo& netMsgInfo) {
     RODOS_ASSERT_IFNOT_RETURN(len <= sizeof(Type), false);
-    put(*(Type*)msg);
+    put(*(const Type*)msg);
     return true;
   }
 
@@ -85,7 +85,7 @@ public:
     *writer = data;
 
     /* Swap reader <-> writer in order to make them read in the next call to get. */
-    Type* swap = (Type*)reader;
+    Type* swap = const_cast<Type*>(reader);
     reader = writer;
     writer = swap;
 
@@ -115,7 +115,7 @@ public:
   void get(Type &data) {
     newDataAvailable = false;
     readingNow = true;
-    Type* readerTmp = (Type*)reader; // This is assumed to be atomar
+    Type* readerTmp = const_cast<Type*>(reader); // This is assumed to be atomar
     data = *readerTmp;		  // this is not atomar
     readingNow = false;
     readCnt++;

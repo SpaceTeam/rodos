@@ -29,7 +29,7 @@ Router::Router(bool forwardTopicReports_, Gateway* gateway1, Gateway* gateway2, 
 }
 
 
-long Router::put([[gnu::unused]] const long topicId, [[gnu::unused]] const long len, const void* data, const NetMsgInfo& netMsgInfo) {
+long Router::put([[gnu::unused]] const long topicId, [[gnu::unused]] const long len, void* data, const NetMsgInfo& netMsgInfo) {
     routeMsg(*((NetworkMessage*)data),netMsgInfo.linkId);
     return 1;
 }

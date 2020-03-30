@@ -19,17 +19,16 @@ struct UplinkTFHeader {
     uint32_t sequenceFlags       ; //  2  bits  set to 0x3 
     uint32_t multiplexAceessPoint; //  6  bits  set to 0x3 , eg to select target computer
 
-    int serialize(char * const buf) const;
-    int deserialize(char const * const buf);
+    int serialize(uint8_t * buf) const;
+    int deserialize(const uint8_t * buf);
 };
 
 
-inline int UplinkTFHeader::serialize(char* const b) const {
+inline int UplinkTFHeader::serialize(uint8_t* buf) const {
     #ifndef NO_RODOS_NAMESPACE
     using namespace RODOS;
     #endif
 
-    unsigned char* buf = (unsigned char*)b;
     setBitField(buf,   0,  2, version);
     setBitField(buf,   2,  1, bypassFlag);
     setBitField(buf,   3,  1, controllCommandFlag);
@@ -43,12 +42,11 @@ inline int UplinkTFHeader::serialize(char* const b) const {
 
     return 6;
 }
-inline int UplinkTFHeader::deserialize(char const * const b) {
+inline int UplinkTFHeader::deserialize(const uint8_t * buf) {
     #ifndef NO_RODOS_NAMESPACE
     using namespace RODOS;
     #endif
 
-    unsigned char* buf = (unsigned char*)b; // becouse deserialize is const, but getBitFiled not!
     version          = getBitField(buf,   0,  2);
     bypassFlag       = getBitField(buf,   2,  1);
     controllCommandFlag = getBitField(buf,   3,  1);

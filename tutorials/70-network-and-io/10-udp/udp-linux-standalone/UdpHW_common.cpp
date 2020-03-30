@@ -48,7 +48,7 @@ bool UDPInLx::get(void* userData, int maxLen) {
 /***********************************************************************************************/
 
 
-UDPOutLx::UDPOutLx(int port, char *receiverHost) {
+UDPOutLx::UDPOutLx(int port, const char *receiverHost) {
 
         bool enableBroadCast = false;
         if(port < 0) { port = -port;  enableBroadCast = true; }

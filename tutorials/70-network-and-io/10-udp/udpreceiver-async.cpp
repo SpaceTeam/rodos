@@ -35,8 +35,10 @@ public:
     Udpreceiver() : Subscriber(udpMessages, "udpReceiver") { }
 
     void putFromInterrupt([[gnu::unused]] const long topicId, const void* data, [[gnu::unused]] int len) {
-        GenericMsgRef* msg = (GenericMsgRef*)data;
-        msg->msgPtr[msg->msgLen] = 0;
+        const GenericMsgRef* msg = (const GenericMsgRef*)data;
+        char buffer[100] = {};
+        memcpy(buffer, msg->msgPtr, msg->msgLen > 100 ? 100 : msg->msgLen);
+        buffer[msg->msgLen > 100? 99 : msg->msgLen - 1] = 0;
         xprintf("\n Async: %d %s\n", msg->msgLen, msg->msgPtr); // no PRINTF in interrupts (Sempahore)
     }
 } udpReceiver;

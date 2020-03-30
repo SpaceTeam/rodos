@@ -279,8 +279,8 @@ void setBitField(void* buffer, int bitPos, int numOfBits, uint32_t val) {
   * Warning: CCSDS -> Bit 0 = most significant bit!
   **/
 
-uint32_t getBitField(void* buffer, int bitPos, int numOfBits) {
-    unsigned char* buf = (unsigned char*) buffer;
+uint32_t getBitField(const void* buffer, int bitPos, int numOfBits) {
+    const uint8_t* buf = (const uint8_t*) buffer;
     int byteIndex = bitPos / 8;
     bitPos        = bitPos % 8;
     int shifts    = 24 - (bitPos + numOfBits);

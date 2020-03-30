@@ -76,7 +76,7 @@ protected:
     //virtual long put(const long topicId, const long len, const void* data, long linkId);
 
     /// Default function: forward the message and invoke the receiver (putter). It locks the semaphore protector
-    virtual long put(const long topicId, const long len, const void* data, const NetMsgInfo& netMsgInfo);
+    virtual long put(const long topicId, const long len, void* data, const NetMsgInfo& netMsgInfo);
 
     /// do not lock any semaphore. Do not call any thread function
     /// default function resumes the associated thread (if defined) if it is waiting for it
@@ -149,9 +149,15 @@ public:
         receiverFunc = funcPtr;
     }
 
-    virtual void put(Type &msg) {if(receiverFunc) (*receiverFunc)(msg); };
-    virtual void put(Type &msg, [[gnu::unused]] const NetMsgInfo& netMsgInfo) {put(msg);};
-    long put([[gnu::unused]] const long topicId, [[gnu::unused]] const long len, const void* data, const NetMsgInfo& netMsgInfo) { 
+    virtual void put(Type &msg) {
+        if(receiverFunc) (*receiverFunc)(msg);
+    }
+
+    virtual void put(Type &msg, [[gnu::unused]] const NetMsgInfo& netMsgInfo) {
+        put(msg);
+    }
+
+    long put([[gnu::unused]] const long topicId, [[gnu::unused]] const long len, void* data, const NetMsgInfo& netMsgInfo) { 
         put(*(Type*)data,netMsgInfo);
         return 1;
     }
@@ -168,9 +174,9 @@ class TopicFilter {
 public:
     virtual ~TopicFilter() = default;
     /// will  be called before all subscribers
-    virtual void prolog ([[gnu::unused]] const long topicId, [[gnu::unused]] const long len, [[gnu::unused]] const void* data, [[gnu::unused]] const NetMsgInfo& netMsgInfo) { }
+    virtual void prolog ([[gnu::unused]] const long topicId, [[gnu::unused]] const long len, [[gnu::unused]] void* data, [[gnu::unused]] const NetMsgInfo& netMsgInfo) { }
     /// will  be called after all subscribers
-    virtual void epilog([[gnu::unused]] const long topicId, [[gnu::unused]] const long len, [[gnu::unused]] const void* data, [[gnu::unused]] const NetMsgInfo& netMsgInfo) { }
+    virtual void epilog([[gnu::unused]] const long topicId, [[gnu::unused]] const long len, [[gnu::unused]] void* data, [[gnu::unused]] const NetMsgInfo& netMsgInfo) { }
 };
 
 

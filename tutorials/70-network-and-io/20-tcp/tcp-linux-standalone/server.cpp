@@ -15,7 +15,7 @@
 
 RODOS::TCPServer  tcpServer (8877);
 
-int main(int argc, char *argv[]) {
+int main([[gnu::unused]] int argc, [[gnu::unused]] char *argv[]) {
 
     while (true) {
         // open a new socket to transmit data per connection

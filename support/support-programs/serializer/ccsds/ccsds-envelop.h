@@ -25,7 +25,7 @@ struct DownlinkSourcePacket { unsigned char buf[CCSDS::DOWNLINK_SP_MAX_LEN]; };
 class CCSDSEnvelop {
 
 protected:
-    char buf[TF_MAX_LEN + 10]; // buf == Tranfer Frame. +10? we may try to read a SP beyond the end
+    uint8_t buf[TF_MAX_LEN + 10]; // buf == Tranfer Frame. +10? we may try to read a SP beyond the end
     uint16_t indexOfCurrentUserData; ///< index = pos in buf
 
 public:
@@ -33,7 +33,7 @@ public:
     uint16_t lenOfCurrentSP;
     uint16_t lenOfCurrentUserData;   ///< of current SP, shall be set by user, who write the source packet
     uint16_t indexOfCurrentSP;       ///< index = pos in buf
-    char*    userDataBuf;            ///< pointer to read/write data for correspondig source package
+    uint8_t*    userDataBuf;            ///< pointer to read/write data for correspondig source package
 
     //CCSDSEnvelop() { }
 };

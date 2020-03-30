@@ -32,7 +32,7 @@ class TimeSyncClient : public Subscriber, public StaticThread<>, public Putter {
     }
 
     /** here we process the server response  See "explanation.pdf" **/
-    long put(const long _topicId, const long _len, const void* _msg, const NetMsgInfo& _netMsgInfo) {
+    long put([[gnu::unused]] const long _topicId, [[gnu::unused]] const long _len, void* _msg, [[gnu::unused]] const NetMsgInfo& _netMsgInfo) {
         TimeSyncResponse msg = *(TimeSyncResponse*)_msg;
         if(msg.clientNodeNr != nodeNumber || msg.clientRequestCnt != requestCnt) return 0;
 
@@ -53,7 +53,7 @@ class TimeSyncClient : public Subscriber, public StaticThread<>, public Putter {
     }
 
     /** Just for debug: Print the utc time as response to the (global) interrupt **/
-    bool putGeneric(const long _topicId, const unsigned int _msgLen, const void* _msg, const NetMsgInfo& _netMsgInfo) {
+    bool putGeneric([[gnu::unused]] const long _topicId, [[gnu::unused]] const unsigned int _msgLen, [[gnu::unused]] const void* _msg, [[gnu::unused]] const NetMsgInfo& _netMsgInfo) {
         timeAtInterrupt = utcMillisecsNow();
         resume();
         return true;

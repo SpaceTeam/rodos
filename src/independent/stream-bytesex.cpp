@@ -111,14 +111,14 @@ long long longlongConvertHost2Net(long long llw) { if(isHostBigEndian) return ll
 //__________________________________________________________________________________________________________
 
 uint16_t bigEndianToUint16_t(const void* buff) {
-    uint8_t* byteStream = (uint8_t*)buff;
+    const uint8_t* byteStream = (const uint8_t*)buff;
     if (byteStream == 0) return 0;
     return   (((uint16_t)(byteStream[0])) << 8)
            |  ((uint16_t)(byteStream[1]));
 }
 
 uint32_t bigEndianToUint32_t(const void* buff) {
-    uint8_t* byteStream = (uint8_t*)buff;
+    const uint8_t* byteStream = (const uint8_t*)buff;
     if (byteStream == 0) return 0;
     return    (((uint32_t)(byteStream[0])) << 24)
             | (((uint32_t)(byteStream[1])) << 16)
@@ -128,7 +128,7 @@ uint32_t bigEndianToUint32_t(const void* buff) {
 
 
 uint64_t bigEndianToUint64_t(const void* buff) {
-    uint8_t* byteStream = (uint8_t*)buff;
+    const uint8_t* byteStream = (const uint8_t*)buff;
     if (byteStream == 0) return 0;
     return   (((uint64_t)(byteStream[0])) << 56)
            | (((uint64_t)(byteStream[1])) << 48)
@@ -142,7 +142,7 @@ uint64_t bigEndianToUint64_t(const void* buff) {
 
 
 float bigEndianToFloat(const void* buff) {
-    uint8_t* byteStream = (uint8_t*)buff;
+    const uint8_t* byteStream = (const uint8_t*)buff;
     union {
         float value;
         uint32_t lvalue;
@@ -152,12 +152,11 @@ float bigEndianToFloat(const void* buff) {
 }
 
 double bigEndianToDouble(const void* buff) {
-    uint8_t* byteStream = (uint8_t*)buff;
     union {
         double value;
         uint64_t llvalue;
     } value_union;
-    value_union.llvalue = bigEndianToInt64_t(byteStream);
+    value_union.llvalue = bigEndianToUint64_t(buff);
     return value_union.value;
 }
 
@@ -234,7 +233,7 @@ void setBitInByteStream (void *byteStream, int bitIndex, bool value) {
 
 int getBitFromByteStream(const void *byteStream, int bitIndex) {
 
-    unsigned char* bytes = (unsigned char*)byteStream;
+    const uint8_t* bytes = (const uint8_t*)byteStream;
 
     unsigned char selectedByte = bytes[bitIndex/8];
     return GET_BIT_FROM_BYTE(selectedByte, (bitIndex % 8));
@@ -277,8 +276,8 @@ void setBitField(void* buffer, int bitPos, int numOfBits, uint32_t val) {
   * Warning: CCSDS -> Bit 0 = most significant bit!
   **/
 
-uint32_t getBitField(void* buffer, int bitPos, int numOfBits) {
-    unsigned char* buf = (unsigned char*) buffer;
+uint32_t getBitField(const void* buffer, int bitPos, int numOfBits) {
+    const uint8_t* buf = (const uint8_t*) buffer;
     int byteIndex = bitPos / 8;
     bitPos        = bitPos % 8;
     int shifts    = 24 - (bitPos + numOfBits);

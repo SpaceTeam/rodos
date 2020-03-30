@@ -13,7 +13,7 @@ class ScanfSubTests: public StaticThread<> {
         int failed = 0;
     
         Tokenizer tok;
-        tok.separators = (char*)"abc";
+        tok.separators = "abc";
         char strintToParse[] = "123c456a789b";
         tok.init(strintToParse);
         

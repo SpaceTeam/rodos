@@ -69,12 +69,12 @@ private:
 
 
     /** Transfer messages from the local network to the external network.
-     * @param[out] topicId ID of sending topic
-     * @param[out] len length of message to send (size of topic type)
-     * @param[out] data pointer to data field (type) of message
+     * @param[in] topicId ID of sending topic
+     * @param[in] len length of message to send (size of topic type)
+     * @param[in] data pointer to data field (type) of message
      * @return number of receivers message is sent to, always 1
      */
-    virtual long put(const long topicId, const long len, const void* data, const NetMsgInfo& netMsgInfo);
+    virtual long put(const long topicId, const long len, void* data, const NetMsgInfo& netMsgInfo);
 
     void AnalyseAndDistributeMessagesFromNetwork();
 

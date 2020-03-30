@@ -49,7 +49,7 @@ bool Subscriber::isGateway() const { return isAGateway; }
  */
 
 
-long Subscriber::put(const long topicId, const long len, const void* data, const NetMsgInfo& netMsgInfo) {
+long Subscriber::put(const long topicId, const long len, void* data, const NetMsgInfo& netMsgInfo) {
     if(!isEnabled) return 0;
     protector.enter();
     if(receiver) receiver->putGeneric(topicId, len,data, netMsgInfo);

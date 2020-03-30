@@ -46,7 +46,7 @@ Semaphore Gateway::seenNodesProtector;
 
 int compare_SeenNode (const void *a, const void *b);
 int compare_SeenNode (const void *a, const void *b) {
-    int32_t temp =  ((SeenNode*)a)->nodeID - ((SeenNode*)b)->nodeID;
+    int32_t temp =  ((const SeenNode*)a)->nodeID - ((const SeenNode*)b)->nodeID;
     if(temp > 0)      return 1;
     else if(temp < 0) return -1;
     else              return 0;
@@ -118,7 +118,7 @@ bool Gateway::messageSeen(NetworkMessage& msg) {
 
 /** Forward the message to the interface **/
 
-long Gateway::put(const long topicId, const long len, const void* data, const NetMsgInfo&) {
+long Gateway::put(const long topicId, const long len, void* data, const NetMsgInfo&) {
     if(!isEnabled) return 0;
     // if(topicId == 0) return 0;
 

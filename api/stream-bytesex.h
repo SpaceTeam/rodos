@@ -64,7 +64,7 @@ int getBitFromByteStream(const void *byteStream, int bitIndex);        //< bitIn
 /// sets serval bits in a bigEndian bitfeld of max 16 bits (warning: ccsds: 0 = msb)
 void setBitField(void* buffer, int bitPos, int numOfBits, uint32_t val);
 /// gets severa bits from a bigEndia bitfled of max 16 bits (warning: ccsds: 0 = msb)
-uint32_t getBitField(void* buffer, int bitPos, int numOfBits);
+uint32_t getBitField(const void* buffer, int bitPos, int numOfBits);
 
 /// gets the number of bits set
 uint32_t getSetBits(const uint32_t &value);

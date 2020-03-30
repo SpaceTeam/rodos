@@ -8,12 +8,12 @@
 // or by self defined separators.
 struct Tokenizer {
     char* ptr;          //MAY NOT point to a constant char* as it will be modified by next()
-    char* separators;
+    const char* separators;
 
-    Tokenizer() { separators = (char*)" ,;\n";}
+    Tokenizer() { separators = " ,;\n";}
     bool isSeparator(char c);
     void init(char* s) { ptr = s; };
-    void setSeparators(char *separatorsP) { separators = separatorsP; }
+    void setSeparators(const char *separatorsP) { separators = separatorsP; }
     bool isValid() { return ptr != 0 && *ptr != 0; }
     char* next(); // pointer to first char of next token, will  be terminated by 0
     void  getAll(char* token[], int maxTokens) { for(int i = 0; i < maxTokens; i++) token[i] = next(); }

@@ -39,7 +39,7 @@ class UDPOutLx {
 	sockaddr_in outputAddr;
 public:
 	/// init UDP communication, can be re-called at any time
-	UDPOutLx(int receiverPort, char *receiverHost); // negative port-values for boradcast
+	UDPOutLx(int receiverPort, const char *receiverHost); // negative port-values for boradcast
 	// Send it as datagrm contining "userdata", dafault length = all bytes
 	bool send(void* data, int len=1300);
 };

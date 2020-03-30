@@ -24,17 +24,16 @@ struct DownlinkTFTrailer {
     uint32_t reportValue         ; //  8  bits  next expected frame sequence countrer of frames Type A 
     uint32_t crc                 ; // 16  bits  cyclic redundancy code in CCSDS called "FRAME ERROR CONTROL FIELD"
 
-    int serialize(char * const buf) const;
-    int deserialize(char const * const buf);
+    int serialize(uint8_t*  buf) const;
+    int deserialize(const uint8_t* buf);
 };
 
 
-inline int DownlinkTFTrailer::serialize(char* const b) const {
+inline int DownlinkTFTrailer::serialize(uint8_t* buf) const {
     #ifndef NO_RODOS_NAMESPACE
     using namespace RODOS;
     #endif
 
-    unsigned char* buf = (unsigned char*)b;
     setBitField(buf,   0,  1, control);
     setBitField(buf,   1,  2, version);
     setBitField(buf,   3,  3, status);
@@ -53,12 +52,11 @@ inline int DownlinkTFTrailer::serialize(char* const b) const {
 
     return 6;
 }
-inline int DownlinkTFTrailer::deserialize(char const * const b) {
+inline int DownlinkTFTrailer::deserialize(const uint8_t * buf) {
     #ifndef NO_RODOS_NAMESPACE
     using namespace RODOS;
     #endif
 
-    unsigned char* buf = (unsigned char*)b; // becouse deserialize is const, but getBitFiled not!
     control          = getBitField(buf,   0,  1);
     version          = getBitField(buf,   1,  2);
     status           = getBitField(buf,   3,  3);

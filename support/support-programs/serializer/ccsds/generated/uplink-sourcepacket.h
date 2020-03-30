@@ -22,17 +22,16 @@ struct UplinkSPHeader {
     uint32_t serviceSubtype      ; //  8  bits  
     uint32_t sourceID            ; //  8  bits  set to  0
 
-    int serialize(char * const buf) const;
-    int deserialize(char const * const buf);
+    int serialize(uint8_t * buf) const;
+    int deserialize(const uint8_t * buf);
 };
 
 
-inline int UplinkSPHeader::serialize(char* const b) const {
+inline int UplinkSPHeader::serialize(uint8_t* buf) const {
     #ifndef NO_RODOS_NAMESPACE
     using namespace RODOS;
     #endif
 
-    unsigned char* buf = (unsigned char*)b;
     setBitField(buf,   0,  3, version);
     setBitField(buf,   3,  1, type);
     setBitField(buf,   4,  1, secondaryHeaderFlag);
@@ -49,12 +48,11 @@ inline int UplinkSPHeader::serialize(char* const b) const {
 
     return 10;
 }
-inline int UplinkSPHeader::deserialize(char const * const b) {
+inline int UplinkSPHeader::deserialize(const uint8_t* buf) {
     #ifndef NO_RODOS_NAMESPACE
     using namespace RODOS;
     #endif
 
-    unsigned char* buf = (unsigned char*)b; // becouse deserialize is const, but getBitFiled not!
     version          = getBitField(buf,   0,  3);
     type             = getBitField(buf,   3,  1);
     secondaryHeaderFlag = getBitField(buf,   4,  1);

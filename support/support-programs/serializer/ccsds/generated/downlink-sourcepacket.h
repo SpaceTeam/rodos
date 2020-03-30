@@ -24,17 +24,16 @@ struct DownlinkSPHeader {
     uint32_t timeStampSeconds    ; // 32  bits  UTC in seconds since 1.1.2000  0:00, set by Housekeeper
     uint32_t timeStampFraction   ; // 16  bits  (1/2^16) of the second
 
-    int serialize(char * const buf) const;
-    int deserialize(char const * const buf);
+    int serialize(uint8_t* buf) const;
+    int deserialize(const uint8_t* buf);
 };
 
 
-inline int DownlinkSPHeader::serialize(char* const b) const {
+inline int DownlinkSPHeader::serialize(uint8_t* buf) const {
     #ifndef NO_RODOS_NAMESPACE
     using namespace RODOS;
     #endif
 
-    unsigned char* buf = (unsigned char*)b;
     setBitField(buf,   0,  3, version);
     setBitField(buf,   3,  1, typeId);
     setBitField(buf,   4,  1, secHeaderFlag);
@@ -53,12 +52,11 @@ inline int DownlinkSPHeader::serialize(char* const b) const {
 
     return 16;
 }
-inline int DownlinkSPHeader::deserialize(char const * const b) {
+inline int DownlinkSPHeader::deserialize(const uint8_t * buf) {
     #ifndef NO_RODOS_NAMESPACE
     using namespace RODOS;
     #endif
 
-    unsigned char* buf = (unsigned char*)b; // becouse deserialize is const, but getBitFiled not!
     version          = getBitField(buf,   0,  3);
     typeId           = getBitField(buf,   3,  1);
     secHeaderFlag    = getBitField(buf,   4,  1);

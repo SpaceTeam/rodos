@@ -1,5 +1,5 @@
 #include <stddef.h>
-
+#include <stdint.h>
 
 #include "string_pico.h"
 
@@ -39,7 +39,7 @@ char* strcpy(char* destP, const char *s) {
     return destP;
 }
 
-char * strstr(const char *s, const char *find)
+const char * strstr(const char *s, const char *find)
 {
     char c, sc;
     size_t len;
@@ -49,20 +49,23 @@ char * strstr(const char *s, const char *find)
         do {
             do {
                 if ((sc = *s++) == 0)
-                    return (NULL);
+                    return nullptr;
             } while (sc != c);
         } while (strncmp(s, find, len) != 0);
         s--;
     }
-    return ((char *)s);
+    return s;
 }
 
-char * strchr ( const char * str, int character ){
+const char * strchr ( const char * str, int character ){
     while(*str != 0 && *str != character){
         str++;
     }
-    if(*str == character) return (char*)str;
-    else return NULL;
+    if(*str == character) {
+      return str;
+    } else {
+      return nullptr;
+    }
 }
 
 void* memset(void* destP, int val, size_t len) {
@@ -77,8 +80,8 @@ void* memset(void* destP, int val, size_t len) {
 }
 
 void* memcpy(void* destP, const void* sP, size_t len) {
-    char* dest = (char*)destP;
-    char* s    = (char*)sP;
+    uint8_t* dest = (uint8_t*)destP;
+    const uint8_t* s    = (const uint8_t*)sP;
     if(!dest || !s) return 0;
     while(len) {
 	// dest[len] = s[len];
@@ -91,8 +94,8 @@ void* memcpy(void* destP, const void* sP, size_t len) {
 }
 	
 int memcmp(const void* a, const void* b, size_t len) {
-    unsigned char* cA = (unsigned char*)a;
-    unsigned char* cB = (unsigned char*)b;
+    const uint8_t* cA = (const uint8_t*)a;
+    const uint8_t* cB = (const uint8_t*)b;
 
     while(len) {
       if (*cA < *cB) return -1;

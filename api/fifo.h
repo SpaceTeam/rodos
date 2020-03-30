@@ -57,7 +57,7 @@ public:
     /** implements the generic interface of putter */
     bool putGeneric([[gnu::unused]] const long topicId, const unsigned int msgLen, const void* msg, [[gnu::unused]] const NetMsgInfo& netMsgInfo) {
         RODOS_ASSERT_IFNOT_RETURN(msgLen <= sizeof(Type), false);
-        return put(*(Type*)msg);
+        return put(*(const Type*)msg);
     }
 
     /**  returns true == ok, false == fifo full */
@@ -133,7 +133,7 @@ public:
     bool putGeneric([[gnu::unused]] const long topicId, const unsigned int msgLen, const void* msg, [[gnu::unused]] const NetMsgInfo& netMsgInfo) {
         RODOS_ASSERT_IFNOT_RETURN(msgLen <= sizeof(Type), false);
 
-        bool ok = this->put(*(Type*)msg);
+        bool ok = this->put(*(const Type*)msg);
         {
             PRIORITY_CEILER_IN_SCOPE();
             if (suspendedReader!=0)  suspendedReader->resume();
@@ -239,7 +239,7 @@ public:
     /** implements the generic interface of putter */
     bool putGeneric([[gnu::unused]] const long topicId, const unsigned int msgLen, const void* msg, [[gnu::unused]] const NetMsgInfo& netMsgInfo) {
         RODOS_ASSERT_IFNOT_RETURN(msgLen <= sizeof(Type), false);
-        return put(*(Type*)msg);
+        return put(*(const Type*)msg);
     }
 
     /**  returns true == ok, false == fifo full */

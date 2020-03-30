@@ -14,8 +14,8 @@ int memcmp(const void* a, const void* b, size_t len);
 int strcmp (char const *a, char const *b) ;
 int strncmp (char const *a, char const *b, size_t n);
 char* strcpyXXXX(char* dest, const char* src);
-extern char * strstr(const char *s, const char *find);
-extern char * strchr ( const char * str, int character );
+extern const char * strstr(const char *s, const char *find);
+extern const char * strchr (const char * str, int character);
 
 // bcopy und bzero sind laut POSIX standard nicht mehr erwünscht, wir sollten sie besser ganz weglassen, das ist einfacher.
 // Die Argumente source und destinationen sind bei bcopy vertauscht gegenüber

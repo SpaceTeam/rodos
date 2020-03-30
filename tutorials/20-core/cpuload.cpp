@@ -13,7 +13,7 @@ class IdelCntPrinter : public StaticThread<> {
         getCpuLoad();
         suspendCallerUntil(NOW() + 2 * SECONDS);
         cpuLoad = getCpuLoad();
-        PRINTF(" cpuload %f\n", cpuLoad);
+        PRINTF(" cpuload %f\n", static_cast<double>(cpuLoad));
 
         PRINTF("\n----------------------- 0.5 cpu load:\n");
         getCpuLoad();
@@ -21,7 +21,7 @@ class IdelCntPrinter : public StaticThread<> {
         timeToEnd = NOW() + 1 * SECONDS;
         BUSY_WAITING_UNTIL(timeToEnd);
         cpuLoad = getCpuLoad();
-        PRINTF(" cpuload %f\n", cpuLoad);
+        PRINTF(" cpuload %f\n", static_cast<double>(cpuLoad));
 
         PRINTF("\n----------------------- 0.75 cpu load:\n");
         getCpuLoad();
@@ -29,14 +29,14 @@ class IdelCntPrinter : public StaticThread<> {
         timeToEnd = NOW() + 1500 * MILLISECONDS;
         BUSY_WAITING_UNTIL(timeToEnd);
         cpuLoad = getCpuLoad();
-        PRINTF(" cpuload %f\n", cpuLoad);
+        PRINTF(" cpuload %f\n", static_cast<double>(cpuLoad));
 
         PRINTF("\n----------------------- 1.0 cpu load:\n");
         getCpuLoad();
         timeToEnd = NOW() + 2 * SECONDS;
         BUSY_WAITING_UNTIL(timeToEnd);
         cpuLoad = getCpuLoad();
-        PRINTF(" cpuload %f\n", cpuLoad);
+        PRINTF(" cpuload %f\n", static_cast<double>(cpuLoad));
 
         PRINTF("\n----------------------- END\n");
     }

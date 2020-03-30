@@ -29,7 +29,7 @@ int isupper(int c){
 }
 
 
-long strtol (const char * nptr, char ** endptr, int base) {
+long strtol (const char * nptr, const char ** endptr, int base) {
     const unsigned char *s = (const unsigned char *)nptr;
     unsigned long acc;
     int c;
@@ -101,7 +101,7 @@ long strtol (const char * nptr, char ** endptr, int base) {
     } else if (neg)
         acc = -acc;
     if (endptr != 0)
-        *endptr = (char *) (any ? (char *)s - 1 : nptr);
+        *endptr = (const char *) (any ? (const char *)s - 1 : nptr);
     return (acc);
 }
 
