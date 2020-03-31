@@ -37,7 +37,7 @@ class TimeEventTestPeriodic : public TimeEvent {
     }
 
     void init() {
-        activatePeriodic(0.04 * SECONDS, 10 * MILLISECONDS);
+        activatePeriodic(40 * MILLISECONDS, 10 * MILLISECONDS);
     }
 };
 
@@ -55,7 +55,7 @@ class TimeEventTest3 : public TimeEvent {
             hwResetAndReboot();
         }
         xprintf("Activating Time Event at %3.9f, reactivation in 0.02 seconds\n", CNT_SECONDS_NOW());
-        activateAt(NOW() + 0.02 * SECONDS);
+        activateAt(NOW() + 20 * MILLISECONDS);
     }
 
     void init() {

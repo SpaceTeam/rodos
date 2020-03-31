@@ -31,14 +31,14 @@ class TimeSyncServer : public Subscriber, public Putter {
   public:
     TimeSyncServer() : Subscriber(clientRequest, "timeSyncServer") {}
 
-    long put(const long _topicId, const long _len, const void* _msg, const NetMsgInfo& _netMsgInfo) {
+    long put([[gnu::unused]] const long _topicId, [[gnu::unused]] const long _len, void* _msg, [[gnu::unused]] const NetMsgInfo& _netMsgInfo) {
         int32_t requestId               = *(int32_t*)_msg;
         response.ntspTimes.rcvTS        = sysTime.getUTC(); // by real time server, set by hardware at arrival
         response.clientRequestCnt       = requestId;
         response.clientNodeNr           = _netMsgInfo.senderNode;
         response.nodeIdAssignedByServer = getNodeId(_netMsgInfo.senderNode);
 
-        PRINTF(CL_NODE "%d" REQ "%d", response.clientNodeNr, ++requestCount);
+        PRINTF(CL_NODE "%d" REQ "%d", static_cast<int>(response.clientNodeNr), static_cast<int>(++requestCount));
 
         response.ntspTimes.sendTS = sysTime.getUTC(); // by real time server, set by hardware at deliver time
         serverResponse.publish(response);
@@ -46,7 +46,7 @@ class TimeSyncServer : public Subscriber, public Putter {
     }
 
     /** Just for debug: Print the utc time as response to the (global) interrupt **/
-    bool putGeneric(const long _topicId, const unsigned int _msgLen, const void* _msg, const NetMsgInfo& _netMsgInfo) {
+    bool putGeneric([[gnu::unused]] const long _topicId, [[gnu::unused]] const unsigned int _msgLen, [[gnu::unused]] const void* _msg, [[gnu::unused]] const NetMsgInfo& _netMsgInfo) {
         PRINTF(INT_TIME_SRV "%9.6f", utcMillisecsNow());
         return true;
     }

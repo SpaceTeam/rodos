@@ -325,7 +325,7 @@ void hwInitWatchdog(long intervalMilliseconds) {
 	 */
 	double wdgClk = (double) LSIFrequency / (double) prescaler;
 	double intervalSec = (double) intervalMilliseconds / (double) 1000;
-	uint32_t reloadVal = intervalSec * wdgClk;
+	uint32_t reloadVal = static_cast<uint32_t>(intervalSec * wdgClk);
 	if (reloadVal > 0xFFF) {
 		reloadVal = 0xFFF; // set to maximum reload value
 	}
@@ -518,7 +518,7 @@ void deepSleepUntil(long long until) {
 
   PWR_ClearFlag(PWR_FLAG_WU);
 
-	long long interval = (double)(until - NOW()) / 1000000.0 / 0.5;
+	long long interval = static_cast<long long>((double)(until - NOW()) / 1000000.0 / 0.5);
 	RTC_SetWakeUpCounter(interval);
 	RTC_WakeUpCmd(ENABLE);
 

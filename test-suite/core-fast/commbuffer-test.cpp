@@ -9,12 +9,12 @@ class CommBufferTester : public StaticThread<> {
     void run() {
         printfMask = 1;
        CommBuffer<int32_t> buff;
-       int tmp;
+       int32_t tmp;
        
        buff.put(5);
        buff.get(tmp);
        if (tmp != 5) PRINTF("Something is very wrong with the Commbuffer\n");
-       PRINTF("It should print '5': %d \n", tmp);        //MUST print 5
+       PRINTF("It should print '5': %d \n", static_cast<int>(tmp));        //MUST print 5
        
        if(buff.getOnlyIfNewData(tmp)) {
            PRINTF("MAY NOT happen\n");

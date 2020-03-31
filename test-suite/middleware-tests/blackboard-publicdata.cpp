@@ -42,7 +42,7 @@ public:
             PRINTF("Sending %d\n", myData.versionNr);
             deliverShared.publish(myData);
             myData.versionNr++;
-            AT(NOW() + 0.1 * SECONDS);
+            AT(NOW() + 100 * MILLISECONDS);
         }
         
         AT(2 * SECONDS);
@@ -56,11 +56,11 @@ public:
     Receiver() : StaticThread<>("Receiver") { }
     void run () {
         printfMask = 1;
-        AT(NOW() + 0.05 * SECONDS);
+        AT(NOW() + 50 * MILLISECONDS);
         for (int i = 0; i < 5; i++) {
             collectShared.requestLocal(myData);
             PRINTF("    got %d\n", myData.versionNr);
-            AT(NOW() + 0.3 * SECONDS);
+            AT(NOW() + 300 * MILLISECONDS);
         }
     }
 } receiver;

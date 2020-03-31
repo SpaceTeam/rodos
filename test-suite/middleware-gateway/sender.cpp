@@ -18,7 +18,7 @@ public:
             cnt32++;
             cnt64++;
             cntDouble += 0.01;
-            PRINTF("  %4d  %8lld  %3.2f\n", cnt32, cnt64, cntDouble);
+            PRINTF("  %4d  %8lld  %3.2f\n", cnt32, static_cast<long long>(cnt64), cntDouble);
 
             int32top.publish(cnt32);
             int64top.publish(cnt64);
@@ -30,7 +30,7 @@ public:
      cnt32     = -1;
      cnt64     = -1;
      cntDouble = -1.0;
-     PRINTF("terminate Signal:  %4d  %8lld  %3.2f\n", cnt32, cnt64, cntDouble);
+     PRINTF("terminate Signal:  %4d  %8lld  %3.2f\n", cnt32, static_cast<long long>(cnt64), cntDouble);
      int32top.publish(cnt32);
      int64top.publish(cnt64);
      doubltop.publish(cntDouble);

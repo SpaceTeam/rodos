@@ -26,7 +26,7 @@ public:
             }
             if((cnt % 15) == 0) {
                 PRINTF("Waiting 0.03 seconds\n");
-                suspendCallerUntil(NOW() + 0.03 * SECONDS);
+                suspendCallerUntil(NOW() + 30 * MILLISECONDS);
             }
         }
         hwResetAndReboot();
@@ -49,7 +49,7 @@ public:
             if(ok) {
                 PRINTF("reading %d\n", cnt);
             } else {
-                suspendCallerUntil(NOW() + 0.01 * SECONDS);
+                suspendCallerUntil(NOW() + 10 * MILLISECONDS);
             }
         }
     }

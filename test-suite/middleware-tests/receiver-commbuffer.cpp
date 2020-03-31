@@ -13,7 +13,7 @@ class MyPublisher01 : public StaticThread<> {
     void run() {
         printfMask = 1;
         long cnt = 0;
-        TIME_LOOP(0.03 * SECONDS, 0.03 * SECONDS) {
+        TIME_LOOP(30 * MILLISECONDS, 30 * MILLISECONDS) {
             if (cnt > 10) {
                 hwResetAndReboot();
             }
@@ -33,7 +33,7 @@ class ReceiverBuf : public StaticThread<> {
     void run() {
         printfMask = 1;
         long cnt;
-        TIME_LOOP(0, 0.011 * SECONDS) {
+        TIME_LOOP(0, 11 * MILLISECONDS) {
             buf.get(cnt);
             PRINTF("ReceiverComBuffer - counter1: %ld\n", cnt);
         }

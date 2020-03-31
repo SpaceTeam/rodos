@@ -32,7 +32,7 @@ class MySchedluler : public StaticThread<> {
     void run() {
         printfMask = 1;
         int cnt = 0;
-        TIME_LOOP(0.1 * SECONDS, 0.02 * SECONDS) {
+        TIME_LOOP(100 * MILLISECONDS, 20 * MILLISECONDS) {
             cnt++;
             if (cnt > 25) {
                 hwResetAndReboot();

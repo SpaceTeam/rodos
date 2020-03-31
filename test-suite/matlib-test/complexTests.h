@@ -60,7 +60,7 @@ int complexNumbersTests() {
         c4.Im = 0;
         if (c3 != c4) FAIL;
         
-        int expInt = drandPositive(10);
+        int expInt = static_cast<int>(drandPositive(10));
         c3 = c1.cPow(expInt);
         for (int j = 0; j < expInt; j++) {
             c4 = c1 * c4;

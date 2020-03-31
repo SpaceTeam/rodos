@@ -14,7 +14,7 @@ class TestTime : public StaticThread<> {
         int cnt = 0;
         for (int i = 0; i < 10; i++) {
             cnt++;
-            suspendCallerUntil(NOW() + 0.1 * SECONDS);
+            suspendCallerUntil(NOW() + 100 * MILLISECONDS);
             PRINTF("After 0.1 Seconds  : %3.9f %d\n", CNT_SECONDS_NOW(), cnt);
         }
         hwResetAndReboot();

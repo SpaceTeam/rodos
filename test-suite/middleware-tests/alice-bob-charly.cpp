@@ -56,6 +56,6 @@ class Alice : public SubscriberReceiver<Greetings> {
     Alice() : SubscriberReceiver<Greetings>(valentine, "aliceSubs") {}
     void put(Greetings& data) {
         Greetings* greetingsForMe = (Greetings*)&data;
-        PRINTF("Alice got date %lld:  msg: %s\n", greetingsForMe->date, greetingsForMe->msg);
+        PRINTF("Alice got date %lld:  msg: %s\n", static_cast<long long>(greetingsForMe->date), greetingsForMe->msg);
     }
 } alice;

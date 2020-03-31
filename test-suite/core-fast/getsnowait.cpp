@@ -12,7 +12,7 @@ class TestGets : public StaticThread<> {
         int cnt = 0;
         char* s;
         PRINTF("Please type string of characters\n");
-        TIME_LOOP(0.01 * SECONDS, 0.01 * SECONDS) {
+        TIME_LOOP(10 * MILLISECONDS, 10 * MILLISECONDS) {
             cnt++;
             if (cnt > 10) {
                 PRINTF("-------------------------------------------------------------");

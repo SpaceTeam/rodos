@@ -45,7 +45,7 @@ class TimeSyncClient : public Subscriber, public StaticThread<>, public Putter {
         sysTime.setUTCDeltaTime(offset);
 
         PRINTF(REQ "%d" S_SENT_TS "%9.6f" S_RCV_TS "%9.6f" C_SENT_TS "%9.6f" C_RCV_TS "%9.6f" OFFSET "%9.6f" DELAY "%9.6f",
-               requestCnt, toMillis(msg.ntspTimes.sendTS), toMillis(msg.ntspTimes.rcvTS),
+               static_cast<int>(requestCnt), toMillis(msg.ntspTimes.sendTS), toMillis(msg.ntspTimes.rcvTS),
                toMillis(ownTS.sendTS), toMillis(ownTS.rcvTS), toMillis(offset), toMillis(oneWayTransmission));
         
 

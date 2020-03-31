@@ -12,7 +12,7 @@ int quaternionTests() {
     double r;           //For random doubles
     
     //Reset ifNaN
-    q1.q0 = NAN;
+    q1.q0 = static_cast<double>(NAN);
     q1.q.x = 1;
     q1.q.y = 2;
     q1.q.z = 3;

@@ -8,7 +8,7 @@ struct PrintInt64Top : public Subscriber {
     long put([[gnu::unused]] const long topicId, [[gnu::unused]] const long len, void* msg, [[gnu::unused]] const NetMsgInfo& netMsgInfo) {
         printfMask = 1;
         int64_t val = *(int32_t*)msg;
-        PRINTF("int64top: %8lld\n", val);
+        PRINTF("int64top: %8lld\n", static_cast<long long>(val));
         if(val < 0) {
             PRINTF("signal to terminate\n");
             hwResetAndReboot();

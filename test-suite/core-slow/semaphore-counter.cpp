@@ -24,7 +24,7 @@ public:
     protector.leave();
     if(threadsFinisched >=  NUM_OF_THREADS) {
         PRINTF(" %d from %d Threads finished -> terminate\n", threadsFinisched, NUM_OF_THREADS);
-        PRINTF("counter at the end = %lld\n", counter);
+        PRINTF("counter at the end = %lld\n", static_cast<long long>(counter));
         hwResetAndReboot();
     }
   }

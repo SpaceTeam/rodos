@@ -10,7 +10,7 @@ public:
     AppT() : StaticThread<>("AppT01:", 400)  { }
     void run() {
         TIME_LOOP(1*SECONDS, 1*SECONDS) {
-            PRINTF("APP2:  counter1: %d\n", Common::counter1);
+            PRINTF("APP2:  counter1: %d\n", static_cast<int>(Common::counter1));
         } // loop
     }
 

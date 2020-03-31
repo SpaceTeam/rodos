@@ -1769,14 +1769,6 @@ Matrix4D::Matrix4D(double* arr) {
     }
 }
 
-Matrix4D::Matrix4D(const Matrix4D& other) {
-    for(int i = 0 ; i<4; i++) {
-        for(int j = 0; j<4; j++) {
-            r[i][j]=other.r[i][j];
-        }
-    }
-}
-
 Matrix3D Matrix4D::getRotation() const {
     Matrix3D R;
     for(int i = 0 ; i<3; i++) {
@@ -2374,13 +2366,6 @@ Vector6D::Vector6D() {
     }
 }
 
-Vector6D::Vector6D(const Vector6D& other) {
-
-    for (int i=0; i<6; i++) {
-        v[i]=other.v[i];
-    }
-}
-
 Vector6D::Vector6D(const double* arr) {
 
     for (int i=0; i<6; i++) {
@@ -2869,7 +2854,7 @@ void lubksb(Matrix6D &a, Vector6D &indx, Vector6D &b) {
         // when ii is set to a positive value, it will become the index of the first
         // nonvanishing element of b. We now do the forward substitution, equation (2.3.6)
         // of Ref [1] The only new wrinkle is to unscramble ther permutation as we go
-        ip = static_cast<double> ( indx.v[i] );
+        ip = static_cast<int> ( indx.v[i] );
         sum = b.v[ip];
         b.v[ip] = b.v[i];
         if ( ii != 0) {

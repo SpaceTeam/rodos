@@ -13,7 +13,7 @@ class TestTimeBeat : public StaticThread<> {
         PRINTF("First beat in 0.03 seconds, period 0.02 seconds\n");
         int i = 0;
 
-        TIME_LOOP(0.03 * SECONDS, 20 * MILLISECONDS) {
+        TIME_LOOP(30 * MILLISECONDS, 20 * MILLISECONDS) {
             PRINTF("In 0.02 seconds beat: %3.9f\n", INT_SECONDS_NOW());
             i++;
             if (i == 10) {

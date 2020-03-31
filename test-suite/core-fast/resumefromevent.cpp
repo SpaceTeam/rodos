@@ -32,7 +32,7 @@ class TimeEventTest : public TimeEvent {
         xprintf("   Testwaiter resumed from me\n");
     }
 
-    void init() { activatePeriodic(0.05 * SECONDS, 0.03 * SECONDS); }
+    void init() { activatePeriodic(50 * MILLISECONDS, 30 * MILLISECONDS); }
 };
 
 static TimeEventTest te01;

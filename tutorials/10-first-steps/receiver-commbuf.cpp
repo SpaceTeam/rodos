@@ -9,7 +9,7 @@ static Subscriber       receiverBuf(counter1, buf, "receiverbuf");
 class ReceiverBuf : public StaticThread<> {
     void run() {
         long cnt;
-        TIME_LOOP(0, 1.1 * SECONDS) {
+        TIME_LOOP(0, 1100 * MILLISECONDS) {
             buf.get(cnt);
             PRINTF("ReciverComBuffer - counter1: %ld\n", cnt);
         }

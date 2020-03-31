@@ -25,13 +25,13 @@ public:
         for(cnt = 0; cnt < NUM_OF_LOOPS; cnt++);
         int64_t deltaTime = (NOW() - startTime);
 
-        long kiloLoopsPerSecond = (double)SECONDS * (double)NUM_OF_LOOPS / (double)deltaTime / 1000.0;
+        long kiloLoopsPerSecond = static_cast<long>((double)SECONDS * (double)NUM_OF_LOOPS / (double)deltaTime / 1000.0);
         PRINTF("long        getSpeedKiloLoopsPerSecond()  { return %ld; }\n", kiloLoopsPerSecond);
 
         int64_t myIdleCnt = idleCnt; // idleCnt from rodos scheduler
         suspendCallerUntil(NOW() + 10*SECONDS);
         int64_t idleDiff = idleCnt - myIdleCnt;
-        PRINTF("long        getMaxIdleCntPerSecond()      { return %lld;}\n", idleDiff/10);
+        PRINTF("long        getMaxIdleCntPerSecond()      { return %lld;}\n", static_cast<long long>(idleDiff/10));
 
         PRINTF("//_____________________________ DONE\n");
 

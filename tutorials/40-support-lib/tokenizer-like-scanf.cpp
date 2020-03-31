@@ -30,7 +30,7 @@ public:
             int paramCnt; 
             for(paramCnt = 0; (token = tok.next()) != 0; paramCnt++) {
                 int64_t param = s2int(token);
-                PRINTF(" %lld ", param);
+                PRINTF(" %lld ", static_cast<long long>(param));
             }
             PRINTF("   --- Total %d params\n", paramCnt);
             PRINTF("Enter command and parameter\n");

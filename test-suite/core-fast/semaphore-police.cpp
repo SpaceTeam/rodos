@@ -18,7 +18,7 @@ class Watcher : public StaticThread<> {
         
         int i = 0;
 
-        TIME_LOOP(0.03 * SECONDS, 0.02 * SECONDS) {
+        TIME_LOOP(30 * MILLISECONDS, 20 * MILLISECONDS) {
             i++;
             if (i > 5) {
                 hwResetAndReboot();

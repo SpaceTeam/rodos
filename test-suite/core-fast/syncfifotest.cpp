@@ -8,7 +8,7 @@ class Sender : public StaticThread<> {
     void run() {
         printfMask = 1;
         int cnt = 0;
-        suspendCallerUntil(NOW() + 0.05 * SECONDS);
+        suspendCallerUntil(NOW() + 50 * MILLISECONDS);
         for (int i = 0; i < 100; i++) {
             cnt++;
             bool ok = fifo.syncPut(cnt);
@@ -19,7 +19,7 @@ class Sender : public StaticThread<> {
             }
             if((cnt % 20) == 0) {
                 PRINTF("Sender Waiting 0.03 seconds\n");
-                suspendCallerUntil(NOW() + 0.03 * SECONDS);
+                suspendCallerUntil(NOW() + 30 * MILLISECONDS);
             }
         }
         hwResetAndReboot();
@@ -39,7 +39,7 @@ class Receiver : public StaticThread<> {
             }
             if((cnt % 50) == 0) {
                 PRINTF("Receiver wait 0.15 seconds\n");
-                suspendCallerUntil(NOW() + 0.15 * SECONDS);
+                suspendCallerUntil(NOW() + 150 * MILLISECONDS);
             }
         }
     }

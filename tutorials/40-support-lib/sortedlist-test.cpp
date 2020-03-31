@@ -7,7 +7,7 @@
 void printlist(const char* name, SortedList* list) {
     PRINTF("\n list %s (%d) \n", name, (int)list->getNumberOfElements());
     ITERATE_SORTED_LIST(*list)  {
-        PRINTF(" %lld ", iter->getSortField());
+        PRINTF(" %lld ", static_cast<long long>(iter->getSortField()));
     }
     PRINTF("\n------------\n");
 }
@@ -30,8 +30,10 @@ void checkIt(const char *wo) {
 	      (int)freelist->getNumberOfElements(), (int)list01->getNumberOfElements(),
 	      (int)list02->getNumberOfElements(),  (int)list03->getNumberOfElements() );
         PRINTF("last value  = %lld %lld %lld %lld\n",
-	      freelist->getLastValue(), list01->getLastValue(),
-	      list02->getLastValue(),  list03->getLastValue() );
+	      static_cast<long long>(freelist->getLastValue()),
+          static_cast<long long>(list01->getLastValue()),
+	      static_cast<long long>(list02->getLastValue()),
+          static_cast<long long>(list03->getLastValue()));
      }
 }
 
@@ -49,7 +51,7 @@ void MAIN(){
       bool ok;
       cnt++;
       if((cnt % 10000000) == 0)  {
-         PRINTF(" cnt = %lld, elems = %d \n",cnt, (int)(freelist->getNumberOfElements() + list01->getNumberOfElements()
+         PRINTF(" cnt = %lld, elems = %d \n", static_cast<long long>(cnt), (int)(freelist->getNumberOfElements() + list01->getNumberOfElements()
 		   + list02->getNumberOfElements() + list03->getNumberOfElements())  );
       }
 

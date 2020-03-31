@@ -34,7 +34,7 @@ class TestTimeBeat : public StaticThread<> {
         printfMask = 1;
         for (int i = 0; i < 10; i++) {
             resumer.resumeThreadAt(this, NOW() + 30 * MILLISECONDS);
-            int32_t t0 = CNT_SECONDS_NOW();
+            int t0 = static_cast<int>(CNT_SECONDS_NOW());
             PRINTF("Timenow =  %d\n", t0);
             suspendCallerUntil();
         }

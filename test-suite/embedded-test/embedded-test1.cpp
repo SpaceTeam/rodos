@@ -44,11 +44,11 @@ public:
         suspendCallerUntil();
         
         int mypos;
-        suspendCallerUntil(NOW() + 0.01 * SECONDS);
+        suspendCallerUntil(NOW() + 10 * MILLISECONDS);
         while(1) {
             combufTest.get(mypos);
             PRINTF("Reading %d\n", mypos);
-            suspendCallerUntil(NOW() + 0.03 * SECONDS);
+            suspendCallerUntil(NOW() + 30 * MILLISECONDS);
             if (mypos == (NUMBER_OF_TESTS - 1)) {
                 suspendCallerUntil();
             }
@@ -71,7 +71,7 @@ public:
         for (int i = 0; i < NUMBER_OF_TESTS; i++) {
             PRINTF("Writing %d \n", i);
             combufTest.put(i);
-            suspendCallerUntil(NOW() + 0.03 * SECONDS);
+            suspendCallerUntil(NOW() + 30 * MILLISECONDS);
         }
         
         maintest.resume();
@@ -103,7 +103,7 @@ public:
                     suspendCallerUntil();
                 }
             } else {
-                suspendCallerUntil(NOW() + 0.01 * SECONDS);
+                suspendCallerUntil(NOW() + 10 * MILLISECONDS);
             }
         }
     }
@@ -130,10 +130,10 @@ public:
             } else {
                 PRINTF("FiFo full\n");
             }
-            suspendCallerUntil(NOW() + 0.01 * SECONDS);
+            suspendCallerUntil(NOW() + 10 * MILLISECONDS);
             if((i % 5) == 0) {
                 PRINTF("Waiting 0.03 seconds\n");
-                suspendCallerUntil(NOW() + 0.03 * SECONDS);
+                suspendCallerUntil(NOW() + 30 * MILLISECONDS);
             }
         }
         
@@ -167,7 +167,8 @@ public:
         PRINTF("as o:  %o\n", 12);
         PRINTF("as x:  %04x\n", 12);
 #pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wformat-invalid-specifier"
+#pragma GCC diagnostic ignored "-Wformat"
+#pragma GCC diagnostic ignored "-Wformat-extra-args"
         PRINTF("as b:  %08b\n", 0x55); // please ignore the c++ compile warning
 #pragma GCC diagnostic pop        
         
@@ -207,8 +208,15 @@ class ChecksumTester : public StaticThread<> {
         for(int i = 1; i < 100; i++) {
             data.toBeTested *= i;
             data.toBeTested += i;
-            SPRINTF(buff, "%u", data.toBeTested);
-            PRINTF("%d Checksum of %u: %u ---- %u ---- %u ---- %u ---- %x\n", i, data.toBeTested, checkSum(data.data, 4), computeCrc(data.data, 4, 0), crc.computeCRC(data.data, 4, 0), checkSumXor32(&data.toBeTested, 1), hash(buff));
+            SPRINTF(buff, "%u", static_cast<unsigned int>(data.toBeTested));
+            PRINTF("%d Checksum of %u: %u ---- %u ---- %u ---- %u ---- %x\n",
+                i,
+                static_cast<unsigned int>(data.toBeTested),
+                static_cast<unsigned int>(checkSum(data.data, 4)),
+                static_cast<unsigned int>(computeCrc(data.data, 4, 0)),
+                static_cast<unsigned int>(crc.computeCRC(data.data, 4, 0)),
+                static_cast<unsigned int>(checkSumXor32(&data.toBeTested, 1)),
+                hash(buff));
         }
 
         maintest.resume();
@@ -249,7 +257,7 @@ public:
         xprintf("   Testwaiter resumed from me\n");
     }
     
-    void init() {activatePeriodic(0.05 * SECONDS, 0.03 * SECONDS); }
+    void init() {activatePeriodic(50 * MILLISECONDS, 30 * MILLISECONDS); }
 };
 
 static TimeEventTest te01;

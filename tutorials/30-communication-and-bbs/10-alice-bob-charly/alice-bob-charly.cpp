@@ -37,7 +37,7 @@ class Bob : public StaticThread<> {
         AT(VALENTINE_DAY);
         greetings.date = NOW();
         strcpy(greetings.msg, "i wish you would be here");
-        PRINTF("Bob sending greetings at %lld '%s'\n", NOW(), greetings.msg);
+        PRINTF("Bob sending greetings at %lld '%s'\n", static_cast<long long>(NOW()), greetings.msg);
         valentine.publish(greetings);
 
         AT(VALENTINE_DAY2);
@@ -53,6 +53,6 @@ class Alice : public SubscriberReceiver<Greetings> {
     Alice() : SubscriberReceiver<Greetings>(valentine, "aliceSubs") {}
     void put(Greetings& data) {
         Greetings* greetingsForMe = (Greetings*)&data;
-        PRINTF("Alice got date %lld:  msg: %s\n", greetingsForMe->date, greetingsForMe->msg);
+        PRINTF("Alice got date %lld:  msg: %s\n", static_cast<long long>(greetingsForMe->date), greetingsForMe->msg);
     }
 } alice;

@@ -26,7 +26,7 @@ public:
             pos.x = pos.y = pos.z = cnt;
             PRINTF("Writing %d\n", cnt);
             buf.put(pos);
-            suspendCallerUntil(NOW() + 0.03 * SECONDS);
+            suspendCallerUntil(NOW() + 30 * MILLISECONDS);
         }
     }
 };
@@ -36,11 +36,11 @@ public:
     void run() {
         printfMask = 1;
         Position mypos;
-        suspendCallerUntil(NOW() + 0.01 * SECONDS);
+        suspendCallerUntil(NOW() + 10 * MILLISECONDS);
         while(1) {
             buf.get(mypos);
             PRINTF("Reading %d, %d, %d\n", (int)mypos.x, (int)mypos.y, (int)mypos.z);
-            suspendCallerUntil(NOW() + 0.03 * SECONDS);
+            suspendCallerUntil(NOW() + 30 * MILLISECONDS);
         }
     }
 };

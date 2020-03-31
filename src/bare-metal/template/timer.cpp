@@ -10,7 +10,7 @@ long long Timer::microsecondsInterval = 0;
 void Timer::init()  { }
 void Timer::start() { }
 void Timer::stop()  { }
-void Timer::setInterval(const long long microsecondsInterval) { }
+void Timer::setInterval([[gnu::unused]] const long long microsecondsInterval) { }
 
 
 }

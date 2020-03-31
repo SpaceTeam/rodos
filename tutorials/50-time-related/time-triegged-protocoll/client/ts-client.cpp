@@ -33,7 +33,7 @@ class TimeSyncClient : public Subscriber, public StaticThread<>, public Putter {
     }
 
     /** here we process the server response  See "explanation.pdf" **/
-    long put(const long _topicId, const long _len, const void* _msg, const NetMsgInfo& _netMsgInfo) {
+    long put([[gnu::unused]] const long _topicId, [[gnu::unused]] const long _len, void* _msg, [[gnu::unused]] const NetMsgInfo& _netMsgInfo) {
         TimeSyncResponse msg = *(TimeSyncResponse*)_msg;
         if(msg.clientNodeNr != nodeNumber || msg.clientRequestCnt != requestCnt) return 0;
 
@@ -48,7 +48,7 @@ class TimeSyncClient : public Subscriber, public StaticThread<>, public Putter {
         sysTime.setUTCDeltaTime(offset);
 
         PRINTF(REQ "%d" S_SENT_TS "%9.6f" S_RCV_TS "%9.6f" C_SENT_TS "%9.6f" C_RCV_TS "%9.6f" OFFSET "%9.6f" DELAY "%9.6f",
-               requestCnt, toMillis(msg.ntspTimes.sendTS), toMillis(msg.ntspTimes.rcvTS),
+               static_cast<int>(requestCnt), toMillis(msg.ntspTimes.sendTS), toMillis(msg.ntspTimes.rcvTS),
                toMillis(ownTS.sendTS), toMillis(ownTS.rcvTS), toMillis(offset), toMillis(oneWayTransmission));
         PRINTF(INT_TIME_CLI "%9.6f", timeAtInterrupt);
 
@@ -56,7 +56,7 @@ class TimeSyncClient : public Subscriber, public StaticThread<>, public Putter {
     }
 
     /** Just for debug: Print the utc time as response to the (global) interrupt **/
-    bool putGeneric(const long _topicId, const unsigned int _msgLen, const void* _msg, const NetMsgInfo& _netMsgInfo) {
+    bool putGeneric([[gnu::unused]] const long _topicId, [[gnu::unused]] const unsigned int _msgLen, [[gnu::unused]] const void* _msg, [[gnu::unused]] const NetMsgInfo& _netMsgInfo) {
         timeAtInterrupt = utcMillisecsNow();
         return true;
     }

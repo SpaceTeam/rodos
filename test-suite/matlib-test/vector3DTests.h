@@ -17,7 +17,7 @@ int vector3DTests() {
     b.x = 1;
     if (!a.equals(b)) FAIL;
     
-    a.x = NAN;
+    a.x = static_cast<double>(NAN);
     b.x = 0;
     if (!a.resetIfNAN()) FAIL;
     if (!a.equals(b)) FAIL;

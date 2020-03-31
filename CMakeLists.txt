@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.10)
 
 set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
 
-add_compile_options(-g -Wall -Wpedantic -Wextra -Wcast-qual -Wdouble-promotion -Wnull-dereference -Wstrict-aliasing -Wno-long-long -Wno-cpp -fno-exceptions -O0 -fno-exceptions)
+add_compile_options(-g -Wall -Wpedantic -Wextra -Wcast-qual -Wfloat-conversion -Wdouble-promotion -Wnull-dereference -Wstrict-aliasing -Wno-long-long -Wno-cpp -fno-exceptions -O0 -fno-exceptions)
 add_compile_options( $<$<COMPILE_LANGUAGE:CXX>:-fno-rtti> $<$<COMPILE_LANGUAGE:CXX>:-std=c++14>)
 
 project(rodos C CXX ASM)

@@ -28,7 +28,7 @@ class TimeSyncServer : public Subscriber, public Putter {
         response.clientRequestCnt = requestId;
         response.clientNodeNr     = _netMsgInfo.senderNode;
 
-        PRINTF(CL_NODE "%d" REQ "%d", response.clientNodeNr, ++requestCount);
+        PRINTF(CL_NODE "%d" REQ "%d", static_cast<int>(response.clientNodeNr), static_cast<int>(++requestCount));
 
         response.ntspTimes.sendTS = sysTime.getUTC(); // by real time server, set by hardware at deliver time
         serverResponse.publish(response);

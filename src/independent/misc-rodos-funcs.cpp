@@ -59,7 +59,7 @@ float getCpuLoad() {
     double cpuLoad =  1.0 - (idleDiff/timeDiff) / (double)getMaxIdleCntPerSecond(); 
     if(cpuLoad > 1.0) cpuLoad = 1.0;
     if(cpuLoad < 0.0) cpuLoad = 0.0;
-    return cpuLoad;
+    return static_cast<float>(cpuLoad);
 }
 
 bool isSchedulerRunning() { return (taskRunning > 0); }

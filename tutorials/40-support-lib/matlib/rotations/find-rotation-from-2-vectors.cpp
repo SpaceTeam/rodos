@@ -45,7 +45,7 @@ void TestRotation::run() {
         b_ = b.aRotate(originalRotor);
 
         result = findRotationsAngleAxis(a, a_, b, b_);
-        if(!result.isOk()) PRINTF(" wrong computation, errorcode = %d\n", result.getErr());
+        if(!result.isOk()) PRINTF(" wrong computation, errorcode = %d\n", static_cast<int>(result.getErr()));
         reconstructedRotor = result.val;
 
         bool ok = true;

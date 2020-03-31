@@ -246,7 +246,8 @@ void Yprintf::vaprintf(const char *fmt) {
                 yputc('.');
                 while(decimalPos--) {
                     f_val -= s_val;   // rm integer part
-                    s_val = f_val = f_val * 10;
+                    f_val = f_val * 10;
+                    s_val = static_cast<long long>(f_val);
                     yputc(s_val + '0');
                 }
             }

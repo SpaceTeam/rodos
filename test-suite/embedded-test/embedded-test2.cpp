@@ -84,7 +84,7 @@ class MyPublisher01 : public StaticThread<> {
         suspendCallerUntil();
         
         long cnt = 0;
-        TIME_LOOP(0.03 * SECONDS, 0.03 * SECONDS) {
+        TIME_LOOP(30 * MILLISECONDS, 30 * MILLISECONDS) {
             if (cnt > 10) {
                 maintest.resume();
             }
@@ -149,7 +149,7 @@ class ReceiverBuf : public StaticThread<> {
     void run() {
         long cnt;
         suspendCallerUntil();
-        TIME_LOOP(0, 0.03 * SECONDS) {
+        TIME_LOOP(0, 30 * MILLISECONDS) {
             buf.get(cnt);
             PRINTF("ReceiverComBuffer - counter1: %ld\n", cnt);
         }
@@ -174,7 +174,7 @@ void MainTest::run() {
     recbuf.resume();
     suspendCallerUntil();
     
-    suspendCallerUntil(NOW() + 0.5*SECONDS);        //To make sure all PRINTFs are finished
+    suspendCallerUntil(NOW() + 500*MILLISECONDS);        //To make sure all PRINTFs are finished
     PRINTF("FINISHED----------------------\n");
     
     hwResetAndReboot();

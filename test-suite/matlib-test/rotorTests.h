@@ -50,15 +50,15 @@ int rotorTests() {
     rot.cosAngle = 1;
     if (rot.resetIfNAN()) FAIL;
     
-    rot.axis.x = NAN;
+    rot.axis.x = static_cast<double>(NAN);
     if (!rot.resetIfNAN()) FAIL;
     if (!rot.axis.equals(Vector3D(1, 1, 1))) FAIL;
     
-    rot.axis.y = NAN;
+    rot.axis.y = static_cast<double>(NAN);
     if (!rot.resetIfNAN()) FAIL;
-    rot.axis.z = NAN;
+    rot.axis.z = static_cast<double>(NAN);
     if (!rot.resetIfNAN()) FAIL;
-    rot.cosAngle = NAN;
+    rot.cosAngle = static_cast<double>(NAN);
     if (!rot.resetIfNAN()) FAIL;
     
     return failed;

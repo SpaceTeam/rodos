@@ -5,11 +5,11 @@
 #include "rodos.h"
 
 namespace RODOS {
-long* hwInitContext(long* stack, void* object) { return 0; }
+long* hwInitContext([[gnu::unused]] long* stack, [[gnu::unused]] void* object) { return 0; }
 void startIdleThread()    { }
 
 }
 extern "C"  {
-void __asmSwitchToContext(long* context) { }
+void __asmSwitchToContext(long* context) { (void)context; }
 void __asmSaveContextAndCallScheduler()  { }
 }

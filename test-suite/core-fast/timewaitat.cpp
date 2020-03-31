@@ -16,12 +16,12 @@ static class TestTime : public StaticThread<> {
         int cnt = 0;
 
         PRINTF("Starting and waiting until 0.03 second\n");
-        AT(0.03 * SECONDS);
+        AT(30 * MILLISECONDS);
         PRINTF("After 0.03 second\n");
 
         for (int i = 0; i < 10; i++) {
             cnt++;
-            AT(NOW() + 0.02 * SECONDS);
+            AT(NOW() + 20 * MILLISECONDS);
             PRINTF("After 0.02 Seconds  : %3.9f %d\n", CNT_SECONDS_NOW(), cnt);
         }
         hwResetAndReboot();

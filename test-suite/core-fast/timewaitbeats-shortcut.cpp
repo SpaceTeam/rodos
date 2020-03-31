@@ -15,7 +15,7 @@ class TestTimeBeat : public StaticThread<> {
 
         int cnt = 0;
         
-        TIME_LOOP(0.03 * SECONDS, 0.02 * SECONDS) {
+        TIME_LOOP(30 * MILLISECONDS, 20 * MILLISECONDS) {
             PRINTF("in 0.02 seconds beat: %3.9f\n", CNT_SECONDS_NOW());
             cnt++;
             if (cnt > 10) {

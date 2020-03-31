@@ -12,12 +12,12 @@ class TestTimeBeat : public StaticThread<> {
         printfMask = 1;
         PRINTF("First beat in 0.05 seconds, period 0.05 seconds\n");
         int i = 0;
-        TIME_LOOP(0.05*SECONDS, 0.05*SECONDS) {
+        TIME_LOOP(50*MILLISECONDS, 50*MILLISECONDS) {
             i++;
             if (i > 10) {
                 hwResetAndReboot();
             }
-            int32_t t0 = CNT_SECONDS_NOW();
+            int t0 = static_cast<int>(CNT_SECONDS_NOW());
             PRINTF("In 0.05 seconds beat: %d \n", t0);
         }
     }
@@ -28,10 +28,10 @@ static TestTimeBeat testTimeBeat;
 class Resumer : public TimeEvent {
   protected:
     void handle() {
-        int32_t t0 = CNT_SECONDS_NOW();
+        int t0 = static_cast<int>(CNT_SECONDS_NOW());
         xprintf("Time Event at %d -> resuming\n", t0);
         testTimeBeat.resume();
-        if(NOW() < 50 * MILLISECONDS) activateAt(NOW() + 0.02*SECONDS);
+        if(NOW() < 50 * MILLISECONDS) activateAt(NOW() + 20*MILLISECONDS);
     }
 
     void init() {

@@ -11,7 +11,7 @@ class TestTimeBeat : public StaticThread<> {
     void run() {
         printfMask = 1;
         int cnt = 0;
-        setPeriodicBeat(0.03 * SECONDS, 0.02 * SECONDS);
+        setPeriodicBeat(30 * MILLISECONDS, 20 * MILLISECONDS);
         PRINTF("First beat in 0.03 seconds, period 0.02 seconds\n");
         for (int i = 0; i < 10; i++) {
             cnt++;

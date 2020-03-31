@@ -174,8 +174,8 @@ int _wait([[gnu::unused]] int *status) {
 
 int putchar(int ic);
 
-size_t _write(int file, char *ptr, size_t len);
-size_t _write([[gnu::unused]] int file, char *ptr, size_t len) {
+size_t _write(int file, const char *ptr, size_t len);
+size_t _write([[gnu::unused]] int file, const char *ptr, size_t len) {
 	size_t todo;
 
 	for (todo = 0; todo < len; todo++) {
@@ -191,7 +191,7 @@ size_t _write([[gnu::unused]] int file, char *ptr, size_t len) {
  */
 long _write_r(void *reent, int fd, const void *buf, size_t cnt);
 long _write_r([[gnu::unused]] void *reent, int fd, const void *buf, size_t cnt) {
-	return _write(fd, (char*) buf, cnt);
+	return _write(fd, (const char*) buf, cnt);
 }
 
 caddr_t _sbrk_r(void *reent, size_t incr);

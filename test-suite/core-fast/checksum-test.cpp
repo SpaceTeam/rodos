@@ -18,17 +18,17 @@ class ChecksumTester : public StaticThread<> {
         for(int i = 1; i < 100; i++) {
             toBeTested *= i;
             toBeTested += i;
-            SPRINTF(buff, " demo data %lld", toBeTested);
-            PRINTF("Checksum of %d: %lld\n", i, toBeTested);
+            SPRINTF(buff, " demo data %lld", static_cast<long long>(toBeTested));
+            PRINTF("Checksum of %d: %lld\n", i, static_cast<long long>(toBeTested));
 
             int32_t computedCRC1 = RODOS::computeCrc((uint8_t*)&toBeTested, 8, 0);
             int32_t computedCRC2 = crc.computeCRC((uint8_t*)&toBeTested, 8, 0);
             if(computedCRC1 == computedCRC2)
-                PRINTF("  OK %d\n", computedCRC1);
+                PRINTF("  OK %d\n", static_cast<int>(computedCRC1));
             else
-                PRINTF(" Err %d != %d\n", computedCRC1, computedCRC2);
-            PRINTF("  checksum   %d\n", RODOS::checkSum((uint8_t*)&toBeTested, 8));
-            PRINTF("  chcksumxor %d\n", RODOS::checkSumXor32((uint32_t*)&toBeTested, 2));
+                PRINTF(" Err %d != %d\n", static_cast<int>(computedCRC1), static_cast<int>(computedCRC2));
+            PRINTF("  checksum   %d\n", static_cast<int>(RODOS::checkSum((uint8_t*)&toBeTested, 8)));
+            PRINTF("  chcksumxor %d\n", static_cast<int>(RODOS::checkSumXor32((uint32_t*)&toBeTested, 2)));
             PRINTF("  hash; %d\n", hash(buff));
         }
 

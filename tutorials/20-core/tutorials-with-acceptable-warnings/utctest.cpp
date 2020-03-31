@@ -7,7 +7,7 @@ void MAIN() {
     int64_t timeNow;
 
     timeNow = TimeModel::calendar2LocalTime(2008, 11, 12, 17, 35, 34.21);
-    xprintf("Time now (now == creation of this prog) in localTime (nanoseconds)  = %lld\n", timeNow);
+    xprintf("Time now (now == creation of this prog) in localTime (nanoseconds)  = %lld\n", static_cast<long long>(timeNow));
     sysTime.setUTC(timeNow);
 }
 
@@ -35,7 +35,7 @@ void PrintTime::run() {
     int64_t utcNow;
     TIME_LOOP(0, 2 * SECONDS) {
         utcNow = sysTime.getUTC();
-        PRINTF("UTC in localTime (nanoseconds)  = %lld  ", utcNow);
+        PRINTF("UTC in localTime (nanoseconds)  = %lld  ", static_cast<long long>(utcNow));
         TimeModel::localTime2Calendar(utcNow, year, month, day, hour, min, sec);
         PRINTF("  -> %d.%d.%d  %d:%d:  %6.3f\n",
                (int)day, (int)month, (int)year, (int)hour, (int)min, sec);

@@ -22,10 +22,10 @@ class MemTest : public StaticThread<> {
 
     void run() {
         PRINTF("Mem Test: run\n");
-        PRINTF("var1: %d@%x\n", (int)var1, (int)&var1);
-        PRINTF("var2: %d@%x\n", (int)var2, (int)&var2);
-        PRINTF("var3: %d@%x\n", (int)var3, (int)&var3);
-        PRINTF("var4: %d@%x\n", (int)var4, (int)&var4);
+        PRINTF("var1: %d@%lx\n", (int)var1, (long)&var1);
+        PRINTF("var2: %d@%lx\n", (int)var2, (long)&var2);
+        PRINTF("var3: %d@%lx\n", (int)var3, (long)&var3);
+        PRINTF("var4: %d@%lx\n", (int)var4, (long)&var4);
 
         uint16_t cnt = 0;
         uint64_t t0;
@@ -33,7 +33,7 @@ class MemTest : public StaticThread<> {
             cnt++;
             suspendCallerUntil(NOW() + 2 * SECONDS);
             t0 = NOW();
-            PRINTF("Time now: %lld - cnt: %d\n", t0, cnt);
+            PRINTF("Time now: %lld - cnt: %d\n", static_cast<long long>(t0), cnt);
         }
     }
 };

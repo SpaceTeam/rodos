@@ -21,7 +21,7 @@ public:
             PRINTF("Colleting data\n");
             collectData.requestLocal(buf);
             printCharsHex("Collected:", buf, 20);
-            AT(0.1*SECONDS);
+            AT(100*MILLISECONDS);
         }
         
         AT(500*MILLISECONDS);

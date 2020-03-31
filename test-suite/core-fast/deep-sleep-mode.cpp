@@ -10,7 +10,7 @@ class TestTimeBeat : public StaticThread<> {
   public:
     void run() {
         printfMask = 1;
-        TIME_LOOP(0.01 * SECONDS, 0.01 * SECONDS) {
+        TIME_LOOP(10 * MILLISECONDS, 10 * MILLISECONDS) {
             PRINTF("Time now: %3.9f\n", CNT_SECONDS_NOW());
         }
     }
@@ -21,9 +21,9 @@ class Sleeper : public StaticThread<> {
     void run() {
         printfMask = 1;
         PRINTF("In 0.05 Seconds, Sleep for 0.10 Seconds\n");
-        AT(0.05 * SECONDS);
+        AT(50 * MILLISECONDS);
         PRINTF("Deepsleep now\n");
-        deepSleepUntil(0.15 * SECONDS);
+        deepSleepUntil(150 * MILLISECONDS);
         PRINTF("Wake up\n");
         hwResetAndReboot();
     }

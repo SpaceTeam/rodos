@@ -80,9 +80,9 @@ class TestResults : public StaticThread<> {
         /** I do not recommend to do it in this way          **/
         //_____________________________________________________
         int32_t num = f1();
-        PRINTF(" f1()  : I do not care about errors, result = %d\n", num);
+        PRINTF(" f1()  : I do not care about errors, result = %d\n", static_cast<int>(num));
         num = f3();
-        PRINTF(" f3()  : I do not care about errors, (wrong) result = %d\n", num);
+        PRINTF(" f3()  : I do not care about errors, (wrong) result = %d\n", static_cast<int>(num));
 
         //_______________________________________________
         Vect3D  vv;
@@ -90,12 +90,12 @@ class TestResults : public StaticThread<> {
 
         vv    = f5(1);
         f5Err = f5(1).getErr();
-        PRINTF(" f5(1) : I do not care about errors, vect3d=  (%f %f %f), err = %d\n", vv.x, vv.y, vv.z, f5Err);
+        PRINTF(" f5(1) : I do not care about errors, vect3d=  (%f %f %f), err = %d\n", vv.x, vv.y, vv.z, static_cast<int>(f5Err));
 
         //_______________________________________________
         PRINTF("___ as it shall be used\n");
         Result<Vect3D> good = f5(10);
-        PRINTF(" f5(10): I do not care about errors, vect3d=  (%f %f %f), err = %d\n", good.val.x, good.val.y, good.val.z, good.err);
+        PRINTF(" f5(10): I do not care about errors, vect3d=  (%f %f %f), err = %d\n", good.val.x, good.val.y, good.val.z, static_cast<int>(good.err));
 
         Result<Vect3D> r = f5(1);
         PRINTF(" f5(1) : err = %d vect3d = (%f %f %f)\n", (int)r.err, r.val.x, r.val.y, r.val.z);

@@ -120,7 +120,7 @@ public:
     double cosAngle;
     Vector3D axis;
     Rotor()                                   { cosAngle = axis.x = axis.y = axis.z = 1.0; }
-    Rotor(const Rotor& other)                 { cosAngle = other.cosAngle; axis = other.axis; }
+    Rotor(const Rotor& other)                 =default;
     Rotor(const double ca, const Vector3D& u) { cosAngle = ca; axis = u; }
     Rotor(const Vector3D& fromVector, const Vector3D& toVector); ///< rotor to go from one vector ot other
     bool resetIfNAN(); ///< sets to (1,(1,1,1)) if any component is infinite or NAN
@@ -408,7 +408,7 @@ public:
     Matrix4D(); ///< no rotation, no translation
     Matrix4D(const Matrix3D& rot, const Vector3D& trans);
     Matrix4D(double* arr); ///< arr[16], left to right, top  to bottom
-    Matrix4D(const Matrix4D& other);
+    Matrix4D(const Matrix4D& other) = default;
 
     Matrix3D getRotation() const;    ///< returns the corresponding rotation matrix
     Vector3D getTranslation() const; ///< returns the translation vector
@@ -518,7 +518,7 @@ class Vector6D {
     double v[6];
 
     Vector6D();
-    Vector6D( const Vector6D& other );
+    Vector6D( const Vector6D& other ) = default;
     Vector6D( const double* arr );
     Vector6D( double x_, double y_, double z_,
               double u_, double v_, double w_ );

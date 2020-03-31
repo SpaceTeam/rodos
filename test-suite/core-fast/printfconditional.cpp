@@ -17,7 +17,7 @@ class TestPrint : public StaticThread<> {
         printfMask = 1;
         PRINTF("\nDid you see? no printf from main!************\n");
         PRINTF("My location in source code : %s\n", LOCATION);
-        TIME_LOOP(0.1 * SECONDS, 50 * MILLISECONDS) {
+        TIME_LOOP(100 * MILLISECONDS, 50 * MILLISECONDS) {
             PRINTF_CONDITIONAL(1, " mask/id 1\n");
             PRINTF_CONDITIONAL(2, " mask/id 2\n");
             PRINTF_CONDITIONAL(4, " mask/id 4\n");

@@ -16,7 +16,7 @@ class TestGets : public StaticThread<> {
 
         int cnt = 0;
         
-        TIME_LOOP(0.3 * SECONDS, 0.01 * SECONDS) {
+        TIME_LOOP(300 * MILLISECONDS, 10 * MILLISECONDS) {
             cnt++;
             if (cnt > 100) {
                 PRINTF("-------------------------------------------------------------");
