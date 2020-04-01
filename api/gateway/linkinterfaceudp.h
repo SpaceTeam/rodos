@@ -53,7 +53,7 @@ public:
     bool sendNetworkMsg(NetworkMessage &outMsg);
     bool getNetworkMsg(NetworkMessage &inMsg,int32_t &numberOfReceivedBytes);
 
-    virtual void putFromInterrupt(const long topicId, const void* any, int len = 0);
+    virtual void putFromInterrupt(const uint32_t topicId, const void* any, size_t len = 0);
     virtual void suspendUntilDataReady(int64_t reactivationTime = END_OF_TIME);
 };
 

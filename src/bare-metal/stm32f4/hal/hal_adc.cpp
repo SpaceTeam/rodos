@@ -236,7 +236,7 @@ void HAL_ADC::reset(){
 /* ADC is running @ APB2/2 = 84MHz/2 = 42MHz
  * - with current settings one conversion takes about 12+15 cycles = 0.642us
  */
-int32_t HAL_ADC::read(ADC_CHANNEL channel) {
+uint16_t HAL_ADC::read(ADC_CHANNEL channel) {
     if (static_cast<int>(context->idx) > static_cast<int>(STM32F4_MAX_ADC_IDX)) return ADC_ERR_INVALID_INDEX;
     if ( (static_cast<int>(channel) > static_cast<int>(STM32F4_MAX_ADC_CHAN))) return ADC_ERR_INVALID_CHANNEL;
     if(!context->initialized) return ADC_ERR_NO_INIT;
@@ -245,7 +245,7 @@ int32_t HAL_ADC::read(ADC_CHANNEL channel) {
     ADC_RegularChannelConfig(context->adc, channel, 1, ADC_SampleTime_15Cycles);
     ADC_SoftwareStartConv(context->adc);  //Start Conversion
 
-    uint64_t startTime = NOW();
+    int64_t startTime = NOW();
     while (ADC_GetFlagStatus(context->adc,ADC_FLAG_EOC) == RESET){
         if ((NOW() - startTime) > 1*MILLISECONDS) {
             ADC_Cmd(context->adc, DISABLE);
@@ -254,7 +254,7 @@ int32_t HAL_ADC::read(ADC_CHANNEL channel) {
         }
     }
 
-    uint32_t adcVal = ADC_GetConversionValue(context->adc);
+    uint16_t adcVal = ADC_GetConversionValue(context->adc);
     ADC_Cmd(context->adc, DISABLE);
 
     this->upCallReadFinished();

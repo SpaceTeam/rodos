@@ -24,7 +24,7 @@ namespace RODOS {
  * This is useful to trace applications and system behavior.
 */
 
-template <int POINTS>
+template <size_t POINTS>
 class TimePoints {
 public:
     int64_t      time[POINTS];

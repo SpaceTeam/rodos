@@ -21,15 +21,15 @@ void MonitoringMsg::clear() {
     msgType = 0;
 }
 
-MonitoringMsg::MonitoringMsg(int taskId) {
+MonitoringMsg::MonitoringMsg(uint8_t taskId) {
     clear();
-    nodeNr = (char)getNodeNumber();
+    nodeNr = static_cast<uint8_t>(getNodeNumber());
 	this->taskId = taskId;
 }
 
 
-bool MonitoringMsg::serialize(void* src, int len) {
-    int newEnd = numOfParamsToSend + len;
+bool MonitoringMsg::serialize(void* src, size_t len) {
+    uint8_t newEnd = numOfParamsToSend + static_cast<uint8_t>(len);
     if (newEnd >= MAX_PARAMS) return false;
     memcpy(&params[numOfParamsToSend], src, len);
     numOfParamsToSend = newEnd;
@@ -49,17 +49,17 @@ void MonitoringMsg::report(int id) {
 /** For the monitor side   ********/
 /**********************************/
 
-bool MonitoringMsg::deserialize(void* dest, int len) {
-    int newEnd = numOfParamsDeserialized + len;
+bool MonitoringMsg::deserialize(void* dest, size_t len) {
+    uint8_t newEnd = numOfParamsDeserialized + static_cast<uint8_t>(len);
     if (newEnd > numOfParamsToSend)  return false; 
     memcpy(dest, &params[numOfParamsDeserialized], len);
     numOfParamsDeserialized = newEnd;
     return true;
 }
 
-void* MonitoringMsg::deserializeNoCopy(int len) {
+void* MonitoringMsg::deserializeNoCopy(size_t len) {
     char* currentPos =  &params[numOfParamsDeserialized];
-    numOfParamsDeserialized += len;
+    numOfParamsDeserialized += static_cast<uint8_t>(len);
     return currentPos;
 }
 

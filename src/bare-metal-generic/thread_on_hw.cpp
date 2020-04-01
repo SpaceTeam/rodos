@@ -32,12 +32,12 @@ long long oldTimerInterval = -1; // used for sleep mode
 /** old style constructor */
 Thread::Thread(const char* name,
                const long priority,
-               const long _stackSize) :
+               const size_t _stackSize) :
     ListElement(threadList, name) {
 
     this->stackSize = _stackSize;
     stackBegin = (char*)xmalloc(stackSize);
-    stack = (long*) ((unsigned long) (stackBegin + (stackSize-4)) & (~7)); // align 8 byte
+    stack = (long*) ((unsigned long) (stackBegin + (stackSize-4)) & (~7u)); // align 8 byte
     this->priority = priority;
 
     //Paint the stack space; TODO: Comment out for faster start up
@@ -148,7 +148,7 @@ bool Thread::suspendCallerUntil(const int64_t reactivationTime, void* signaler) 
 void Thread::initializeThreads() {
     xprintf("Threads in System:");
     ITERATE_LIST(Thread, threadList) {
-        xprintf("\n   Prio = %7ld Stack = %6ld %s: ", iter->priority, iter->stackSize, iter->getName());
+        xprintf("\n   Prio = %7ld Stack = %6lu %s: ", iter->priority, static_cast<unsigned long>(iter->stackSize), iter->getName());
         iter->init();
         iter->suspendedUntil = 0;
     }
@@ -303,7 +303,7 @@ Thread* Thread::findNextWaitingFor(void* signaler) {
     return nextWaiter;
 }
 
-int32_t Thread::getMaxStackUsage(){
+size_t Thread::getMaxStackUsage(){
 	Thread* currentThread = getCurrentThread();
 
 	//Go to the beginning of the stack(lowest addres)
@@ -314,7 +314,7 @@ int32_t Thread::getMaxStackUsage(){
 	stackScan++;
 
 	//Go up until empty markers are found and count
-	int freeStack=0;
+	size_t freeStack=0;
 	while(stackScan <= (uint32_t*)currentThread->stack && *stackScan == EMPTY_MEMORY_MARKER){
 		freeStack +=4;
 		stackScan++;

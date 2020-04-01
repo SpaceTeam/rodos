@@ -37,7 +37,7 @@ void threadSigtermHandler([[gnu::unused]] int sig) { }
 /** old style constructor */
 Thread::Thread(const char* name,
                const long priority,
-               const long _stackSize) :
+               const size_t _stackSize) :
     ListElement(threadList, name) {
 
     this->stackSize = _stackSize;
@@ -299,6 +299,6 @@ Thread* Thread::findNextWaitingFor(void* signaler) {
     return nextWaiter;
 }
 
-int32_t Thread::getMaxStackUsage() { return 0; }
+size_t Thread::getMaxStackUsage() { return 0; }
 
 } // namespace RODOS

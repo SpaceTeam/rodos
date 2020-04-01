@@ -84,8 +84,8 @@ struct UplinkEnvelop : CCSDSEnvelop {
     UplinkTransferFrame* getTfPtr() { return (UplinkTransferFrame*) buf; }
     UplinkSourcePacket*  getSpPtr() { return (UplinkSourcePacket*) (buf+indexOfCurrentSP); }
 
-    static int getLenOfCurrentUserData(UplinkSPHeader &spHeader) { return spHeader.length  + 1 - (spHeader.HEADER_SIZE - 6); }
-    static int getLenOfCurrentSP(UplinkSPHeader &spHeader)       { return getLenOfCurrentUserData(spHeader) + spHeader.HEADER_SIZE; }
+    static uint32_t getLenOfCurrentUserData(UplinkSPHeader &spHeader) { return spHeader.length  + 1 - (spHeader.HEADER_SIZE - 6); }
+    static uint32_t getLenOfCurrentSP(UplinkSPHeader &spHeader)       { return getLenOfCurrentUserData(spHeader) + spHeader.HEADER_SIZE; }
 };
 
 //____________________________________________________

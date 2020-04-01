@@ -62,13 +62,13 @@ int32_t HAL_I2C::init(uint32_t speed) {
 	//BSC1_ADDR
 	uint32_t ra;
 	ra = GET32(GPFSEL0);
-	ra &= ~(7 << 6); //gpio2
-	ra |= 4 << 6; //gpio2 alt0 I2C1_SDA
+	ra &= ~(7u << 6); //gpio2
+	ra |= 4u << 6; //gpio2 alt0 I2C1_SDA
 	PUT32(GPFSEL0, ra);
 
 	ra = GET32(GPFSEL0);
-	ra &= ~(7 << 9); //gpio3
-	ra |= 4 << 9; //gpio3 alt0 I2C1_SCL
+	ra &= ~(7u << 9); //gpio3
+	ra |= 4u << 9; //gpio3 alt0 I2C1_SCL
 	PUT32(GPFSEL0, ra);
 
 	//configure clocks

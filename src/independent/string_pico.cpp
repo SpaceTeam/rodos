@@ -6,7 +6,7 @@
 namespace RODOS {
 
 size_t strlen(const char *s) {
-    int len = 0;
+    size_t len = 0;
     if(!s) return 0;
     while(*s) {
       len++;
@@ -16,7 +16,7 @@ size_t strlen(const char *s) {
 }
 
 size_t strnlen(const char *s, size_t n) {
-    unsigned int len = 0;
+    size_t len = 0;
     if(!s) return 0;
     while(*s) {
       len++;
@@ -187,7 +187,7 @@ int strncmp (char const *a, char const *b, size_t n) {
  * We cannot delete. */
 void operator delete (void *) { }
 
-void operator delete (void *ptr, unsigned int) {
+void operator delete (void *ptr, size_t) {
 	operator delete (ptr);
 }
 

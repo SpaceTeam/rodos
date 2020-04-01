@@ -76,11 +76,11 @@ protected:
     //virtual long put(const long topicId, const long len, const void* data, long linkId);
 
     /// Default function: forward the message and invoke the receiver (putter). It locks the semaphore protector
-    virtual long put(const long topicId, const long len, void* data, const NetMsgInfo& netMsgInfo);
+    virtual uint32_t put(const uint32_t topicId, const size_t len, void* data, const NetMsgInfo& netMsgInfo);
 
     /// do not lock any semaphore. Do not call any thread function
     /// default function resumes the associated thread (if defined) if it is waiting for it
-    virtual void putFromInterrupt(const long topicId, const void* any, int len = 0);
+    virtual void putFromInterrupt(const uint32_t topicId, const void* any, size_t len = 0);
 
 
 public:
@@ -157,7 +157,7 @@ public:
         put(msg);
     }
 
-    long put([[gnu::unused]] const long topicId, [[gnu::unused]] const long len, void* data, const NetMsgInfo& netMsgInfo) { 
+    uint32_t put([[gnu::unused]] const uint32_t topicId, [[gnu::unused]] const size_t len, void* data, const NetMsgInfo& netMsgInfo) override { 
         put(*(Type*)data,netMsgInfo);
         return 1;
     }
@@ -174,9 +174,9 @@ class TopicFilter {
 public:
     virtual ~TopicFilter() = default;
     /// will  be called before all subscribers
-    virtual void prolog ([[gnu::unused]] const long topicId, [[gnu::unused]] const long len, [[gnu::unused]] void* data, [[gnu::unused]] const NetMsgInfo& netMsgInfo) { }
+    virtual void prolog ([[gnu::unused]] const uint32_t topicId, [[gnu::unused]] const size_t len, [[gnu::unused]] void* data, [[gnu::unused]] const NetMsgInfo& netMsgInfo) { }
     /// will  be called after all subscribers
-    virtual void epilog([[gnu::unused]] const long topicId, [[gnu::unused]] const long len, [[gnu::unused]] void* data, [[gnu::unused]] const NetMsgInfo& netMsgInfo) { }
+    virtual void epilog([[gnu::unused]] const uint32_t topicId, [[gnu::unused]] const size_t len, [[gnu::unused]] void* data, [[gnu::unused]] const NetMsgInfo& netMsgInfo) { }
 };
 
 

@@ -20,7 +20,7 @@ int uart_rxErrorStatus(int32_t uartIdx);
 struct UART_context {
 	UART_IDX idx;
 	int32_t hwFlowCtrl;
-	int32_t baudrate;
+	uint32_t baudrate;
 };
 
 static uint8_t uart_buf[UART_BUF_SIZE];
@@ -34,7 +34,7 @@ class HW_HAL_UART {
 public:
 	UART_IDX idx;
 	int hwFlowCtrl;
-	int baudrate;
+	uint32_t baudrate;
 	HAL_UART* hal_uart;
 
 	char getBuf[UART_BUF_SIZE];
@@ -79,7 +79,7 @@ void UART1_IRQHandler() {
 } // end extern "C"
 
 // initialized in 8N1 mode
-int HAL_UART::init(unsigned int iBaudrate) {
+int HAL_UART::init(uint32_t iBaudrate) {
 	context->baudrate = iBaudrate;
 
 	switch(context->idx) {
@@ -109,10 +109,10 @@ int miniUART_init(uint32_t baudrate) {
 
     //Map GPIO pins
     ra = GET32(GPFSEL1);
-    ra &= ~(7 << 12); //gpio14
-    ra |= 2 << 12;    //alt5
-    ra &= ~(7 << 15); //gpio15
-    ra |= 2 << 15;    //alt5
+    ra &= ~(7u << 12); //gpio14
+    ra |= 2u << 12;    //alt5
+    ra &= ~(7u << 15); //gpio15
+    ra |= 2u << 15;    //alt5
     PUT32(GPFSEL1, ra);
 
     //set clocks
@@ -132,7 +132,7 @@ int miniUART_init(uint32_t baudrate) {
     return 0;
 }
 
-int HAL_UART::config(UART_PARAMETER_TYPE type, int paramVal) {
+int32_t HAL_UART::config([[gnu::unused]] UART_PARAMETER_TYPE type, [[gnu::unused]] int32_t paramVal) {
     return 0;
 }
 
@@ -140,16 +140,17 @@ void HAL_UART::reset() {
 
 }
 
-int HAL_UART::read(char *buf, int size) {
+int32_t HAL_UART::read(void *recBuf, size_t size) {
     int32_t readCnt = 0;
     int32_t i = 0;
+    uint8_t* buf     = static_cast<uint8_t*>(recBuf);
 
     //read number of bytes available
     readCnt = this->status(UART_STATUS_RX_BUF_LEVEL);
 
     if (readCnt > 0 ) {
-	    if (readCnt > size) {
-		    readCnt = size;
+	    if (static_cast<uint32_t>(readCnt) > size) {
+		    readCnt = static_cast<int32_t>(size);
 	    }
 	    //read bytes from buffer and return them
 	    for (i = 0; i < readCnt; i++) {
@@ -167,21 +168,22 @@ int HAL_UART::read(char *buf, int size) {
     return 0;
 }
 
-int HAL_UART::write(const char *buf, int size) {
-    int32_t i = 0;
+int32_t HAL_UART::write(const void *sendBuf, size_t size) {
+    uint32_t i = 0;
+    const uint8_t* buf = static_cast<const uint8_t*>(sendBuf);
     //send them byte by byte
     for (i = 0; i < size; i++) {
 	    putcharNoWait(*(buf + i));
     }
 
-    return i + 1;
+    return static_cast<int32_t>(i) + 1;
 }
 
-int HAL_UART::getcharNoWait() {
+int16_t HAL_UART::getcharNoWait() {
 	return 0;
 }
 
-int HAL_UART::putcharNoWait(char c) {
+int16_t HAL_UART::putcharNoWait(uint8_t c) {
 	uint32_t ca = c;
 	for (int64_t i = 0; i < 100000000; ++i) {
 		if (GET32(AUX_MU_LSR_REG) & 0x20)
@@ -191,11 +193,11 @@ int HAL_UART::putcharNoWait(char c) {
 	//if the uart controller is ready send it out
 	PUT32(AUX_MU_IO_REG, ca);
 
-	return c;
+	return static_cast<int16_t>(c);
 
 }
 
-int HAL_UART::status(UART_STATUS_TYPE type) {
+int32_t HAL_UART::status(UART_STATUS_TYPE type) {
 	switch (type) {
 
 	//number of bytes available

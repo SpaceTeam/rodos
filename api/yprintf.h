@@ -2,6 +2,7 @@
 #pragma once
 
 #include <stdarg.h>
+#include <stdint.h>
 
 #undef putchar
 

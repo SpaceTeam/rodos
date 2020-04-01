@@ -26,7 +26,7 @@ namespace RODOS {
 
 /************************** HW dependet global varialbes **********/
 
-long long timeAtStartup = 0LL;
+int64_t timeAtStartup = 0LL;
 
 
 /****************** src global variables **************/

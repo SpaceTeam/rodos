@@ -436,7 +436,7 @@ void I2S_Init(SPI_TypeDef* SPIx, I2S_InitTypeDef* I2S_InitStruct)
     else
     {
       /* MCLK output is disabled */
-      tmp = (uint16_t)(((((i2sclk / (32 * packetlength)) *10 ) / I2S_InitStruct->I2S_AudioFreq)) + 5);
+      tmp = (uint16_t)(((((i2sclk / (32u * packetlength)) *10u ) / I2S_InitStruct->I2S_AudioFreq)) + 5);
     }
     
     /* Remove the flatting point */

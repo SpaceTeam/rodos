@@ -35,6 +35,9 @@ typedef enum {
 
 
 int __aeabi_atexit(void* object, void (*destructor)(void*), void* dso_handle) {
+    (void)object;
+    (void)destructor;
+    (void)dso_handle;
     return 0;
 }
 
@@ -42,6 +45,9 @@ void* __dso_handle = 0;
 
 
 int __cxa_atexit(void (*f)(void*), void* p, void* d) {
+    (void)f;
+    (void)p;
+    (void)d;
     return 0;
 }
 
@@ -50,6 +56,7 @@ void __cxa_pure_virtual(void) {
 }
 
 void __cxa_finalize(void* p) {
+    (void)p;
     // unnecessary
 }
 

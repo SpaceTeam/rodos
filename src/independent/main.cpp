@@ -77,7 +77,7 @@ void initSystem() {
     if (TopicInterface::topicList != 0) {
         xprintf("List of Middleware Topics:\n");
         ITERATE_LIST(TopicInterface, TopicInterface::topicList) {
-            xprintf(" %s  Id = %ld len = %ld.   -- Subscribers:\n", iter->getName(), iter->topicId, iter->msgLen);
+            xprintf(" %s  Id = %lu len = %lu.   -- Subscribers:\n", iter->getName(), static_cast<unsigned long>(iter->topicId), static_cast<unsigned long>(iter->msgLen));
             for (Subscriber* subs = (Subscriber*)iter->mySubscribers; subs !=0; subs = (Subscriber*)subs->getNext()) {
                 xprintf("     %s\n", subs->getName());
             }

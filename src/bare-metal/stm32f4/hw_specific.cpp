@@ -37,8 +37,8 @@ namespace RODOS {
 #endif
 
 /* Constants required to set up the initial stack. */
-#define INITIAL_XPSR			( 0x01000000 )
-#define INITIAL_EXEC_RETURN		( 0xfffffffd )
+#define INITIAL_XPSR			( 0x01000000l )
+#define INITIAL_EXEC_RETURN		( 0xfffffffdl )
 
 // - on interrupt the cortex m3 saves automatically the context of the interrupted function
 // - it saves the registers xPSR,PC,LR,r12,r3,r2,r1,r0 on stack
@@ -199,7 +199,7 @@ long* hwInitContext(long* stack, void* object) {
 	stack -= 5;								// R12, R3, R2 and R1
 	*stack = (long) object; 				// R0
 	stack--;
-	*stack = INITIAL_EXEC_RETURN;
+	*stack = static_cast<long>(INITIAL_EXEC_RETURN);
 	stack -= 8;							// R11, R10, R9, R8, R7, R6, R5 and R4
 
 	return stack;
@@ -499,7 +499,7 @@ void enterSleepMode() {
 	__WFI();
 }
 
-extern unsigned long long nanoTime;
+extern int64_t nanoTime;
 long long deepSleepWakeupTime = 0;
 
 void deepSleepUntil(long long until) {

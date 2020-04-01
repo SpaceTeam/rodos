@@ -162,10 +162,10 @@ double TimeModel::calendar2mjd_UTC( const uint16_t &year,
     }
     if ( (10000L*year_mod+100L*month+day) <= 15821004L  ) {
         // julian
-        Mjd_0h = 365L*year_mod - 679004L + -2 + ((year_mod+4716)/4) - 1179 + int(30.6001*(month+1)) + day;
+        Mjd_0h = static_cast<uint32_t>(365L*year_mod - 679004L + -2 + ((year_mod+4716)/4) - 1179 + int(30.6001*(month+1)) + day);
     } else {
         // gregorian 
-        Mjd_0h = 365L*year_mod - 679004L + (year_mod/400)-(year_mod/100)+(year_mod/4) + int(30.6001*(month_mod+1)) + day;
+        Mjd_0h = static_cast<uint32_t>(365L*year_mod - 679004L + (year_mod/400)-(year_mod/100)+(year_mod/4) + int(30.6001*(month_mod+1)) + day);
     }
 
     fraction = (hour+minute/60.0+second/3600.0) / 24.0;
@@ -184,7 +184,7 @@ void TimeModel::mjd_UTC2calendar( const double &MJD_UTC,
     int32_t d = 0, e = 0, f = 0;
 
     // JD at noon
-    a = static_cast<int32_t> (MJD_UTC) + 2400001L;
+    a = static_cast<uint32_t>(static_cast<int32_t> (MJD_UTC) + 2400001L);
     // fraction of the day
     q = MJD_UTC - static_cast<int32_t>(MJD_UTC);
 

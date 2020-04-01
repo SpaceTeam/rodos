@@ -33,7 +33,7 @@ public:
 
 	uint32_t increments;
 	uint32_t Frequency;
-	int pulseWidthInIncs;
+	uint32_t pulseWidthInIncs;
 	TIM_CHAN_TypeDef channel;
 	TIM_TypeDef* timer;
 	uint32_t timerClk;
@@ -52,7 +52,7 @@ HAL_PWM::HAL_PWM(PWM_IDX idx) {
 }
 
 
-int HAL_PWM::init(int frequency, int increments) {
+int HAL_PWM::init(uint32_t frequency, uint32_t increments) {
 
     if ((static_cast<int>(context->PwmIdx) < static_cast<int>(PWM_IDX00)) || (static_cast<int>(context->PwmIdx) > static_cast<int>(PWM_IDX15))) {
         return -1;
@@ -86,9 +86,9 @@ int HAL_PWM::init(int frequency, int increments) {
 
     context->Frequency = frequency;
 
-    int32_t incMax = context->timerClk/context->Frequency;
+    uint32_t incMax = context->timerClk/context->Frequency;
     if (context->PwmIdx < PWM_IDX04 || context->PwmIdx > PWM_IDX07){ // Timer 1,3,4
-        if (incMax > 0xFFFF) incMax = 0xFFFF;
+        if (incMax > 0xFFFFul) incMax = 0xFFFFul;
     }
     if (increments > incMax) increments = incMax;
 
@@ -276,19 +276,19 @@ int HAL_PWM::config(PWM_PARAMETER_TYPE type, int paramVal) {
 
     switch (type) {
 	case PWM_PARAMETER_INCREMENTS:{
-	    int32_t incMax = context->timerClk/context->Frequency;
+	    uint32_t incMax = context->timerClk/context->Frequency;
 	    if (context->PwmIdx < PWM_IDX04 || context->PwmIdx > PWM_IDX07){ // Timer 1,3,4
 	        if (incMax > 0xFFFF) incMax = 0xFFFF;
 	    }
-		if (paramVal < 2 || paramVal > incMax)
+		if (paramVal < 2 || static_cast<uint32_t>(paramVal) > incMax)
 			return -1; // parameter invalid
-		context->increments = paramVal;
+		context->increments = static_cast<uint32_t>(paramVal);
 		break;
 	}
 	case PWM_PARAMETER_FREQUENCY:
-		if (paramVal < 0 || (paramVal*context->increments) > context->timerClk)
+		if (paramVal < 0 || (static_cast<uint32_t>(paramVal)*context->increments) > context->timerClk)
 			return -1; // parameter invalid
-		context->Frequency = paramVal;
+		context->Frequency = static_cast<uint32_t>(paramVal);
 		break;
 	}
 
@@ -394,7 +394,7 @@ void HAL_PWM::reset() {
 
 }
 
-int HAL_PWM::write(unsigned int pulseWidthInIncs) {
+int HAL_PWM::write(uint32_t pulseWidthInIncs) {
 	if ((static_cast<int>(context->PwmIdx) < static_cast<int>(PWM_IDX00)) || (static_cast<int>(context->PwmIdx) > static_cast<int>(PWM_IDX15))) {
         return -1;
     }
@@ -509,11 +509,11 @@ void HW_HAL_PWM::updateSettings(){
     // fCK_CNT = fCK_PSC/(TIM_Prescaler+1)
     // - it's important to set the prescaler properly, because timer is only a 16Bit counter with
     //   a maximum reload-value of 2^16 = 65536 (except timer2 -> 32Bit)
-    int timPrescaler = timerClk / (Frequency *increments) - 1;
+    int timPrescaler = static_cast<int>(timerClk / (Frequency *increments)) - 1;
     if (timPrescaler < 0) timPrescaler = 0;
     // e.g. 168000000/(1000*100)-1 = 1679
 
-    timStruct.TIM_Prescaler = timPrescaler;
+    timStruct.TIM_Prescaler = static_cast<uint16_t>(timPrescaler);
 
     timStruct.TIM_Period = increments;
 

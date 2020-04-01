@@ -114,7 +114,7 @@ class HW_HAL_UART {
 
 	UART_IDX idx;
 	int hwFlowCtrl;
-	int baudrate;
+	uint32_t baudrate;
 	HAL_UART* hal_uart;
 	int uartRxError;
 
@@ -128,11 +128,11 @@ class HW_HAL_UART {
 
 	bool isDMAEnabeld;
 	volatile bool DMATransmitRunning;
-	volatile int DMATransmitRunningSize;
+	volatile size_t DMATransmitRunningSize;
 	volatile bool DMAReceiveRunning;
-	volatile int DMAReceiveRunningSize;
+	volatile size_t DMAReceiveRunningSize;
 
-	int DMAMaxReceiveSize;
+	size_t DMAMaxReceiveSize;
 
 	BlockFifo<uint8_t,UART_BUF_SIZE> receiveBuffer;
 	BlockFifo<uint8_t,UART_BUF_SIZE> transmittBuffer;
@@ -142,8 +142,8 @@ class HW_HAL_UART {
 
 
 	void DMAConfigure();
-	void DMAStartTransfer(void* memoryBuffer,int len);
-	void DMAStartReceive(void* memoryBuffer,int len);
+	void DMAStartTransfer(void* memoryBuffer,size_t len);
+	void DMAStartReceive(void* memoryBuffer,size_t len);
 
 
 	void SendTxBufWithDMA();
@@ -151,7 +151,7 @@ class HW_HAL_UART {
 
 	void UARTIRQHandler();
 
-	int init(unsigned int baudrate);
+	int init(uint32_t baudrate);
 	void initMembers(HAL_UART* halUart, UART_IDX uartIdx, GPIO_PIN txPin, GPIO_PIN rxPin, GPIO_PIN rtsPin, GPIO_PIN ctsPin);
 
 	uint32_t getRCC_APBxPeriph_UARTx();
@@ -393,7 +393,7 @@ void DMA1_Stream1_IRQHandler(){
  * USART
  * - all USART will be initialized in 8N1 mode
  */
-int HAL_UART::init(unsigned int iBaudrate) {
+int HAL_UART::init(uint32_t iBaudrate) {
 
 	if ((context->idx < UART_IDX_MIN) || (context->idx > UART_IDX_MAX)) {return -1;}
 
@@ -401,7 +401,7 @@ int HAL_UART::init(unsigned int iBaudrate) {
 }
 
 
-int HAL_UART::config(UART_PARAMETER_TYPE type, int paramVal) {
+int32_t HAL_UART::config(UART_PARAMETER_TYPE type, int32_t paramVal) {
 
 	UART_IDX idx = context->idx;
 
@@ -420,8 +420,8 @@ int HAL_UART::config(UART_PARAMETER_TYPE type, int paramVal) {
 		case UART_PARAMETER_BAUDRATE:
 			if (paramVal > 0)
 			{
-				Uis.USART_BaudRate = paramVal;
-				context->baudrate = paramVal;
+				Uis.USART_BaudRate = static_cast<uint32_t>(paramVal);
+				context->baudrate = static_cast<uint32_t>(paramVal);
 			}
 			else {return -1;}
 			break;
@@ -455,7 +455,7 @@ int HAL_UART::config(UART_PARAMETER_TYPE type, int paramVal) {
 		    if((unsigned int)paramVal > UART_BUF_SIZE){
 		        context->DMAMaxReceiveSize=UART_BUF_SIZE;
 		    }else{
-		        context->DMAMaxReceiveSize=paramVal;
+		        context->DMAMaxReceiveSize=static_cast<size_t>(paramVal);
 		    }
 		    context->isDMAEnabeld=true;
 		    context->RceiveIntoRxBufWithDMA();
@@ -500,13 +500,15 @@ void HAL_UART::reset(){
 }
 
 
-int HAL_UART::read(char* buf, int size) {
+int32_t HAL_UART::read(void* recBuf, size_t size) {
 
     if ((context->idx < UART_IDX_MIN) || (context->idx > UART_IDX_MAX)) {return -1;}
     if(size <=0) return 0;
 
-    int readCnt = 0;
-    int i = 0;
+    uint8_t* buf = reinterpret_cast<uint8_t*>(recBuf);
+
+    size_t readCnt = 0;
+    size_t i = 0;
 
     uint8_t* p = context->receiveBuffer.getBufferToRead(readCnt);
 
@@ -522,21 +524,21 @@ int HAL_UART::read(char* buf, int size) {
             context->RceiveIntoRxBufWithDMA();
         }
 
-        return readCnt;
+        return static_cast<int32_t>(readCnt);
     } else {
         return 0;
     }
 }
 
 
-int HAL_UART::write(const char* buf, int size) {
+int32_t HAL_UART::write(const void* sendBuf, size_t size) {
 
     if ((context->idx < UART_IDX_MIN) || (context->idx > UART_IDX_MAX)) {return -1;}
     if(size <=0) return 0;
 
-    int i = 0;
-
-    int spaceinbuffer;
+    const uint8_t* buf = reinterpret_cast<const uint8_t*>(sendBuf);
+    size_t   i   = 0;
+    size_t spaceinbuffer = 0;
 
     uint8_t* p = context->transmittBuffer.getBufferToWrite(spaceinbuffer);
 
@@ -560,14 +562,14 @@ int HAL_UART::write(const char* buf, int size) {
         }
 
 
-        return size;
+        return static_cast<int32_t>(size);
     }else{
         return 0;
     }
 }
 
 
-int HAL_UART::getcharNoWait() {
+int16_t HAL_UART::getcharNoWait() {
     if ((context->idx < UART_IDX_MIN) || (context->idx > UART_IDX_MAX)) {return -1;}
 
 	uint8_t c = 0;
@@ -579,14 +581,14 @@ int HAL_UART::getcharNoWait() {
 
 	if (dataAvailible)
 	{
-		return (int)c;
+		return static_cast<int16_t>(c);
 	}else	{
 		return -1;
 	}
 }
 
 
-int HAL_UART::putcharNoWait(char c) {
+int16_t HAL_UART::putcharNoWait(uint8_t c) {
     if ((context->idx < UART_IDX_MIN) || (context->idx > UART_IDX_MAX)) {return -1;}
 
 	if(context->transmittBuffer.put(c)){
@@ -607,13 +609,13 @@ int HAL_UART::putcharNoWait(char c) {
 }
 
 
-int HAL_UART::status(UART_STATUS_TYPE type) {
+int32_t HAL_UART::status(UART_STATUS_TYPE type) {
     if ((context->idx < UART_IDX_MIN) || (context->idx > UART_IDX_MAX)) {return -1;}
 
 	switch (type)
 	{
 		case UART_STATUS_RX_BUF_LEVEL:
-			return context->receiveBuffer.getElementCount();
+			return static_cast<int32_t>(context->receiveBuffer.getElementCount());
 
 		case UART_STATUS_RX_ERROR:
 			int temp;
@@ -750,7 +752,7 @@ void HW_HAL_UART::DMAConfigure() {
 
 }
 
-void HW_HAL_UART::DMAStartTransfer(void* memoryBuffer,int len) {
+void HW_HAL_UART::DMAStartTransfer(void* memoryBuffer, size_t len) {
 
 	if ((idx < UART_IDX_MIN) || (idx > UART_IDX_MAX_DMA)) {return;}
 
@@ -769,7 +771,7 @@ void HW_HAL_UART::DMAStartTransfer(void* memoryBuffer,int len) {
 
 }
 
-void HW_HAL_UART::DMAStartReceive(void* memoryBuffer,int len) {
+void HW_HAL_UART::DMAStartReceive(void* memoryBuffer, size_t len) {
 
 	if ((idx < UART_IDX_MIN) || (idx > UART_IDX_MAX_DMA)) {return;}
 
@@ -798,8 +800,8 @@ void HW_HAL_UART::DMATransmitFinishedHandler(){
 	//while(USART_GetFlagStatus(uart_getRegPointer(idx),USART_FLAG_TC)==SET){}
 
 	DMA_Stream_TypeDef* dma=UART_DMA_TxStreams[idx-1];
-	int bytesNotTransfered = DMA_GetCurrDataCounter(dma); //Should be zero
-	int bytesTransfered = DMATransmitRunningSize-bytesNotTransfered;
+	size_t bytesNotTransfered = DMA_GetCurrDataCounter(dma); //Should be zero
+	size_t bytesTransfered = DMATransmitRunningSize-bytesNotTransfered;
 
 	transmittBuffer.readConcluded(bytesTransfered);
 
@@ -820,7 +822,7 @@ void HW_HAL_UART::DMAReceiveFinishedHandler() {
 	//while(USART_GetFlagStatus(uart_getRegPointer(idx),USART_FLAG_TC)==SET){}
 
 	DMA_Stream_TypeDef* dma=UART_DMA_RxStreams[idx-1];
-	int bytesTransfered = DMAReceiveRunningSize-DMA_GetCurrDataCounter(dma);
+	size_t bytesTransfered = DMAReceiveRunningSize-DMA_GetCurrDataCounter(dma);
 
 	receiveBuffer.writeConcluded(bytesTransfered);
 
@@ -835,7 +837,7 @@ void HW_HAL_UART::DMAReceiveFinishedHandler() {
 
 void HW_HAL_UART::SendTxBufWithDMA() {
 
-	int len;
+	size_t len;
 	uint8_t*  p = transmittBuffer.getBufferToRead(len);
 
 	if(p){
@@ -847,7 +849,7 @@ void HW_HAL_UART::SendTxBufWithDMA() {
 
 void HW_HAL_UART::RceiveIntoRxBufWithDMA() {
 
-	int len;
+	size_t len;
 	uint8_t* p;
 
 	p = receiveBuffer.getBufferToWrite(len);
@@ -982,7 +984,7 @@ USART_TypeDef* HW_HAL_UART::getUARTx() {
     return NULL;
 }
 
-int HW_HAL_UART::init(unsigned int baudrate) {
+int HW_HAL_UART::init(uint32_t baudrate) {
 
     if ((idx < UART_IDX_MIN) || (idx > UART_IDX_MAX)) {return -1;}
 

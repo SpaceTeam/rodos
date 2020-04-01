@@ -27,23 +27,23 @@ namespace RODOS {
 static Application applicationName("Topics & Middleware", APID_MIDDLEWARE);
 
 
-TopicInterface::TopicInterface(long id, long len, const char* name, bool _onlyLocal) : ListElement(topicList, name)  {
+TopicInterface::TopicInterface(long id, size_t len, const char* name, bool _onlyLocal) : ListElement(topicList, name)  {
     mySubscribers = 0;
-    topicId       = id;
     msgLen        = len;
     onlyLocal     = _onlyLocal;
     topicFilter   = 0;
 
-    if(topicId == -1) {
+    if(id == -1) {
         topicId = hash(name) ;
         if(topicId < FIRST_USER_TOPIC_ID) { // reserved topic ids
             topicId +=  FIRST_USER_TOPIC_ID;
         }
+    } else {
+        topicId       = static_cast<uint32_t>(id);
     }
-
     /** Check for replications **/
     ITERATE_LIST(TopicInterface, topicList) {
-        RODOS_ASSERT( (iter->topicId != id) || (iter == this) ); // Duplicated topicId
+        RODOS_ASSERT( (iter->topicId != topicId) || (iter == this) ); // Duplicated topicId
     }
 
 }
@@ -56,9 +56,9 @@ void TopicInterface::setTopicFilter(TopicFilter* filter) {
     topicFilter = filter;
 }
 
-TopicInterface*  TopicInterface::findTopicId(long watedTopicId) {
+TopicInterface*  TopicInterface::findTopicId(uint32_t wantedTopicId) {
     ITERATE_LIST(TopicInterface, topicList) {
-        if(iter->topicId == watedTopicId)  return iter;
+        if(iter->topicId == wantedTopicId)  return iter;
     }
     return 0;
 }
@@ -66,13 +66,13 @@ TopicInterface*  TopicInterface::findTopicId(long watedTopicId) {
 
 /**********************/
 
-unsigned long TopicInterface::publish(void* data, bool shallSendToNetwork, NetMsgInfo* netMsgInfo) {
+uint32_t TopicInterface::publish(void* data, bool shallSendToNetwork, NetMsgInfo* netMsgInfo) {
     return publishMsgPart(data,msgLen,shallSendToNetwork,netMsgInfo);
 
 }
 
-unsigned long TopicInterface::publishMsgPart(void* data, unsigned int lenToSend, bool shallSendToNetwork, NetMsgInfo* netMsgInfo) {
-    int cnt = 0; // number of receivers a message is sent to
+uint32_t TopicInterface::publishMsgPart(void* data, size_t lenToSend, bool shallSendToNetwork, NetMsgInfo* netMsgInfo) {
+    uint32_t cnt = 0; // number of receivers a message is sent to
     NetMsgInfo localmsgInfo;
 
     if(!netMsgInfo) {
@@ -109,7 +109,7 @@ unsigned long TopicInterface::publishMsgPart(void* data, unsigned int lenToSend,
     return cnt;
 }
 
-void TopicInterface::publishFromInterrupt(void *any, int len) {
+void TopicInterface::publishFromInterrupt(void *any, size_t len) {
     ITERATE_LIST(Subscriber, mySubscribers) {
         iter->putFromInterrupt(topicId, any, len);
     }

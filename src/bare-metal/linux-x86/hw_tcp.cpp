@@ -69,8 +69,8 @@ bool HW_TCPServer::acceptNewConnection() {
     return true;
 }
 
-int HW_TCPServer::sendData(void* buf, int len)   { return ::send(client_sock, buf, len, 0); }
-int HW_TCPServer::getData(void* buf, int maxLen) { return recv(client_sock, buf, maxLen, 0); }
+int HW_TCPServer::sendData(void* buf, size_t len)   { return ::send(client_sock, buf, len, 0); }
+int HW_TCPServer::getData(void* buf, size_t maxLen) { return recv(client_sock, buf, maxLen, 0); }
 int HW_TCPServer::getErrorCode()                 { return errorCode; }
 
 //_______________________________________________________________________________
@@ -95,8 +95,8 @@ bool HW_TCPClient::reopen(const long portNr, const char* hostname) {
     return errorCode == 0;
 }
 
-int HW_TCPClient::sendData(void* buf, int len)   { return ::send(sock, buf, len, 0); }
-int HW_TCPClient::getData(void* buf, int maxLen) { return recv(sock, buf, maxLen, 0); }
+int HW_TCPClient::sendData(void* buf, size_t len)   { return ::send(sock, buf, len, 0); }
+int HW_TCPClient::getData(void* buf, size_t maxLen) { return recv(sock, buf, maxLen, 0); }
 int HW_TCPClient::getErrorCode() { return errorCode; }
 
 } // namespace RODOS

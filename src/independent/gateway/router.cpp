@@ -29,12 +29,12 @@ Router::Router(bool forwardTopicReports_, Gateway* gateway1, Gateway* gateway2, 
 }
 
 
-long Router::put([[gnu::unused]] const long topicId, [[gnu::unused]] const long len, void* data, const NetMsgInfo& netMsgInfo) {
+uint32_t Router::put([[gnu::unused]] const uint32_t topicId, [[gnu::unused]] const size_t len, void* data, const NetMsgInfo& netMsgInfo) {
     routeMsg(*((NetworkMessage*)data),netMsgInfo.linkId);
     return 1;
 }
 
-bool Router::putGeneric(const long topicId, const unsigned int len,
+bool Router::putGeneric(const uint32_t topicId, const size_t len,
                         const void* msg, const NetMsgInfo&) {
 
     protector.enter();
@@ -45,7 +45,7 @@ bool Router::putGeneric(const long topicId, const unsigned int len,
     return true;
 }
 
-void Router::routeMsg(NetworkMessage& msg,long linkid) {
+void Router::routeMsg(NetworkMessage& msg,uint32_t linkid) {
     if(shouldRouteThisMsg(msg,linkid)) {
         msg.setCheckSum();
 
@@ -57,15 +57,15 @@ void Router::routeMsg(NetworkMessage& msg,long linkid) {
     }
 }
 
-bool Router::shouldRouteThisMsg(NetworkMessage& msg, [[gnu::unused]] long linkid) {
+bool Router::shouldRouteThisMsg(NetworkMessage& msg, [[gnu::unused]] uint32_t linkid) {
     if(msg.get_maxStepsToForward() <= 0)               return false;
     if(msg.get_topicId() == 0 && !forwardTopicReports) return false;
     return true;
 }
 
-bool Router::shouldRouteThisMsgToGateway(NetworkMessage& msg,long linkid, Gateway* gateway) {
+bool Router::shouldRouteThisMsgToGateway(NetworkMessage& msg,uint32_t linkid, Gateway* gateway) {
     if(gateway->getLinkIdentifier()==linkid) return false;
-    return gateway->shouldTopicForwarded(msg.get_topicId());
+    return gateway->shouldTopicForwarded(static_cast<long>(msg.get_topicId()));
 }
 
 void Router::addGateway(Gateway* gateway) {

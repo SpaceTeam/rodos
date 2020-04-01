@@ -35,31 +35,31 @@ public:
     /*
      * Networkmessages from all Gateway come in here
      */
-    long put(const long topicId, const long len, void* data, const NetMsgInfo& netMsgInfo);
+    uint32_t put(const uint32_t topicId, const size_t len, void* data, const NetMsgInfo& netMsgInfo) override;
 
     /*
      * Local Topics to send out come in here
      */
-    bool putGeneric(const long topicId, const unsigned int len, const void* msg, const NetMsgInfo& netMsgInfo);
+    bool putGeneric(const uint32_t topicId, const size_t len, const void* msg, const NetMsgInfo& netMsgInfo) override;
 
 
     /**
      * Gets called for every packet that enters this Router from local or from network.
      * Default implementation make routing descision with below functions for every Gateway added to this router
      */
-    virtual void routeMsg(NetworkMessage &msg, long linkid);
+    virtual void routeMsg(NetworkMessage &msg, uint32_t linkid);
 
 
     /*
      * Should this Message be routet in general?
      *
      */
-    virtual bool shouldRouteThisMsg(NetworkMessage &msg, long linkid);
+    virtual bool shouldRouteThisMsg(NetworkMessage &msg, uint32_t linkid);
 
     /**
      * Shoould this message be routet to this Gateway?
      */
-    virtual bool shouldRouteThisMsgToGateway(NetworkMessage &msg, long linkid,Gateway* gateway);
+    virtual bool shouldRouteThisMsgToGateway(NetworkMessage &msg, uint32_t linkid,Gateway* gateway);
 
     virtual void addGateway(Gateway* gateway);
 };

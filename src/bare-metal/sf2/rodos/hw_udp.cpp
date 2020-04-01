@@ -9,8 +9,8 @@
 
 namespace RODOS {
 
-void udp_recv_func(void* arg, struct udp_pcb* pcb, struct pbuf* p,
-                   ip_addr_t* addr, u16_t port) {
+void udp_recv_func(void* arg, [[gnu::unused]] struct udp_pcb* pcb, struct pbuf* p,
+                   [[gnu::unused]] ip_addr_t* addr, [[gnu::unused]] u16_t port) {
 
     UDPReceiver*   udpRecv = (UDPReceiver*)arg;
     GenericMsgRef* msg     = &udpRecv->recvDatRef[udpRecv->recvDatPtr];
@@ -107,7 +107,7 @@ void UDPReceiver::setAsync(Topic<GenericMsgRef>* associatedTopic) {
  * @param[IN] size of input buffer
  * @return length of message written to userData
  */
-long UDPReceiver::get(void* userData, const unsigned int maxLen) {
+int32_t UDPReceiver::get(void* userData, const size_t maxLen) {
     return get(userData, maxLen, 0);
 }
 
@@ -118,7 +118,7 @@ long UDPReceiver::get(void* userData, const unsigned int maxLen) {
  * @param[IN] size of input buffer
  * @return length of message written to userData
  */
-long UDPReceiver::get(void* userData, int maxLen, unsigned long* ipaddr) {
+int32_t UDPReceiver::get([[gnu::unused]] void* userData, [[gnu::unused]] size_t maxLen, [[gnu::unused]] uint32_t* ipaddr) {
     if(!init()) {
         return -1;
     }
@@ -129,7 +129,7 @@ long UDPReceiver::get(void* userData, int maxLen, unsigned long* ipaddr) {
     return 0;
 }
 
-UDPTransmitter::UDPTransmitter(const TUDPPortNr _port, const char* host) {
+UDPTransmitter::UDPTransmitter(const TUDPPortNr _port, [[gnu::unused]] const char* host) {
     //Name resolution not yet supported on bare-metal
     if(_port < 0) {
         ip_addr_t _ip;
@@ -142,7 +142,7 @@ UDPTransmitter::UDPTransmitter(const TUDPPortNr _port, const char* host) {
     }
 }
 
-UDPTransmitter::UDPTransmitter(const long _portNr, unsigned long _ipAddr) {
+UDPTransmitter::UDPTransmitter(const long _portNr, uint32_t _ipAddr) {
     ip_addr_t _ip;
     _ip.addr = _ipAddr;
     init(_portNr, _ip);
@@ -167,7 +167,7 @@ void UDPTransmitter::openConnection(const TUDPPortNr port, const char* host) {
 
     strcpy(hostName, host);
     if(strcmp(hostName, "localhost") == 0) strcpy(hostName, "127.0.0.1");
-    tok.setSeparators((char*)".,; ");
+    tok.setSeparators((const char*)".,; ");
     tok.init(hostName);
 
     for(int i = 0; i < 4; i++) {
@@ -208,7 +208,7 @@ void UDPTransmitter::connect(ip_addr_t _ip, uint16_t prt) {
     connected = true;
 }
 
-bool UDPTransmitter::send(const void* msg, const unsigned int len) {
+bool UDPTransmitter::send(const void* msg, const size_t len) {
     if(!IPStack::instance)
         return false;
     IPStack::instance->IPsem.enter();
@@ -229,8 +229,8 @@ bool UDPTransmitter::send(const void* msg, const unsigned int len) {
     return result == ERR_OK;
 }
 
-bool UDPTransmitter::sendTo(const void* userData, const int maxLen,
-                            unsigned long _ipAddr) {
+bool UDPTransmitter::sendTo(const void* userData, const size_t maxLen,
+                            uint32_t _ipAddr) {
     if(!IPStack::instance)
         return false;
     IPStack::instance->IPsem.enter();

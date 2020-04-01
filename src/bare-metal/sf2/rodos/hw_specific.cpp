@@ -90,8 +90,8 @@ void hwInit() {
     uint8_t     serialNum[16] = { 0x22, 0x22, 0x22, 0x22, 0x22, 0x22, 0x22, 0x22,
                               0x22, 0x22, 0x22, 0x22, 0x22, 0x22, 0x22, 0x22 };
     MSS_SYS_get_serial_number(serialNum);
-    myNodeNr = serialNum[15] | ((uint32_t)serialNum[14] << 8) | ((uint32_t)serialNum[3] << 13) |
-               ((uint32_t)serialNum[12] << 24);
+    myNodeNr = static_cast<long>(serialNum[15] | ((uint32_t)serialNum[14] << 8) | ((uint32_t)serialNum[3] << 13) |
+               ((uint32_t)serialNum[12] << 24));
 
     //UART for stdout
     uart_stdout.init(115200);
@@ -119,7 +119,7 @@ long* hwInitContext(long* stack, void* object) {
     stack -= 5;            // R12, R3, R2 and R1
     *stack = (long)object; // R0
     stack--;
-    *stack = INITIAL_EXEC_RETURN;
+    *stack = static_cast<long>(INITIAL_EXEC_RETURN);
     stack -= 8; // R11, R10, R9, R8, R7, R6, R5 and R4
 
     return stack;

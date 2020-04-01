@@ -42,7 +42,7 @@ class Thread : public ListElement {
 
 private:
   static List threadList; ///< List of all threads
-  long stackSize; 	  ///< size of the thread's stack in bytes
+  size_t stackSize; 	  ///< size of the thread's stack in bytes
   long* stack; 		  ///< pointer to the thread's stack (beginning high, growing low)
   char* stackBegin;	  ///< stack grows down, this is the lower limit
   long* volatile context; ///< pointer to stored context
@@ -85,9 +85,9 @@ public:
    * @see DEFAULT_STACKSIZE
    */
   [[deprecated("consider using StaticThread!")]]
-  Thread(const char* name      = "AnonymThread",
-         const long  priority  = DEFAULT_THREAD_PRIORITY,
-         const long  stackSize = DEFAULT_STACKSIZE);
+  Thread(const char*  name      = "AnonymThread",
+         const long   priority  = DEFAULT_THREAD_PRIORITY,
+         const size_t stackSize = DEFAULT_STACKSIZE);
 
   /**
    * Initialization of the thread. A user should use a meaningful name for the thread.
@@ -110,7 +110,7 @@ public:
     : ListElement(threadList, name) {
       this->stackSize  = STACK_SIZE;
       this->stackBegin = stack;
-      this->stack      = (long*)((unsigned long)(stack + (stackSize - 4)) & (~7));
+      this->stack      = (long*)((unsigned long)(stack + (stackSize - 4)) & (~7u));
       this->priority   = priority;
 
       initializeStack();
@@ -267,7 +267,7 @@ public:
    *
    * @return The maximum stack usage of the current thread until now.
    */
-  static int32_t getMaxStackUsage();
+  static size_t getMaxStackUsage();
 
 };
 

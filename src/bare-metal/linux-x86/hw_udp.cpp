@@ -154,17 +154,17 @@ void UDPReceiver::setAsync(Topic<GenericMsgRef>* associatedTopic) {
 
 UDPReceiver::~UDPReceiver() { close(sock); }
 
-long UDPReceiver::get(void* userData, const unsigned int maxLen) {
+int32_t UDPReceiver::get(void* userData, const size_t maxLen) {
     if(!initialised) return 0;
     // Non-blocking read from socket.
-    int errcode = recvfrom(sock, userData, maxLen, MSG_DONTWAIT, 0, 0);
+    ssize_t errcode = recvfrom(sock, userData, maxLen, MSG_DONTWAIT, 0, 0);
     if(errcode <= 0) {
         return 0;
     }
-    return errcode;
+    return static_cast<int32_t>(errcode);
 }
 
-long UDPReceiver::get(void* userData, int maxLen, unsigned long* ipaddr) {
+int32_t UDPReceiver::get(void* userData, const size_t maxLen, uint32_t* ipaddr) {
     sockaddr_in sendAddr;
 
     // Reset sender address information
@@ -173,7 +173,7 @@ long UDPReceiver::get(void* userData, int maxLen, unsigned long* ipaddr) {
     sendAddr.sin_port   = htons(0); // Receive from any port
     int sendAddrLen     = sizeof(sendAddr);
 
-    int errcode = recvfrom(sock, userData, maxLen, MSG_DONTWAIT, (sockaddr*)&sendAddr, (socklen_t*)&sendAddrLen);
+    ssize_t errcode = recvfrom(sock, userData, maxLen, MSG_DONTWAIT, (sockaddr*)&sendAddr, (socklen_t*)&sendAddrLen);
 
     if(errcode > 0) {
         *ipaddr = ntohl(sendAddr.sin_addr.s_addr);
@@ -182,7 +182,7 @@ long UDPReceiver::get(void* userData, int maxLen, unsigned long* ipaddr) {
     if(errcode <= 0) {
         return 0;
     }
-    return errcode;
+    return static_cast<int32_t>(errcode);
 }
 
 bool UDPReceiver::readyToGet() {
@@ -220,7 +220,7 @@ void UDPTransmitter::openConnection(int port, const char* host) {
     memset(&outputAddr, 0, sizeof(outputAddr));
     hp = gethostbyname(host);
     if(hp != 0) {
-        memcpy(&outputAddr.sin_addr, hp->h_addr, hp->h_length);
+        memcpy(&outputAddr.sin_addr, hp->h_addr, static_cast<size_t>(hp->h_length));
     } else {
         xprintf("!! Openconnection2 UPD-out: gethostbyname failed, taking max\n");
         outputAddr.sin_addr.s_addr = inet_addr("127.255.255.255");
@@ -277,7 +277,7 @@ UDPTransmitter::~UDPTransmitter() { close(sock); }
 
 
 /*************************************************/
-bool UDPTransmitter::send(const void* msg, const unsigned int len) {
+bool UDPTransmitter::send(const void* msg, const size_t len) {
     int retval;
     if(!initialised) return false;
     retval = sendto(sock, msg, len, 0, (sockaddr*)&outputAddr, sizeof(outputAddr));
@@ -287,7 +287,7 @@ bool UDPTransmitter::send(const void* msg, const unsigned int len) {
     return true;
 }
 
-bool UDPTransmitter::sendTo(const void* userData, const int maxLen, unsigned long ipAddr) {
+bool UDPTransmitter::sendTo(const void* userData, const size_t maxLen, unsigned long ipAddr) {
 
     // Here we establish a connection procedure like in send, but connecting to another host.
     hostent*    newHp;
@@ -313,7 +313,7 @@ bool UDPTransmitter::sendTo(const void* userData, const int maxLen, unsigned lon
 
     // Fill in remote host address structure
     memset(&newOutputAddr, 0, sizeof(newOutputAddr));
-    memcpy(&newOutputAddr.sin_addr, newHp->h_addr, newHp->h_length);
+    memcpy(&newOutputAddr.sin_addr, newHp->h_addr, static_cast<size_t>(newHp->h_length));
     newOutputAddr.sin_family = AF_INET;
     newOutputAddr.sin_port   = outputAddr.sin_port;
 

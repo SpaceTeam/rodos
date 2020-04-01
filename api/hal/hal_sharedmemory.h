@@ -36,7 +36,7 @@ class HAL_Sharedmemory : public GenericIOInterface {
      * Initialize shared memory
      * @retval void * pointer to shared memory
      */
-    void* init(int32_t* size, int32_t* maxMembers);
+    void* init(size_t* size, int32_t* maxMembers);
 
     /**
      * Lock shared memory

@@ -259,7 +259,7 @@ int32_t HW_HAL_I2C::mstrWriteNoStop(const uint8_t addr, const uint8_t* txBuf, ui
 			return HAL_I2C_ERR_WRITE;
 	}
 
-	return txBufSize;
+	return static_cast<int32_t>(txBufSize);
 }
 
 
@@ -513,7 +513,7 @@ int32_t HW_HAL_I2C::mstrReadNoStart(const uint8_t addr, uint8_t* rxBuf, uint32_t
 	/* Clear AF flag for next communication */
 	I2C_ClearFlag(I2Cx, I2C_FLAG_AF );
 
-	return rxBufSize;
+	return static_cast<int32_t>(rxBufSize);
 }
 
 void HW_HAL_I2C::initMembers([[gnu::unused]] HAL_I2C* halI2C, I2C_IDX i2cIdx, GPIO_PIN sclPin, GPIO_PIN sdaPin){

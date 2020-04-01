@@ -23,8 +23,8 @@ void UDPIn::setAsync(Topic<GenericMsgRef>* associatedTopic)             {udpRx.s
 
 void UDPIn::reopen(const long portNr) 					{ udpRx.reopen(portNr); }
 
-long UDPIn::get(void* userData, int maxLen) 				{ return udpRx.get(userData, maxLen); }
-long UDPIn::get(void* userData, int maxLen, unsigned long *ipaddr) 	{ return udpRx.get(userData, maxLen,ipaddr); }
+int32_t UDPIn::get(void* userData, size_t maxLen) 				{ return udpRx.get(userData, maxLen); }
+int32_t UDPIn::get(void* userData, size_t maxLen, uint32_t *ipaddr) 	{ return udpRx.get(userData, maxLen,ipaddr); }
 bool UDPIn::readyToGet() 						{ return udpRx.readyToGet(); }
 
 bool UDPIn::isConnected() 						{ return udpRx.isInitialised(); }
@@ -38,11 +38,11 @@ void UDPIn::joinMulticastGroup(unsigned long ipaddr) { udpRx.joinMulticastGroup(
 
 UDPOut::UDPOut(const long portNr, const char* hostname) 		: udpTx(portNr, hostname) 	{ }
 //UDPOut::UDPOut(const long _portNr) 					: udpTx(_portNr) 	  	{ }
-UDPOut::UDPOut(const long _portNr, unsigned long _ipAddr) 		: udpTx(_portNr, _ipAddr)	{ }
+UDPOut::UDPOut(const long _portNr, uint32_t _ipAddr) 		: udpTx(_portNr, _ipAddr)	{ }
 UDPOut::UDPOut(const long _portNr, int ip0, int ip1, int ip2, int ip3)	: udpTx(_portNr, ip0, ip1, ip2, ip3) { }
 
-bool UDPOut::send(const void* userData, const int maxLen) 	        	 { return udpTx.send(userData, maxLen); }
-bool UDPOut::sendTo(const void* userData, const int maxLen, unsigned long ipAddr) { return udpTx.sendTo(userData, maxLen,ipAddr); }
+bool UDPOut::send(const void* userData, const size_t maxLen) 	        	 { return udpTx.send(userData, maxLen); }
+bool UDPOut::sendTo(const void* userData, const size_t maxLen, uint32_t ipAddr) { return udpTx.sendTo(userData, maxLen,ipAddr); }
 bool UDPOut::isConnected() 						{ return udpTx.isInitialised(); }
 
 

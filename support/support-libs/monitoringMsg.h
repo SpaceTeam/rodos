@@ -24,29 +24,28 @@ extern MessageTypeId EOM(int id);
 
 class MonitoringMsg {
 public:
-    long long sendTime;	///< Set when the message is sent
+    int64_t sendTime;	///< Set when the message is sent
 
+    uint16_t msgType;	///< to identify differnt types of monitor messages, defined by user
 
-    unsigned short msgType;	///< to identify differnt types of monitor messages, defined by user
+    uint8_t nodeNr; 		///< node of the sending task (monitor msgs) or target task (command msgs)
+    uint8_t taskId;
+    uint8_t numOfParamsToSend; 	   ///< not all will be send to safe band width and cpu time
+    uint8_t numOfParamsDeserialized; ///< only a help variable for the reciever side
 
-    char nodeNr; 		///< node of the sending task (monitor msgs) or target task (command msgs)
-    unsigned char taskId;
-    unsigned char numOfParamsToSend; 	   ///< not all will be send to safe band width and cpu time
-    unsigned char numOfParamsDeserialized; ///< only a help variable for the reciever side
-
-    static const int MAX_PARAMS = 64;
+    static const uint8_t MAX_PARAMS = 64u;
     char params[MAX_PARAMS];
     /*** WARNING: Do not add any data field beyond this point, Params has to be the last one **/
 
-    unsigned int numOfBytesToSend() {
-	return (int)(params - (char*)this) + numOfParamsToSend;
-    }
-
-
+    size_t numOfBytesToSend() {
+        uintptr_t    start_of_message = reinterpret_cast<uintptr_t>(this);
+        uintptr_t start_of_params  = reinterpret_cast<uintptr_t>(params);
+        return (size_t)(start_of_params - start_of_message) + numOfParamsToSend;
+    } 
 
     /**************************************************************************************/
 
-    MonitoringMsg(int taskId);
+    MonitoringMsg(uint8_t taskId);
 
     void clear();
 
@@ -54,7 +53,7 @@ public:
     /** For the monitored/sender side **/
     /***********************************/
 
-    bool serialize(void* src, int len);	///< append data to the message
+    bool serialize(void* src, size_t len);	///< append data to the message
     void report(int id);		///< distribute the message
 
     // These functions could implement byte-sex (littel/big-endian) convertions
@@ -68,7 +67,7 @@ public:
     inline bool serialize(double src) 		{ return serialize(&src, sizeof(src)); }
 
     inline bool serializeString(char* s)	{
-        return serialize(s, (int)strlen(s) +1);    // +1: include the termnating 0
+        return serialize(s, strlen(s) +1u);    // +1: include the termnating 0
     }
 
 
@@ -76,8 +75,8 @@ public:
     /** For the monitor/receiver side   ********/
     /*******************************************/
 
-    bool deserialize(void* dest, int len);
-    void* deserializeNoCopy(int len);
+    bool deserialize(void* dest, size_t len);
+    void* deserializeNoCopy(size_t len);
 
     // could implement byte-sex (littel/big-endian) convertions
 
@@ -90,11 +89,11 @@ public:
     inline bool deserialize(double *a)		{ return deserialize(a, sizeof(*a)); }
 
     inline bool deserializeString(char* s)	{
-        return deserialize(s, (int)strlen(&params[numOfParamsDeserialized]) +1);    // +1: include the termnating 0
+        return deserialize(s, strlen(&params[numOfParamsDeserialized]) +1u);    // +1: include the termnating 0
     }
 
     inline char* deserializeString()	{
-        return (char*)deserializeNoCopy((int)strlen(&params[numOfParamsDeserialized])+1);    // +1: include the termnating 0
+        return (char*)deserializeNoCopy(strlen(&params[numOfParamsDeserialized])+1u);    // +1: include the termnating 0
     }
 
 

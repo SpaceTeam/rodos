@@ -14,7 +14,7 @@ static Application module("semaphoretest");
 #define MAX_Y 30
 #define RIGHT_LIMIT 20
 
-#define MAX_STEPS 100      //Maximale Anzahl der Schritte eines Wurms
+#define MAX_STEPS 100u      //Maximale Anzahl der Schritte eines Wurms
 
 Semaphore lowerWindow;
 Semaphore printProtector;
@@ -25,7 +25,7 @@ static int prio = 1;        //Priorität des Threads, priority ist bereits in Ro
 
 void MAIN() {
     PRINTF(SCREEN_CLEAR);
-    for(int i = 0; i < MAX_X; i++) {
+    for(uint32_t i = 0; i < MAX_X; i++) {
         PRINTF(SCREEN_MOVE_CURSOR_TO, i, RIGHT_LIMIT + 1);
         PRINTF(":");
     }
@@ -34,15 +34,15 @@ void MAIN() {
 static char wormLetter = 'A';
 
 class worm : public StaticThread<> {
-    int  x, y, speed_x, speed_y;
+    int32_t  x, y, speed_x, speed_y;
     char letter;
 
   public:
     worm() : StaticThread<>("Worm", prio) {
-        x       =  uint32Rand() % RIGHT_LIMIT;
-        y       =  uint32Rand() % MAX_Y + 1;
-        speed_x = (uint32Rand() % 3) - 1;
-        speed_y = (uint32Rand() % 3) - 1;
+        x       = static_cast<int32_t>(uint32Rand() % RIGHT_LIMIT);
+        y       = static_cast<int32_t>(uint32Rand() % MAX_Y)+ 1;
+        speed_x = static_cast<int32_t>(uint32Rand() % 3) - 1;
+        speed_y = static_cast<int32_t>(uint32Rand() % 3) - 1;
         letter  = wormLetter++;
         
         prio += 100;
@@ -51,8 +51,8 @@ class worm : public StaticThread<> {
     void run() {
         printfMask = 1;
 
-        int last_x, last_y;
-        for (int i = 0; i < MAX_STEPS; i++) {
+        int32_t last_x, last_y;
+        for (uint32_t i = 0; i < MAX_STEPS; i++) {
             occupied[x][y] = false;
             last_x         = x;
             last_y         = y;
@@ -62,9 +62,9 @@ class worm : public StaticThread<> {
 
 
             // Change speed randomly
-            if(uint32Rand() % 10 < 2) {
-                speed_x = (uint32Rand() % 3) - 1;
-                speed_y = (uint32Rand() % 3) - 1;
+            if(uint32Rand() % 10u < 2u) {
+                speed_x = static_cast<int32_t>(uint32Rand() % 3) - 1;
+                speed_y = static_cast<int32_t>(uint32Rand() % 3) - 1;
                 if(speed_x == 0 && speed_y == 0) speed_y = 1;
             }
 

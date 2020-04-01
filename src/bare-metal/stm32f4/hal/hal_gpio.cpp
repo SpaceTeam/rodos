@@ -60,7 +60,7 @@ void HW_HAL_GPIO::setPinMask(){
 void HW_HAL_GPIO::EXTIRQHandler(){
 	interruptEventOcured=true;
 	hal_gpio->upCallDataReady();
-	EXTI->PR = 1 << (pinIdx % 16);
+	EXTI->PR = 1u << (pinIdx % 16);
 }
 
 
@@ -266,9 +266,9 @@ void HAL_GPIO::setPins(uint32_t val) {
 
 uint32_t HAL_GPIO::readPins(){
 	if (context->isOutput){
-		return (GPIO_ReadOutputData(context->PORT) & context->pinMask) >> (context->pinIdx & 0xF);
+		return static_cast<uint32_t>(GPIO_ReadOutputData(context->PORT) & context->pinMask) >> (context->pinIdx & 0xF);
 	}
-	return (GPIO_ReadInputData(context->PORT) & context->pinMask) >> (context->pinIdx & 0xF);
+	return static_cast<uint32_t>(GPIO_ReadInputData(context->PORT) & context->pinMask) >> (context->pinIdx & 0xF);
 }
 
 
@@ -293,15 +293,15 @@ void HAL_GPIO::interruptEnable(bool enable){
 			SYSCFG_EXTILineConfig(portNum,pinNum);
 
 			if(context->irqSensitivity == GPIO_IRQ_SENS_RISING  || context->irqSensitivity == GPIO_IRQ_SENS_BOTH){
-				EXTI->RTSR |= 1 << pinNum;
+				EXTI->RTSR |= 1lu << pinNum;
 			}
 			if(context->irqSensitivity == GPIO_IRQ_SENS_FALLING || context->irqSensitivity == GPIO_IRQ_SENS_BOTH){
-				EXTI->FTSR |= 1 << pinNum;
+				EXTI->FTSR |= 1lu << pinNum;
 			}
 
 			extInterruptLines[exti]=context;
 			context->interruptEventOcured=false;
-			EXTI->IMR |= 1 << pinNum;
+			EXTI->IMR |= 1lu << pinNum;
 
 		}else{
 			RODOS_ERROR("External IRQ Line already used by another HAL_GPIO");
@@ -311,9 +311,9 @@ void HAL_GPIO::interruptEnable(bool enable){
 
 	}else{//disable Interrupt
 		if(extInterruptLines[exti]==context){
-			EXTI->IMR &= ~(1 << pinNum);
-			EXTI->RTSR &= ~(1 << pinNum);
-			EXTI->FTSR &= ~(1 << pinNum);
+			EXTI->IMR &= ~(1lu << pinNum);
+			EXTI->RTSR &= ~(1lu << pinNum);
+			EXTI->FTSR &= ~(1lu << pinNum);
 			extInterruptLines[exti]=0;
 		}
 	}

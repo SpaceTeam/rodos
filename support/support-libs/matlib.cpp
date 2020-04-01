@@ -2116,9 +2116,9 @@ void Polar::print() const {
 
 //=====================================================Implementation global methods============================================
 
-int64_t faculty(const int &x) {
+uint64_t faculty(const uint32_t &x) {
     uint64_t faculty = 1;
-    for (int i = 2; i <= x; i++)
+    for (uint32_t i = 2; i <= x; i++)
         faculty *= i;
     return faculty;
 }

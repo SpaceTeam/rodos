@@ -147,7 +147,7 @@ float bigEndianToFloat(const void* buff) {
         float value;
         uint32_t lvalue;
     } value_union;
-    value_union.lvalue = bigEndianToInt32_t(byteStream);
+    value_union.lvalue = bigEndianToUint32_t(byteStream);
     return value_union.value;
 }
 
@@ -203,10 +203,10 @@ void floatToBigEndian(void* buff, float value_) {
     uint8_t* byteStream = (uint8_t*)buff;
     union {
         float value;
-        unsigned lvalue;
+        uint32_t lvalue;
     } value_union;
     value_union.value = value_;
-    int32_tToBigEndian(byteStream, value_union.lvalue);
+    uint32_tToBigEndian(byteStream, value_union.lvalue);
 }
 
 void doubleToBigEndian   (void* buff, double value_) {
@@ -216,7 +216,7 @@ void doubleToBigEndian   (void* buff, double value_) {
         uint64_t llvalue;
     } value_union;
     value_union.value = value_;
-    int64_tToBigEndian(byteStream, value_union.llvalue);
+    uint64_tToBigEndian(byteStream, value_union.llvalue);
 }
 
 
@@ -248,18 +248,18 @@ int getBitFromByteStream(const void *byteStream, int bitIndex) {
   * Warning: CCSDS -> Bit 0 = most significant bit!
   **/
 
-void setBitField(void* buffer, int bitPos, int numOfBits, uint32_t val) {
+void setBitField(void* buffer, size_t bitPos, uint8_t numOfBits, uint32_t val) {
     unsigned char* buf = (unsigned char*) buffer;
-    int byteIndex = bitPos / 8;
+    size_t byteIndex = bitPos / 8;
     bitPos        = bitPos % 8;
-    int shifts    = 24 - (bitPos + numOfBits);
-    int32_t mask     = ONES(numOfBits) << shifts;
+    uint8_t shifts    = 24 - (bitPos + numOfBits);
+    uint32_t mask     = ONES(numOfBits) << shifts;
 
     val = val << shifts;
 
     // get the word as big-endian (CPU independent)
-    uint32_t word    = (buf[byteIndex] << 16);
-	if(bitPos+numOfBits > 8 ) word |=  buf[byteIndex+1] << 8; //Do not read byte not required to avoid reading beyond the buffer
+    uint32_t word    = static_cast<uint32_t>(buf[byteIndex]) << 16u;
+	if(bitPos+numOfBits > 8 ) word |=  static_cast<uint32_t>(buf[byteIndex+1]) << 8u; //Do not read byte not required to avoid reading beyond the buffer
 	if(bitPos+numOfBits > 16) word |=  buf[byteIndex+2];
 
     word  &= ~ mask;        // Clear bit field
@@ -280,13 +280,13 @@ uint32_t getBitField(const void* buffer, int bitPos, int numOfBits) {
     const uint8_t* buf = (const uint8_t*) buffer;
     int byteIndex = bitPos / 8;
     bitPos        = bitPos % 8;
-    int shifts    = 24 - (bitPos + numOfBits);
-    int32_t mask     = ONES(numOfBits);  // so many bits set to 1 from leastst significant
+    uint8_t shifts    = 24 - (bitPos + numOfBits);
+    uint32_t mask     = ONES(numOfBits);  // so many bits set to 1 from leastst significant
 
 
     // get the word as big-endian (CPU independent)
-    uint32_t word    = (buf[byteIndex] << 16);
-    if(bitPos+numOfBits > 8 ) word |=  buf[byteIndex+1] << 8; //Do not read byte not required to avoid reading beyond the buffer
+    uint32_t word    = static_cast<uint32_t>(buf[byteIndex]) << 16u;
+    if(bitPos+numOfBits > 8 ) word |=  static_cast<uint32_t>(buf[byteIndex+1]) << 8u; //Do not read byte not required to avoid reading beyond the buffer
     if(bitPos+numOfBits > 16) word |=  buf[byteIndex+2];
 
     return  (word >> shifts) &  mask;

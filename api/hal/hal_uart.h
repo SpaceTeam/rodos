@@ -60,15 +60,15 @@ public:
 	virtual ~HAL_UART() {};
 
 	/* Initialization of UART interface: mode 8N1, no HW flow control*/
-	virtual int init(unsigned int baudrate = 115200);
+	virtual int init(uint32_t baudrate = 115200);
 
 	/* disable interface and set all its registers and pins to its reset state */
 	virtual void reset();
 
  	/* Configuration of UART interface AFTER initialization */
-	virtual int config(UART_PARAMETER_TYPE type, int paramVal);
+	virtual int32_t config(UART_PARAMETER_TYPE type, int32_t paramVal);
 
-	virtual int status(UART_STATUS_TYPE type);
+	virtual int32_t status(UART_STATUS_TYPE type);
 
 	virtual bool isWriteFinished();
 	virtual bool isDataReady();
@@ -77,15 +77,15 @@ public:
 	 * blocking -> returns only if "sendBuf" is sent
 	 * TODO: UART write - transmit buffer & transmit interrupts for non-blocking operation
 	 */
-	virtual int write(const char* sendBuf, int len);
+	virtual int32_t write(const void* sendBuf, size_t len);
 
 	/* read()
 	 * non-blocking -> returns when uart-receive-buffer is empty or "recBuf" is full
 	 */
-	virtual int read(char* recBuf, int maxLen);
+	virtual int32_t read(void* recBuf, size_t maxLen);
 
-	virtual int getcharNoWait(); 		// returns character on success else -1
-	virtual int putcharNoWait(char c); 	// returns c on success else -1
+	virtual int16_t getcharNoWait(); 		// returns character on success else -1
+	virtual int16_t putcharNoWait(uint8_t c); 	// returns c on success else -1
 };
 
 }

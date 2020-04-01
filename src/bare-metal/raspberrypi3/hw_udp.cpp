@@ -4,9 +4,9 @@
 
 namespace RODOS {
 
-UDPReceiver::UDPReceiver(const int port) {}
+UDPReceiver::UDPReceiver([[gnu::unused]]const int port) {}
 UDPReceiver::~UDPReceiver() {}
-void UDPReceiver::reopen(const int port) {}
+void UDPReceiver::reopen([[gnu::unused]] const int port) {}
 
 /*
 bool UDPReceiver::isConnected() {
@@ -19,19 +19,19 @@ bool UDPReceiver::isConnected() {
 
 bool UDPReceiver::readyToGet() { return false; }
 
-void UDPReceiver::setAsync(Topic<GenericMsgRef>* associatedTopic) {}
+void UDPReceiver::setAsync([[gnu::unused]] Topic<GenericMsgRef>* associatedTopic) {}
 
-long UDPReceiver::get(void* userData, const unsigned int maxLen) { return 0; }
-long UDPReceiver::get(void* userData, int maxLen, unsigned long* ipaddr) { return 0; }
+int32_t UDPReceiver::get([[gnu::unused]] void* userData, [[gnu::unused]] const size_t maxLen) { return 0; }
+int32_t UDPReceiver::get([[gnu::unused]] void* userData, [[gnu::unused]] size_t maxLen, [[gnu::unused]] uint32_t* ipaddr) { return 0; }
 
-UDPTransmitter::UDPTransmitter(const int port, const char* host) {}
-UDPTransmitter::UDPTransmitter(const long _portNr, unsigned long _ipAddr) {}
-UDPTransmitter::UDPTransmitter(const long _portNr, int ip0, int ip1, int ip2, int ip3) {}
+UDPTransmitter::UDPTransmitter([[gnu::unused]] const int port, [[gnu::unused]] const char* host) {}
+UDPTransmitter::UDPTransmitter([[gnu::unused]] const long _portNr, [[gnu::unused]] uint32_t _ipAddr) {}
+UDPTransmitter::UDPTransmitter([[gnu::unused]] const long _portNr, [[gnu::unused]] int ip0, [[gnu::unused]] int ip1, [[gnu::unused]] int ip2, [[gnu::unused]] int ip3) {}
 UDPTransmitter::~UDPTransmitter() {}
 
-void UDPTransmitter::openConnection(const int port, const char* host) {}
+void UDPTransmitter::openConnection([[gnu::unused]] const int port, [[gnu::unused]] const char* host) {}
 
-bool UDPTransmitter::send(const void* msg, const unsigned int len) { return false; }
-bool UDPTransmitter::sendTo(const void* userData, const int maxLen, unsigned long _ipAddr) { return false; }
+bool UDPTransmitter::send([[gnu::unused]] const void* msg, [[gnu::unused]] const size_t len) { return false; }
+bool UDPTransmitter::sendTo([[gnu::unused]] const void* userData, [[gnu::unused]] const size_t maxLen, [[gnu::unused]] uint32_t _ipAddr) { return false; }
 
 } // namespace RODOS

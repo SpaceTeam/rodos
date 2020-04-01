@@ -87,7 +87,7 @@ public:
      * @param   len     size of transmit buffer
      * @retval  int32_t number of sent bytes, value < 0 on failure
      */
-    int32_t write(const uint8_t* sendBuf, uint32_t len);
+    int32_t write(const void* sendBuf, size_t len);
 
     /**
      * @brief   Request data from a spi slave device.
@@ -97,7 +97,7 @@ public:
      * @param   maxLen  size of receive buffer
      * @retval  int32_t number of received bytes, value < 0 on failure
      */
-    int32_t read( uint8_t* recBuf, uint32_t maxLen);
+    int32_t read( void* recBuf, size_t maxLen);
 
 	/**
 	 * @brief   Send and receive data FULL-DUPLEX.
@@ -112,7 +112,7 @@ public:
 	 * @param   maxLen  size of receive buffer
 	 * @retval  int32_t number of received bytes, value < 0 on failure
 	 */
-    int32_t writeRead(const uint8_t* sendBuf, uint32_t len, uint8_t* recBuf, uint32_t maxLen);
+    int32_t writeRead(const void* sendBuf, size_t len, void* recBuf, size_t maxLen);
 
 };
 

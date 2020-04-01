@@ -63,7 +63,7 @@ void Timer::setInterval(const int64_t microsecondsInterval) {
 /**
  * time at bootup
  */
-uint64_t initNanoTime = 0;
+int64_t initNanoTime = 0;
 
 /**
  * RODOS time
@@ -76,7 +76,7 @@ uint64_t hwGetNanoseconds() {
     return (low | high) * 1000 - initNanoTime;
 }
 */
-uint64_t hwGetNanoseconds() {
+int64_t hwGetNanoseconds() {
     uint64_t now;
     uint32_t systemTimerCntLowAdr = SYSTEM_TIMER_CNT_LOW;
     __asm volatile(
@@ -96,7 +96,7 @@ uint64_t hwGetNanoseconds() {
       :
       : [nowadr] "r"(&now), [stcntlowadr] "r"(systemTimerCntLowAdr)
       : "r5", "r6", "r7", "memory");
-    return (now * 1000) - initNanoTime;
+    return static_cast<int64_t>(now * 1000) - initNanoTime;
 }
 
 /**
@@ -107,7 +107,7 @@ void hwInitTime() {
     initNanoTime = hwGetNanoseconds();
 }
 
-uint64_t hwGetAbsoluteNanoseconds(void) {
+int64_t hwGetAbsoluteNanoseconds(void) {
     return hwGetNanoseconds(); // + timeAtStartup;
 }
 

@@ -1142,6 +1142,7 @@ static uint32_t isp_page_read_handler(
 static void isp_sys_completion_handler(
   uint8_t* p_response,
   uint16_t length) {
+    (void)length;
     if(g_mode != MSS_SYS_PROG_AUTHENTICATE) {
         /*
          * Restore the eNVM's frequency range to the values used before ISP was
@@ -2141,6 +2142,7 @@ static uint8_t execute_service(
 static void request_completion_handler(
   uint8_t* p_response,
   uint16_t response_size) {
+    (void)p_response;
     g_request_in_progress  = 0u;
     g_last_response_length = response_size;
 }

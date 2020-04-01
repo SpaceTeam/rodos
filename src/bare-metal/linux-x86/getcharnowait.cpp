@@ -66,7 +66,7 @@ void setNoDelay() {
     fcntl(0, F_SETFL, O_NONBLOCK | O_NDELAY);
     tcgetattr(0, &term); // 0 is stdin
 
-    term.c_lflag &= ~ICANON;
+    term.c_lflag &= ~static_cast<unsigned>(ICANON);
     term.c_cc[VTIME] = 0;
     term.c_cc[VMIN]  = 0;
     tcsetattr(0, TCSANOW, &term); // 0 is stdin

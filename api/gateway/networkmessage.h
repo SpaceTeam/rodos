@@ -29,24 +29,24 @@ namespace RODOS {
  * Simple message data protocol to transmit data to a remote node.
  */
 class NetworkMessage {
-    static const int HEADER_SIZE = 26;
+    static const size_t HEADER_SIZE = 26;
     uint8_t header [HEADER_SIZE];
 public:
-    inline void    put_checkSum(uint16_t x)          {int16_tToBigEndian(header+0, x); }
+    inline void    put_checkSum(uint16_t x)          {uint16_tToBigEndian(header+0, x); }
     inline void    put_senderNode(int32_t x)         {int32_tToBigEndian(header+2, x); }
     inline void    put_sentTime (int64_t x)          {int64_tToBigEndian(header+6, x); }
-    inline void    put_senderThreadId(uint32_t x)    {int32_tToBigEndian(header+14, x); }
-    inline void    put_topicId(uint32_t x)           {int32_tToBigEndian(header+18, x); }
+    inline void    put_senderThreadId(uint32_t x)    {uint32_tToBigEndian(header+14, x); }
+    inline void    put_topicId(uint32_t x)           {uint32_tToBigEndian(header+18, x); }
     inline void    put_maxStepsToForward(int16_t x)  {int16_tToBigEndian(header+22, x); }
-    inline void    put_len(uint16_t x)               {int16_tToBigEndian(header+24, x); }
+    inline void    put_len(uint16_t x)               {uint16_tToBigEndian(header+24, x); }
 
-    inline uint16_t get_checksum()             const { return bigEndianToInt16_t(header+0); }
+    inline uint16_t get_checksum()             const { return bigEndianToUint16_t(header+0); }
     inline int32_t  get_senderNode()           const { return bigEndianToInt32_t(header+2); }
     inline int64_t  get_sentTime ()            const { return bigEndianToInt64_t(header+6); }
-    inline uint32_t get_senderThreadId()       const { return bigEndianToInt32_t(header+14); }
-    inline uint32_t get_topicId()              const { return bigEndianToInt32_t(header+18); }
+    inline uint32_t get_senderThreadId()       const { return bigEndianToUint32_t(header+14); }
+    inline uint32_t get_topicId()              const { return bigEndianToUint32_t(header+18); }
     inline int16_t  get_maxStepsToForward()    const { return bigEndianToInt16_t(header+22); }
-    inline uint16_t get_len()                  const { return bigEndianToInt16_t(header+24); }
+    inline uint16_t get_len()                  const { return bigEndianToUint16_t(header+24); }
 
     uint8_t userDataC[MAX_NETWORK_MESSAGE_LENGTH]; ///< local buffer for user data
 
@@ -68,7 +68,7 @@ public:
      * @param length of message, supposed to be <= MAX_NETWORK_MESSAGE_LENGTH
      * @return length of message written
      */
-    int32_t setUserData(const void* data, uint32_t len);
+    size_t setUserData(const void* data, size_t len);
 
     /** Copies data from message received to a user provided buffer.
      *
@@ -76,7 +76,7 @@ public:
      * @param length of message buffer, supposed to be <= MAX_NETWORK_MESSAGE_LENGTH
      * @return length of message copied
      */
-    uint32_t getUserData(void* destination, uint32_t maxLen);
+    size_t getUserData(void* destination, size_t maxLen);
 
     /* WARNING: Len has to be set befor you call this.  **/
     uint32_t numberOfBytesToSend() const { return HEADER_SIZE + get_len(); }
@@ -91,7 +91,7 @@ public:
 
 class TopicListReport {
 public:
-    int32_t numberOfTopics;             ///< total number of topics assigned for the network
+    uint32_t numberOfTopics;             ///< total number of topics assigned for the network
     int16_t topicList[MAX_SUBSCRIBERS]; ///< simple list of topic IDs subscribed for network
 
     TopicListReport() { init(); }      ///< Constructor, initializes topicList.
@@ -101,7 +101,7 @@ public:
      * @param[in] topicId ID to check whether topic is listed
      */
     bool find(const short topicId) const {
-        for (int i = 0; i < numberOfTopics; i++) {
+        for (uint32_t i = 0; i < numberOfTopics; i++) {
             if (topicId == topicList[i]) {
                 return true;
             }
@@ -120,7 +120,7 @@ public:
     }
 
     /// returns the size needed for transmission
-    int numberOfBytesToSend() { return (sizeof(long) + numberOfTopics * sizeof(topicList[0])); }
+    uint32_t numberOfBytesToSend() { return (sizeof(long) + numberOfTopics * sizeof(topicList[0])); }
 } __attribute__((packed));
 
 

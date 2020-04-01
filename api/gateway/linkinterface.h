@@ -25,12 +25,12 @@ namespace RODOS {
  */
 class Linkinterface  {
 
-    static int linkidentifierCounter;
+    static uint32_t linkidentifierCounter;
 
 protected:
 
     /// Gateway which has to be connected to the network / interface.
-    const long linkIdentifier;
+    const uint32_t linkIdentifier;
     Thread* threadToResume;
 
 public:
@@ -43,7 +43,7 @@ public:
      * 					will do. Used to determine from which link a message
      * 					was received.
      */
-    Linkinterface(long linkId) : linkIdentifier((linkId<0) ? linkidentifierCounter++ : linkId) {
+    Linkinterface(long linkId) : linkIdentifier((linkId<0) ? linkidentifierCounter++ : static_cast<uint32_t>(linkId)) {
         isBroadcastLink = false;
         threadToResume=0;
     }
@@ -76,7 +76,7 @@ public:
      * @param The Message to send
      */
     virtual bool sendNetworkMsg([[gnu::unused]] NetworkMessage& outgoingMessage) { return true;  }
-    inline long getLinkdentifier() const                { return this->linkIdentifier; }
+    inline uint32_t getLinkdentifier() const                { return this->linkIdentifier; }
 
     /**
      * This Thread is resumed when there is new Data availible and getNetworkMsg should be called

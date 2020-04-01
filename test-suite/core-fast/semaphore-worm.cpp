@@ -3,7 +3,7 @@
 
 uint32_t printfMask = 0;
 
-#define MAX_STEPS 100      //Maximum steps of a worm
+#define MAX_STEPS 100u      //Maximum steps of a worm
 
 static Application module("semaphoretest");
 
@@ -29,15 +29,15 @@ static char wormLetter = 'A';
 static int prio = 1;        //Priority of the thread, priority is already used in RODOS
 
 class worm : public StaticThread<> {
-    int  x, y, speed_x, speed_y;
+    int32_t  x, y, speed_x, speed_y;
     char letter;
 
   public:
     worm() : StaticThread<>("Worm", prio) {
-        x       =  uint32Rand() % RIGHT_LIMIT;
-        y       =  uint32Rand() % MAX_Y + 1;
-        speed_x = (uint32Rand() % 3) - 1;
-        speed_y = (uint32Rand() % 3) - 1;
+        x       = static_cast<int32_t>(uint32Rand() % RIGHT_LIMIT);
+        y       = static_cast<int32_t>(uint32Rand() % MAX_Y) + 1;
+        speed_x = static_cast<int32_t>(uint32Rand() % 3) - 1;
+        speed_y = static_cast<int32_t>(uint32Rand() % 3) - 1;
         letter  = wormLetter++;
         
         prio += 100;
@@ -47,7 +47,7 @@ class worm : public StaticThread<> {
         printfMask = 1;
 
         int last_x, last_y;
-        for (int i = 0; i < MAX_STEPS; i++) {
+        for (uint32_t i = 0; i < MAX_STEPS; i++) {
             occupied[x][y] = false;
             last_x         = x;
             last_y         = y;
@@ -61,8 +61,8 @@ class worm : public StaticThread<> {
 
             // Change speed randomly
             if(uint32Rand() % 10 < 2) {
-                speed_x = (uint32Rand() % 3) - 1;
-                speed_y = (uint32Rand() % 3) - 1;
+                speed_x = static_cast<int32_t>(uint32Rand() % 3) - 1;
+                speed_y = static_cast<int32_t>(uint32Rand() % 3) - 1;
                 if(speed_x == 0 && speed_y == 0) speed_y = 1;
             }
 

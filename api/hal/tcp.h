@@ -1,6 +1,7 @@
 
 #pragma once
 
+#include <stddef.h>
 #include "hw_tcp.h"
 
 /**
@@ -20,8 +21,8 @@ protected:
 public:
   bool listen(const long portNr);
   bool acceptNewConnection();
-  int sendData(void* buf, int len);   // not just send, due to name collision with lwip
-  int getData(void* buf, int maxLen); // not just get due to name collision
+  int sendData(void* buf, size_t len);   // not just send, due to name collision with lwip
+  int getData(void* buf, size_t maxLen); // not just get due to name collision
   int getErrorCode();
 };
 
@@ -31,8 +32,8 @@ protected:
 
 public:
   bool reopen(const long portNr, const char* hostname = "localhost");
-  int sendData(void* buf, int len);   // not just send due to name collision with lwip
-  int getData(void* buf, int maxLen); // not just get due to name collision
+  int sendData(void* buf, size_t len);   // not just send due to name collision with lwip
+  int getData(void* buf, size_t maxLen); // not just get due to name collision
   int getErrorCode();
 };
 

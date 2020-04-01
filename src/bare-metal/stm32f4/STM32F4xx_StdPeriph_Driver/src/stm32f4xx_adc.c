@@ -943,7 +943,7 @@ void ADC_DiscModeChannelCountConfig(ADC_TypeDef* ADCx, uint8_t Number)
   tmpreg1 &= CR1_DISCNUM_RESET;
   
   /* Set the discontinuous mode channel count */
-  tmpreg2 = Number - 1;
+  tmpreg2 = (uint32_t)(Number) - 1;
   tmpreg1 |= tmpreg2 << 13;
   
   /* Store the new register value */
@@ -1232,11 +1232,11 @@ void ADC_InjectedChannelConfig(ADC_TypeDef* ADCx, uint8_t ADC_Channel, uint8_t R
   /* Get JL value: Number = JL+1 */
   tmpreg3 =  (tmpreg1 & JSQR_JL_SET)>> 20;
   /* Calculate the mask to clear: ((Rank-1)+(4-JL-1)) */
-  tmpreg2 = JSQR_JSQ_SET << (5 * (uint8_t)((Rank + 3) - (tmpreg3 + 1)));
+  tmpreg2 = JSQR_JSQ_SET << (5 * (uint8_t)((Rank + 3u) - (tmpreg3 + 1u)));
   /* Clear the old JSQx bits for the selected rank */
   tmpreg1 &= ~tmpreg2;
   /* Calculate the mask to set: ((Rank-1)+(4-JL-1)) */
-  tmpreg2 = (uint32_t)ADC_Channel << (5 * (uint8_t)((Rank + 3) - (tmpreg3 + 1)));
+  tmpreg2 = (uint32_t)ADC_Channel << (5 * (uint8_t)((Rank + 3u) - (tmpreg3 + 1u)));
   /* Set the JSQx bits for the selected rank */
   tmpreg1 |= tmpreg2;
   /* Store the new register value */
@@ -1265,7 +1265,7 @@ void ADC_InjectedSequencerLengthConfig(ADC_TypeDef* ADCx, uint8_t Length)
   tmpreg1 &= JSQR_JL_RESET;
   
   /* Set the injected sequence length JL bits */
-  tmpreg2 = Length - 1; 
+  tmpreg2 = (uint32_t)Length - 1; 
   tmpreg1 |= tmpreg2 << 20;
   
   /* Store the new register value */
@@ -1483,7 +1483,7 @@ uint16_t ADC_GetInjectedConversionValue(ADC_TypeDef* ADCx, uint8_t ADC_InjectedC
   assert_param(IS_ADC_INJECTED_CHANNEL(ADC_InjectedChannel));
 
   tmp = (uint32_t)ADCx;
-  tmp += ADC_InjectedChannel + JDR_OFFSET;
+  tmp += (uint32_t)ADC_InjectedChannel + JDR_OFFSET;
   
   /* Returns the selected injected channel conversion data value */
   return (uint16_t) (*(__IO uint32_t*)  tmp); 

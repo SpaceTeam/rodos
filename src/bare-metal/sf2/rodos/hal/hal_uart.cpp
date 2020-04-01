@@ -36,7 +36,7 @@ class HW_HAL_UART {
 
     uint8_t   idx;
     int       hwFlowCtrl;
-    int       baudrate;
+    uint32_t  baudrate;
     HAL_UART* hal_uart;
     int       uartRxError;
 
@@ -56,8 +56,8 @@ class HW_HAL_UART {
 
 HW_HAL_UART UART_contextArray[UART_IDX_MAX + 1];
 
-HAL_UART::HAL_UART(UART_IDX uartIdx, GPIO_PIN txPin, GPIO_PIN rxPin,
-                   GPIO_PIN rtsPin, GPIO_PIN ctsPin) : HAL_UART(uartIdx) {
+HAL_UART::HAL_UART(UART_IDX uartIdx, [[gnu::unused]] GPIO_PIN txPin, [[gnu::unused]] GPIO_PIN rxPin,
+                   [[gnu::unused]] GPIO_PIN rtsPin, [[gnu::unused]] GPIO_PIN ctsPin) : HAL_UART(uartIdx) {
     // as the SF2 doesn't have variable UART pins, this constructor just calls the simple one.
 }
 
@@ -78,15 +78,15 @@ HAL_UART::HAL_UART(UART_IDX uartIdx) {
  * USART
  * - all USART will be initialized in 8N1 mode
  */
-int HAL_UART::init(unsigned int iBaudrate) {
+int HAL_UART::init(uint32_t iBaudrate) {
     if((context->idx < UART_IDX_MIN) || (context->idx > UART_IDX_MAX)) {
         return -1;
     }
-    return config(UART_PARAMETER_BAUDRATE, iBaudrate);
+    return config(UART_PARAMETER_BAUDRATE, *reinterpret_cast<int32_t*>(&iBaudrate));
 }
 
 
-int HAL_UART::config(UART_PARAMETER_TYPE type, int paramVal) {
+int32_t HAL_UART::config(UART_PARAMETER_TYPE type, int32_t paramVal) {
     uint8_t idx = context->idx;
     if(idx == 0) {
         context->UART = &g_mss_uart0;
@@ -99,7 +99,7 @@ int HAL_UART::config(UART_PARAMETER_TYPE type, int paramVal) {
     switch(type) {
         case UART_PARAMETER_BAUDRATE:
             if(paramVal > 0) {
-                context->baudrate = paramVal;
+                context->baudrate = static_cast<uint32_t>(paramVal);
             } else {
                 return -1;
             }
@@ -125,15 +125,13 @@ int HAL_UART::config(UART_PARAMETER_TYPE type, int paramVal) {
 void HAL_UART::reset(void) {
 }
 
-int HAL_UART::write(const char* buf, int size) {
+int32_t HAL_UART::write(const void* sendBuf, size_t size) {
     if((context->idx < UART_IDX_MIN) || (context->idx > UART_IDX_MAX)) {
         return -1;
     }
-    if(size <= 0) {
-        return 0;
-    }
-    int      i = 0;
-    int      spaceinbuffer;
+    const uint8_t* buf = static_cast<const uint8_t*>(sendBuf);
+    size_t         i   = 0;
+    size_t   spaceinbuffer;
     uint8_t* p = context->transmittBuffer.getBufferToWrite(spaceinbuffer);
     if(p != NULL) {
         if(spaceinbuffer < size) {
@@ -151,22 +149,22 @@ int HAL_UART::write(const char* buf, int size) {
 
         while(isWriteFinished() == false) {} // TODO: busy waiting is not good
 
-        return size;
+        return static_cast<int32_t>(size);
     } else {
         return 0;
     }
 }
 
 
-int HAL_UART::read(char* buf, int size) {
+int32_t HAL_UART::read(void* recBuf, size_t size) {
     if((context->idx < UART_IDX_MIN) || (context->idx > UART_IDX_MAX)) {
         return -1;
     }
-    if(size <= 0) {
-        return 0;
-    }
-    int      readCnt = 0;
-    int      i       = 0;
+
+    uint8_t* buf = static_cast<uint8_t*>(recBuf);
+
+    size_t      readCnt = 0;
+    size_t      i       = 0;
     uint8_t* p       = context->receiveBuffer.getBufferToRead(readCnt);
     if(p) {
         if(readCnt > size) {
@@ -176,13 +174,13 @@ int HAL_UART::read(char* buf, int size) {
             buf[i] = p[i];
         }
         context->receiveBuffer.readConcluded(readCnt);
-        return readCnt;
+        return static_cast<int32_t>(readCnt);
     } else {
         return 0;
     }
 }
 
-int HAL_UART::getcharNoWait() {
+int16_t HAL_UART::getcharNoWait() {
     if((context->idx < UART_IDX_MIN) || (context->idx > UART_IDX_MAX)) {
         return -1;
     }
@@ -190,13 +188,13 @@ int HAL_UART::getcharNoWait() {
     bool    dataAvailible = context->receiveBuffer.get(c);
 
     if(dataAvailible) {
-        return (int)c;
+        return static_cast<int16_t>(c);
     } else {
         return -1;
     }
 }
 
-int HAL_UART::putcharNoWait(char c) {
+int16_t HAL_UART::putcharNoWait(uint8_t c) {
     if((context->idx < UART_IDX_MIN) || (context->idx > UART_IDX_MAX)) {
         return -1;
     }
@@ -206,23 +204,23 @@ int HAL_UART::putcharNoWait(char c) {
         set_bit_reg8(&(context->UART->hw_reg->IER), ETBEI);
         /* Enable UART instance interrupt in Cortex-M3 NVIC. */
         NVIC_EnableIRQ(context->UART->irqn);
-        return c & 0xFF;
+        return static_cast<int16_t>(c & 0xFF);
     } else {
         return -1;
     }
 }
 
-int HAL_UART::status(UART_STATUS_TYPE type) {
+int32_t HAL_UART::status(UART_STATUS_TYPE type) {
     if((context->idx < UART_IDX_MIN) || (context->idx > UART_IDX_MAX)) {
         return -1;
     }
-    int temp;
+    int32_t temp;
     switch(type) {
         case UART_STATUS_RX_BUF_LEVEL:
-            return context->receiveBuffer.getElementCount();
+            return static_cast<int32_t>(context->receiveBuffer.getElementCount());
 
         case UART_STATUS_RX_ERROR:
-            temp                 = context->uartRxError;
+            temp                 = static_cast<int32_t>(context->uartRxError);
             context->uartRxError = 0;
             return temp;
 

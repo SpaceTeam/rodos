@@ -32,13 +32,13 @@ class LinkinterfaceUART : public Linkinterface, IOEventReceiver  {
 
     HAL_UART* uart;
     //unsigned char inputBuffer[MAX_UART_MESSAGE_LENGTH]; // bom, topicid, message eom
-    unsigned char* inputBuffer;
+    uint8_t* inputBuffer;
 
     /* used to send messages in a block and not char by char
      * -> important for bluetooth
      * -> if message is longer than outputBuffer it is split into multiple HAL_UART::write calls
      */
-    char outputBuffer[OUTPUT_BUF_SIZE];
+    uint8_t outputBuffer[OUTPUT_BUF_SIZE];
 
     enum ReadStates {
         WAITING_FOR_START,
@@ -51,19 +51,19 @@ class LinkinterfaceUART : public Linkinterface, IOEventReceiver  {
     bool enaTXBreak;  // enable transmit interruption by received character
 
     NetworkMessage* inMsg;
-    char currCharFromLastCall;
-    char prevChar;
+    uint8_t currCharFromLastCall;
+    uint8_t prevChar;
     int inputIndex;
     bool foundUART_BOM;
 
     volatile bool transmitinProgrss;
 
     char getcharWaiting();
-    void putcharEncoded(const bool mark, const char c);
-    int putcharEncodedToBuf(char* buf, const bool mark, const char c);
-    bool sendUartBuffer(char* buf, int size);
-    bool processByte(char input);
-    void myPutChar(char c);
+    void putcharEncoded(const bool mark, const uint8_t c);
+    size_t putcharEncodedToBuf(uint8_t* buf, const bool mark, const uint8_t c);
+    bool sendUartBuffer(uint8_t* buf, size_t size);
+    bool processByte(uint8_t input);
+    void myPutChar(uint8_t c);
 
 public:
 

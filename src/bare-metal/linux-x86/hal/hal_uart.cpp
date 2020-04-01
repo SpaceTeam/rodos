@@ -69,7 +69,7 @@ HAL_UART::HAL_UART(UART_IDX uartIdx) {
  * USART
  * - all USART will be initialized in 8N1 mode
  */
-int HAL_UART::init(unsigned int iBaudrate) {
+int HAL_UART::init(uint32_t iBaudrate) {
 
     struct termios t; ///< control structure for a general asynchronous interface
 
@@ -183,7 +183,7 @@ int HAL_UART::config(UART_PARAMETER_TYPE type, int paramVal) {
         case UART_PARAMETER_BAUDRATE:
             if(paramVal > 0) {
                 reset();
-                init(paramVal);
+                init(static_cast<uint32_t>(paramVal));
             } else {
                 return -1;
             }
@@ -208,47 +208,44 @@ void HAL_UART::reset() {
 }
 
 
-int HAL_UART::read(char* buf, int size) {
-    int bytesRed = 0;
-    if(size <= 0) return 0;
-
+int32_t HAL_UART::read(void* buf, size_t size) {
+    int32_t bytesRed = 0;
 
     if(size > 0) {
-        int retval;
+        ssize_t retval;
         retval = ::read(context->fd, buf, size);
         if(retval < 0) return 0;
-        bytesRed = retval;
+        bytesRed = static_cast<int32_t>(retval);
     }
 
     return bytesRed;
 }
 
 
-int HAL_UART::write(const char* buf, int size) {
-    if(size <= 0) return 0;
-    int retval;
+int32_t HAL_UART::write(const void* buf, size_t size) {
+    ssize_t retval;
 
     retval = ::write(context->fd, buf, size);
     if(retval < 0) return 0;
 
-    return retval;
+    return static_cast<int32_t>(retval);
 }
 
 
-int HAL_UART::getcharNoWait() {
-    char c = 0;
+int16_t HAL_UART::getcharNoWait() {
+    uint8_t c = 0;
 
     if(read(&c, 1) > 0) {
-        return (int)c;
+        return static_cast<int16_t>(c);
     } else {
         return -1;
     }
 }
 
 
-int HAL_UART::putcharNoWait(char c) {
+int16_t HAL_UART::putcharNoWait(uint8_t c) {
     if(write(&c, 1) > 0) {
-        return c & 0xFF;
+        return static_cast<int16_t>(c);
     } else {
         return -1;
     }

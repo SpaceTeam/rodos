@@ -10,17 +10,18 @@
 
 
 #include <stdint.h>
+#include <stddef.h>
 
 
 namespace RODOS {
 
 
 /** Computes a 16 bit checksum (len in bytes) adding bytes and rotating result */
-uint32_t checkSum(uint8_t *buf, int len) ;
+uint32_t checkSum(const void *buf, size_t len) ;
 
 
 /** computes a 16 bit crc in a non optimized way, CCSDS recommends 0 (some times 0xffff) as initial value **/
-uint32_t computeCrc(const uint8_t* buf, int32_t len, int32_t initialValue);
+uint32_t computeCrc(const void* buf, size_t len, uint32_t initialValue);
 
 
 /** An optimized crc generator.
@@ -33,7 +34,7 @@ class CRC {
     uint32_t lookUpTable[256];
 public:
     CRC(); 
-    uint32_t computeCRC(uint8_t* buf, int32_t len, int32_t initialValue);
+    uint32_t computeCRC(const void* buf, size_t len, uint32_t initialValue);
 };
 
 
@@ -46,7 +47,7 @@ uint16_t hash(const char* str);
 
 /// Computes the checkSum of an array of 32-bit words, according to CCSDS algorithm.
 /// Warning: len ist not bytes! it is num of 32-bit words
-uint32_t checkSumXor32(uint32_t *buf, int len);
+uint32_t checkSumXor32(const uint32_t *buf, size_t len);
 
 
 } // namespace

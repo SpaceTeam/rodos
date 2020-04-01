@@ -196,7 +196,7 @@ class TimeModel {
     } FractSize;
 
     static int64_t ECSSTimeToLocalTime(uint32_t seconds, uint32_t fraction, FractSize fractSize = FractSize16Bit) {
-        return (SECONDS * seconds) + ((SECONDS * (uint64_t)fraction) >> fractSize); // >> fractSize -> /2^16 or /2^32
+        return (SECONDS * seconds) + ((SECONDS * static_cast<int64_t>(fraction)) >> fractSize); // >> fractSize -> /2^16 or /2^32
     }
 };
 

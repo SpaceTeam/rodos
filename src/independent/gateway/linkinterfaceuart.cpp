@@ -16,12 +16,12 @@ namespace RODOS {
 
 /*********************************************************************************/
 
-static const char  UART_BOM		=  0x02;
-static const char  UART_EOM		=  0x03;
-static const char  ENCODED_FF		=  0x7E;
-static const char  STOP_MARK		=  0x18;
-static const char  CONTINUE_MARK	=  0x01;
-static const char  MARK			=  (char)0xff;
+static const uint8_t  UART_BOM		=  0x02u;
+static const uint8_t  UART_EOM		=  0x03u;
+static const uint8_t  ENCODED_FF		=  0x7Eu;
+static const uint8_t  STOP_MARK		=  0x18u;
+static const uint8_t  CONTINUE_MARK	=  0x01u;
+static const uint8_t  MARK			=  0xffu;
 
 /*********************************************************************************/
 
@@ -40,7 +40,7 @@ LinkinterfaceUART::LinkinterfaceUART(HAL_UART* uart, long int id, bool enaTXBrea
 }
 
 /*********************************************************************************/
-void LinkinterfaceUART::putcharEncoded(const bool mark, const char c) {
+void LinkinterfaceUART::putcharEncoded(const bool mark, const uint8_t c) {
 
     /** first check if we were stoped by control flow commands **/
 
@@ -67,7 +67,7 @@ void LinkinterfaceUART::putcharEncoded(const bool mark, const char c) {
 
 }
 
-void LinkinterfaceUART::myPutChar(char c) {
+void LinkinterfaceUART::myPutChar(uint8_t c) {
 
         while(uart->putcharNoWait(c) == -1){
         	uart->suspendUntilWriteFinished();
@@ -76,7 +76,7 @@ void LinkinterfaceUART::myPutChar(char c) {
 
 
 /*********************************************************************************/
-int LinkinterfaceUART::putcharEncodedToBuf(char* buf, const bool mark, const char c) {
+size_t LinkinterfaceUART::putcharEncodedToBuf(uint8_t* buf, const bool mark, const uint8_t c) {
 
     if(mark) {
         *buf++ = MARK;
@@ -98,20 +98,20 @@ int LinkinterfaceUART::putcharEncodedToBuf(char* buf, const bool mark, const cha
 bool LinkinterfaceUART::sendNetworkMsg(NetworkMessage& outgoingMessage)	{
 
     transmitinProgrss=true;
-    int lenToSend = outgoingMessage.numberOfBytesToSend();
-    char* dataToSend = (char*)&outgoingMessage;
+    uint32_t lenToSend = outgoingMessage.numberOfBytesToSend();
+    uint8_t* dataToSend = reinterpret_cast<uint8_t*>(&outgoingMessage);
 
     if (enaTXBreak){ // transmit interruption by received character is enabled
         putcharEncoded(true, UART_BOM);
-        for(int i = 0; i < lenToSend; i++) {
+        for(uint32_t i = 0; i < lenToSend; i++) {
             putcharEncoded(false,dataToSend[i] );
         }
         putcharEncoded(true, UART_EOM);
     }else{ // transmit interruption by received character is disabled -> we can send longer blocks (only important for BT)
-        int wrIdx = 0;
+        size_t wrIdx = 0;
         wrIdx += putcharEncodedToBuf(outputBuffer,true, UART_BOM);
 
-        for(int i = 0; i < lenToSend; i++) {
+        for(uint32_t i = 0; i < lenToSend; i++) {
             wrIdx += putcharEncodedToBuf(&outputBuffer[wrIdx],false,dataToSend[i] );
 
             if(wrIdx >= OUTPUT_BUF_SIZE-2){ // "-2" -> we need some space for UART_EOM
@@ -133,9 +133,9 @@ bool LinkinterfaceUART::sendNetworkMsg(NetworkMessage& outgoingMessage)	{
 }
 
 
-bool LinkinterfaceUART::sendUartBuffer(char* buf, int size){
-    int txBytes = 0;
-    int retVal = 0;
+bool LinkinterfaceUART::sendUartBuffer(uint8_t* buf, size_t size){
+    size_t txBytes = 0;
+    int32_t retVal = 0;
     int errCnt = 0;
     while (txBytes < size){
         retVal = uart->write(&buf[txBytes],size-txBytes);
@@ -145,9 +145,9 @@ bool LinkinterfaceUART::sendUartBuffer(char* buf, int size){
                 return false;
             }
             Thread::suspendCallerUntil(NOW() + 1*MILLISECONDS);
-        }else if ( retVal != (size-txBytes) ){ // the whole buffer couldn't be sent -> wait a moment and send the rest
+        }else if ( retVal != static_cast<int32_t>(size-txBytes) ){ // the whole buffer couldn't be sent -> wait a moment and send the rest
             Thread::suspendCallerUntil(NOW() + 1*MILLISECONDS);
-            txBytes += retVal;
+            txBytes += static_cast<size_t>(retVal);
             errCnt = 0;
         }else{
             return true;
@@ -164,7 +164,7 @@ bool LinkinterfaceUART::sendUartBuffer(char* buf, int size){
  * in a NetworkMessage frame and it returns true when the message is complete.
  ************************************/
 
-bool LinkinterfaceUART::processByte(char inputChar) {
+bool LinkinterfaceUART::processByte(uint8_t inputChar) {
 
     prevChar = currCharFromLastCall;
     currCharFromLastCall = inputChar;
@@ -214,7 +214,7 @@ bool LinkinterfaceUART::isNetworkMsgSent() { return !transmitinProgrss; }
 bool LinkinterfaceUART::getNetworkMsg(NetworkMessage& inMsg,int32_t &numberOfReceivedBytes) {
     inputBuffer = (unsigned char*)&inMsg;
     while(uart->isDataReady()) {
-        char c = uart->getcharNoWait();
+        uint8_t c = static_cast<uint8_t>(uart->getcharNoWait());
         if(processByte(c)) {
             numberOfReceivedBytes=inputIndex;
             return true;

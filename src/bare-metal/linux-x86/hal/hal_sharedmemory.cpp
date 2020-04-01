@@ -28,7 +28,7 @@ void sharedmemorySignalHandler(int signum);
 typedef struct {
     int32_t magicWord;
     int32_t lockFlag;
-    int32_t size;
+    size_t  size;
     int32_t maxMembers;
     int32_t membersCount;
     int32_t procids;
@@ -70,17 +70,18 @@ void sharedmemorySignalHandler(int) {
     }
 }
 
-void* HAL_Sharedmemory::init(int32_t* size, int32_t* maxMembers) {
+void* HAL_Sharedmemory::init(size_t* size, int32_t* maxMembers) {
 
+    RODOS_ASSERT_IFNOT_RETURN(*maxMembers > 0, nullptr);
     int32_t shmid;
     void*   shm;
-    int32_t totalSize = *size + 5 * 4 + *maxMembers * 4;
+    size_t totalSize = *size + 5 * 4 + static_cast<uint32_t>(*maxMembers) * 4;
     key_t   shmkey    = context->index * 1000 + 1001;
 
     // Create the segment.
     shmid = shmget(shmkey, totalSize, IPC_CREAT | 0666);
     if(shmid < 0) {
-        RODOS_ASSERT_IFNOT_RETURN(errno == EINVAL, 0); //shm too big
+        RODOS_ASSERT_IFNOT_RETURN(errno == EINVAL, nullptr); //shm too big
         shmid = shmget(shmkey, 100, IPC_CREAT | 0666);
         RODOS_ASSERT_IFNOT_RETURN(shmid >= 0, 0); // could not create shared memory
     }
@@ -96,7 +97,7 @@ void* HAL_Sharedmemory::init(int32_t* size, int32_t* maxMembers) {
     semname[8]         = (char)(((int32_t)'0') + context->index);
     context->semaphore = sem_open(semname, O_CREAT | O_EXCL, S_IRUSR | S_IWUSR, 1);
     if(context->semaphore == SEM_FAILED) {
-        RODOS_ASSERT_IFNOT_RETURN(errno == EEXIST, 0);  //semaphore exists already
+        RODOS_ASSERT_IFNOT_RETURN(errno == EEXIST, nullptr);  //semaphore exists already
         context->semaphore = sem_open(semname, 0);
     }
 
@@ -115,11 +116,11 @@ void* HAL_Sharedmemory::init(int32_t* size, int32_t* maxMembers) {
         if(context->header->membersCount >= context->header->maxMembers) {
             sem_post(context->semaphore); //close semaphore
             RODOS_ERROR("sharedMemory: to many members");
-            return 0; //error number of rodos instances == maxMembers
+            return nullptr; //error number of rodos instances == maxMembers
         }
         context->header->membersCount++; // number of rodos instances
         *size = context->header->size;   // size of shm
-        for(int i = 0; i < context->header->maxMembers; ++i) {
+        for(int32_t i = 0; i < context->header->maxMembers; ++i) {
             if(*(&context->header->procids + i) == 0) {
                 context->memberId = i;
                 break;
@@ -132,7 +133,7 @@ void* HAL_Sharedmemory::init(int32_t* size, int32_t* maxMembers) {
         context->header->maxMembers   = *maxMembers; // max num of members
         context->header->membersCount = 1;           // number of rodos instances
         context->memberId             = 0;
-        for(int i = 0; i < context->header->maxMembers; ++i) {
+        for(int32_t i = 0; i < context->header->maxMembers; ++i) {
             *(&context->header->procids + i) = 0;
         }
         *(&context->header->procids + context->header->maxMembers) = 0; //initialize first entry in userspace
@@ -179,7 +180,7 @@ void HAL_Sharedmemory::unlock() {
 void HAL_Sharedmemory::raiseSharedMemoryChanged() {
 
     pid_t pid;
-    for(int i = 0; i < context->header->membersCount; ++i) {
+    for(int32_t i = 0; i < context->header->membersCount; ++i) {
         if(i != context->memberId) {
             pid = *(&context->header->procids + i);
             if(pid != 0) {

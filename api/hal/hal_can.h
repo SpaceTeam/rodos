@@ -60,10 +60,10 @@ public:
     /*!
      * Initialize the CAN interface. 
      *
-     * @param bautrate The desired CAN baud rate.
+     * @param baudrate The desired CAN baud rate.
      * @return 0
      */
-    int init(unsigned int baudrate);
+    int init(uint32_t baudrate);
 
     /*!
      * Reset and disable the interface. Set all its registers and pins to its 
@@ -135,7 +135,7 @@ public:
      * regular message (false)
      * @return -1 on error, 0 on success.
      */
-    int write(const char* sendBuf, int len, uint32_t canID, bool extID = true, bool rtr = false);
+    int write(const uint8_t* sendBuf, uint8_t len, uint32_t canID, bool extID = true, bool rtr = false);
     
     /*!
      * Read a CAN Message, non-blocking.
@@ -147,7 +147,7 @@ public:
      * @param rtr Was it a RTR frame?
      * @return Number of data bytes or -1 if nothing was received.
      */
-    int read(char* recBuf, uint32_t* canID = 0, bool* isExtID = 0, bool* rtr = 0);
+    int read(uint8_t* recBuf, uint32_t* canID = 0, bool* isExtID = 0, bool* rtr = 0);
 
     // void setDEfaultTransmitID(...) //dann kann auch write und read aus GenericIO implementiert werden.
 

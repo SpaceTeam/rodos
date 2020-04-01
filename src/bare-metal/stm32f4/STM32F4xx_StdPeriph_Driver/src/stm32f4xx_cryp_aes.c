@@ -1208,7 +1208,7 @@ ErrorStatus CRYP_AES_CCM(uint8_t Mode,
     blockb0[0] = 0x40;
   }
   /* Flags byte */
-  blockb0[0] |= 0u | (((( (uint8_t) TAGSize - 2) / 2) & 0x07 ) << 3 ) | ( ( (uint8_t) (15 - NonceSize) - 1) & 0x07);
+  blockb0[0] |= 0u | (((( (uint8_t) TAGSize - 2u) / 2u) & 0x07u ) << 3u ) | ( ( (uint8_t) (15u - NonceSize) - 1u) & 0x07u);
   
   for (loopcounter = 0; loopcounter < NonceSize; loopcounter++)
   {

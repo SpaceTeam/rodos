@@ -58,15 +58,15 @@ public:
 	List mySubscribers; ///< List of pointers to subscribers associated to one topic instance
         TopicFilter* topicFilter; ///< a filter may modify the content of the message befor the subscriver get it.
         
-	long topicId;   ///< Topic ID used for identification by network tramsmitions
-	long msgLen;    ///< Size of message transfered via this topic
+	uint32_t topicId;   ///< Topic ID used for identification by network tramsmitions
+	size_t msgLen;    ///< Size of message transfered via this topic
 	bool onlyLocal; ///< if true, never call the gateways for this topic, even if publish says ditritribute to network
 
 
 
 public:
 
-    TopicInterface(long id, long len, const char* name, bool _onlyLocal = false);
+    TopicInterface(long id, size_t len, const char* name, bool _onlyLocal = false);
 
     virtual ~TopicInterface() { 
         if(isShuttingDown) return;
@@ -78,7 +78,7 @@ public:
      * warning 1: Never use it from an interrupt server.
      * warning 2: the pointer to msg will be distributed. A Subscriber may modify its content
      */
-    unsigned long publish(void *msg, bool shallSendToNetwork = true,
+    uint32_t publish(void *msg, bool shallSendToNetwork = true,
     		NetMsgInfo* netMsgInfo = 0);
 
     /** Usually we use the length of the corresponding data type associated to the topic
@@ -86,14 +86,14 @@ public:
      * warning 1: Never use it from an interrupt server.
      * warning 2: the pointer to msg will be distributed. A Subscriber may modify its content
      */
-    unsigned long publishMsgPart(void *msg, unsigned int lenToSend,
+    uint32_t publishMsgPart(void *msg, size_t lenToSend,
             bool shallSendToNetwork = true, NetMsgInfo* netMsgInfo = 0);
 
     /** Publishfrom interrupts uses no semaphores as protection!
       * the Subscriber shall use no thread operations
       * the Subscriber shall be as short as possible
       */
-    void publishFromInterrupt(void *any, int len = 0);
+    void publishFromInterrupt(void *any, size_t len = 0);
 
     /** request is like publish, but the calles expects data back instead of sending it.
       * The internal mechanims is identical the same like publisch, the middleware will
@@ -103,7 +103,7 @@ public:
      inline unsigned long requestLocal(void *msg) { return publish(msg, false); }
 
      /// return 0 it not found
-     static TopicInterface* findTopicId(long wantedTopicId);
+     static TopicInterface* findTopicId(uint32_t wantedTopicId);
 
      void setTopicFilter(TopicFilter* filter);
 

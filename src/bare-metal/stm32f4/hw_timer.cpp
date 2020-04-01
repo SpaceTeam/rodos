@@ -214,7 +214,7 @@ static const unsigned int timerClock = 6000000;
 //#define PCLKn_Frequency         PCLK1_Frequency
 
 
-unsigned long long nanoTime;
+int64_t nanoTime;
 
 extern "C" {
 /*
@@ -283,10 +283,10 @@ void TIMx_init(){
     NVIC_EnableIRQ(TIMx_IRQn);
 }
 
-unsigned long long hwGetNanoseconds() {
+int64_t hwGetNanoseconds() {
 
-	int count = 0;
-	unsigned long long returnTime = 0;
+	uint32_t count = 0;
+	int64_t returnTime = 0;
 
 	// -> current time = nanoTime + 1 000 000 000 * countRegister/tim2Clock
 
@@ -326,7 +326,7 @@ void hwInitTime()
 }
 
 
-unsigned long long hwGetAbsoluteNanoseconds(void)
+int64_t hwGetAbsoluteNanoseconds(void)
 {
 	return hwGetNanoseconds();// + timeAtStartup;
 }

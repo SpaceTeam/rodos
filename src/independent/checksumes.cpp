@@ -23,14 +23,15 @@ namespace RODOS {
 
 /** Computes a 16-bit checksum (len in bytes) adding bytes and rotating result */
 
-uint32_t checkSum(uint8_t *buf, int len) {
+uint32_t checkSum(const void *buf, size_t len) {
 
 	uint32_t checksum = 0; /* The checksum mod 2^16. */
-	int cnt;
+	size_t cnt;
+    const uint8_t* data = static_cast<const uint8_t*>(buf);
 
-	for(cnt = 0; cnt < len; cnt++) {
+    for(cnt = 0; cnt < len; cnt++) {
 		ROTATE_RIGHT (checksum);
-		checksum += buf[cnt];
+		checksum += data[cnt];
 		checksum &= 0xffff; /* Keep it within bounds. */
 	}
 	return checksum;
@@ -41,12 +42,13 @@ uint32_t checkSum(uint8_t *buf, int len) {
 
 /** computes a 16-bit crc in a non optimized way **/
 
-uint32_t computeCrc(const uint8_t* buf, int32_t len, int32_t initialValue) {
+uint32_t computeCrc(const void* buf, size_t len, uint32_t initialValue) {
 
-    int32_t currentValue = initialValue;
+    uint32_t currentValue = initialValue;
+    const uint8_t* data = static_cast<const uint8_t*>(buf);
 
-    for(int charCnt = 0; charCnt < len; charCnt++) {
-        unsigned char curChar = buf[charCnt];
+    for(size_t charCnt = 0; charCnt < len; charCnt++) {
+        uint8_t curChar = data[charCnt];
         for(int bitCnt = 0; bitCnt < 8; bitCnt++) {
             if((curChar & 0x80) ^ ((currentValue & 0x8000) >> 8)) {
                 currentValue = ((currentValue << 1)  ^ 0x1021) & 0xFFFF; // Standard Polinom for CCSDS
@@ -67,7 +69,7 @@ uint32_t computeCrc(const uint8_t* buf, int32_t len, int32_t initialValue) {
 
 CRC::CRC() {
 		for (int i=0; i < 256; i++) {
-			int tmp=0;
+			uint32_t tmp=0;
 			if ((i & 1) != 0)   tmp=tmp ^ 0x1021;
 			if ((i & 2) != 0)   tmp=tmp ^ 0x2042;
 			if ((i & 4) != 0)   tmp=tmp ^ 0x4084;
@@ -80,14 +82,16 @@ CRC::CRC() {
 		}
 }
 
-uint32_t CRC::computeCRC(uint8_t* buf, int32_t len, int32_t initialValue) {
+uint32_t CRC::computeCRC(const void* buf, size_t len, uint32_t initialValue) {
 
-		int32_t currentValue = initialValue;
-		for(int i=0; i < len; i++) {
-			currentValue = (((currentValue << 8) & 0xFF00) ^
-					lookUpTable [(((currentValue >> 8)^ buf[i]) & 0x00FF)]);
-		}
-		return currentValue;
+		uint32_t currentValue = initialValue;
+        const uint8_t* data = static_cast<const uint8_t*>(buf);
+
+        for(size_t i = 0; i < len; i++) {
+            currentValue = (((currentValue << 8) & 0xFF00) ^
+					lookUpTable [(((currentValue >> 8)^ data[i]) & 0x00FF)]);
+        }
+        return currentValue;
 }
 
 
@@ -96,15 +100,14 @@ uint32_t CRC::computeCRC(uint8_t* buf, int32_t len, int32_t initialValue) {
  */
 
 uint16_t hash(const char* str) {
-	const uint8_t* buf = reinterpret_cast<const uint8_t*>(str);
-	uint16_t crc = (uint16_t)computeCrc(buf, (int32_t)strlen(str), 0xffff);
+	uint16_t crc = (uint16_t)computeCrc(str, strlen(str), 0xffffu);
 
 	/** To make only printable characters, else it were a normal crc value **/
 
 		uint8_t a = (crc >> 8) & 0xff;
 		uint8_t b = (crc & 0xff);
 
-		uint32_t range = 0x7e - 0x20; // Printable ascii chars
+		uint8_t range = 0x7e - 0x20; // Printable ascii chars
 		if(a <= 0x20 || a >= 0x7e) a = (a % range) + 0x20;
 		if(b <= 0x20 || b >= 0x7e) b = (b % range) + 0x20;
 
@@ -116,10 +119,10 @@ uint16_t hash(const char* str) {
 
 
 /** Computes a checksum (len in 32-bit words) */
-uint32_t checkSumXor32(uint32_t *buf, int len) {
+uint32_t checkSumXor32(const uint32_t *buf, size_t len) {
 
     uint32_t cksum = 0;
-    for (int i = 0; i < len; ++i) {
+    for (size_t i = 0; i < len; ++i) {
         cksum ^= buf[i];
     }
     return cksum;

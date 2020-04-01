@@ -5,7 +5,7 @@
 
 #include <rodos-debug.h>
 
-err_t tcp_recv_func(void* arg, struct tcp_pcb* tpcb, struct pbuf* p, err_t) {
+err_t tcp_recv_func(void* arg, [[gnu::unused]] struct tcp_pcb* tpcb, struct pbuf* p, err_t) {
     TCPBase* tcp = static_cast<TCPBase*>(arg);
 
     if(!p) { // connection closed
@@ -22,7 +22,7 @@ err_t tcp_recv_func(void* arg, struct tcp_pcb* tpcb, struct pbuf* p, err_t) {
     return ERR_OK;
 }
 
-err_t tcp_accept_func(void* arg, struct tcp_pcb* newpcb, err_t err) {
+err_t tcp_accept_func(void* arg, struct tcp_pcb* newpcb, [[gnu::unused]] err_t err) {
     HW_TCPServer* tcp = static_cast<HW_TCPServer*>(arg);
 
     if(tcp->pcb) tcp_abort(tcp->pcb);
@@ -35,7 +35,7 @@ err_t tcp_accept_func(void* arg, struct tcp_pcb* newpcb, err_t err) {
     return ERR_OK;
 }
 
-err_t tcp_connected_func(void* arg, struct tcp_pcb* tpcb, err_t err) {
+err_t tcp_connected_func(void* arg, [[gnu::unused]] struct tcp_pcb* tpcb, err_t err) {
     TCPBase* tcp = static_cast<TCPBase*>(arg);
 
     if(err == ERR_OK) tcp->errorCode = 0;
@@ -81,11 +81,11 @@ bool HW_TCPServer::acceptNewConnection() {
     return pcb;
 }
 
-int HW_TCPServer::sendData(void* buf, int len) {
+int HW_TCPServer::sendData(void* buf, size_t len) {
     return TCPBase::sendData(buf, len);
 }
 
-int HW_TCPServer::getData(void* buf, int maxLen) {
+int HW_TCPServer::getData(void* buf, size_t maxLen) {
     return TCPBase::getData(buf, maxLen);
 }
 
@@ -127,25 +127,25 @@ bool HW_TCPClient::reopen(const long portNr, const char* hostname) {
     return true;
 }
 
-int HW_TCPClient::sendData(void* buf, int len) {
+int HW_TCPClient::sendData(void* buf, size_t len) {
     return TCPBase::sendData(buf, len);
 }
 
-int HW_TCPClient::getData(void* buf, int maxLen) {
+int HW_TCPClient::getData(void* buf, size_t maxLen) {
     return TCPBase::getData(buf, maxLen);
 }
 
-int TCPBase::sendData(void* buf, int len) {
-    int sendLen = MIN(tcp_sndbuf(pcb), len);
+int TCPBase::sendData(void* buf, size_t len) {
+    size_t sendLen = MIN(tcp_sndbuf(pcb), len);
     tcp_write(pcb, buf, sendLen, 0);
     tcp_output(pcb);
-    return sendLen;
+    return static_cast<int>(sendLen);
 }
 
-int TCPBase::getData(void* buf, int maxLen) {
+int TCPBase::getData(void* buf, size_t maxLen) {
     if(!recvBuf) return 0;
 
-    int copyLen = MIN(recvBuf->tot_len - readPos, maxLen);
+    size_t copyLen = MIN(recvBuf->tot_len - readPos, maxLen);
     pbuf_copy_partial(recvBuf, buf, copyLen, readPos);
 
     if(recvBuf->tot_len - readPos <= copyLen) {
@@ -156,7 +156,7 @@ int TCPBase::getData(void* buf, int maxLen) {
 
     tcp_recved(pcb, copyLen);
 
-    return copyLen;
+    return static_cast<int>(copyLen);
 }
 
 int HW_TCPClient::getErrorCode() const {

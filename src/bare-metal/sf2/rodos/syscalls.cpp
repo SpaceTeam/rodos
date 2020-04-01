@@ -38,6 +38,7 @@ extern "C" {
 #if 1
 int _close(int file);
 int _close(int file) {
+    (void)file;
     return -1;
 }
 
@@ -46,6 +47,9 @@ char** environ  = __env;
 
 int _execve(char* name, char** argv, char** env);
 int _execve(char* name, char** argv, char** env) {
+    (void)name;
+    (void)argv;
+    (void)env;
     errno = ENOMEM;
     return -1;
 }
@@ -58,6 +62,7 @@ int _fork(void) {
 
 int _fstat(int file, struct stat* st);
 int _fstat(int file, struct stat* st) {
+    (void)file;
     st->st_mode = S_IFCHR;
     return 0;
 }
@@ -69,41 +74,55 @@ int _getpid(void) {
 
 int _isatty(int file);
 int _isatty(int file) {
+    (void)file;
     return 1;
 }
 
 int _kill(int pid, int sig);
 int _kill(int pid, int sig) {
+    (void)pid;
+    (void)sig;
     errno = EINVAL;
     return -1;
 }
 
 int _link(char* old, char* pNew);
 int _link(char* old, char* pNew) {
+    (void)old;
+    (void)pNew;
     errno = EMLINK;
     return -1;
 }
 
 int _lseek(int file, int ptr, int dir);
 int _lseek(int file, int ptr, int dir) {
+    (void)file;
+    (void)ptr;
+    (void)dir;
     return 0;
 }
 
 int _open(const char* name, int flags, int mode);
 int _open(const char* name, int flags, int mode) {
+    (void)name;
+    (void)flags;
+    (void)mode;
     return -1;
 }
 
 int _read(int file, char* ptr, int len);
 int _read(int file, char* ptr, int len) {
+    (void)file;
+    (void)ptr;
+    (void)len;
     return 0;
 }
 
 register char* stack_ptr asm("sp");
 extern char    _estack;         // see linkerscript in \rodos-core\src\bare-metal\sf2\CMSIS\startup_gcc
 extern char    _Min_Stack_Size; // see linkerscript in \rodos-core\src\bare-metal\sf2\CMSIS\startup_gcc
-caddr_t        _sbrk(int incr);
-caddr_t        _sbrk(int incr) {
+caddr_t        _sbrk(size_t incr);
+caddr_t        _sbrk(size_t incr) {
     extern char  __heap_start__ asm("__heap_start__"); /* Defined by the linker.  */
     static char* heap_end;
     char*        prev_heap_end;
@@ -151,33 +170,37 @@ caddr_t        _sbrk(int incr) {
 
 int _times(struct tms* buf);
 int _times(struct tms* buf) {
+    (void)buf;
     return -1;
 }
 
 int _unlink(char* name);
 int _unlink(char* name) {
+    (void)name;
     errno = ENOENT;
     return -1;
 }
 
 int _wait(int* status);
 int _wait(int* status) {
+    (void)status;
     errno = ECHILD;
     return -1;
 }
 
 int putchar(int ic);
 
-int _write(int file, char* ptr, int len);
-int _write(int file, char* ptr, int len) {
-    int todo;
+int _write(int file, const char* ptr, size_t len);
+int _write(int file, const char* ptr, size_t len) {
+    (void)file;
+    size_t todo;
 
     for(todo = 0; todo < len; todo++) {
 
         putchar(*ptr);
         ptr++;
     }
-    return len;
+    return static_cast<int>(len);
 }
 
 /*
@@ -185,11 +208,13 @@ int _write(int file, char* ptr, int len) {
  */
 long _write_r(void* reent, int fd, const void* buf, size_t cnt);
 long _write_r(void* reent, int fd, const void* buf, size_t cnt) {
-    return _write(fd, (char*)buf, cnt);
+    (void)reent;
+    return _write(fd, (const char*)buf, cnt);
 }
 
 caddr_t _sbrk_r(void* reent, size_t incr);
 caddr_t _sbrk_r(void* reent, size_t incr) {
+    (void)reent;
     return _sbrk(incr);
 }
 #endif
@@ -197,7 +222,7 @@ caddr_t _sbrk_r(void* reent, size_t incr) {
 
 //puts chars
 int putchar(int ic) {
-    char c = (char)(ic & 0xff);
+    uint8_t c = (uint8_t)(ic & 0xff);
 
     if(c == '\n') {
         putchar('\r');

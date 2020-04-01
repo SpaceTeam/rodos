@@ -257,8 +257,8 @@ int32_t HW_HAL_SPI::setBaudrate(uint32_t baudrate){
         // ... and second subtract 1, because register value is one less the log2 of baudRatePrescaler
         if (regValBRP > 0) regValBRP--;
         // change regValBRP to get the smallest error
-        uint32_t smallerBaudrate = pclk/(1<<(regValBRP+2));
-        uint32_t biggerBaudrate = pclk/(1<<(regValBRP+1));
+        uint32_t smallerBaudrate = pclk/(1lu<<(regValBRP+2));
+        uint32_t biggerBaudrate = pclk/(1lu<<(regValBRP+1));
         if ((biggerBaudrate-baudrate) > ((biggerBaudrate-smallerBaudrate)/2) ){ // wished baudrate is closer to smaller baudrate
             regValBRP++;
         }
@@ -268,9 +268,9 @@ int32_t HW_HAL_SPI::setBaudrate(uint32_t baudrate){
     SPIx->CR1 &= ~(0x07<<3);
     SPIx->CR1 |= regValBRP<<3;
 
-    this->baudrate = pclk/(1<<(regValBRP+1));
+    this->baudrate = pclk/(1lu<<(regValBRP+1));
 
-    return this->baudrate;
+    return static_cast<int32_t>(this->baudrate);
 }
 
 
@@ -500,7 +500,7 @@ int32_t HAL_SPI::config(SPI_PARAMETER_TYPE type, int32_t value) {
     case SPI_PARAMETER_BAUDRATE:
         if ( (value > 0) && isWriteFinished() && isReadFinished()){
             SPI_Cmd(context->SPIx, DISABLE);
-            context->setBaudrate(value);
+            context->setBaudrate(static_cast<uint32_t>(value));
             SPI_Cmd(context->SPIx, ENABLE);
             return 0;
         }
@@ -525,7 +525,7 @@ int32_t HAL_SPI::status(SPI_STATUS_TYPE type) {
 
     switch (type){
     case SPI_STATUS_BAUDRATE:
-        return context->baudrate;
+        return static_cast<int32_t>(context->baudrate);
     default:
         return -1;
     }
@@ -543,7 +543,7 @@ bool HAL_SPI::isReadFinished(){
 /**
  * DMA write, busy waiting
  */
-int32_t HAL_SPI::write(const uint8_t* sendBuf, uint32_t len) {
+int32_t HAL_SPI::write(const void* sendBuf, size_t len) {
 
 	if(!context->initialized) return -1;
 
@@ -579,13 +579,13 @@ int32_t HAL_SPI::write(const uint8_t* sendBuf, uint32_t len) {
 
 	upCallWriteFinished();
 
-	return len;
+	return static_cast<int32_t>(len);
 }
 
 /**
  * read() - DMA read, busy waiting
  */
-int32_t HAL_SPI::read(uint8_t* recBuf, uint32_t maxLen) {
+int32_t HAL_SPI::read(void* recBuf, size_t maxLen) {
 	if(!context->slave)
 		return writeRead(recBuf, maxLen, recBuf, maxLen);
 
@@ -598,7 +598,7 @@ int32_t HAL_SPI::read(uint8_t* recBuf, uint32_t maxLen) {
 	pDMA_Init->DMA_DIR = DMA_DIR_PeripheralToMemory;
 	pDMA_Init->DMA_FIFOThreshold = DMA_FIFOThreshold_Full;
 	pDMA_Init->DMA_Memory0BaseAddr = (uint32_t)recBuf;
-	pDMA_Init->DMA_BufferSize = maxLen;
+	pDMA_Init->DMA_BufferSize = static_cast<uint32_t>(maxLen);
 	DMA_Init(context->DMA_Stream_RX, pDMA_Init);
 	DMA_ITConfig(context->DMA_Stream_RX, DMA_IT_TC, DISABLE);
 	DMA_Cmd(context->DMA_Stream_RX, ENABLE);
@@ -613,7 +613,7 @@ int32_t HAL_SPI::read(uint8_t* recBuf, uint32_t maxLen) {
 
 	upCallReadFinished();
 
-	return maxLen;
+	return static_cast<int32_t>(maxLen);
 
 /* The following read-implementation works, but generates spi clock for a few more bytes than requested,
  * because the RXONLY-flag is cleared to late.
@@ -656,7 +656,7 @@ int32_t HAL_SPI::read(uint8_t* recBuf, uint32_t maxLen) {
 //	return maxLen;
 }
 
-int32_t HAL_SPI::writeRead(const uint8_t* sendBuf, uint32_t len, uint8_t* recBuf, uint32_t maxLen) {
+int32_t HAL_SPI::writeRead(const void* sendBuf, size_t len, void* recBuf, size_t maxLen) {
 
 	if(!context->initialized) return -1;
 
@@ -718,7 +718,7 @@ int32_t HAL_SPI::writeRead(const uint8_t* sendBuf, uint32_t len, uint8_t* recBuf
 
 	upCallReadFinished();
 
-	return maxLen;
+	return static_cast<int32_t>(maxLen);
 }
 
 }

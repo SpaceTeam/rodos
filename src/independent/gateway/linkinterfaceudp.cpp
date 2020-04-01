@@ -43,7 +43,7 @@ bool LinkinterfaceUDP::sendNetworkMsg(NetworkMessage &outMsg)	{
     return udpToNetwork->send(&outMsg, outMsg.numberOfBytesToSend());
 }
 
-void LinkinterfaceUDP::putFromInterrupt([[gnu::unused]] const long topicId, const void* any, [[gnu::unused]] int len) {
+void LinkinterfaceUDP::putFromInterrupt([[gnu::unused]] const uint32_t topicId, const void* any, [[gnu::unused]] size_t len) {
     const GenericMsgRef* msg = (const GenericMsgRef*)any;
     incoming.put(*((const NetworkMessage*)msg->msgPtr));
     if(threadToResume) threadToResume->resume();

@@ -118,7 +118,7 @@ bool Gateway::messageSeen(NetworkMessage& msg) {
 
 /** Forward the message to the interface **/
 
-long Gateway::put(const long topicId, const long len, void* data, const NetMsgInfo&) {
+uint32_t Gateway::put(const uint32_t topicId, const size_t len, void* data, const NetMsgInfo&) {
     if(!isEnabled) return 0;
     // if(topicId == 0) return 0;
 
@@ -164,7 +164,7 @@ void Gateway::setTopicsToForward(TopicListReport* topicList) {
 void Gateway::addTopicsToForward(TopicListReport* topicsWanted_) {
     getTopicsToForwardFromOutside=false;
     TopicListReport *topicsWanted = (TopicListReport*)topicsWanted_;
-    for(int i = 0; i < topicsWanted->numberOfTopics; i++) {
+    for(uint32_t i = 0; i < topicsWanted->numberOfTopics; i++) {
         externalsubscribers.add(topicsWanted->topicList[i]);
     }
 }
@@ -202,7 +202,7 @@ void Gateway::AnalyseAndDistributeMessagesFromNetwork() {
     networkInMessage.dec_maxStepsToForward();
     { PRIORITY_CEILER_IN_SCOPE();  numberOfReceivedMsgsFromNetwork++; }
 
-    long topicId           = networkInMessage.get_topicId();
+    uint32_t topicId           = networkInMessage.get_topicId();
 
     if(topicId == 0 && getTopicsToForwardFromOutside) { // This is a topic report of expected topics in network.
         if(linkinterface->isBroadcastLink) {
@@ -280,7 +280,7 @@ void Gateway::run() {
 
 
 
-void prepareNetworkMessage(NetworkMessage& netMsg, const long topicId,const void* data, int len) {
+void prepareNetworkMessage(NetworkMessage& netMsg, const uint32_t topicId,const void* data, size_t len) {
     netMsg.put_senderNode(myNodeNr); // Set node ID of sending node
     netMsg.put_topicId(topicId);     // ID of calling topic
     netMsg.put_sentTime(NOW());      // Timestamp
@@ -293,7 +293,7 @@ void prepareNetworkMessage(NetworkMessage& netMsg, const long topicId,const void
 
 //Counter for automatically assigning linkidentifiers
 //This is here because Linkinterface has no own source file
-int Linkinterface::linkidentifierCounter=10000;
+uint32_t Linkinterface::linkidentifierCounter=10000;
 
 }
 

@@ -68,7 +68,7 @@ public:
      * @param[in] maxLen size of input buffer
      * @return length of message written to userData
      */
-    long get(void* userData, int maxLen);
+    int32_t get(void* userData, size_t maxLen);
 
     /**
      * Receives data from UDP socket. Writes data up to maxLen to userData.
@@ -77,7 +77,7 @@ public:
      * @param[out] ipaddr sender address
      * @return length of message written to userData
      */
-    long get(void* userData, int maxLen, unsigned long *ipaddr);
+    int32_t get(void* userData, size_t maxLen, uint32_t *ipaddr);
 
     /**
      * Check for incoming data.
@@ -119,7 +119,7 @@ public:
      * @param _ipAddr IP-address of remote host, e.g. format as hex 0x01020304,
      * where 01 = ip_part1, ...
      */
-    UDPOut(const long _portNr, unsigned long _ipAddr); //MSul
+    UDPOut(const long _portNr, uint32_t _ipAddr); //MSul
 
     /** Constructor for connection to remote host known by IP-address.
      * @param _portNr port number on remote host
@@ -137,7 +137,7 @@ public:
      * @param[in] maxLen size of data block to be send, must be <= max allowed length
      * @return true - if sending was successful, false - otherwise
      */
-    bool send(const void* userData, const int maxLen);
+    bool send(const void* userData, const size_t maxLen);
 
     /** Send user data to a given address
      * @param[in] userData pointer to output data stream
@@ -145,7 +145,7 @@ public:
      * @param[in] ipAddr new IP-address, where data is send to
      * @return true - if sending was successful, false - otherwise
      */
-    bool sendTo(const void* userData, const int maxLen, unsigned long ipAddr);//MSul
+    bool sendTo(const void* userData, const size_t maxLen, uint32_t ipAddr);//MSul
 
     /**
      * Check whether port is active or not.

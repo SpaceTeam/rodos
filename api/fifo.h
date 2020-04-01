@@ -30,19 +30,19 @@ namespace RODOS {
 *  @param len     maximal number of entries must be at least 2 (real capacity = len-1)
 *
 */
-template < typename Type, int len > class Fifo : public Putter {
+template < typename Type, size_t len > class Fifo : public Putter {
 
 protected:
 
     Type buffer[len];
 
-    volatile int writeX;
-    volatile int readX;
+    volatile size_t writeX;
+    volatile size_t readX;
 
     /** advance index to next position
     * with overflow to 0 to implement a ring
     */
-    int advanceIndex(int index) {
+    size_t advanceIndex(size_t index) {
         return ((index < (len-1)) ? (index+1) : 0);
     }
 
@@ -55,14 +55,14 @@ public:
     }
 
     /** implements the generic interface of putter */
-    bool putGeneric([[gnu::unused]] const long topicId, const unsigned int msgLen, const void* msg, [[gnu::unused]] const NetMsgInfo& netMsgInfo) {
+    bool putGeneric([[gnu::unused]] const uint32_t topicId, const size_t msgLen, const void* msg, [[gnu::unused]] const NetMsgInfo& netMsgInfo) {
         RODOS_ASSERT_IFNOT_RETURN(msgLen <= sizeof(Type), false);
         return put(*(const Type*)msg);
     }
 
     /**  returns true == ok, false == fifo full */
     bool put(const Type& val) {
-        int index =  advanceIndex(writeX);
+        size_t index =  advanceIndex(writeX);
         if(index == readX) {
             return false; /* full! */
         }
@@ -82,14 +82,14 @@ public:
         return true;
     }
 
-    int getLen() { return len; }
+    size_t getLen() { return len; }
 
-    int getElementCount() { ///< warning: not thread safe
-        int r = readX;
-        int w = writeX;
+    size_t getElementCount() { ///< warning: not thread safe
+        size_t r = readX;
+        size_t w = writeX;
         return (r <= w) ? (w-r) : (len-r+w);
     }
-    int getFreeSpaceCount() { ///< warning: not thread safe
+    size_t getFreeSpaceCount() { ///< warning: not thread safe
         return len - getElementCount() - 1;
     }
     bool isFull()  { return advanceIndex(writeX)==readX; } ///< warning: not thread safe
@@ -112,7 +112,7 @@ public:
 * to be protected using semaphores.
 *
 */
-template <class Type, int len> class SyncFifo : public Fifo<Type, len> {
+template <class Type, size_t len> class SyncFifo : public Fifo<Type, len> {
 
 protected:
     Thread* suspendedReader;
@@ -130,7 +130,7 @@ public:
     * Implements the generic interface of putter:
     * Warning does not suspends if fifo full
     */
-    bool putGeneric([[gnu::unused]] const long topicId, const unsigned int msgLen, const void* msg, [[gnu::unused]] const NetMsgInfo& netMsgInfo) {
+    bool putGeneric([[gnu::unused]] const uint32_t topicId, const size_t msgLen, const void* msg, [[gnu::unused]] const NetMsgInfo& netMsgInfo) {
         RODOS_ASSERT_IFNOT_RETURN(msgLen <= sizeof(Type), false);
 
         bool ok = this->put(*(const Type*)msg);
@@ -203,21 +203,21 @@ public:
 };
 
 
-template <typename Type, int len, int numOfreaders >
+template <typename Type, size_t len, uint32_t numOfreaders >
 class MultipleReaderFifo : public Putter {
 
 protected:
 
     Type buffer[len];
 
-    volatile int writeX;
-    volatile int readX[numOfreaders];
-    unsigned int readerCnt; ///< used only to generate readerId, if user wishes!
+    volatile size_t writeX;
+    volatile size_t readX[numOfreaders];
+    uint32_t readerCnt; ///< used only to generate readerId, if user wishes!
 
     /** advance index to next position
     * with overflow to 0 to implement a ring
     */
-    int advanceIndex(int index) {
+    size_t advanceIndex(size_t index) {
         return ((index < (len-1)) ? (index+1) : 0);
     }
 
@@ -227,25 +227,25 @@ public:
     MultipleReaderFifo() {
         readerCnt = 0;
         writeX = 0;
-        for(int i = 0; i < numOfreaders; i++) readX[i] = 0;
+        for(uint32_t i = 0; i < numOfreaders; i++) readX[i] = 0;
     }
 
-    int getReaderId() { //< Warning: not thread safe!!!
-        int myId = readerCnt++;
+    int32_t getReaderId() { //< Warning: not thread safe!!!
+        uint32_t myId = readerCnt++;
         if(myId >= numOfreaders) return -1; // no more readers!
-        return myId;
+        return static_cast<int32_t>(myId);
     }
 
     /** implements the generic interface of putter */
-    bool putGeneric([[gnu::unused]] const long topicId, const unsigned int msgLen, const void* msg, [[gnu::unused]] const NetMsgInfo& netMsgInfo) {
+    bool putGeneric([[gnu::unused]] const uint32_t topicId, const size_t msgLen, const void* msg, [[gnu::unused]] const NetMsgInfo& netMsgInfo) {
         RODOS_ASSERT_IFNOT_RETURN(msgLen <= sizeof(Type), false);
         return put(*(const Type*)msg);
     }
 
     /**  returns true == ok, false == fifo full */
     bool put(const Type& val) {
-        int index =  advanceIndex(writeX);
-        for(int i = 0; i < numOfreaders; i++) {
+        size_t index =  advanceIndex(writeX);
+        for(uint32_t i = 0; i < numOfreaders; i++) {
             if(index == readX[i]) { // one reading is to slow -> shift him!
                 readX[i] = advanceIndex(readX[i]); // Warning: thread safe?!?!
             }
@@ -257,7 +257,7 @@ public:
     }
 
     /** return true == ok, false = fifo empty, val not modified */
-    bool get(Type& val, int readerId) {
+    bool get(Type& val, uint32_t readerId) {
         if(readerId >= numOfreaders)  return false;
         if(readX[readerId] == writeX) return false;
 
@@ -277,10 +277,10 @@ public:
   * Useful for DMA transfers.
   */
 
-template <class Type, int len>  class BlockFifo : public Fifo<Type,len> {
+template <class Type, size_t len>  class BlockFifo : public Fifo<Type,len> {
 protected:
-    int advanceIndexEx(int index,int advanceSize) {
-        int newIndex = index + advanceSize;
+    size_t advanceIndexEx(size_t index,size_t advanceSize) {
+        size_t newIndex = index + advanceSize;
         while(newIndex >= len) {
             newIndex -= len;
         }
@@ -293,9 +293,9 @@ public:
 
 
     /// returns pointer to write and maximal number of entries you may write
-    Type* getBufferToWrite(int& maxLen) {
-        int r = this->readX;
-        int w = this->writeX;
+    Type* getBufferToWrite(size_t& maxLen) {
+        size_t r = this->readX;
+        size_t w = this->writeX;
 
         if(r == this->advanceIndex(w)) { //full
             maxLen =0;
@@ -312,14 +312,14 @@ public:
     }
 
     /// call this after you have written in the buffer you got from getBufferToWrite
-    void writeConcluded(int numOfWrittenElements) {
+    void writeConcluded(size_t numOfWrittenElements) {
         this->writeX = advanceIndexEx(this->writeX, numOfWrittenElements);
     }
 
     // returns pointer to read and maximal number of entries you may read
-    Type* getBufferToRead(int& maxLen) {
-        int r = this->readX;
-        int w = this->writeX;
+    Type* getBufferToRead(size_t& maxLen) {
+        size_t r = this->readX;
+        size_t w = this->writeX;
 
         if(r == w) { //empty
             maxLen =0;
@@ -335,7 +335,7 @@ public:
     }
 
     /// call this after you have read in the buffer you got from getBufferToRead
-    void readConcluded(int sizeRed) {
+    void readConcluded(size_t sizeRed) {
         this->readX=advanceIndexEx(this->readX,sizeRed);
     }
 

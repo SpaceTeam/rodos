@@ -34,7 +34,7 @@ public:
 
     virtual ~Putter() {};
 
-    virtual bool putGeneric([[gnu::unused]] const long topicId, [[gnu::unused]] const unsigned int len, [[gnu::unused]] const void* msg, [[gnu::unused]] const NetMsgInfo& netMsgInfo) {
+    virtual bool putGeneric([[gnu::unused]] const uint32_t topicId, [[gnu::unused]] const size_t len, [[gnu::unused]] const void* msg, [[gnu::unused]] const NetMsgInfo& netMsgInfo) {
        RODOS_ERROR("If you see this message, You are overriding a deprecated old put function from Putter. please override only the new (this!) putGeneric");
        return false;
     }

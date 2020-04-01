@@ -65,8 +65,8 @@ class UDPReceiver {
      * @param[IN] size of input buffer
      * @return length of message written to userData
      */
-    long get(void* userData, const unsigned int maxLen = 1300);
-    long get(void* userData, int maxLen, unsigned long* ipaddr); // return number of bytes read, or 0, or < 0 if error
+    int32_t get(void* userData, const size_t maxLen = 1300);
+    int32_t get(void* userData, size_t maxLen, uint32_t* ipaddr); // return number of bytes read, or 0, or < 0 if error
 
     bool readyToGet();
 
@@ -98,7 +98,7 @@ class UDPTransmitter {
      ** WARNING: Negative port number means broadcast **/
 
     UDPTransmitter(const TUDPPortNr _port, const char* host = "localhost");
-    UDPTransmitter(const long _portNr, unsigned long _ipAddr); // _ipAddr as eg. 192.168.0.20
+    UDPTransmitter(const long _portNr, uint32_t _ipAddr); // _ipAddr as eg. 192.168.0.20
     UDPTransmitter(const long _portNr, int ip0, int ip1, int ip2, int ip3);
     virtual ~UDPTransmitter();
 
@@ -108,14 +108,14 @@ class UDPTransmitter {
      * @param data pointer to data field
      * @param length of data field
      */
-    virtual bool send(const void* msg, const unsigned int len);
+    virtual bool send(const void* msg, const size_t len);
 
     /** Send datagram to a specified host different to the address used during intialization
      * @param data pointer to data field
      * @param length of data field
      * @param ipAddr of receiving host
      */
-    bool sendTo(const void* userData, const int maxLen, unsigned long ipAddr);
+    bool sendTo(const void* userData, const size_t maxLen, uint32_t ipAddr);
     bool isInitialised() { return initialised; } // due to windows compatibility
 };
 

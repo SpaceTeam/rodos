@@ -189,13 +189,13 @@ size_t _write([[gnu::unused]] int file, const char *ptr, size_t len) {
 /*
  * reentrant syscalls
  */
-long _write_r(void *reent, int fd, const void *buf, size_t cnt);
-long _write_r([[gnu::unused]] void *reent, int fd, const void *buf, size_t cnt) {
+size_t _write_r(void *reent, int fd, const void *buf, size_t cnt);
+size_t _write_r([[gnu::unused]] void *reent, int fd, const void *buf, size_t cnt) {
 	return _write(fd, (const char*) buf, cnt);
 }
 
-caddr_t _sbrk_r(void *reent, size_t incr);
-caddr_t _sbrk_r([[gnu::unused]] void *reent, size_t incr) {
+caddr_t _sbrk_r(void *reent, int incr);
+caddr_t _sbrk_r([[gnu::unused]] void *reent, int incr) {
 	return _sbrk(incr);
 }
 #endif
@@ -251,7 +251,7 @@ void sp_partition_yield() {}
 void FFLUSH() { }
 
 int getCurrentIRQ(){
-	return (SCB->ICSR & 0x1FF)-16;
+	return static_cast<int>(SCB->ICSR & 0x1FF)-16;
 }
 
 extern "C"{

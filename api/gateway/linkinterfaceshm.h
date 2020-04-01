@@ -19,7 +19,7 @@ class LinkinterfaceSHM: public Linkinterface, IOEventReceiver {
 
 protected:
 	MultipleReaderFifo<NetworkMessage, FIFOSIZE, MAXMEMBERS> * fifo;
-	int readerId;
+	int32_t readerId;
 	Sharedmemory_IDX shmIdx;
 
 public:

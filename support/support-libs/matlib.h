@@ -44,7 +44,7 @@ inline double rad2Grad(const double &rad)  {return rad * 180.0 / M_PI; }
 inline double square( const double &x )    { return x*x; }
 inline double frac( const double &x )      { return x - floor(x); }
 inline double mod( const double &dividend, const double &divisor ) { return (isAlmost0(divisor) ? 0.0 : divisor * frac( dividend/divisor )); }
-int64_t faculty(const int &x);
+uint64_t faculty(const uint32_t &x);
 double FMod2p( const double &x); ///< floating point rest, after division with 2Pi
 double fabs(const double &value);
 

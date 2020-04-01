@@ -36,6 +36,8 @@ void NVIC_init(void) {
 void NVIC_set_handler(
   uint32_t               interrupt_number,
   hal_nvic_irq_handler_t handler) {
+    (void)interrupt_number;
+    (void)handler;
     /*
      * Please use the NVIC control functions provided by the SmartFusion2 CMSIS
      * Hardware Abstraction Layer. The use of the Actel HAL NVIC control
@@ -74,6 +76,8 @@ void NVIC_set_handler(
 void NVIC_set_priority(
   uint32_t interrupt_number,
   uint8_t  priority_level) {
+    (void)interrupt_number;
+    (void)priority_level;
     /*
      * Please use the NVIC control functions provided by the SmartFusion2 CMSIS
      * Hardware Abstraction Layer. The use of the Actel HAL NVIC control
@@ -106,6 +110,7 @@ void NVIC_set_priority(
  * 
  */
 void NVIC_enable_interrupt(uint32_t interrupt_number) {
+    (void)interrupt_number;
     /*
      * Please use the NVIC control functions provided by the SmartFusion2 CMSIS
      * Hardware Abstraction Layer. The use of the Actel HAL NVIC control
@@ -138,6 +143,7 @@ void NVIC_enable_interrupt(uint32_t interrupt_number) {
  * 
  */
 void NVIC_disable_interrupt(uint32_t interrupt_number) {
+    (void)interrupt_number;
     /*
      * Please use the NVIC control functions provided by the SmartFusion2 CMSIS
      * Hardware Abstraction Layer. The use of the Actel HAL NVIC control
@@ -170,6 +176,7 @@ void NVIC_disable_interrupt(uint32_t interrupt_number) {
  * 
  */
 void NVIC_clear_interrupt(uint32_t interrupt_number) {
+    (void)interrupt_number;
     /*
      * Please use the NVIC control functions provided by the SmartFusion2 CMSIS
      * Hardware Abstraction Layer. The use of the Actel HAL NVIC control

@@ -74,7 +74,7 @@ bool LinkinterfaceCAN::sendNetworkMsg(NetworkMessage &outMsg)	{
 	uint8_t sequenceCounter=0;
 	int count;
 
-	int16_tToBigEndian(&buffer[1],dataLength);
+	uint16_tToBigEndian(&buffer[1],dataLength);
 	count=3;
 
 	while(dataLength>0){
@@ -86,7 +86,7 @@ bool LinkinterfaceCAN::sendNetworkMsg(NetworkMessage &outMsg)	{
 			messageData++;
 			dataLength--;
 		}
-		while(can.write((char*)buffer,count,canID,true) == -1){
+		while(can.write((uint8_t*)buffer,count,canID,true) == -1){
 			can.suspendUntilWriteFinished(NOW() + CAN_TX_TIMEOUT);
 			CanErrorMsg errorMsg = can.status(CAN_STATUS_TX_ERROR);
 
@@ -212,7 +212,7 @@ BufferedCANMessage* LinkinterfaceCAN::receiveCANMessage(){
 	}
 
 
-	if((msg->len=can.read((char*)msg->data,&msg->canID)) >= 0){
+	if((msg->len=can.read(msg->data,&msg->canID)) >= 0){
 
 		if(!(emptyBufferedCANMessagesPos < 0)){
 			emptyBufferedCANMessagesPos--;
@@ -251,7 +251,7 @@ bool LinkinterfaceCAN::appendCANMsgToCurrentNetMsg(BufferedCANMessage* canMsg){
 
 	if(canMsg->data[0] == 0){
 		// New msg
-		uint16_t len = bigEndianToInt16_t(&canMsg->data[1]);
+		uint16_t len = bigEndianToUint16_t(&canMsg->data[1]);
 		currentReceiveCANId=canMsg->canID;
 
 		currentMsg->put_maxStepsToForward(5);

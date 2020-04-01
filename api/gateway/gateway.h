@@ -63,7 +63,7 @@ private:
 
     /** Hardware abstraction to access the link interface to the network */
     Linkinterface* linkinterface;
-    long linkIdentifier;
+    uint32_t linkIdentifier;
 
     bool getTopicsToForwardFromOutside;
 
@@ -74,7 +74,7 @@ private:
      * @param[in] data pointer to data field (type) of message
      * @return number of receivers message is sent to, always 1
      */
-    virtual long put(const long topicId, const long len, void* data, const NetMsgInfo& netMsgInfo);
+    virtual uint32_t put(const uint32_t topicId, const size_t len, void* data, const NetMsgInfo& netMsgInfo);
 
     void AnalyseAndDistributeMessagesFromNetwork();
 
@@ -136,11 +136,11 @@ public:
      */
     void setForwardAllTopics(bool forwardall = true);
 
-    long getLinkIdentifier() {return linkinterface->getLinkdentifier();}
+    uint32_t getLinkIdentifier() {return linkinterface->getLinkdentifier();}
 
 };
 
-void prepareNetworkMessage(NetworkMessage& netMsg, const long topicId,const void* data, int len);
+void prepareNetworkMessage(NetworkMessage& netMsg, const uint32_t topicId,const void* data, size_t len);
 
 
 } // namespace

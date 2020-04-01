@@ -32,8 +32,8 @@ public:
  
     void setAsync([[gnu::unused]] Topic<GenericMsgRef>* associatedTopic) { }
 
-    long get([[gnu::unused]] void* userData, [[gnu::unused]] const unsigned int maxLen=1300)    { return 0; }
-    long get([[gnu::unused]] void* userData, [[gnu::unused]] int maxLen, [[gnu::unused]] unsigned long *ipaddr) { return 0; }
+    int32_t get([[gnu::unused]] void* userData, [[gnu::unused]] const size_t maxLen=1300)    { return 0; }
+    int32_t get([[gnu::unused]] void* userData, [[gnu::unused]] size_t maxLen, [[gnu::unused]] uint32_t *ipaddr) { return 0; }
     bool readyToGet()                                           { return false;}
     bool isInitialised()                                        { return true; } 
 };

@@ -20,17 +20,14 @@ namespace RODOS {
 
 char xmallocBuf[XMALLOC_SIZE] = {0,0,0,0} ;
 
-void* xmalloc(long len) {
-   static long index = 0;
+void* xmalloc(size_t len) {
+   static size_t index = 0;
 
-   if(len < 0) {
-     return 0;
-   }
-   len = (len+7) & ~0x7; // round to be 32 bit align (4 bytes) TBD 64 Byte as needed by Thread::stack?
+   len = (len+7) & ~0x7u; // round to be 32 bit align (4 bytes) TBD 64 Byte as needed by Thread::stack?
 
-   RODOS_ASSERT_IFNOT_RETURN(len <= XMALLOC_SIZE,        0); // out of memmory?
-   RODOS_ASSERT_IFNOT_RETURN(!taskRunning,               0); // Xmalloc after system init completation
-   RODOS_ASSERT_IFNOT_RETURN(index + len < XMALLOC_SIZE, 0); // xmalloc out of mem
+   RODOS_ASSERT_IFNOT_RETURN(len <= XMALLOC_SIZE,        nullptr); // out of memmory?
+   RODOS_ASSERT_IFNOT_RETURN(!taskRunning,               nullptr); // Xmalloc after system init completation
+   RODOS_ASSERT_IFNOT_RETURN(index + len < XMALLOC_SIZE, nullptr); // xmalloc out of mem
 
    void *allocated =  &xmallocBuf[index];
    index += len;

@@ -86,9 +86,9 @@ void printCharsHex_Conditional(uint32_t id, const char* titel, void* ptr, unsign
         printCharsHex(titel,  ptr, len); 
 }
 
-char* formatBinary(long val, int len, char* outputBuf) {
-	val <<= 32 - len;
-	for(int i = 0; i < len; i++) {
+char* formatBinary(uint32_t val, size_t len, char* outputBuf) {
+	val <<= 32u - len;
+	for(size_t i = 0; i < len; i++) {
 		outputBuf[i] = ( (val & 0x80000000)? '1' : '0');
 		val <<= 1;
 	}
@@ -122,7 +122,7 @@ public:
     }
 };
 
-int vsnprintf(char*dest, size_t size, const char* fmt, va_list args) {
+size_t vsnprintf(char*dest, size_t size, const char* fmt, va_list args) {
     SNYprintf yprintf(dest, size);
     va_copy(yprintf.ap, args);
     if (!isSchedulerRunning()) {
@@ -135,10 +135,10 @@ int vsnprintf(char*dest, size_t size, const char* fmt, va_list args) {
     return yprintf.cur_size;
 }
 
-int SNPRINTF(char * dest, size_t size, const char* fmt, ...) {
+size_t SNPRINTF(char * dest, size_t size, const char* fmt, ...) {
     va_list args;
     va_start(args, fmt);
-    int written_size = vsnprintf(dest, size, fmt, args);
+    size_t written_size = vsnprintf(dest, size, fmt, args);
     va_end(args);
     return written_size;
 }

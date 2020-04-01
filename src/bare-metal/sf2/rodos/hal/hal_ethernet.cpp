@@ -166,20 +166,20 @@ class HW_HAL_ETH {
             buffer = buffer->next;
         }
 
-        len        = packetWritePtr - txData;
+        len        = static_cast<uint32_t>(packetWritePtr - txData);
         txComplete = false;
         MSS_MAC_send_pkt(txData, len, 0);
         return ETH_ERR_OK;
     }
 
-    void rxCallBack(uint8_t* p_rx_packet, uint32_t pckt_length,
-                    void* caller_info) {
+    void rxCallBack([[gnu::unused]] uint8_t* p_rx_packet, uint32_t pckt_length,
+                    [[gnu::unused]] void* caller_info) {
         hasNewData = true;
         dataLen    = pckt_length;
         hal->upCallDataReady();
     }
 
-    void txCallBack(void* caller_info) {
+    void txCallBack([[gnu::unused]] void* caller_info) {
         txComplete = true;
         hal->upCallWriteFinished();
     }
@@ -187,7 +187,7 @@ class HW_HAL_ETH {
 
 HW_HAL_ETH theOneAndOnlyEthContext;
 
-HAL_ETH::HAL_ETH(ETH_IDX idx) {
+HAL_ETH::HAL_ETH([[gnu::unused]] ETH_IDX idx) {
     context = &theOneAndOnlyEthContext;
 }
 

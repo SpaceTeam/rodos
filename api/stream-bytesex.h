@@ -8,6 +8,7 @@
  */
 
 #include <stdint.h>
+#include <stddef.h>
 
 namespace RODOS {
 
@@ -62,7 +63,7 @@ void setBitInByteStream (void *byteStream, int bitIndex, bool value);  //< bitIn
 int getBitFromByteStream(const void *byteStream, int bitIndex);        //< bitIndex 0 .. N (very large), 0 = most-Sig Bit & Byte
 
 /// sets serval bits in a bigEndian bitfeld of max 16 bits (warning: ccsds: 0 = msb)
-void setBitField(void* buffer, int bitPos, int numOfBits, uint32_t val);
+void setBitField(void* buffer, size_t bitPos, uint8_t numOfBits, uint32_t val);
 /// gets severa bits from a bigEndia bitfled of max 16 bits (warning: ccsds: 0 = msb)
 uint32_t getBitField(const void* buffer, int bitPos, int numOfBits);
 
@@ -76,12 +77,12 @@ uint32_t getSetBits(const uint32_t &value);
 namespace BasicSerializers {
 
 inline int serialize(bool const & b, char * const buffer)     { buffer[0] = b; return 1; }
-inline int serialize(uint8_t const & i, char * const buffer)  { buffer[0] = i; return 1; }
-inline int serialize(int8_t const & i, char * const buffer)   { buffer[0] = i; return 1; }
+inline int serialize(uint8_t const & i, char * const buffer)  { buffer[0] = *reinterpret_cast<char const *>(&i); return 1; }
+inline int serialize(int8_t const & i, char * const buffer)   { buffer[0] = *reinterpret_cast<char const *>(&i); return 1; }
 
-inline int serialize(uint16_t const & i, char * const buffer) { RODOS::int16_tToBigEndian(buffer, i); return 2; }
-inline int serialize(uint32_t const & i, char * const buffer) { RODOS::int32_tToBigEndian(buffer, i); return 4; }
-inline int serialize(uint64_t const & i, char * const buffer) { RODOS::int64_tToBigEndian(buffer, i); return 8; }
+inline int serialize(uint16_t const & i, char * const buffer) { RODOS::uint16_tToBigEndian(buffer, i); return 2; }
+inline int serialize(uint32_t const & i, char * const buffer) { RODOS::uint32_tToBigEndian(buffer, i); return 4; }
+inline int serialize(uint64_t const & i, char * const buffer) { RODOS::uint64_tToBigEndian(buffer, i); return 8; }
 inline int serialize(int16_t const & i, char * const buffer)  { RODOS::int16_tToBigEndian(buffer, i); return 2; }
 inline int serialize(int32_t const & i, char * const buffer)  { RODOS::int32_tToBigEndian(buffer, i); return 4; }
 inline int serialize(int64_t const & i, char * const buffer)  { RODOS::int64_tToBigEndian(buffer, i); return 8; }
@@ -92,15 +93,15 @@ inline int serialize(double const & d, char * const buffer)   { RODOS::doubleToB
 /*****************************************************************/
 
 inline int deserialize(bool & b, char const * const buffer)     { b = buffer[0]; return 1; }
-inline int deserialize(int8_t & i, char const * const buffer)   { i = buffer[0]; return 1; }
-inline int deserialize(uint8_t & i, char const * const buffer)  { i = buffer[0]; return 1; }
+inline int deserialize(int8_t & i, char const * const buffer)   { i = reinterpret_cast<int8_t const *>(buffer)[0]; return 1; }
+inline int deserialize(uint8_t & i, char const * const buffer)  { i = reinterpret_cast<uint8_t const *>(buffer)[0]; return 1; }
 
 inline int deserialize(int16_t & i, char const * const buffer)  { i = RODOS::bigEndianToInt16_t(buffer); return 2; }
 inline int deserialize(int32_t & i, char const * const buffer)  { i = RODOS::bigEndianToInt32_t(buffer); return 4; }
 inline int deserialize(int64_t & i, char const * const buffer)  { i = RODOS::bigEndianToInt64_t(buffer); return 8; }
-inline int deserialize(uint16_t & i, char const * const buffer) { i = RODOS::bigEndianToInt16_t(buffer); return 2; }
-inline int deserialize(uint32_t & i, char const * const buffer) { i = RODOS::bigEndianToInt32_t(buffer); return 4; }
-inline int deserialize(uint64_t & i, char const * const buffer) { i = RODOS::bigEndianToInt64_t(buffer); return 8; }
+inline int deserialize(uint16_t & i, char const * const buffer) { i = RODOS::bigEndianToUint16_t(buffer); return 2; }
+inline int deserialize(uint32_t & i, char const * const buffer) { i = RODOS::bigEndianToUint32_t(buffer); return 4; }
+inline int deserialize(uint64_t & i, char const * const buffer) { i = RODOS::bigEndianToUint64_t(buffer); return 8; }
 inline int deserialize(float & f, char const * const buffer)    { f = RODOS::bigEndianToFloat(buffer);   return 4; }
 inline int deserialize(double & d, char const * const buffer)   { d = RODOS::bigEndianToDouble(buffer);  return 8; }
 

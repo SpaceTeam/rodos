@@ -12,6 +12,8 @@
 *
 */
 
+#include <stdint.h>
+
 #pragma once
 
 extern "C" {
@@ -45,8 +47,8 @@ void startIdleThread(); //start idle thread for different barmetal implementatio
 void hwInit();	///< initilisation of all hw interfaces, fpgas, devices, etc.
 
 /** get time, time unit is nanoseconds, time 0 = startup */
-unsigned long long hwGetNanoseconds();
-unsigned long long hwGetAbsoluteNanoseconds();	///< from host, eg for random generators
+int64_t hwGetNanoseconds();
+int64_t hwGetAbsoluteNanoseconds();	///< from host, eg for random generators
 void hwInitTime();	         ///< Initialize the time (eg. time 0)
 
 void hwResetAndReboot();	///<  End of Programm,

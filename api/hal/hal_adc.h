@@ -101,7 +101,7 @@ public:
 	void reset();
 
 
-	int32_t read(ADC_CHANNEL channel);
+	uint16_t read(ADC_CHANNEL channel);
 
     virtual bool isWriteFinished(){return false;}
     virtual bool isReadFinished(){return true;}

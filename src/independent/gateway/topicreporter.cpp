@@ -52,7 +52,7 @@ void TopicReporter::addLocalTopics(TopicListReport& list) {
 void TopicReporter::addTopicsFromGateway(TopicListReport& list, Gateway* gateway) {
     TopicListReport* gatewayTopics = gateway->getTopicsToForward();
 
-    for(int i=0; i<gatewayTopics->numberOfTopics; i++) {
+    for(uint32_t i=0; i<gatewayTopics->numberOfTopics; i++) {
         list.add(gatewayTopics->topicList[i]);
     }
 

@@ -106,7 +106,7 @@ long int* hwInitContext(long* stack, void* object) {
     stack--;
     *stack = 0; // lr in sys mode
     stack--;
-    *stack = psp; // sp
+    *stack = static_cast<long int>(psp); // sp
     stack--;
     *stack = 0; // r12
     stack--;
@@ -135,7 +135,7 @@ long int* hwInitContext(long* stack, void* object) {
     *stack = (int32_t)object; // r0
                               //stack -= 64;                // FPU: VFPv4-D32
     stack--;
-    *stack = GETcpsr();      // SPSR
+    *stack = static_cast<long int>(GETcpsr());      // SPSR
     *stack = *stack & ~0x80; //interrupts enabled
     //top of stack
 

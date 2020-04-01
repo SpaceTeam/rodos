@@ -49,7 +49,7 @@ bool Subscriber::isGateway() const { return isAGateway; }
  */
 
 
-long Subscriber::put(const long topicId, const long len, void* data, const NetMsgInfo& netMsgInfo) {
+uint32_t Subscriber::put(const uint32_t topicId, const size_t len, void* data, const NetMsgInfo& netMsgInfo) {
     if(!isEnabled) return 0;
     protector.enter();
     if(receiver) receiver->putGeneric(topicId, len,data, netMsgInfo);
@@ -58,7 +58,7 @@ long Subscriber::put(const long topicId, const long len, void* data, const NetMs
 }
 
 
-void Subscriber::putFromInterrupt(const long topicId, const void* any, int len) {
+void Subscriber::putFromInterrupt(const uint32_t topicId, const void* any, size_t len) {
     if(receiver) {
         NetMsgInfo dummy;
         receiver->putGeneric(topicId, len, any, dummy);

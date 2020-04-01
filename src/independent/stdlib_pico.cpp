@@ -1,10 +1,6 @@
 
 #include "stdlib_pico.h"
 
-#define LONG_MAX 2147483647L
-#define LONG_MIN (-LONG_MAX-1)
-
-
 namespace RODOS {
 
 int isspace(int c){
@@ -29,12 +25,13 @@ int isupper(int c){
 }
 
 
-long strtol (const char * nptr, const char ** endptr, int base) {
-    const unsigned char *s = (const unsigned char *)nptr;
-    unsigned long acc;
-    int c;
-    unsigned long cutoff;
-    int neg = 0, any, cutlim;
+int32_t strtol (const char * nptr, const char ** endptr, uint8_t base) {
+    const char *s = nptr;
+    int32_t acc;
+    char c;
+    uint32_t cutoff;
+    int neg = 0, any;
+    uint8_t cutlim;
 
     /*
      * Skip white space and pick up leading +/- sign if any.
@@ -49,7 +46,7 @@ long strtol (const char * nptr, const char ** endptr, int base) {
         c = *s++;
     } else if (c == '+')
         c = *s++;
-    if ((base == 0 || base == 16) &&
+    if ((base == 0u || base == 16u) &&
         c == '0' && (*s == 'x' || *s == 'X')) {
         c = s[1];
         s += 2;
@@ -65,7 +62,7 @@ long strtol (const char * nptr, const char ** endptr, int base) {
      * followed by a legal input character, is too big.  One that
      * is equal to this value may be valid or not; the limit
      * between valid and invalid numbers is then based on the last
-     * digit.  For instance, if the range for longs is
+     * digit.  For instance, if the range for int32_t is
      * [-2147483648..2147483647] and the input base is 10,
      * cutoff will be set to 214748364 and cutlim to either
      * 7 (neg==0) or 8 (neg==1), meaning that if we have accumulated
@@ -75,9 +72,9 @@ long strtol (const char * nptr, const char ** endptr, int base) {
      * Set any if any `digits' consumed; make it negative to indicate
      * overflow.
      */
-    cutoff = neg ? -(unsigned long)LONG_MIN : LONG_MAX;
-    cutlim = cutoff % (unsigned long)base;
-    cutoff /= (unsigned long)base;
+    cutoff = neg ? -static_cast<uint32_t>(INT32_MIN) : static_cast<uint32_t>(INT32_MAX);
+    cutlim = cutoff % base;
+    cutoff /= base;
     for (acc = 0, any = 0;; c = *s++) {
         if (isdigit(c))
             c -= '0';
@@ -87,7 +84,7 @@ long strtol (const char * nptr, const char ** endptr, int base) {
             break;
         if (c >= base)
             break;
-               if (any < 0 || acc > cutoff || (acc == cutoff && c > cutlim))
+        if (any < 0 || acc > static_cast<int32_t>(cutoff) || (acc == static_cast<int32_t>(cutoff) && c > static_cast<int8_t>(cutlim)))
             any = -1;
         else {
             any = 1;
@@ -96,7 +93,7 @@ long strtol (const char * nptr, const char ** endptr, int base) {
         }
     }
     if (any < 0) {
-        acc = neg ? LONG_MIN : LONG_MAX;
+        acc = neg ? INT32_MIN : INT32_MAX;
         //rptr->_errno = ERANGE;
     } else if (neg)
         acc = -acc;

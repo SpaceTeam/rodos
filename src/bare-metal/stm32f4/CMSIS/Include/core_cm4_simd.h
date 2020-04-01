@@ -645,7 +645,7 @@ __attribute__( ( always_inline ) ) __STATIC_INLINE uint32_t __SMMLA (int32_t op1
  int32_t result;
 
  __ASM volatile ("smmla %0, %1, %2, %3" : "=r" (result): "r"  (op1), "r" (op2), "r" (op3) );
- return(result);
+ return (uint32_t)(result);
 }
 
 /*-- End CM4 SIMD Intrinsics -----------------------------------------------------*/

@@ -16,7 +16,7 @@
 namespace RODOS {
 
 void Yprintf::vaprintf(const char *fmt) {
-    unsigned char c;
+    char c;
 
     while ((c = *fmt++) != 0) {
         unsigned char is_signed = 0;
@@ -25,7 +25,7 @@ void Yprintf::vaprintf(const char *fmt) {
         unsigned char is_float = 0;
         unsigned char is_exp = 0;
         unsigned short base;
-        unsigned char *ptr;
+        char *ptr;
 
         if (c != '%') {
             yputc(c);
@@ -33,9 +33,9 @@ void Yprintf::vaprintf(const char *fmt) {
         }
         c = *fmt++;
 
-        unsigned char width = 0;
-        unsigned char fill = ' ';
-        unsigned char decimalPos = 3;
+        char width = 0;
+        char fill = ' ';
+        char decimalPos = 3;
 
         if (c == '0') {
             fill = c;
@@ -51,7 +51,7 @@ void Yprintf::vaprintf(const char *fmt) {
             c = *fmt++; if(c == 0) return; // SM: bad format
             // allow more than 9 decimalPos
             while(c >= '0' && c <= '9') {
-                decimalPos = decimalPos*10 + c - '0';
+                decimalPos = decimalPos*10 + (c - '0');
                 c = *fmt++;
             }
         }
@@ -68,7 +68,7 @@ void Yprintf::vaprintf(const char *fmt) {
 
         switch (c) {
         case 's':
-            ptr = (unsigned char *) va_arg(ap, char *);
+            ptr = va_arg(ap, char *);
             while ((c = *ptr++)) {
                 yputc(c);
             }
@@ -211,10 +211,10 @@ void Yprintf::vaprintf(const char *fmt) {
             }
 
             {
-                unsigned char scratch[26];
-
-                ptr = scratch + sizeof(scratch);
-                *--ptr = 0;
+                constexpr size_t SCRATCH_SIZE = 26;
+                char             scratch[SCRATCH_SIZE];
+                ptr  = &scratch[SCRATCH_SIZE-1];
+                *ptr = 0;
                 do {
                     char ch = (char) ((u_val % base) + '0');
 
@@ -260,9 +260,10 @@ void Yprintf::vaprintf(const char *fmt) {
                     e_val *= -1;
                 }
 
-                unsigned char scratch[6]; // biggest exponent 306: 3 digital positions
-                ptr = scratch + sizeof(scratch);
-                *--ptr = 0;
+                constexpr size_t SCRATCH_SIZE = 6;
+                char             scratch[SCRATCH_SIZE]; // biggest exponent 306: 3 digital positions
+                ptr  = &scratch[SCRATCH_SIZE - 1];
+                *ptr = 0;
                 do {
                     char ch = (char) (e_val % base + '0');
 

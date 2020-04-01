@@ -1,15 +1,15 @@
 #pragma once
 
-//#include <stddef.h>
+#include <stdint.h>
 
 namespace RODOS {
 
-int isspace(int c);
-int isdigit(int c);
-int isalpha(int c);
-int isupper(int c);
+int isspace(char c);
+int isdigit(char c);
+int isalpha(char c);
+int isupper(char c);
 
-long int strtol (const char * nptr, char ** endptr, int base);
+int32_t strtol (const char * nptr, const char ** endptr, uint8_t base);
 
 }  // namespace
 

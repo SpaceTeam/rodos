@@ -9,6 +9,7 @@
 */
 
 #include <time.h>
+#include <stdint.h>
 #include "hw_specific.h"
 
 namespace RODOS {
@@ -16,11 +17,11 @@ namespace RODOS {
 /***************** Get Time functions **************/
 
 // static long long timeAtStartup = 0LL;  now defined at 00globalobjects
-extern long long timeAtStartup;
+extern int64_t timeAtStartup;
 
-unsigned long long hwGetNanoseconds() {
+int64_t hwGetNanoseconds() {
     struct timespec tp;
-    long long       timeNow;
+    int64_t       timeNow;
 
     clock_gettime(CLOCK_REALTIME, &tp);
     timeNow = tp.tv_sec * 1000000000LL + tp.tv_nsec - timeAtStartup;
@@ -33,7 +34,7 @@ void hwInitTime() {
 
 /******* abslute time (from host) for exotic function eg.random generator **/
 
-unsigned long long hwGetAbsoluteNanoseconds() {
+int64_t hwGetAbsoluteNanoseconds() {
     return hwGetNanoseconds() + timeAtStartup;
 }
 

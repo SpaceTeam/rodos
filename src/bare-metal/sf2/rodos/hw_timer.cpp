@@ -118,7 +118,7 @@ void Timer::init() {
     Timer::microsecondsInterval = PARAM_TIMER_INTERVAL;
     timerClock                  = SystemCoreClock;
     SysTick_Config_New(
-      ((uint64_t)timerClock * Timer::microsecondsInterval) / 1000000); // initialization of systick timer, reload value: 1250000-1 -> generates an irq every 10ms with 125MHz sys clock
+      ((uint64_t)timerClock * (uint64_t)Timer::microsecondsInterval) / 1000000); // initialization of systick timer, reload value: 1250000-1 -> generates an irq every 10ms with 125MHz sys clock
     SysTick_Enable();
 }
 
@@ -162,7 +162,7 @@ void Timer::setInterval(const long long microsecondsInterval) {
  * -> this can happen when they don't have the same priority !!!
  */
 
-unsigned long long hwGetNanoseconds(void) {
+int64_t hwGetNanoseconds(void) {
 
     unsigned long      count      = 0;
     unsigned long long returnTime = 0;
@@ -196,14 +196,14 @@ unsigned long long hwGetNanoseconds(void) {
 	 */
     uint64_t nanos = ((uint64_t)count * 1000000) / (timerClock / 1000);
 
-    return returnTime + nanos;
+    return static_cast<int64_t>(returnTime + nanos);
 }
 
 void hwInitTime(void) {
     nanoTime = 0;
 }
 
-unsigned long long hwGetAbsoluteNanoseconds(void) {
+int64_t hwGetAbsoluteNanoseconds(void) {
     return hwGetNanoseconds(); // + timeAtStartup;
 }
 

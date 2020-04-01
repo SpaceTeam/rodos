@@ -7,7 +7,7 @@
 
 namespace CCSDS {
 struct UplinkSPHeader {
-    static const int HEADER_SIZE = 10;
+    static const uint32_t HEADER_SIZE = 10;
     uint32_t version             ; //  3  bits  set to 0
     uint32_t type                ; //  1  bits  1 -> telecommand
     uint32_t secondaryHeaderFlag ; //  1  bits  set to 1 (We have a PUS header)

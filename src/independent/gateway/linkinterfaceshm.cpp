@@ -26,7 +26,7 @@ void LinkinterfaceSHM::init() {
 
 	new (&hal_sharedmemory) HAL_Sharedmemory(shmIdx); // placement new to avoid dynamic memory allocation
 	//get sharedMemory pointer
-	int32_t size = 20000; //20kB
+	size_t size = 20000; //20kB
 	int32_t maxMembers = MAXMEMBERS;
 	sharedMemoryUserSpace = hal_sharedmemory.init(&size, &maxMembers);
 	this->readerId = hal_sharedmemory.getMemberId();
@@ -72,11 +72,11 @@ bool LinkinterfaceSHM::sendNetworkMsg(NetworkMessage &outMsg) {
 }
 
 bool LinkinterfaceSHM::getNetworkMsg(NetworkMessage &inMsg, int32_t &numberOfReceivedBytes) {
-	if(fifo==0)
+	if(fifo==0 || readerId < 0)
 		return false;
 	numberOfReceivedBytes = -1;
 	hal_sharedmemory.resetDataReady();//ack shared memory
-	return fifo->get(inMsg, readerId);
+	return fifo->get(inMsg, static_cast<uint32_t>(readerId));
 }
 
 void LinkinterfaceSHM::onWriteFinished() {

@@ -55,7 +55,7 @@ static __INLINE uint8_t read_reg8(volatile uint8_t* reg) {
 /*****************************************************************************************
  * Definitions for register bits access using bit-band aliases for Cortex-M3 
  */
-#define BITBAND(addr, bitnum) (((uint32_t)addr & 0xF0000000) + 0x02000000 + (((uint32_t)addr & 0xFFFFF) << 5) + (bitnum << 2))
+#define BITBAND(addr, bitnum) (((uint32_t)addr & 0xF0000000) + 0x02000000 + (((uint32_t)addr & 0xFFFFF) << 5) + ((uint32_t)bitnum << 2))
 #define HW_REG_BIT(reg, bitnum) (*(volatile unsigned int*)((BITBAND(reg, bitnum))))
 
 /*****************************************************************************************

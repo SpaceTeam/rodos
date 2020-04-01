@@ -70,7 +70,7 @@ class HW_HAL_CAN {
     int         s;
 
     can_filter filters[MAX_FILTERS];
-    int        numFilters;
+    uint32_t    numFilters;
 
     Fifo<can_frame, 64> RxFifo;
     volatile bool       rxFifoEmpty;
@@ -220,7 +220,7 @@ bool HAL_CAN::addIncomingFilter(uint32_t ID, uint32_t IDMask, bool extID, bool r
 }
 
 
-int HAL_CAN::write(const char* sendBuf, int len, uint32_t canID, bool extID, bool rtr) {
+int HAL_CAN::write(const uint8_t* sendBuf, uint8_t len, uint32_t canID, bool extID, bool rtr) {
 
     can_frame f;
     if(len > 8) return -1;
@@ -241,7 +241,7 @@ int HAL_CAN::write(const char* sendBuf, int len, uint32_t canID, bool extID, boo
 }
 
 
-int HAL_CAN::read(char* recBuf, uint32_t* canID, bool* isExtID, bool* rtr) {
+int HAL_CAN::read(uint8_t* recBuf, uint32_t* canID, bool* isExtID, bool* rtr) {
     can_frame msg;
 
     bool _extID, _rtr;

@@ -11,6 +11,7 @@
 
 
 #include <stdint.h>
+#include <stddef.h>
 
 
 namespace RODOS {
@@ -29,7 +30,7 @@ int64_t getNumberOfReceivedMsgsFromNetwork();
  * allocates static memory.
  * it shall not be unset after thread:run() begin
  */
-extern void* xmalloc(long len);
+extern void* xmalloc(size_t len);
 
 extern void hwResetAndReboot();        ///<  End of Program -> reboot Hw dependent
 extern void hwInitWatchdog(long intervalMilliseconds);
@@ -48,9 +49,9 @@ extern float getCpuLoad(); ///< value from 0 to 1, average from the last call
 
 inline int getbit(uint32_t bitmap, int bitIndex) { return (bitmap >> bitIndex) & 0x01; }
 
-inline void setbit(uint32_t* bitmap, int  value, int bitIndex) {
-    if(value) *bitmap |=  (0x01  << bitIndex);
-    else      *bitmap &= ~(0x01  << bitIndex);
+inline void setbit(uint32_t* bitmap, int value, uint8_t bitIndex) {
+    if(value) *bitmap |=  (0x01u  << bitIndex);
+    else      *bitmap &= ~(0x01u  << bitIndex);
 }
 
 
