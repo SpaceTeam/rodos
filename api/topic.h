@@ -167,9 +167,14 @@ public:
         return TopicInterface::publish(&msg, shallSendToNetwork);
     }
 
+    inline unsigned long publish(Type &&msg, bool shallSendToNetwork = true) {
+        return TopicInterface::publish(&msg, shallSendToNetwork);
+    }
+
     /** To publish constants,
      * But please only for basic data types (char, short, long, float, double)
      */
+    [[deprecated("Use publish(...) also for rvalues.")]]
     inline unsigned long publishConst(Type msgConst, bool shallSendToNetwork = true) {
         Type msg = msgConst;
         return TopicInterface::publish(&msg, shallSendToNetwork);

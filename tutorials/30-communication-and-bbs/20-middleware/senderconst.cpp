@@ -12,7 +12,7 @@ public:
 	void run () {
 		TIME_LOOP(3*SECONDS, 3*SECONDS) {
 			PRINTF(CONST "%lld\n", NOW());
-			counter2.publishConst(100);
+			counter2.publish(100);
 		}
 	}
 } publisherC;
