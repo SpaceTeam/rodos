@@ -40,15 +40,15 @@ inline int DownlinkSPHeader::serialize(uint8_t* buf) const {
     setBitField(buf,   5, 11, applicationId);
     setBitField(buf,  16,  2, groupingFlags);
     setBitField(buf,  18, 14, sourceSeqCnt);
-    uint16_tToBigEndian(buf+4,  dataPackLen);
+    uint16_tToBigEndian(buf+4,  static_cast<uint16_t>(dataPackLen));
     setBitField(buf,  48,  1, secondaryFlag);
     setBitField(buf,  49,  3, pusVersion);
     setBitField(buf,  52,  4, spare);
-    buf[7]      =             service;
-    buf[8]      =             subservice;
-    buf[9]      =             destination;
+    buf[7]      =             static_cast<uint8_t>(service);
+    buf[8]      =             static_cast<uint8_t>(subservice);
+    buf[9]      =             static_cast<uint8_t>(destination);
     uint32_tToBigEndian(buf+10,  timeStampSeconds);
-    uint16_tToBigEndian(buf+14,  timeStampFraction);
+    uint16_tToBigEndian(buf+14,  static_cast<uint16_t>(timeStampFraction));
 
     return 16;
 }

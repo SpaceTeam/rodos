@@ -1024,7 +1024,7 @@ void TIM_SelectOCxM(TIM_TypeDef* TIMx, uint16_t TIM_Channel, uint16_t TIM_OCMode
   tmp = (uint32_t) TIMx;
   tmp += CCMR_OFFSET;
 
-  tmp1 = CCER_CCE_SET << (uint16_t)TIM_Channel;
+  tmp1 = (uint16_t)(CCER_CCE_SET << TIM_Channel);
 
   /* Disable the Channel: Reset the CCxE Bit */
   TIMx->CCER &= (uint16_t) ~tmp1;
@@ -1792,7 +1792,7 @@ void TIM_CCxCmd(TIM_TypeDef* TIMx, uint16_t TIM_Channel, uint16_t TIM_CCx)
   assert_param(IS_TIM_CHANNEL(TIM_Channel));
   assert_param(IS_TIM_CCX(TIM_CCx));
 
-  tmp = CCER_CCE_SET << TIM_Channel;
+  tmp = (uint16_t)(CCER_CCE_SET << TIM_Channel);
 
   /* Reset the CCxE Bit */
   TIMx->CCER &= (uint16_t)~ tmp;
@@ -1822,7 +1822,7 @@ void TIM_CCxNCmd(TIM_TypeDef* TIMx, uint16_t TIM_Channel, uint16_t TIM_CCxN)
   assert_param(IS_TIM_COMPLEMENTARY_CHANNEL(TIM_Channel));
   assert_param(IS_TIM_CCXN(TIM_CCxN));
 
-  tmp = CCER_CCNE_SET << TIM_Channel;
+  tmp = (uint16_t)(CCER_CCNE_SET << TIM_Channel);
 
   /* Reset the CCxNE Bit */
   TIMx->CCER &= (uint16_t) ~tmp;

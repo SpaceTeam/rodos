@@ -34,8 +34,8 @@ inline int DownlinkTFHeader::serialize(uint8_t* buf) const {
     setBitField(buf,   2, 10, spaceCraftId);
     setBitField(buf,  12,  3, virtualChanId);
     setBitField(buf,  15,  1, opControlFlag);
-    buf[2]      =             masterChanFrameCnt;
-    buf[3]      =             virtualChanFrameCnt;
+    buf[2]      =             static_cast<uint8_t>(masterChanFrameCnt);
+    buf[3]      =             static_cast<uint8_t>(virtualChanFrameCnt);
     setBitField(buf,  32,  1, secondHeaderFlag);
     setBitField(buf,  33,  1, synchFlag);
     setBitField(buf,  34,  1, packetOrderFlag);

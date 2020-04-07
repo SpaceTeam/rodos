@@ -36,7 +36,7 @@ inline int UplinkTFHeader::serialize(uint8_t* buf) const {
     setBitField(buf,   6, 10, spacecraftID);
     setBitField(buf,  16,  6, virtualChannelID);
     setBitField(buf,  22, 10, frameLength);
-    buf[4]      =             frameSequenceNr;
+    buf[4]      =             static_cast<uint8_t>(frameSequenceNr);
     setBitField(buf,  40,  2, sequenceFlags);
     setBitField(buf,  42,  6, multiplexAceessPoint);
 

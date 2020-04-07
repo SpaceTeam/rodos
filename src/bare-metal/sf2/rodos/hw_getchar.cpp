@@ -21,7 +21,7 @@ char getcharNoWait() {
     if(c < 0) {
         return 0;
     } else {
-        return c;
+        return static_cast<char>(c);
     }
 }
 

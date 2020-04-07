@@ -112,7 +112,7 @@ void MSS_COMBLK_init(
 
     /*
      * Disable loopback before enabling the MSS COMM_BLK to ensure that any
-     * codes waiting in the TX FIFO of the System Controller’s COMM_BLK are
+     * codes waiting in the TX FIFO of the System Controllerï¿½s COMM_BLK are
      * not lost.
      */
     COMBLK->CONTROL &= ~CR_LOOPBACK_MASK;
@@ -246,7 +246,7 @@ void MSS_COMBLK_send_cmd(
     size_sent = fill_tx_fifo(&p_cmd[1], cmd_size - 1u);
     ++size_sent; /* Adjust for opcode byte sent. */
     if(size_sent < cmd_size) {
-        g_comblk_cmd_size = g_comblk_cmd_size - (uint16_t)size_sent;
+        g_comblk_cmd_size = (uint16_t)(g_comblk_cmd_size - (uint16_t)size_sent);
         g_comblk_p_cmd    = &g_comblk_p_cmd[size_sent];
 
         g_comblk_state = COMBLK_TX_CMD;
@@ -314,7 +314,7 @@ void MSS_COMBLK_send_paged_cmd(
     size_sent = fill_tx_fifo(&p_cmd[1], cmd_size - 1u);
     ++size_sent; /* Adjust for opcode byte sent. */
     if(size_sent < cmd_size) {
-        g_comblk_cmd_size = g_comblk_cmd_size - (uint16_t)size_sent;
+        g_comblk_cmd_size = (uint16_t)(g_comblk_cmd_size - (uint16_t)size_sent);
         g_comblk_p_cmd    = &g_comblk_p_cmd[size_sent];
 
         g_comblk_state = COMBLK_TX_CMD;
@@ -343,7 +343,7 @@ void ComBlk_IRQHandler(void) {
     status = (uint8_t)COMBLK->STATUS;
 
     /* Mask off interrupt that are not enabled.*/
-    status &= COMBLK->INT_ENABLE;
+    status &= (uint8_t)(COMBLK->INT_ENABLE);
 
     rcv_okay = status & RCVOKAY_MASK;
 
@@ -371,7 +371,7 @@ static void handle_tx_okay_irq(void) {
                 uint32_t size_sent;
                 size_sent = fill_tx_fifo(g_comblk_p_cmd, g_comblk_cmd_size);
                 if(size_sent < g_comblk_cmd_size) {
-                    g_comblk_cmd_size = g_comblk_cmd_size - (uint16_t)size_sent;
+                    g_comblk_cmd_size = (uint16_t)(g_comblk_cmd_size - (uint16_t)size_sent);
                     g_comblk_p_cmd    = &g_comblk_p_cmd[size_sent];
                 } else {
                     g_comblk_cmd_size = 0u;

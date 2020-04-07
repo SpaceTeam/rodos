@@ -78,7 +78,7 @@ public:
      * @param paramVal The new value of the parameter.
      * @return -1 if type does not exist, else 0.
      */
-    int config(CAN_PARAMETER_TYPE type, int paramVal);
+    int config(CAN_PARAMETER_TYPE type, uint32_t paramVal);
 
     /*!
      * Get the status of the CAN interface.
@@ -135,7 +135,7 @@ public:
      * regular message (false)
      * @return -1 on error, 0 on success.
      */
-    int write(const uint8_t* sendBuf, uint8_t len, uint32_t canID, bool extID = true, bool rtr = false);
+    int8_t write(const uint8_t* sendBuf, uint8_t len, uint32_t canID, bool extID = true, bool rtr = false);
     
     /*!
      * Read a CAN Message, non-blocking.
@@ -147,7 +147,7 @@ public:
      * @param rtr Was it a RTR frame?
      * @return Number of data bytes or -1 if nothing was received.
      */
-    int read(uint8_t* recBuf, uint32_t* canID = 0, bool* isExtID = 0, bool* rtr = 0);
+    int8_t read(uint8_t* recBuf, uint32_t* canID = 0, bool* isExtID = 0, bool* rtr = 0);
 
     // void setDEfaultTransmitID(...) //dann kann auch write und read aus GenericIO implementiert werden.
 

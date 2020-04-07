@@ -147,7 +147,7 @@ void CAN_Ctrl::init(uint32_t baudrate) {
         /* CAN prescaler calculation 
          * STM32F4 reference manual: CAN Bit timing p.1075/76 */
         CAN_InitStructure.CAN_Prescaler = 
-                canCtrlFreq / (baudrate * (1 + CAN_BS1_8tq + 1 + CAN_BS2_5tq + 1));
+                static_cast<uint16_t>(canCtrlFreq / (baudrate * (1 + CAN_BS1_8tq + 1 + CAN_BS2_5tq + 1)));
         if (canCtrlFreq % (baudrate * (1 + CAN_BS1_8tq + 1 + CAN_BS2_5tq + 1)) != 0) {
             RODOS_ERROR("CAN Baudrate not possible with current settings and CAN Clock!\n");
         }
@@ -177,10 +177,10 @@ bool CAN_Ctrl::putIntoTxMailbox(CanTxMsg& msg) {
 }
 
 bool CAN_Ctrl::setupFilters() {
-    int bank = 0;
+    uint8_t bank = 0;
     int subBank;
     int filterIndex = 0;
-    int bankOffset, numBanks;
+    uint8_t bankOffset, numBanks;
     bankOffset = (can == CAN1) ? 0 : NUM_CAN1_FILTER_BANKS;
     numBanks = (can == CAN1) ? NUM_CAN1_FILTER_BANKS : NUM_CAN2_FILTER_BANKS;
     CAN_Filter* f;
@@ -200,15 +200,15 @@ bool CAN_Ctrl::setupFilters() {
         if (!IS_16BIT && !IS_SINGLEID_WHEN32) {
             if (bank >= numBanks)
                 return false;
-            filterInit.CAN_FilterNumber = bankOffset + bank;
+            filterInit.CAN_FilterNumber = static_cast<uint8_t>(bankOffset + bank);
             bank++;
 
-            filterInit.CAN_FilterIdLow = ((f->canID << 3)& 0xFFFF) | 0b100;
-            filterInit.CAN_FilterIdHigh = (f->canID >> 13)& 0xFFFF;
+            filterInit.CAN_FilterIdLow = static_cast<uint16_t>(((f->canID << 3)& 0xFFFF) | 0b100);
+            filterInit.CAN_FilterIdHigh = static_cast<uint16_t>((f->canID >> 13)& 0xFFFF);
             if (f->rtr)
                 filterInit.CAN_FilterIdLow |= 0b10;
-            filterInit.CAN_FilterMaskIdLow = ~((f->canIDmask << 3)& 0xFFFF);
-            filterInit.CAN_FilterMaskIdHigh = ~((f->canIDmask >> 13)& 0xFFFF);
+            filterInit.CAN_FilterMaskIdLow = static_cast<uint16_t>(~((f->canIDmask << 3)& 0xFFFF));
+            filterInit.CAN_FilterMaskIdHigh = static_cast<uint16_t>(~((f->canIDmask >> 13)& 0xFFFF));
 
             hwFilterOrder[filterIndex] = f;
             filterIndex++;
@@ -226,8 +226,8 @@ bool CAN_Ctrl::setupFilters() {
         f = &filters[i];
         if (!IS_16BIT && IS_SINGLEID_WHEN32) {
             if (subBank == 0) {
-                filterInit.CAN_FilterIdLow = ((f->canID << 3)& 0xFFFF) | 0b100;
-                filterInit.CAN_FilterIdHigh = (f->canID >> 13)& 0xFFFF;
+                filterInit.CAN_FilterIdLow = static_cast<uint16_t>(((f->canID << 3)& 0xFFFF) | 0b100);
+                filterInit.CAN_FilterIdHigh = static_cast<uint16_t>((f->canID >> 13)& 0xFFFF);
                 if (f->rtr)
                     filterInit.CAN_FilterIdLow |= 0b10;
 
@@ -235,13 +235,13 @@ bool CAN_Ctrl::setupFilters() {
                 hwFilterOrder[filterIndex] = f;
                 filterIndex++;
             } else {
-                filterInit.CAN_FilterMaskIdLow = ((f->canID << 3)& 0xFFFF) | 0b100;
-                filterInit.CAN_FilterMaskIdHigh = (f->canID >> 13)& 0xFFFF;
+                filterInit.CAN_FilterMaskIdLow = static_cast<uint16_t>(((f->canID << 3)& 0xFFFF) | 0b100);
+                filterInit.CAN_FilterMaskIdHigh = static_cast<uint16_t>((f->canID >> 13)& 0xFFFF);
                 if (f->rtr)
                     filterInit.CAN_FilterMaskIdLow |= 0b10;
                 if (bank >= numBanks)
                     return false;
-                filterInit.CAN_FilterNumber = bankOffset + bank;
+                filterInit.CAN_FilterNumber = static_cast<uint8_t>(bankOffset + bank);
                 bank++;
 
                 hwFilterOrder[filterIndex] = f;
@@ -262,7 +262,7 @@ bool CAN_Ctrl::setupFilters() {
         filterIndex++;
         if (bank >= numBanks)
             return false;
-        filterInit.CAN_FilterNumber = bankOffset + bank;
+        filterInit.CAN_FilterNumber = static_cast<uint8_t>(bankOffset + bank);
         bank++;
 
         CAN_FilterInit(&filterInit);
@@ -276,8 +276,8 @@ bool CAN_Ctrl::setupFilters() {
         f = &filters[i];
         if (IS_16BIT && !IS_SINGLEID_WHEN16) {
             if (subBank == 0) {
-                filterInit.CAN_FilterIdLow = ((f->canID >> 13)& 0xFFE0) | ((f->canID >> 15)& 0b111);
-                filterInit.CAN_FilterIdHigh = ~(((f->canIDmask >> 13)& 0xFFE0) | ((f->canIDmask >> 15)& 0b111));
+                filterInit.CAN_FilterIdLow = static_cast<uint16_t>(((f->canID >> 13)& 0xFFE0) | ((f->canID >> 15)& 0b111));
+                filterInit.CAN_FilterIdHigh = static_cast<uint16_t>(~(((f->canIDmask >> 13)& 0xFFE0) | ((f->canIDmask >> 15)& 0b111)));
                 if (f->isExtID)
                     filterInit.CAN_FilterIdLow |= 0b1000;
                 if (f->rtr)
@@ -287,8 +287,8 @@ bool CAN_Ctrl::setupFilters() {
                 hwFilterOrder[filterIndex] = f;
                 filterIndex++;
             } else {
-                filterInit.CAN_FilterMaskIdLow = ((f->canID >> 13)& 0xFFE0) | ((f->canID >> 15)& 0b111);
-                filterInit.CAN_FilterMaskIdHigh = ~(((f->canIDmask >> 13)& 0xFFE0) | ((f->canIDmask >> 15)& 0b111));
+                filterInit.CAN_FilterMaskIdLow = static_cast<uint16_t>(((f->canID >> 13)& 0xFFE0) | ((f->canID >> 15)& 0b111));
+                filterInit.CAN_FilterMaskIdHigh = static_cast<uint16_t>(~(((f->canIDmask >> 13)& 0xFFE0) | ((f->canIDmask >> 15)& 0b111)));
                 if (f->isExtID)
                     filterInit.CAN_FilterMaskIdLow |= 0b1000;
                 if (f->rtr)
@@ -299,7 +299,7 @@ bool CAN_Ctrl::setupFilters() {
 
                 if (bank >= numBanks)
                     return false;
-                filterInit.CAN_FilterNumber = bankOffset + bank;
+                filterInit.CAN_FilterNumber = static_cast<uint8_t>(bankOffset + bank);
                 bank++;
 
                 CAN_FilterInit(&filterInit);
@@ -317,7 +317,7 @@ bool CAN_Ctrl::setupFilters() {
         filterIndex++;
         if (bank >= numBanks)
             return false;
-        filterInit.CAN_FilterNumber = bankOffset + bank;
+        filterInit.CAN_FilterNumber = static_cast<uint8_t>(bankOffset + bank);
         bank++;
 
         CAN_FilterInit(&filterInit);
@@ -348,7 +348,7 @@ bool CAN_Ctrl::setupFilters() {
                     return false;
                     break;
             }
-            *subFilter = ((f->canID >> 13)& 0xFFE0) | ((f->canID >> 15)& 0b111);
+            *subFilter = static_cast<uint16_t>(((f->canID >> 13)& 0xFFE0) | ((f->canID >> 15)& 0b111));
             if (f->isExtID)
                 *subFilter |= 0b1000;
             if (f->rtr)
@@ -361,7 +361,7 @@ bool CAN_Ctrl::setupFilters() {
             if (subBank == 4) {
                 if (bank >= numBanks)
                     return false;
-                filterInit.CAN_FilterNumber = bankOffset + bank;
+                filterInit.CAN_FilterNumber = static_cast<uint8_t>(bankOffset + bank);
                 bank++;
                 CAN_FilterInit(&filterInit);
                 subBank = 0;
@@ -390,7 +390,7 @@ bool CAN_Ctrl::setupFilters() {
 
         if (bank >= numBanks)
             return false;
-        filterInit.CAN_FilterNumber = bankOffset + bank;
+        filterInit.CAN_FilterNumber = static_cast<uint8_t>(bankOffset + bank);
         bank++;
 
         CAN_FilterInit(&filterInit);
@@ -402,7 +402,7 @@ void CAN_Ctrl::TxIRQHandler() {
     bool sending = true;
     while (sending) {
         sending = false;
-        for (int mbox = 0; mbox < 3; mbox++) {
+        for (uint8_t mbox = 0; mbox < 3; mbox++) {
             if (CAN_TransmitStatus(can, mbox) != CAN_TxStatus_Pending) {
                 CanTxMsg msg;
                 if (!txFifo.get(msg)) {
@@ -509,7 +509,7 @@ void HAL_CAN::reset() {
     context->ctrl->CANCtrlProtector.leave();
 }
 
-int HAL_CAN::config(CAN_PARAMETER_TYPE type, int paramVal) {
+int HAL_CAN::config(CAN_PARAMETER_TYPE type, uint32_t paramVal) {
     if (context->ctrl == nullptr) {
         return -1;
     }
@@ -517,7 +517,7 @@ int HAL_CAN::config(CAN_PARAMETER_TYPE type, int paramVal) {
         case CAN_PARAMETER_BAUDRATE:
             context->ctrl->CANCtrlProtector.enter();
             reset();
-            init(static_cast<uint32_t>(paramVal));
+            init(paramVal);
             context->ctrl->CANCtrlProtector.leave();
             return 0;
     }
@@ -610,7 +610,7 @@ bool HAL_CAN::addIncomingFilter(uint32_t ID, uint32_t IDMask, bool extID, bool r
     return result;
 }
 
-int HAL_CAN::write(const uint8_t* sendBuf, uint8_t len, uint32_t canID, bool extID, bool rtr) {
+int8_t HAL_CAN::write(const uint8_t* sendBuf, uint8_t len, uint32_t canID, bool extID, bool rtr) {
     if (context->ctrl == nullptr) {
         return -1;
     }
@@ -652,7 +652,7 @@ int HAL_CAN::write(const uint8_t* sendBuf, uint8_t len, uint32_t canID, bool ext
     return 0;
 }
 
-int HAL_CAN::read(uint8_t* recBuf, uint32_t* canID, bool* isExtID, bool* rtr) {
+int8_t HAL_CAN::read(uint8_t* recBuf, uint32_t* canID, bool* isExtID, bool* rtr) {
     if (context->ctrl == 0) {
         return -1;
     }
@@ -679,7 +679,7 @@ int HAL_CAN::read(uint8_t* recBuf, uint32_t* canID, bool* isExtID, bool* rtr) {
         for (int i = 0; i < 8; i++) {
             recBuf[i] = msg.Data[i];
         }
-        return msg.DLC;
+        return static_cast<int8_t>(msg.DLC);
     }
     context->rxFifoEmpty = true;
     return -1;

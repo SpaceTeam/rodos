@@ -64,7 +64,7 @@ void createPageTableEntries(uint32_t physicalAdr, uint32_t virtualAdr, uint32_t 
     uint32_t entries      = length >> 20;
 
     for(; entries > 0; ++physicalBase, ++virtualBase, --entries) {
-        section.bits.base_address             = physicalBase;
+        section.bits.base_address             = physicalBase & 0x0FFFu;
         _mmu_level1_table_start_[virtualBase] = section.value;
     }
 

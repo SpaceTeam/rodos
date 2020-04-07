@@ -984,11 +984,11 @@ void FLASH_OB_WRPConfig(uint32_t OB_WRP, FunctionalState NewState)
   { 
     if(NewState != DISABLE)
     {
-      *(__IO uint16_t*)OPTCR_BYTE2_ADDRESS &= (~OB_WRP);
+      *(__IO uint16_t*)OPTCR_BYTE2_ADDRESS &= (uint16_t)((*(__IO uint16_t*)OPTCR_BYTE2_ADDRESS) & (~OB_WRP));
     }
     else
     {
-      *(__IO uint16_t*)OPTCR_BYTE2_ADDRESS |= (uint16_t)OB_WRP;
+      *(__IO uint16_t*)OPTCR_BYTE2_ADDRESS |= (uint16_t)((*(__IO uint16_t*)OPTCR_BYTE2_ADDRESS) | (uint16_t)OB_WRP);
     }
   }
 }
@@ -1026,11 +1026,11 @@ void FLASH_OB_WRP1Config(uint32_t OB_WRP, FunctionalState NewState)
   { 
     if(NewState != DISABLE)
     {
-      *(__IO uint16_t*)OPTCR1_BYTE2_ADDRESS &= (~OB_WRP);
+      *(__IO uint16_t*)OPTCR1_BYTE2_ADDRESS &= (uint16_t)((*(__IO uint16_t*)OPTCR1_BYTE2_ADDRESS) & (~OB_WRP));
     }
     else
     {
-      *(__IO uint16_t*)OPTCR1_BYTE2_ADDRESS |= (uint16_t)OB_WRP;
+      *(__IO uint16_t*)OPTCR1_BYTE2_ADDRESS |= (uint16_t)((*(__IO uint16_t*)OPTCR1_BYTE2_ADDRESS) | (uint16_t)OB_WRP);
     }
   }
 }
@@ -1106,11 +1106,11 @@ void FLASH_OB_PCROPConfig(uint32_t OB_PCROP, FunctionalState NewState)
   { 
     if(NewState != DISABLE)
     {
-      *(__IO uint16_t*)OPTCR_BYTE2_ADDRESS |= (uint16_t)OB_PCROP;    
+      *(__IO uint16_t*)OPTCR_BYTE2_ADDRESS = (uint16_t)((*(__IO uint16_t*)OPTCR_BYTE2_ADDRESS) | (uint16_t)OB_PCROP);    
     }
     else
     {
-      *(__IO uint16_t*)OPTCR_BYTE2_ADDRESS &= (~OB_PCROP);
+      *(__IO uint16_t*)OPTCR_BYTE2_ADDRESS = (uint16_t)((*(__IO uint16_t*)OPTCR_BYTE2_ADDRESS) & (~OB_PCROP));
     }
   }
 }
@@ -1143,11 +1143,11 @@ void FLASH_OB_PCROP1Config(uint32_t OB_PCROP, FunctionalState NewState)
   { 
     if(NewState != DISABLE)
     {
-      *(__IO uint16_t*)OPTCR1_BYTE2_ADDRESS |= (uint16_t)OB_PCROP;
+      *(__IO uint16_t*)OPTCR1_BYTE2_ADDRESS = (uint16_t)((*(__IO uint16_t*)OPTCR1_BYTE2_ADDRESS) | (uint16_t)OB_PCROP);
     }
     else
     {
-      *(__IO uint16_t*)OPTCR1_BYTE2_ADDRESS &= (~OB_PCROP);
+      *(__IO uint16_t*)OPTCR1_BYTE2_ADDRESS = (uint16_t)((*(__IO uint16_t*)OPTCR1_BYTE2_ADDRESS) & (~OB_PCROP));
     }
   }
 }
@@ -1244,8 +1244,9 @@ void FLASH_OB_BootConfig(uint8_t OB_BOOT)
   assert_param(IS_OB_BOOT(OB_BOOT));
 
   /* Set Dual Bank Boot */
-  *(__IO uint8_t *)OPTCR_BYTE0_ADDRESS &= (~FLASH_OPTCR_BFB2);
-  *(__IO uint8_t *)OPTCR_BYTE0_ADDRESS |= OB_BOOT;
+  __IO uint8_t* optcr_byte0 = (__IO uint8_t*)OPTCR_BYTE0_ADDRESS;
+  *optcr_byte0 = (uint8_t)(*optcr_byte0 & (~FLASH_OPTCR_BFB2));
+  *optcr_byte0 = (uint8_t)(*optcr_byte0 | OB_BOOT);
 
 }
 
@@ -1265,8 +1266,9 @@ void FLASH_OB_BORConfig(uint8_t OB_BOR)
   assert_param(IS_OB_BOR(OB_BOR));
 
   /* Set the BOR Level */
-  *(__IO uint8_t *)OPTCR_BYTE0_ADDRESS &= (~FLASH_OPTCR_BOR_LEV);
-  *(__IO uint8_t *)OPTCR_BYTE0_ADDRESS |= OB_BOR;
+  __IO uint8_t* optcr_byte0 = (__IO uint8_t*)OPTCR_BYTE0_ADDRESS;
+  *optcr_byte0 = (uint8_t)(*optcr_byte0 & (~FLASH_OPTCR_BOR_LEV));
+  *optcr_byte0 = (uint8_t)(*optcr_byte0 | OB_BOR);
 
 }
 

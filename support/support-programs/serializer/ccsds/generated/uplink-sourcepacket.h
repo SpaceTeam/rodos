@@ -38,13 +38,13 @@ inline int UplinkSPHeader::serialize(uint8_t* buf) const {
     setBitField(buf,   5, 11, applicationId);
     setBitField(buf,  16,  2, sequenceFlags);
     setBitField(buf,  18, 14, sequenceCounter);
-    uint16_tToBigEndian(buf+4,  length);
+    uint16_tToBigEndian(buf+4,  static_cast<uint16_t>(length));
     setBitField(buf,  48,  1, pusSecondaryHeaderFlag);
     setBitField(buf,  49,  3, pusVersion);
     setBitField(buf,  52,  4, ackType);
-    buf[7]      =             serviceType;
-    buf[8]      =             serviceSubtype;
-    buf[9]      =             sourceID;
+    buf[7]      =             static_cast<uint8_t>(serviceType);
+    buf[8]      =             static_cast<uint8_t>(serviceSubtype);
+    buf[9]      =             static_cast<uint8_t>(sourceID);
 
     return 10;
 }

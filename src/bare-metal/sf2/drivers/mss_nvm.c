@@ -462,13 +462,13 @@ static void release_ctrl_access(void) {
     block_locked = g_envm_ctrl_locks & NVM_BLOCK_0_LOCK_MASK;
     if(block_locked) {
         g_nvm[NVM_BLOCK_0]->REQ_ACCESS = 0x00u;
-        g_envm_ctrl_locks &= ~NVM_BLOCK_0_LOCK_MASK;
+        g_envm_ctrl_locks = (uint8_t)(g_envm_ctrl_locks & ~NVM_BLOCK_0_LOCK_MASK);
     }
 
     block_locked = g_envm_ctrl_locks & NVM_BLOCK_1_LOCK_MASK;
     if(block_locked) {
         g_nvm[NVM_BLOCK_1]->REQ_ACCESS = 0x00u;
-        g_envm_ctrl_locks &= ~NVM_BLOCK_1_LOCK_MASK;
+        g_envm_ctrl_locks = (uint8_t)(g_envm_ctrl_locks & ~NVM_BLOCK_1_LOCK_MASK);
     }
 }
 

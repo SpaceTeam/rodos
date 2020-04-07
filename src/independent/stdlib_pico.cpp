@@ -73,13 +73,13 @@ int32_t strtol (const char * nptr, const char ** endptr, uint8_t base) {
      * overflow.
      */
     cutoff = neg ? -static_cast<uint32_t>(INT32_MIN) : static_cast<uint32_t>(INT32_MAX);
-    cutlim = cutoff % base;
+    cutlim = static_cast<uint8_t>(cutoff % base);
     cutoff /= base;
     for (acc = 0, any = 0;; c = *s++) {
         if (isdigit(c))
-            c -= '0';
+            c = static_cast<char>(c - '0');
         else if (isalpha(c))
-            c -= isupper(c) ? 'A' - 10 : 'a' - 10;
+            c = static_cast<char>(c - (isupper(c) ? 'A' - 10 : 'a' - 10));
         else
             break;
         if (c >= base)

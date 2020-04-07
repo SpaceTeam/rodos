@@ -954,7 +954,7 @@ ErrorStatus RTC_SetDate(uint32_t RTC_Format, RTC_DateTypeDef* RTC_DateStruct)
 
   if ((RTC_Format == RTC_Format_BIN) && ((RTC_DateStruct->RTC_Month & 0x10) == 0x10))
   {
-    RTC_DateStruct->RTC_Month = (RTC_DateStruct->RTC_Month & (uint32_t)~(0x10)) + 0x0A;
+    RTC_DateStruct->RTC_Month = (uint8_t)((RTC_DateStruct->RTC_Month & (uint32_t)~(0x10)) + 0x0A);
   }  
   if (RTC_Format == RTC_Format_BIN)
   {
@@ -2730,7 +2730,7 @@ static uint8_t RTC_ByteToBcd2(uint8_t Value)
   while (Value >= 10)
   {
     bcdhigh++;
-    Value -= 10;
+    Value = (uint8_t)(Value - 10);
   }
   
   return  ((uint8_t)(bcdhigh << 4) | Value);
@@ -2744,8 +2744,8 @@ static uint8_t RTC_ByteToBcd2(uint8_t Value)
 static uint8_t RTC_Bcd2ToByte(uint8_t Value)
 {
   uint8_t tmp = 0;
-  tmp = ((uint8_t)(Value & (uint8_t)0xF0) >> (uint8_t)0x4) * 10;
-  return (tmp + (Value & (uint8_t)0x0F));
+  tmp = (uint8_t)(((uint8_t)(Value & (uint8_t)0xF0) >> (uint8_t)0x4) * 10);
+  return (uint8_t)(tmp + (Value & (uint8_t)0x0F));
 }
 
 /**

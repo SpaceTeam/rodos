@@ -60,7 +60,7 @@ void DownlinkEnvelop::beginNewTF() {
 
 int  DownlinkEnvelop::beginNewSP() {
 
-    indexOfCurrentUserData = indexOfCurrentSP + spHeader.HEADER_SIZE;
+    indexOfCurrentUserData = static_cast<uint16_t>(indexOfCurrentSP + spHeader.HEADER_SIZE);
     userDataBuf            = &buf[indexOfCurrentUserData];
     lenOfCurrentSP         = 0; // will be set bei commit
     lenOfCurrentUserData   = 0;
@@ -77,8 +77,8 @@ void DownlinkEnvelop::commitSP() {
         return;
     }
 
-    lenOfCurrentSP         = spHeader.HEADER_SIZE + lenOfCurrentUserData;
-    spHeader.dataPackLen   = lenOfCurrentSP - 6 -1; // 6: len of primary downlink sp header
+    lenOfCurrentSP         = static_cast<uint16_t>(spHeader.HEADER_SIZE + lenOfCurrentUserData);
+    spHeader.dataPackLen   = lenOfCurrentSP - 6u -1u; // 6: len of primary downlink sp header
 
     int64_t timeNow            = sysTime.getUTC();
     spHeader.timeStampSeconds  = (uint32_t)(timeNow/SECONDS);
@@ -86,7 +86,7 @@ void DownlinkEnvelop::commitSP() {
     spHeader.sourceSeqCnt      = DownlinkApidSequenceCounter[spHeader.applicationId & 2047]++;
 
     spHeader.serialize(buf + indexOfCurrentSP);
-    indexOfCurrentSP += lenOfCurrentSP;
+    indexOfCurrentSP = static_cast<uint16_t>(indexOfCurrentSP + lenOfCurrentSP);
     // lenOfCurrentTF += lenOfCurrentSP; Not for downlink! for downlink it is a constat
 }
 
@@ -105,7 +105,7 @@ void DownlinkEnvelop::commitTF() {
 
 void DownlinkEnvelop::commitClcwToTF() {
     tfTrailer.serialize(buf + lenOfCurrentTF - tfTrailer.HEADER_SIZE);
-    uint16_t myCrc = crcChecker.computeCRC((uint8_t*)buf, lenOfCurrentTF-2, CRC_SEED) & 0xffff; // -2? :  2 bytes CRC
+    uint16_t myCrc = crcChecker.computeCRC((uint8_t*)buf, lenOfCurrentTF-2u, CRC_SEED) & 0xffff; // -2? :  2 bytes CRC
     tfTrailer.crc = myCrc;
     tfTrailer.serialize(buf + lenOfCurrentTF - tfTrailer.HEADER_SIZE); // again? now with CRC
 }
@@ -115,7 +115,7 @@ void DownlinkEnvelop::addIdleSP() {      /** The rest to the end of the TF has t
     if(restLen  == 0) return; // there is no room for a SP. rest stays in 0xff....
     initDefaultSPHeader(); // idle
     spHeader.applicationId = 0x7ff;
-    lenOfCurrentUserData = restLen;
+    lenOfCurrentUserData = static_cast<uint16_t>(restLen);
     commitSP();
 }
 
@@ -134,14 +134,14 @@ bool UplinkEnvelop::checkoutTF() {
     indexOfCurrentSP = ZERO_IN_SENSE_OF_UNDEF_OR_ERR;
     tfHeader.deserialize(buf);
 
-    lenOfCurrentTF = tfHeader.frameLength + 1;
+    lenOfCurrentTF = static_cast<uint16_t>(tfHeader.frameLength + 1);
 
     tfTrailer.deserialize(buf + lenOfCurrentTF - tfTrailer.HEADER_SIZE); // at the end of TF
 
     if(lenOfCurrentTF > TF_MAX_LEN)           return false;
     if(lenOfCurrentTF < tfHeader.HEADER_SIZE) return false;
 
-    uint16_t myCrc = crcChecker.computeCRC((uint8_t*)buf, lenOfCurrentTF-2, CRC_SEED) & 0xffff; // -2? :  2 bytes CRC
+    uint16_t myCrc = crcChecker.computeCRC((uint8_t*)buf, lenOfCurrentTF-2u, CRC_SEED) & 0xffff; // -2? :  2 bytes CRC
     return (myCrc == tfTrailer.crc);
 }
 
@@ -151,7 +151,7 @@ bool UplinkEnvelop::checkoutNextSP() {
     if(indexOfCurrentSP == ZERO_IN_SENSE_OF_UNDEF_OR_ERR) {
         indexOfCurrentSP = tfHeader.HEADER_SIZE; // CCSDS allows a gap between header and first SP, but I do not!
     } else {
-        indexOfCurrentSP += lenOfCurrentSP;
+        indexOfCurrentSP = static_cast<uint16_t>(indexOfCurrentSP + lenOfCurrentSP);
     }
 
     if((indexOfCurrentSP + spHeader.HEADER_SIZE + tfTrailer.HEADER_SIZE) > lenOfCurrentTF)  {
@@ -159,9 +159,9 @@ bool UplinkEnvelop::checkoutNextSP() {
     }
 
     spHeader.deserialize(buf + indexOfCurrentSP);
-    lenOfCurrentUserData   = spHeader.length  + 1 - (spHeader.HEADER_SIZE - 6); // HEADER_SIZE - 6 = sec-header-len
-    lenOfCurrentSP         = lenOfCurrentUserData + spHeader.HEADER_SIZE;
-    indexOfCurrentUserData = indexOfCurrentSP + spHeader.HEADER_SIZE;
+    lenOfCurrentUserData   = static_cast<uint16_t>(spHeader.length  + 1 - (spHeader.HEADER_SIZE - 6)); // HEADER_SIZE - 6 = sec-header-len
+    lenOfCurrentSP         = static_cast<uint16_t>(lenOfCurrentUserData + spHeader.HEADER_SIZE);
+    indexOfCurrentUserData = static_cast<uint16_t>(indexOfCurrentSP + spHeader.HEADER_SIZE);
     userDataBuf            = &buf[indexOfCurrentUserData];
 
     if(spHeader.applicationId == 0x7ff ||

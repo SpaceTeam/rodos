@@ -128,7 +128,7 @@ long long Timer::microsecondsInterval = PARAM_TIMER_INTERVAL;
 
 void Timer::init() 
 {
-	SysTick_Config_New((SystemCoreClock/8) * Timer::microsecondsInterval / 1000000); // initialization of systick timer
+	SysTick_Config_New(static_cast<uint32_t>((SystemCoreClock/8) * Timer::microsecondsInterval / 1000000)); // initialization of systick timer
 }
 
 /**
@@ -136,7 +136,7 @@ void Timer::init()
 */
 void Timer::start() 
 {
-	SysTick_Config_New((SystemCoreClock/8) * Timer::microsecondsInterval / 1000000); // initialization of systick timer
+	SysTick_Config_New(static_cast<uint32_t>((SystemCoreClock/8) * Timer::microsecondsInterval / 1000000)); // initialization of systick timer
 	SysTick_Enable();
 }
 
@@ -260,7 +260,7 @@ void TIMx_init(){
 
     // Prescaler
     // fCK_CNT = fCK_PSC/(TIM_Prescaler+1) -> TIM_Prescaler = (fCK_PSC/fCK_CNT)-1
-    timStruct.TIM_Prescaler         = ((clocks.PCLKn_Frequency*timClockMultiplier) / timerClock) -1;;
+    timStruct.TIM_Prescaler         = static_cast<uint16_t>(((clocks.PCLKn_Frequency*timClockMultiplier) / timerClock) -1);
 
     // timer mode is "count up"
     timStruct.TIM_CounterMode       = TIM_CounterMode_Up;

@@ -40,7 +40,7 @@ public:
 	static int32_t resetPin(GPIO_PIN pinIdx);
 
 public:
-    static uint32_t getGPIO_PinSource(uint32_t GPIO_Pin);
+    static uint8_t getGPIO_PinSource(uint32_t GPIO_Pin);
     static GPIO_TypeDef* getSTM32Port(GPIO_PIN pinIdx);
     static uint16_t getSTM32Pin(GPIO_PIN pinIdx);
     static uint32_t getRCC_APB1Periph_GPIOx(GPIO_TypeDef *port);

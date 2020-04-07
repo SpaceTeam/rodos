@@ -458,7 +458,7 @@ void USART_SetPrescaler(USART_TypeDef* USARTx, uint8_t USART_Prescaler)
   /* Clear the USART prescaler */
   USARTx->GTPR &= USART_GTPR_GT;
   /* Set the USART prescaler */
-  USARTx->GTPR |= USART_Prescaler;
+  USARTx->GTPR = (uint16_t)(USARTx->GTPR | USART_Prescaler);
 }
 
 /**
@@ -631,7 +631,7 @@ void USART_SetAddress(USART_TypeDef* USARTx, uint8_t USART_Address)
   /* Clear the USART address */
   USARTx->CR2 &= (uint16_t)~((uint16_t)USART_CR2_ADD);
   /* Set the USART address node */
-  USARTx->CR2 |= USART_Address;
+  USARTx->CR2 = (uint16_t)(USARTx->CR2 | USART_Address);
 }
 
 /**
@@ -1463,7 +1463,7 @@ void USART_ClearITPendingBit(USART_TypeDef* USARTx, uint16_t USART_IT)
   } 
     
   bitpos = USART_IT >> 0x08;
-  itmask = ((uint16_t)0x01 << (uint16_t)bitpos);
+  itmask = (uint16_t)((uint16_t)0x01 << (uint16_t)bitpos);
   USARTx->SR = (uint16_t)~itmask;
 }
 

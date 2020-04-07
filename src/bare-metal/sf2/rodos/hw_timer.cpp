@@ -118,7 +118,7 @@ void Timer::init() {
     Timer::microsecondsInterval = PARAM_TIMER_INTERVAL;
     timerClock                  = SystemCoreClock;
     SysTick_Config_New(
-      ((uint64_t)timerClock * (uint64_t)Timer::microsecondsInterval) / 1000000); // initialization of systick timer, reload value: 1250000-1 -> generates an irq every 10ms with 125MHz sys clock
+      static_cast<uint32_t>(((uint64_t)timerClock * (uint64_t)Timer::microsecondsInterval) / 1000000)); // initialization of systick timer, reload value: 1250000-1 -> generates an irq every 10ms with 125MHz sys clock
     SysTick_Enable();
 }
 

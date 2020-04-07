@@ -29,7 +29,7 @@ namespace RODOS {
  * Simple message data protocol to transmit data to a remote node.
  */
 class NetworkMessage {
-    static const size_t HEADER_SIZE = 26;
+    static const uint16_t HEADER_SIZE = 26;
     uint8_t header [HEADER_SIZE];
 public:
     inline void    put_checkSum(uint16_t x)          {uint16_tToBigEndian(header+0, x); }
@@ -60,7 +60,7 @@ public:
         return *this;
     }
 
-    inline void dec_maxStepsToForward()    { put_maxStepsToForward(get_maxStepsToForward() - 1); }
+    inline void dec_maxStepsToForward()    { put_maxStepsToForward(static_cast<int16_t>(get_maxStepsToForward() - 1)); }
 
     /** Copies user generated data into the message body.
      *
@@ -79,8 +79,8 @@ public:
     size_t getUserData(void* destination, size_t maxLen);
 
     /* WARNING: Len has to be set befor you call this.  **/
-    uint32_t numberOfBytesToSend() const { return HEADER_SIZE + get_len(); }
-    uint16_t calculateCheckSum()         { return checkSum(header+2, HEADER_SIZE-2 + get_len()); }
+    uint16_t numberOfBytesToSend() const { return static_cast<uint16_t>(HEADER_SIZE + get_len()); }
+    uint16_t calculateCheckSum()         { return checkSum(header+2, HEADER_SIZE-2u + get_len()); }
     bool     isCheckSumOk()              { return calculateCheckSum() == get_checksum(); }
     void     setCheckSum()               { put_checkSum(calculateCheckSum()); }
 
@@ -92,7 +92,7 @@ public:
 class TopicListReport {
 public:
     uint32_t numberOfTopics;             ///< total number of topics assigned for the network
-    int16_t topicList[MAX_SUBSCRIBERS]; ///< simple list of topic IDs subscribed for network
+    uint32_t topicList[MAX_SUBSCRIBERS]; ///< simple list of topic IDs subscribed for network
 
     TopicListReport() { init(); }      ///< Constructor, initializes topicList.
     void init() { numberOfTopics = 0; }
@@ -100,7 +100,7 @@ public:
     /** Look up list, whether a topic is set for network messages.
      * @param[in] topicId ID to check whether topic is listed
      */
-    bool find(const short topicId) const {
+    bool find(const uint32_t topicId) const {
         for (uint32_t i = 0; i < numberOfTopics; i++) {
             if (topicId == topicList[i]) {
                 return true;
@@ -112,7 +112,7 @@ public:
     /** Adds a new topic to list, if not already present.
      * @param[in] topicId ID to add to the list
      */
-    void add(const short topicId) {
+    void add(const uint32_t topicId) {
         RODOS_ASSERT_IFNOT_RETURN_VOID(numberOfTopics < MAX_SUBSCRIBERS - 1); // topics avialable
         if (find(topicId)) return;
         topicList[numberOfTopics] = topicId;
@@ -120,7 +120,7 @@ public:
     }
 
     /// returns the size needed for transmission
-    uint32_t numberOfBytesToSend() { return (sizeof(long) + numberOfTopics * sizeof(topicList[0])); }
+    size_t numberOfBytesToSend() { return (sizeof(long) + numberOfTopics * sizeof(topicList[0])); }
 } __attribute__((packed));
 
 

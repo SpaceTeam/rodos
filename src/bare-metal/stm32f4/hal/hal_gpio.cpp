@@ -48,11 +48,11 @@ HW_HAL_GPIO::HW_HAL_GPIO(GPIO_PIN pinIdx, uint8_t numOfPins, bool isOutput):
 
 void HW_HAL_GPIO::setPinMask(){
 	if (numOfPins+(pinIdx & 0xF) > 16) { // pin-group exceeds port boundary ! only the pins up to most significant pin of port will be set
-		pinMask = 0xFFFF << (pinIdx & 0xF);
+		pinMask = static_cast<uint16_t>(0xFFFF << (pinIdx & 0xF));
 	}
 	else{
-		pinMask = 0xFFFF >> (16 - numOfPins);
-		pinMask = pinMask << (pinIdx&0xF);
+		pinMask = static_cast<uint16_t>(0xFFFF >> (16 - numOfPins));
+		pinMask = static_cast<uint16_t>(pinMask << (pinIdx&0xF));
 	}
 }
 
@@ -64,9 +64,9 @@ void HW_HAL_GPIO::EXTIRQHandler(){
 }
 
 
-uint32_t HW_HAL_GPIO::getGPIO_PinSource(uint32_t GPIO_Pin) {
+uint8_t HW_HAL_GPIO::getGPIO_PinSource(uint32_t GPIO_Pin) {
 
-    uint32_t GPIO_PinSource = 0;
+    uint8_t GPIO_PinSource = 0;
 
     while (GPIO_Pin >>= 1) GPIO_PinSource++;
 
@@ -108,7 +108,7 @@ GPIO_TypeDef* HW_HAL_GPIO::getSTM32Port(GPIO_PIN pinIdx){
 
 uint16_t HW_HAL_GPIO::getSTM32Pin(GPIO_PIN pinIdx){
     //return 1 << (pinIdx%16);
-    return 1 << (pinIdx & 0xf);
+    return static_cast<uint16_t>(1 << (pinIdx & 0xf));
 }
 
 
@@ -161,7 +161,7 @@ HAL_GPIO::HAL_GPIO(GPIO_PIN pinIdx) {
 }
 
 
-int32_t HAL_GPIO::init(bool isOutput, uint32_t numOfPins, uint32_t initVal){
+int32_t HAL_GPIO::init(bool isOutput, uint8_t numOfPins, uint32_t initVal){
 	if (numOfPins > 0) context->numOfPins = numOfPins; // numOfPins has to be > 0 -> if new value is 0 keep the default value
 
 	context->isOutput = isOutput;
@@ -199,7 +199,7 @@ int32_t HAL_GPIO::config(GPIO_CFG_TYPE type, uint32_t paramVal){
 
 		case GPIO_CFG_NUM_OF_PINS:
 			if (paramVal > 0 && paramVal < 256) { // numOfPins has to be > 0 and < 256 -> uint8_t
-				context->numOfPins = paramVal;
+				context->numOfPins = static_cast<uint8_t>(paramVal);
 				context->setPinMask();
 				context->GPIO_InitStruct.GPIO_Pin = context->pinMask;
 				GPIO_Init(context->PORT, &context->GPIO_InitStruct);
@@ -257,8 +257,8 @@ void HAL_GPIO::setPins(uint32_t val) {
 	if (context->isOutput){
                 PRIORITY_CEILER_IN_SCOPE();
 		//read the whole port, change only the selected pins and write the value
-		newPinVal = GPIO_ReadOutputData(context->PORT) & ~context->pinMask; // get current pinvalues of whole port and clear pinvalues we want to set new
-		newPinVal |= (val << (context->pinIdx & 0x0F) ) & context->pinMask; // set new pinvalues
+		newPinVal = static_cast<uint16_t>(GPIO_ReadOutputData(context->PORT) & ~context->pinMask); // get current pinvalues of whole port and clear pinvalues we want to set new
+		newPinVal = static_cast<uint16_t>(newPinVal | ((val << (context->pinIdx & 0x0F) ) & context->pinMask)); // set new pinvalues
 		GPIO_Write(context->PORT,newPinVal);
 	}
 }
@@ -280,8 +280,8 @@ bool HAL_GPIO::isDataReady(){
 void HAL_GPIO::interruptEnable(bool enable){
 	if(context->pinIdx == GPIO_INVALID){ return;}
 
-	int portNum = context->pinIdx / 16;
-	int  pinNum = context->pinIdx % 16;
+	uint8_t portNum = static_cast<uint8_t>(context->pinIdx / 16);
+	uint8_t  pinNum = static_cast<uint8_t>(context->pinIdx % 16);
 	int32_t exti=pinNum;
 
 	if(enable){//enable Interrupt

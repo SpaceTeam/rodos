@@ -17,7 +17,7 @@ namespace RODOS {
 
 
 /** Computes a 16 bit checksum (len in bytes) adding bytes and rotating result */
-uint32_t checkSum(const void *buf, size_t len) ;
+uint16_t checkSum(const void *buf, size_t len) ;
 
 
 /** computes a 16 bit crc in a non optimized way, CCSDS recommends 0 (some times 0xffff) as initial value **/

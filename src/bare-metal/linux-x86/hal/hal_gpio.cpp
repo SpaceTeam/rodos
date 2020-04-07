@@ -22,7 +22,7 @@ HAL_GPIO::HAL_GPIO(GPIO_PIN pinIdx) {
 }
 
 
-int32_t HAL_GPIO::init(bool isOutput, uint32_t numOfPins, uint32_t initVal) {
+int32_t HAL_GPIO::init(bool isOutput, uint8_t numOfPins, uint32_t initVal) {
     if(context == 0) return -1;
     if(numOfPins > 0) context->numOfPins = numOfPins; // numOfPins has to be > 0 -> if new value is 0 keep the default value
 
@@ -48,8 +48,8 @@ int32_t HAL_GPIO::config(GPIO_CFG_TYPE type, uint32_t paramVal) {
             return 0;
 
         case GPIO_CFG_NUM_OF_PINS:
-            if(paramVal > 0 && paramVal < 256) { // numOfPins has to be > 0 and < 256 -> uint8_t
-                context->numOfPins = paramVal;
+            if(paramVal <= UINT8_MAX) { // numOfPins has to be <= 255 (UINT8_MAX) -> uint8_t
+                context->numOfPins = static_cast<uint8_t>(paramVal);
                 return 0;
             }
             return -1;

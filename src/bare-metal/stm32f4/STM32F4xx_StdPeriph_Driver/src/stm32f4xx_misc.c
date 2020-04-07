@@ -146,13 +146,13 @@ void NVIC_Init(NVIC_InitTypeDef* NVIC_InitStruct)
   {
     /* Compute the Corresponding IRQ Priority --------------------------------*/    
     tmppriority = (0x700 - ((SCB->AIRCR) & (uint32_t)0x700))>> 0x08;
-    tmppre = (0x4 - tmppriority);
-    tmpsub = tmpsub >> tmppriority;
+    tmppre = (uint8_t)(0x4 - tmppriority);
+    tmpsub = (uint8_t)(tmpsub >> tmppriority);
 
-    tmppriority = NVIC_InitStruct->NVIC_IRQChannelPreemptionPriority << tmppre;
+    tmppriority = (uint8_t)(NVIC_InitStruct->NVIC_IRQChannelPreemptionPriority << tmppre);
     tmppriority |=  (uint8_t)(NVIC_InitStruct->NVIC_IRQChannelSubPriority & tmpsub);
         
-    tmppriority = tmppriority << 0x04;
+    tmppriority = (uint8_t)(tmppriority << 0x04);
         
     NVIC->IP[NVIC_InitStruct->NVIC_IRQChannel] = tmppriority;
     

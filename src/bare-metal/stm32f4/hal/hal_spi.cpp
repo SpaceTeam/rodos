@@ -52,7 +52,7 @@ public:
 	GPIO_TypeDef* GPIO_Port_SCK;
 	GPIO_TypeDef* GPIO_Port_NSS;
 
-	uint32_t GPIO_AF;
+	uint8_t GPIO_AF;
 
 	static DMA_InitTypeDef DMA_InitStructure;
 
@@ -265,8 +265,8 @@ int32_t HW_HAL_SPI::setBaudrate(uint32_t baudrate){
         if (regValBRP > 7)regValBRP = 7; // max. register value = 7
     }
 
-    SPIx->CR1 &= ~(0x07<<3);
-    SPIx->CR1 |= regValBRP<<3;
+    SPIx->CR1 = static_cast<uint16_t>(SPIx->CR1 & ~(0x07<<3));
+    SPIx->CR1 = static_cast<uint16_t>(SPIx->CR1 | (regValBRP<<3));
 
     this->baudrate = pclk/(1lu<<(regValBRP+1));
 
@@ -394,10 +394,10 @@ int32_t HAL_SPI::init(uint32_t baudrate, bool slave, bool tiMode) {
 	GPIO_Init(context->GPIO_Port_NSS, &GPIO_InitStruct);
 
 	/* pin mapping */
-	uint32_t GPIO_PinSource_SCK=0;
-	uint32_t GPIO_PinSource_MISO=0;
-	uint32_t GPIO_PinSource_MOSI=0;
-	uint32_t GPIO_PinSource_NSS=0;
+	uint16_t GPIO_PinSource_SCK=0;
+	uint16_t GPIO_PinSource_MISO=0;
+	uint16_t GPIO_PinSource_MOSI=0;
+	uint16_t GPIO_PinSource_NSS=0;
 	// calc GPIO_PinSourcex from GPIO_Pin_x
 	uint32_t tmpGPIO_Pin = context->GPIO_Pin_SCK;
 	while (tmpGPIO_Pin >>= 1) GPIO_PinSource_SCK++;
@@ -473,10 +473,10 @@ void HAL_SPI::reset() {
     GPIO_Init(context->GPIO_Port_SCK, &GPIO_InitStruct);
 
     // calc GPIO_PinSourcex from GPIO_Pin_x
-    uint32_t GPIO_PinSource_SCK=0;
-    uint32_t GPIO_PinSource_MISO=0;
-    uint32_t GPIO_PinSource_MOSI=0;
-    uint32_t GPIO_PinSource_NSS=0;
+    uint16_t GPIO_PinSource_SCK=0;
+    uint16_t GPIO_PinSource_MISO=0;
+    uint16_t GPIO_PinSource_MOSI=0;
+    uint16_t GPIO_PinSource_NSS=0;
     uint32_t tmpGPIO_Pin = context->GPIO_Pin_SCK;
     while (tmpGPIO_Pin >>= 1) GPIO_PinSource_SCK++;
     tmpGPIO_Pin = context->GPIO_Pin_MISO;
@@ -508,8 +508,10 @@ int32_t HAL_SPI::config(SPI_PARAMETER_TYPE type, int32_t value) {
 
     case SPI_PARAMETER_MODE: // MODE:CPOL/CPHA  0:0/0   1:0/1   2:1/0   3:1/1
         if (value >= 0 || value <= 3){
-            context->SPIx->CR1 &= ~0x0003; // clear CPOL & CPHA
-            context->SPIx->CR1 |= value; // set CPOL & CPHA
+            uint16_t cr1 = context->SPIx->CR1;
+            cr1          = static_cast<uint16_t>(cr1 & ~0x0003); // clear CPOL & CPHA
+            cr1          = static_cast<uint16_t>(cr1 | value);   // set CPOL & CPHA
+            context->SPIx->CR1 = cr1;
             return 0;
         }else{
             return -1;

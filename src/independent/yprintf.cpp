@@ -42,16 +42,16 @@ void Yprintf::vaprintf(const char *fmt) {
             c = *fmt++;
         }
         if (c >= '0' && c <= '9') {
-            width = c - '0';
+            width = static_cast<char>(c - '0');
             c = *fmt++;
         }
         if (c == '.') {
             c = *fmt++; if(c == 0) return; // SM: bad format
-            decimalPos = c - '0';
+            decimalPos = static_cast<char>(c - '0');
             c = *fmt++; if(c == 0) return; // SM: bad format
             // allow more than 9 decimalPos
             while(c >= '0' && c <= '9') {
-                decimalPos = decimalPos*10 + (c - '0');
+                decimalPos = static_cast<char>(decimalPos*10 + (c - '0'));
                 c = *fmt++;
             }
         }
@@ -111,7 +111,7 @@ void Yprintf::vaprintf(const char *fmt) {
 
         default:
             if (c == 'c') {
-                c = va_arg(ap, int);	// char promoted to int
+                c = static_cast<char>(va_arg(ap, int));	// char promoted to int
             }
             yputc(c);
             continue;
@@ -219,7 +219,7 @@ void Yprintf::vaprintf(const char *fmt) {
                     char ch = (char) ((u_val % base) + '0');
 
                     if (ch > '9') {
-                        ch += 'A' - '9' - 1;
+                        ch = static_cast<char>(ch + 'A' - '9' - 1);
                     }
 
                     *--ptr = ch;
@@ -245,10 +245,10 @@ void Yprintf::vaprintf(const char *fmt) {
             if (is_float) {
                 yputc('.');
                 while(decimalPos--) {
-                    f_val -= s_val;   // rm integer part
+                    f_val -= static_cast<double>(s_val);   // rm integer part
                     f_val = f_val * 10;
                     s_val = static_cast<long long>(f_val);
-                    yputc(s_val + '0');
+                    yputc(static_cast<char>(s_val + '0'));
                 }
             }
 

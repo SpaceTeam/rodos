@@ -202,7 +202,7 @@ public:
 	 * limited to port boundaries! When port boundaries are exceeded only pins up to most
 	 * significant pin of port will be set/read.
 	 */
-	int32_t init(bool isOutput = false, uint32_t numOfPins = 1, uint32_t initVal = 0x00);
+	int32_t init(bool isOutput = false, uint8_t numOfPins = 1, uint32_t initVal = 0x00);
 	void reset();
 	int32_t config(GPIO_CFG_TYPE type, uint32_t paramVal);
 

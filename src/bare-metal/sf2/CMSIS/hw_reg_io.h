@@ -44,13 +44,13 @@ static __INLINE void write_reg8(volatile uint8_t* reg, uint8_t val) {
 }
 
 static __INLINE uint32_t read_reg32(volatile uint32_t* reg) {
-    return (HW_REG(reg));
+    return (uint32_t)(HW_REG(reg));
 }
 static __INLINE uint16_t read_reg16(volatile uint16_t* reg) {
-    return (HW_REG(reg));
+    return (uint16_t)(HW_REG(reg));
 }
 static __INLINE uint8_t read_reg8(volatile uint8_t* reg) {
-    return (HW_REG(reg));
+    return (uint8_t)(HW_REG(reg));
 }
 /*****************************************************************************************
  * Definitions for register bits access using bit-band aliases for Cortex-M3 
@@ -86,13 +86,13 @@ static __INLINE void clear_bit_reg8(volatile uint8_t* reg, uint8_t bit) {
  * Functions to read a bit field in Cortex-M3
  */
 static __INLINE uint8_t read_bit_reg32(volatile uint32_t* reg, uint8_t bit) {
-    return (HW_REG_BIT(reg, bit));
+    return (uint8_t)(HW_REG_BIT(reg, bit));
 }
 static __INLINE uint8_t read_bit_reg16(volatile uint16_t* reg, uint8_t bit) {
-    return (HW_REG_BIT(reg, bit));
+    return (uint8_t)(HW_REG_BIT(reg, bit));
 }
 static __INLINE uint8_t read_bit_reg8(volatile uint8_t* reg, uint8_t bit) {
-    return (HW_REG_BIT(reg, bit));
+    return (uint8_t)(HW_REG_BIT(reg, bit));
 }
 
 #endif /* HW_REG_IO_H_ */

@@ -98,7 +98,7 @@ size_t LinkinterfaceUART::putcharEncodedToBuf(uint8_t* buf, const bool mark, con
 bool LinkinterfaceUART::sendNetworkMsg(NetworkMessage& outgoingMessage)	{
 
     transmitinProgrss=true;
-    uint32_t lenToSend = outgoingMessage.numberOfBytesToSend();
+    uint32_t lenToSend = static_cast<uint32_t>(outgoingMessage.numberOfBytesToSend());
     uint8_t* dataToSend = reinterpret_cast<uint8_t*>(&outgoingMessage);
 
     if (enaTXBreak){ // transmit interruption by received character is enabled

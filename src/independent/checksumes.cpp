@@ -23,7 +23,7 @@ namespace RODOS {
 
 /** Computes a 16-bit checksum (len in bytes) adding bytes and rotating result */
 
-uint32_t checkSum(const void *buf, size_t len) {
+uint16_t checkSum(const void *buf, size_t len) {
 
 	uint32_t checksum = 0; /* The checksum mod 2^16. */
 	size_t cnt;
@@ -34,7 +34,7 @@ uint32_t checkSum(const void *buf, size_t len) {
 		checksum += data[cnt];
 		checksum &= 0xffff; /* Keep it within bounds. */
 	}
-	return checksum;
+	return static_cast<uint16_t>(checksum);
 
 }
 
@@ -55,7 +55,7 @@ uint32_t computeCrc(const void* buf, size_t len, uint32_t initialValue) {
             } else {
                 currentValue = (currentValue << 1) & 0xFFFF;
             }
-            curChar = curChar << 1;
+            curChar = static_cast<uint8_t>((curChar << 1) & 0xFF);
         }
     }
     return currentValue;
@@ -104,16 +104,16 @@ uint16_t hash(const char* str) {
 
 	/** To make only printable characters, else it were a normal crc value **/
 
-		uint8_t a = (crc >> 8) & 0xff;
-		uint8_t b = (crc & 0xff);
+		uint8_t a = static_cast<uint8_t>((crc >> 8) & 0xff);
+		uint8_t b = static_cast<uint8_t>(crc & 0xff);
 
 		uint8_t range = 0x7e - 0x20; // Printable ascii chars
-		if(a <= 0x20 || a >= 0x7e) a = (a % range) + 0x20;
-		if(b <= 0x20 || b >= 0x7e) b = (b % range) + 0x20;
+		if(a <= 0x20 || a >= 0x7e) a = static_cast<uint8_t>((a % range) + 0x20);
+		if(b <= 0x20 || b >= 0x7e) b = static_cast<uint8_t>((b % range) + 0x20);
 
 	/******/
 
-	return (a << 8) | b;
+	return static_cast<uint16_t>((a << 8) | b);
 }
 
 

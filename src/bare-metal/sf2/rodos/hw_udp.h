@@ -65,8 +65,8 @@ class UDPReceiver {
      * @param[IN] size of input buffer
      * @return length of message written to userData
      */
-    int32_t get(void* userData, const size_t maxLen = 1300);
-    int32_t get(void* userData, size_t maxLen, uint32_t* ipaddr); // return number of bytes read, or 0, or < 0 if error
+    int32_t get(void* userData, const uint16_t maxLen = 1300);
+    int32_t get(void* userData, uint16_t maxLen, uint32_t* ipaddr); // return number of bytes read, or 0, or < 0 if error
 
     bool readyToGet();
 
@@ -108,14 +108,14 @@ class UDPTransmitter {
      * @param data pointer to data field
      * @param length of data field
      */
-    virtual bool send(const void* msg, const size_t len);
+    virtual bool send(const void* msg, const uint16_t len);
 
     /** Send datagram to a specified host different to the address used during intialization
      * @param data pointer to data field
      * @param length of data field
      * @param ipAddr of receiving host
      */
-    bool sendTo(const void* userData, const size_t maxLen, uint32_t ipAddr);
+    bool sendTo(const void* userData, const uint16_t maxLen, uint32_t ipAddr);
     bool isInitialised() { return initialised; } // due to windows compatibility
 };
 

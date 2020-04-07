@@ -50,7 +50,7 @@ float getCpuLoad() {
     timeLastCall = timeNow;
 
     static int64_t lastIdelCnt  =  0;
-    double idleDiff = idleCnt - lastIdelCnt;  // idleCnt comes from rodos scheduler
+    double idleDiff = static_cast<double>(idleCnt - lastIdelCnt);  // idleCnt comes from rodos scheduler
     lastIdelCnt = idleCnt;
 
     double cpuLoad =  1.0 - (idleDiff/timeDiff) / (double)getMaxIdleCntPerSecond(); 

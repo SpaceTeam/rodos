@@ -38,7 +38,7 @@ class UDPReceiver {
      * Warning: negative port number means more than one can receive on the same
      * @param portNr port number on localhost used for reception , negative for broadcast
      */
-    UDPReceiver(const int port);
+    UDPReceiver(const int32_t port);
     /** Destructor */
     ~UDPReceiver();
 
@@ -47,11 +47,11 @@ class UDPReceiver {
      * Warning: negative port number means more than one can receive on the same
      * @param portNr port number on localhost, negative for broadcast
      */
-    void reopen(const int port);
+    void reopen(const int32_t port);
 
     void setAsync(Topic<GenericMsgRef>* associatedTopic);
 
-    void joinMulticastGroup(unsigned long ipaddr);
+    void joinMulticastGroup(uint32_t ipaddr);
 
     /**
      * Receives data from Linux UDP socket. Writes data up to maxLen to userData.
@@ -83,12 +83,12 @@ class UDPTransmitter {
     /** init udp communication, can be re-called at any time
      ** WARNING: Negative port number means broadcast **/
 
-    UDPTransmitter(const int port, const char* host = "localhost");
-    UDPTransmitter(const long _portNr, unsigned long _ipAddr); // _ipAddr as eg. 192.168.0.20
-    UDPTransmitter(const long _portNr, int ip0, int ip1, int ip2, int ip3);
+    UDPTransmitter(const int32_t port, const char* host = "localhost");
+    UDPTransmitter(const int32_t _portNr, uint32_t _ipAddr); // _ipAddr as eg. 192.168.0.20
+    UDPTransmitter(const int32_t _portNr, int ip0, int ip1, int ip2, int ip3);
     virtual ~UDPTransmitter();
 
-    void openConnection(const int port, const char* host);
+    void openConnection(const int32_t port, const char* host);
 
 
     /** Send it as datagram containing "userdata", default length = all bytes
@@ -102,7 +102,7 @@ class UDPTransmitter {
      * @param length of data field
      * @param ipAddr of receiving host
      */
-    bool sendTo(const void* userData, const size_t maxLen, unsigned long ipAddr);
+    bool sendTo(const void* userData, const size_t maxLen, uint32_t ipAddr);
     bool isInitialised() { return initialised; } // due to windows compatibility
   private:
     bool initialised;

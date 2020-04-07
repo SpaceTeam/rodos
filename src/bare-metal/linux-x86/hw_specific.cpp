@@ -50,8 +50,8 @@ void deepSleepUntil(int64_t until) {
     int64_t  deltaT = until - NOW();
     timespec deltaTPosix;
     timespec remainingTime;
-    deltaTPosix.tv_sec  = deltaT / SECONDS;
-    deltaTPosix.tv_nsec = deltaT % SECONDS;
+    deltaTPosix.tv_sec  = static_cast<time_t>(deltaT / SECONDS);
+    deltaTPosix.tv_nsec = static_cast<long>(deltaT % SECONDS);
 
     hwDisableInterrupts();
     nanosleep(&deltaTPosix, &remainingTime);

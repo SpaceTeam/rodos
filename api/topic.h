@@ -185,7 +185,7 @@ public:
       *for example for strings
       * warning: Never us it from an interrupt server.
       */
-    inline unsigned long publishMsgPart(Type &msg, unsigned int lenToSend, bool shallSendToNetwork = true) {
+    inline unsigned long publishMsgPart(Type &msg, size_t lenToSend, bool shallSendToNetwork = true) {
         return TopicInterface::publishMsgPart(&msg, lenToSend, shallSendToNetwork);
     }
 
@@ -205,11 +205,11 @@ public:
  **/
 
 struct GenericMsgRef { // V. 128 PTS
-    uint64_t  context; ///< any further info you would like to deliver
-    char*     msgPtr;
-    int32_t   msgLen; // Warning: It has to be signed, else endless loop at publish
+    uint64_t  context = 0; ///< any further info you would like to deliver
+    char*     msgPtr = nullptr;
+    int32_t   msgLen = 0; // Warning: It has to be signed, else endless loop at publish
 
-    GenericMsgRef() { msgLen = context = 0; msgPtr = 0; }
+    GenericMsgRef() { }
 };
 
 /**************************************************************/

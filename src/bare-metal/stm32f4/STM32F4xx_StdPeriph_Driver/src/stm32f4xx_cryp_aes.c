@@ -908,10 +908,10 @@ ErrorStatus CRYP_AES_GCM(uint8_t Mode, uint8_t InitVectors[16],
     }
     
     /* Write number of bits concatenated with header in the IN FIFO */
-    CRYP_DataIn(__REV(headerlength>>32));
-    CRYP_DataIn(__REV(headerlength));
-    CRYP_DataIn(__REV(inputlength>>32));
-    CRYP_DataIn(__REV(inputlength));
+    CRYP_DataIn(__REV((uint32_t)(headerlength>>32)));
+    CRYP_DataIn(__REV((uint32_t)(headerlength)));
+    CRYP_DataIn(__REV((uint32_t)(inputlength>>32)));
+    CRYP_DataIn(__REV((uint32_t)(inputlength)));
     /* Wait until the OFNE flag is reset */
     while(CRYP_GetFlagStatus(CRYP_FLAG_OFNE) == RESET)
     {
@@ -1085,10 +1085,10 @@ ErrorStatus CRYP_AES_GCM(uint8_t Mode, uint8_t InitVectors[16],
     }
     
     /* Write number of bits concatenated with header in the IN FIFO */
-    CRYP_DataIn(__REV(headerlength>>32));
-    CRYP_DataIn(__REV(headerlength));
-    CRYP_DataIn(__REV(inputlength>>32));
-    CRYP_DataIn(__REV(inputlength));
+    CRYP_DataIn(__REV((uint32_t)(headerlength>>32)));
+    CRYP_DataIn(__REV((uint32_t)(headerlength)));
+    CRYP_DataIn(__REV((uint32_t)(inputlength>>32)));
+    CRYP_DataIn(__REV((uint32_t)(inputlength)));
     /* Wait until the OFNE flag is reset */
     while(CRYP_GetFlagStatus(CRYP_FLAG_OFNE) == RESET)
     {
@@ -1177,10 +1177,10 @@ ErrorStatus CRYP_AES_CCM(uint8_t Mode,
       /* header is encoded as 0xff || 0xfe || [headersize]32, i.e., six octets */
       HBuffer[bufferidx++] = 0xFF;
       HBuffer[bufferidx++] = 0xFE;
-      HBuffer[bufferidx++] = headersize & 0xff000000;
-      HBuffer[bufferidx++] = headersize & 0x00ff0000;
-      HBuffer[bufferidx++] = headersize & 0x0000ff00;
-      HBuffer[bufferidx++] = headersize & 0x000000ff;
+      HBuffer[bufferidx++] = (uint8_t)(headersize & 0xff000000); //potential bug and always zero!
+      HBuffer[bufferidx++] = (uint8_t)(headersize & 0x00ff0000); //potential bug and always zero!
+      HBuffer[bufferidx++] = (uint8_t)(headersize & 0x0000ff00); //potential bug and always zero!
+      HBuffer[bufferidx++] = (uint8_t)(headersize & 0x000000ff);
       headersize += 6;
     }
     /* Copy the header buffer in internal buffer "HBuffer" */
@@ -1208,7 +1208,7 @@ ErrorStatus CRYP_AES_CCM(uint8_t Mode,
     blockb0[0] = 0x40;
   }
   /* Flags byte */
-  blockb0[0] |= 0u | (((( (uint8_t) TAGSize - 2u) / 2u) & 0x07u ) << 3u ) | ( ( (uint8_t) (15u - NonceSize) - 1u) & 0x07u);
+  blockb0[0] = (uint8_t)(blockb0[0] | 0u | (((( (uint8_t) TAGSize - 2u) / 2u) & 0x07u ) << 3u ) | ( ( (uint8_t) (15u - NonceSize) - 1u) & 0x07u));
   
   for (loopcounter = 0; loopcounter < NonceSize; loopcounter++)
   {

@@ -48,24 +48,26 @@ namespace RODOS {
 
 //_______________________________________________________________________________
 
-bool HW_TCPServer::listen(const long portNr) {
+bool HW_TCPServer::listen(const int32_t portNr) {
     if(!IPStack::instance) {
         RODOS_ERROR("IPStack not instantiated");
         return false;
     }
     IPStack::instance->ensureInit();
 
-    long port = portNr;
-
+    uint16_t port = 0;
     listenPcb = tcp_new();
 
-    if(port < 0) {
-        port = -port;
+    if(portNr < 0) {
+        port = static_cast<uint16_t>(-portNr);
         listenPcb->so_options |= SOF_REUSEADDR;
+    } else {
+        port = static_cast<uint16_t>(portNr);
     }
 
+
     tcp_arg(listenPcb, this);
-    tcp_bind(listenPcb, IP_ADDR_ANY, portNr);
+    tcp_bind(listenPcb, IP_ADDR_ANY, port);
     listenPcb = tcp_listen(listenPcb);
     tcp_accept(listenPcb, &tcp_accept_func);
 
@@ -81,11 +83,11 @@ bool HW_TCPServer::acceptNewConnection() {
     return pcb;
 }
 
-int HW_TCPServer::sendData(void* buf, size_t len) {
+int HW_TCPServer::sendData(void* buf, uint16_t len) {
     return TCPBase::sendData(buf, len);
 }
 
-int HW_TCPServer::getData(void* buf, size_t maxLen) {
+int HW_TCPServer::getData(void* buf, uint16_t maxLen) {
     return TCPBase::getData(buf, maxLen);
 }
 
@@ -97,14 +99,13 @@ int HW_TCPServer::getErrorCode() const {
 
 HW_TCPClient::~HW_TCPClient() { tcp_abort(pcb); }
 
-bool HW_TCPClient::reopen(const long portNr, const char* hostname) {
+bool HW_TCPClient::reopen(const int32_t portNr, const char* hostname) {
     if(!IPStack::instance) {
         RODOS_ERROR("IPStack not instantiated");
         return false;
     }
     IPStack::instance->ensureInit();
 
-    long port = portNr;
 
     if(pcb) {
         tcp_abort(pcb);
@@ -114,11 +115,16 @@ bool HW_TCPClient::reopen(const long portNr, const char* hostname) {
     struct ip_addr ip;
     inet_aton(hostname, &ip);
 
-    pcb = tcp_new();
-    if(port < 0) {
-        port = -port;
+    uint16_t port = 0;
+    pcb           = tcp_new();
+    if(portNr < 0) {
+        port = static_cast<uint16_t>(-portNr);
         pcb->so_options |= SOF_REUSEADDR;
     }
+    else {
+        port = static_cast<uint16_t>(portNr);
+    }
+
     tcp_bind(pcb, IP_ADDR_ANY, 8888);
     tcp_arg(pcb, dynamic_cast<TCPBase*>(this));
     tcp_recv(pcb, &tcp_recv_func);
@@ -127,25 +133,25 @@ bool HW_TCPClient::reopen(const long portNr, const char* hostname) {
     return true;
 }
 
-int HW_TCPClient::sendData(void* buf, size_t len) {
+int HW_TCPClient::sendData(void* buf, uint16_t len) {
     return TCPBase::sendData(buf, len);
 }
 
-int HW_TCPClient::getData(void* buf, size_t maxLen) {
+int HW_TCPClient::getData(void* buf, uint16_t maxLen) {
     return TCPBase::getData(buf, maxLen);
 }
 
-int TCPBase::sendData(void* buf, size_t len) {
-    size_t sendLen = MIN(tcp_sndbuf(pcb), len);
+int TCPBase::sendData(void* buf, uint16_t len) {
+    uint16_t sendLen = MIN(tcp_sndbuf(pcb), len);
     tcp_write(pcb, buf, sendLen, 0);
     tcp_output(pcb);
     return static_cast<int>(sendLen);
 }
 
-int TCPBase::getData(void* buf, size_t maxLen) {
+int TCPBase::getData(void* buf, uint16_t maxLen) {
     if(!recvBuf) return 0;
 
-    size_t copyLen = MIN(recvBuf->tot_len - readPos, maxLen);
+    uint16_t copyLen = static_cast<uint16_t>(MIN(recvBuf->tot_len - readPos, maxLen));
     pbuf_copy_partial(recvBuf, buf, copyLen, readPos);
 
     if(recvBuf->tot_len - readPos <= copyLen) {

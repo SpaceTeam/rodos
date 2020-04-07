@@ -111,7 +111,7 @@ public:
     void sendNetworkMessage(NetworkMessage& msg);
 
 
-    bool shouldTopicForwarded(long topicId) { return forwardAll ? true : externalsubscribers.find(topicId);}
+    bool shouldTopicForwarded(uint32_t topicId) { return forwardAll ? true : externalsubscribers.find(topicId);}
     /**
      * For Simple networks, the list of topics which shall be forwarded
      * to the network has to be known in the local node. This

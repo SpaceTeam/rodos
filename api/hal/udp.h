@@ -42,7 +42,7 @@ public:
     /** Constructor, opens an UDP connection to the given port
      * @param[in] portNr port number on localhost used for reception
      */
-    UDPIn(const long portNr);
+    UDPIn(const int32_t portNr);
 
 
     /** Constructor, opens an UDP connection to the given port
@@ -52,7 +52,7 @@ public:
      * Subscriber::putFromInterrupt(...)
      * do not suspend (no semaphore, no yield, etc) in this method!
      */
-    UDPIn(const long portNr, Topic<GenericMsgRef>* associatedTopic);
+    UDPIn(const int32_t portNr, Topic<GenericMsgRef>* associatedTopic);
 
     void setAsync(Topic<GenericMsgRef>* associatedTopic);
 
@@ -60,7 +60,7 @@ public:
      * On success attribute 'initialised' is set true.
      * @param[in] portNr port number on localhost
      */
-    void reopen(const long portNr);
+    void reopen(const int32_t portNr);
 
     /**
      * Receives data from UDP socket. Writes data up to maxLen to userData.
@@ -68,7 +68,7 @@ public:
      * @param[in] maxLen size of input buffer
      * @return length of message written to userData
      */
-    int32_t get(void* userData, size_t maxLen);
+    int32_t get(void* userData, uint16_t maxLen);
 
     /**
      * Receives data from UDP socket. Writes data up to maxLen to userData.
@@ -77,7 +77,7 @@ public:
      * @param[out] ipaddr sender address
      * @return length of message written to userData
      */
-    int32_t get(void* userData, size_t maxLen, uint32_t *ipaddr);
+    int32_t get(void* userData, uint16_t maxLen, uint32_t *ipaddr);
 
     /**
      * Check for incoming data.
@@ -93,7 +93,7 @@ public:
 
 #ifdef MULTICAST
 // to use this method please define the preprocessor symbol (-D) MULTICAST in your compiler
-    void joinMulticastGroup(unsigned long ipaddr);
+    void joinMulticastGroup(uint32_t ipaddr);
 #endif
 };
 
@@ -112,23 +112,23 @@ public:
      * @param portNr port number on remote host, negativ -> broadcast to this port
      * @param hostname IP-hostname of remote host
      */
-    UDPOut(const long portNr, const char* hostname = "localhost");
+    UDPOut(const int32_t portNr, const char* hostname = "localhost");
 
     /** Constructor for connection to remote host known by IP-address.
      * @param _portNr port number on remote host
      * @param _ipAddr IP-address of remote host, e.g. format as hex 0x01020304,
      * where 01 = ip_part1, ...
      */
-    UDPOut(const long _portNr, uint32_t _ipAddr); //MSul
+    UDPOut(const int32_t _portNr, uint32_t _ipAddr); //MSul
 
     /** Constructor for connection to remote host known by IP-address.
      * @param _portNr port number on remote host
      * @param ip0, ip1, ip2, ip3 IP-address of remote host consisting of separate octets
      */
-    UDPOut(const long _portNr, int ip0, int ip1, int ip2, int ip3);//MSul
+    UDPOut(const int32_t _portNr, int ip0, int ip1, int ip2, int ip3);//MSul
 
     /** to change destination, port and host for followin sends */
-    inline void reopen(const int port,  const char *host = "localhost") {
+    inline void reopen(const int32_t port,  const char *host = "localhost") {
         udpTx.openConnection(port,  host); 
     }
 
@@ -137,7 +137,7 @@ public:
      * @param[in] maxLen size of data block to be send, must be <= max allowed length
      * @return true - if sending was successful, false - otherwise
      */
-    bool send(const void* userData, const size_t maxLen);
+    bool send(const void* userData, const uint16_t maxLen);
 
     /** Send user data to a given address
      * @param[in] userData pointer to output data stream
@@ -145,7 +145,7 @@ public:
      * @param[in] ipAddr new IP-address, where data is send to
      * @return true - if sending was successful, false - otherwise
      */
-    bool sendTo(const void* userData, const size_t maxLen, uint32_t ipAddr);//MSul
+    bool sendTo(const void* userData, const uint16_t maxLen, uint32_t ipAddr);//MSul
 
     /**
      * Check whether port is active or not.
@@ -163,9 +163,9 @@ public:
 
     bool isBroadcastLink;
 
-    UDPInOut(int broadcastPort);
-    UDPInOut(int port,const char* hostname );
-    UDPInOut(int localInputPort, int remoteOutputPort,const  char* hostname);
+    UDPInOut(int32_t broadcastPort);
+    UDPInOut(int32_t port,const char* hostname );
+    UDPInOut(int32_t localInputPort, int32_t remoteOutputPort,const char* hostname);
 };
 
 

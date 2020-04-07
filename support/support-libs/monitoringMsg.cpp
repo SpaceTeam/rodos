@@ -8,7 +8,7 @@ namespace RODOS {
 #endif
 
 
-MessageTypeId EOM(int id) {
+MessageTypeId EOM(uint16_t id) {
 	MessageTypeId mti;
 	mti.id = id;
 	return mti;
@@ -23,22 +23,22 @@ void MonitoringMsg::clear() {
 
 MonitoringMsg::MonitoringMsg(uint8_t taskId) {
     clear();
-    nodeNr = static_cast<uint8_t>(getNodeNumber());
+    nodeNr = static_cast<uint8_t>(getNodeNumber() & 0xFF);
 	this->taskId = taskId;
 }
 
 
 bool MonitoringMsg::serialize(void* src, size_t len) {
-    uint8_t newEnd = numOfParamsToSend + static_cast<uint8_t>(len);
+    size_t newEnd = numOfParamsToSend + len;
     if (newEnd >= MAX_PARAMS) return false;
     memcpy(&params[numOfParamsToSend], src, len);
-    numOfParamsToSend = newEnd;
+    numOfParamsToSend = static_cast<uint8_t>(newEnd);
     return true;
 }
 
 
 
-void MonitoringMsg::report(int id) {
+void MonitoringMsg::report(uint16_t id) {
     sendTime = NOW();
     msgType = id;
     monitorMsgTopic.publishMsgPart(*this, numOfBytesToSend(), true);
@@ -50,16 +50,16 @@ void MonitoringMsg::report(int id) {
 /**********************************/
 
 bool MonitoringMsg::deserialize(void* dest, size_t len) {
-    uint8_t newEnd = numOfParamsDeserialized + static_cast<uint8_t>(len);
+    size_t newEnd = numOfParamsDeserialized + len;
     if (newEnd > numOfParamsToSend)  return false; 
     memcpy(dest, &params[numOfParamsDeserialized], len);
-    numOfParamsDeserialized = newEnd;
+    numOfParamsDeserialized = static_cast<uint8_t>(newEnd);
     return true;
 }
 
 void* MonitoringMsg::deserializeNoCopy(size_t len) {
     char* currentPos =  &params[numOfParamsDeserialized];
-    numOfParamsDeserialized += static_cast<uint8_t>(len);
+    numOfParamsDeserialized = static_cast<uint8_t>(numOfParamsDeserialized + len);
     return currentPos;
 }
 

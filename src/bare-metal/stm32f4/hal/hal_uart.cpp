@@ -113,7 +113,7 @@ class HW_HAL_UART {
 	friend void DMA1_Stream1_IRQHandler();
 
 	UART_IDX idx;
-	int hwFlowCtrl;
+	uint16_t hwFlowCtrl;
 	uint32_t baudrate;
 	HAL_UART* hal_uart;
 	int uartRxError;
@@ -893,7 +893,7 @@ void HW_HAL_UART::UARTIRQHandler() {
 
     else if (USART_GetITStatus(UARTx,USART_IT_RXNE))
     {
-        c = USART_ReceiveData(UARTx) & 0xFF;
+        c = static_cast<uint8_t>(USART_ReceiveData(UARTx) & 0xFF);
         if(!receiveBuffer.put(c)){
             uartRxError++; //FIFO OVerflow
         }

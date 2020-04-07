@@ -47,11 +47,12 @@ UDPReceiver::~UDPReceiver() {
 }
 
 void UDPReceiver::reopen(const TUDPPortNr port) {
-    listenPort  = port;
-    multiReader = false;
     if(port < 0) {
-        listenPort  = -port;
+        listenPort  = static_cast<uint16_t>(-port);
         multiReader = true;
+    } else {
+        listenPort  = static_cast<uint16_t>(port);
+        multiReader = false;     
     }
     initialised = false;
     init();
@@ -107,7 +108,7 @@ void UDPReceiver::setAsync(Topic<GenericMsgRef>* associatedTopic) {
  * @param[IN] size of input buffer
  * @return length of message written to userData
  */
-int32_t UDPReceiver::get(void* userData, const size_t maxLen) {
+int32_t UDPReceiver::get(void* userData, const uint16_t maxLen) {
     return get(userData, maxLen, 0);
 }
 
@@ -118,7 +119,7 @@ int32_t UDPReceiver::get(void* userData, const size_t maxLen) {
  * @param[IN] size of input buffer
  * @return length of message written to userData
  */
-int32_t UDPReceiver::get([[gnu::unused]] void* userData, [[gnu::unused]] size_t maxLen, [[gnu::unused]] uint32_t* ipaddr) {
+int32_t UDPReceiver::get([[gnu::unused]] void* userData, [[gnu::unused]] uint16_t maxLen, [[gnu::unused]] uint32_t* ipaddr) {
     if(!init()) {
         return -1;
     }
@@ -162,7 +163,7 @@ void UDPTransmitter::openConnection(const TUDPPortNr port, const char* host) {
 
     // Ip Address
     Tokenizer tok;
-    int       ip[4];
+    uint8_t   ip[4];
     char      hostName[32];
 
     strcpy(hostName, host);
@@ -172,7 +173,7 @@ void UDPTransmitter::openConnection(const TUDPPortNr port, const char* host) {
 
     for(int i = 0; i < 4; i++) {
         char* token = tok.next();
-        if(token) ip[i] = s2int(token);
+        if(token) ip[i] = static_cast<uint8_t>(s2int(token));
     }
 
     ip_addr_t ipAdr;
@@ -186,11 +187,11 @@ void UDPTransmitter::init(const TUDPPortNr _port, ip_addr_t ipaddr) {
     if(_port < 0) {
         enableBroadCast = true;
         ip.addr         = IPADDR_BROADCAST;
-        port            = -_port;
+        port            = static_cast<uint16_t>(-_port);
     } else {
         enableBroadCast = false;
         ip              = ipaddr;
-        port            = _port;
+        port            = static_cast<uint16_t>(_port);
     }
     connected = false;
     pcb       = 0;
@@ -208,7 +209,7 @@ void UDPTransmitter::connect(ip_addr_t _ip, uint16_t prt) {
     connected = true;
 }
 
-bool UDPTransmitter::send(const void* msg, const size_t len) {
+bool UDPTransmitter::send(const void* msg, const uint16_t len) {
     if(!IPStack::instance)
         return false;
     IPStack::instance->IPsem.enter();
@@ -229,7 +230,7 @@ bool UDPTransmitter::send(const void* msg, const size_t len) {
     return result == ERR_OK;
 }
 
-bool UDPTransmitter::sendTo(const void* userData, const size_t maxLen,
+bool UDPTransmitter::sendTo(const void* userData, const uint16_t maxLen,
                             uint32_t _ipAddr) {
     if(!IPStack::instance)
         return false;

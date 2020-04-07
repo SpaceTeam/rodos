@@ -229,7 +229,7 @@ void I2C_Init(I2C_TypeDef* I2Cx, I2C_InitTypeDef* I2C_InitStruct)
     /* Set speed value for standard mode */
     tmpreg |= result;	  
     /* Set Maximum Rise Time for standard mode */
-    I2Cx->TRISE = freqrange + 1; 
+    I2Cx->TRISE = (uint16_t)(freqrange + 1); 
   }
   /* Configure speed in fast mode */
   /* To use the I2C at 400 KHz (in fast mode), the PCLK1 frequency (I2C peripheral
@@ -385,7 +385,7 @@ void I2C_DigitalFilterConfig(I2C_TypeDef* I2Cx, uint16_t I2C_DigitalFilter)
   tmpreg &= (uint16_t)~((uint16_t)I2C_FLTR_DNF);
   
   /* Set I2Cx DNF coefficient */
-  tmpreg |= (uint16_t)((uint16_t)I2C_DigitalFilter & I2C_FLTR_DNF);
+  tmpreg = (uint16_t)(tmpreg | ((uint16_t)I2C_DigitalFilter & I2C_FLTR_DNF));
   
   /* Store the new register value */
   I2Cx->FLTR = tmpreg;
@@ -514,7 +514,7 @@ void I2C_OwnAddress2Config(I2C_TypeDef* I2Cx, uint8_t Address)
   tmpreg &= (uint16_t)~((uint16_t)I2C_OAR2_ADD2);
 
   /* Set I2Cx Own address2 */
-  tmpreg |= (uint16_t)((uint16_t)Address & (uint16_t)0x00FE);
+  tmpreg = (uint16_t)(tmpreg | ((uint16_t)Address & (uint16_t)0x00FE));
 
   /* Store the new register value */
   I2Cx->OAR2 = tmpreg;
@@ -881,7 +881,7 @@ uint8_t I2C_GetPEC(I2C_TypeDef* I2Cx)
   /* Check the parameters */
   assert_param(IS_I2C_ALL_PERIPH(I2Cx));
   /* Return the selected I2C PEC value */
-  return ((I2Cx->SR2) >> 8);
+  return (uint8_t)((I2Cx->SR2) >> 8);
 }
 
 /**

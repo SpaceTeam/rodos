@@ -72,7 +72,7 @@ bool LinkinterfaceCAN::sendNetworkMsg(NetworkMessage &outMsg)	{
 
 
 	uint8_t sequenceCounter=0;
-	int count;
+	uint8_t count;
 
 	uint16_tToBigEndian(&buffer[1],dataLength);
 	count=3;

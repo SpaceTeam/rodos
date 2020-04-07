@@ -329,7 +329,7 @@ void hwInitWatchdog(long intervalMilliseconds) {
 	if (reloadVal > 0xFFF) {
 		reloadVal = 0xFFF; // set to maximum reload value
 	}
-	IWDG_SetReload(reloadVal);
+	IWDG_SetReload(static_cast<uint16_t>(reloadVal));
 
 	/* Reload IWDG counter */
 	IWDG_ReloadCounter();
@@ -365,7 +365,7 @@ void TIM5_ISR4LSI(){
     if (TIM_GetITStatus(TIM5, TIM_IT_CC4 ) != RESET) {
         /* Get the Input Capture value */
     	if(CaptureNumber < 2){
-    		tmpCC4[CaptureNumber++] = TIM_GetCapture4(TIM5 );
+    		tmpCC4[CaptureNumber++] = (uint16_t)TIM_GetCapture4(TIM5 );
     	}
 
         /* Clear CC4 Interrupt pending bit */
@@ -519,7 +519,7 @@ void deepSleepUntil(long long until) {
   PWR_ClearFlag(PWR_FLAG_WU);
 
 	long long interval = static_cast<long long>((double)(until - NOW()) / 1000000.0 / 0.5);
-	RTC_SetWakeUpCounter(interval);
+	RTC_SetWakeUpCounter(static_cast<uint32_t>(interval));
 	RTC_WakeUpCmd(ENABLE);
 
 	deepSleepWakeupTime = until;

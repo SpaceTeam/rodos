@@ -65,7 +65,7 @@ bool Router::shouldRouteThisMsg(NetworkMessage& msg, [[gnu::unused]] uint32_t li
 
 bool Router::shouldRouteThisMsgToGateway(NetworkMessage& msg,uint32_t linkid, Gateway* gateway) {
     if(gateway->getLinkIdentifier()==linkid) return false;
-    return gateway->shouldTopicForwarded(static_cast<long>(msg.get_topicId()));
+    return gateway->shouldTopicForwarded(msg.get_topicId());
 }
 
 void Router::addGateway(Gateway* gateway) {

@@ -56,7 +56,7 @@ void UplinkEnvelop::beginNewTF() {
 
 int  UplinkEnvelop::beginNewSP() {
 
-    indexOfCurrentUserData = indexOfCurrentSP + spHeader.HEADER_SIZE;
+    indexOfCurrentUserData = static_cast<uint16_t>(indexOfCurrentSP + spHeader.HEADER_SIZE);
     userDataBuf            = &buf[indexOfCurrentUserData];
     lenOfCurrentSP         = 0; // will be set at commit
     lenOfCurrentUserData   = 0;
@@ -73,22 +73,22 @@ void UplinkEnvelop::commitSP() {
         return;
     }
 
-    lenOfCurrentSP       = spHeader.HEADER_SIZE      + lenOfCurrentUserData;
-    spHeader.length      =(spHeader.HEADER_SIZE - 6) + lenOfCurrentUserData - 1; // Primary-Header-len: 6, Sec-Hea: spHeader.HEADER_SIZE-6
+    lenOfCurrentSP       = static_cast<uint16_t>(spHeader.HEADER_SIZE      + lenOfCurrentUserData);
+    spHeader.length      = (spHeader.HEADER_SIZE - 6u) + lenOfCurrentUserData - 1u; // Primary-Header-len: 6, Sec-Hea: spHeader.HEADER_SIZE-6
     spHeader.serialize(buf + indexOfCurrentSP);
-    indexOfCurrentSP    += lenOfCurrentSP;
-    lenOfCurrentTF      += lenOfCurrentSP;
+    indexOfCurrentSP     = static_cast<uint16_t>(indexOfCurrentSP + lenOfCurrentSP);
+    lenOfCurrentTF       = static_cast<uint16_t>(lenOfCurrentTF + lenOfCurrentSP);
 }
 
 
 void UplinkEnvelop::commitTF() {
 
     //addIdleSP(); Not for uplink! for uplink the size of TF is adapted
-    tfHeader.frameLength = lenOfCurrentTF -1;
+    tfHeader.frameLength = lenOfCurrentTF -1u;
 
     tfHeader.serialize(buf);
     tfTrailer.serialize(buf + lenOfCurrentTF - tfTrailer.HEADER_SIZE);
-    uint16_t myCrc = crcChecker.computeCRC((uint8_t*)buf, lenOfCurrentTF-2, CRC_SEED) & 0xffff; // -2? :  2 bytes CRC
+    uint16_t myCrc = crcChecker.computeCRC((uint8_t*)buf, lenOfCurrentTF-2u, CRC_SEED) & 0xffff; // -2? :  2 bytes CRC
     tfTrailer.crc = myCrc;
     tfTrailer.serialize(buf + lenOfCurrentTF - tfTrailer.HEADER_SIZE); // again? now with CRC
 }
@@ -114,7 +114,7 @@ bool DownlinkEnvelop::checkoutTF() {
 
     tfTrailer.deserialize(buf + lenOfCurrentTF - tfTrailer.HEADER_SIZE); // at the end of TF
 
-    uint16_t myCrc = crcChecker.computeCRC((uint8_t*)buf, lenOfCurrentTF-2, CRC_SEED) & 0xffff; // -2? :  2 bytes CRC
+    uint16_t myCrc = crcChecker.computeCRC((uint8_t*)buf, lenOfCurrentTF-2u, CRC_SEED) & 0xffff; // -2? :  2 bytes CRC
     return (myCrc == tfTrailer.crc);
 }
 
@@ -124,7 +124,7 @@ bool DownlinkEnvelop::checkoutNextSP() {
     if(indexOfCurrentSP == ZERO_IN_SENSE_OF_UNDEF_OR_ERR) {
         indexOfCurrentSP = tfHeader.HEADER_SIZE; // CCSDS allows a gap between header and first SP, but I do not!
     } else {
-        indexOfCurrentSP += lenOfCurrentSP;
+        indexOfCurrentSP = static_cast<uint16_t>(indexOfCurrentSP + lenOfCurrentSP);
     }
 
     if((indexOfCurrentSP + spHeader.HEADER_SIZE + tfTrailer.HEADER_SIZE) > lenOfCurrentTF)  {
@@ -132,9 +132,9 @@ bool DownlinkEnvelop::checkoutNextSP() {
     }
 
     spHeader.deserialize(buf + indexOfCurrentSP);
-    lenOfCurrentSP         = spHeader.dataPackLen + 6 + 1; // 6: len of secondady Header
-    lenOfCurrentUserData   = lenOfCurrentSP   - spHeader.HEADER_SIZE;
-    indexOfCurrentUserData = indexOfCurrentSP + spHeader.HEADER_SIZE;
+    lenOfCurrentSP         = static_cast<uint16_t>(spHeader.dataPackLen + 6 + 1); // 6: len of secondady Header
+    lenOfCurrentUserData   = static_cast<uint16_t>(lenOfCurrentSP   - spHeader.HEADER_SIZE);
+    indexOfCurrentUserData = static_cast<uint16_t>(indexOfCurrentSP + spHeader.HEADER_SIZE);
     userDataBuf            = &buf[indexOfCurrentUserData];
 
     if(spHeader.typeId != 0 || spHeader.applicationId == 0x7ff ||

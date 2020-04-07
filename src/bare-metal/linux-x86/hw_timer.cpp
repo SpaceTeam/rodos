@@ -120,10 +120,10 @@ void Timer::init() {
 void Timer::start() {
     itimerval params;
     int       retval;
-    params.it_interval.tv_sec  = microsecondsInterval / 1000000;
-    params.it_interval.tv_usec = microsecondsInterval % 1000000;
-    params.it_value.tv_sec     = microsecondsInterval / 1000000;
-    params.it_value.tv_usec    = microsecondsInterval % 1000000;
+    params.it_interval.tv_sec  = static_cast<time_t>(microsecondsInterval / 1000000);
+    params.it_interval.tv_usec = static_cast<suseconds_t>(microsecondsInterval % 1000000);
+    params.it_value.tv_sec     = params.it_interval.tv_sec;
+    params.it_value.tv_usec    = params.it_interval.tv_usec;
     retval                     = setitimer(ITIMER_REAL, &params, 0);
     RODOS_ASSERT(retval == 0); // error during call to setitimer
 }

@@ -228,7 +228,7 @@ int32_t HW_HAL_I2C::mstrReadNoStart(const uint8_t addr, uint8_t* rxBuf, uint32_t
 		} else if (GET32(BSC1_ADDR + BSC_REG_S) & BSC_DONE) {
 			/*reading*/
 			while ((GET32(BSC1_ADDR + BSC_REG_S) & BSC_RXD)&& (readindex < rxBufSize)){
-				rxBuf[readindex++] = GET32(BSC1_ADDR + BSC_REG_FIFO);
+				rxBuf[readindex++] = GET32(BSC1_ADDR + BSC_REG_FIFO) & 0xFFu;
 			}
 			PUT32(BSC1_ADDR + BSC_REG_C, 0);
 			PUT32(BSC1_ADDR + BSC_REG_S, (BSC_CLKT | BSC_ERR | BSC_DONE));

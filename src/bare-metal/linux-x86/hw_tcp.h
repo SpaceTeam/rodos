@@ -1,7 +1,7 @@
 #pragma once
 
 #include "hal/tcp.h"
-#include <stddef.h>
+#include <sys/types.h>
 
 namespace RODOS {
 
@@ -16,10 +16,10 @@ class HW_TCPServer {
   public:
     ~HW_TCPServer();
 
-    bool listen(const int portNr);
+    bool listen(const uint16_t portNr);
     bool acceptNewConnection();
-    int  sendData(void* buf, size_t len);
-    int  getData(void* buf, size_t maxLen);
+    ssize_t  sendData(void* buf, size_t len);
+    ssize_t  getData(void* buf, size_t maxLen);
     int  getErrorCode();
 
   protected:
@@ -33,9 +33,9 @@ class HW_TCPClient {
   public:
     ~HW_TCPClient();
 
-    bool reopen(const long portNr, const char* hostname = "localhost");
-    int  sendData(void* buf, size_t len);
-    int  getData(void* buf, size_t maxLen);
+    bool reopen(const uint16_t portNr, const char* hostname = "localhost");
+    ssize_t  sendData(void* buf, size_t len);
+    ssize_t  getData(void* buf, size_t maxLen);
     int  getErrorCode();
 
   protected:

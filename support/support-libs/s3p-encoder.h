@@ -37,8 +37,8 @@ class S3pEncoder {
 
     inline void putDualByte(uint16_t c) {
         PRIORITY_CEILER_IN_SCOPE();
-        putByte(c >> 8);
-        putByte(c & 0xff);
+        putByte(static_cast<uint8_t>(c >> 8));
+        putByte(static_cast<uint8_t>(c & 0xff));
     } // bigendian, MSF
 
     inline void putByteEncoded(uint8_t c) {

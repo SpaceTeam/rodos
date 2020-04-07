@@ -98,8 +98,8 @@ void checkSuspend(volatile int64_t* reactivationTime, pthread_cond_t* cond, pthr
     int64_t hostabsoluteReactivationTime = hwGetAbsoluteNanoseconds() + (*reactivationTime - now);
 
     struct timespec tp;
-    tp.tv_sec  = hostabsoluteReactivationTime / SECONDS;
-    tp.tv_nsec = hostabsoluteReactivationTime % SECONDS;
+    tp.tv_sec  = static_cast<time_t>(hostabsoluteReactivationTime / SECONDS);
+    tp.tv_nsec = static_cast<long>(hostabsoluteReactivationTime % SECONDS);
 
     while(*reactivationTime > now) {
         if(*reactivationTime == END_OF_TIME) {
@@ -163,7 +163,7 @@ void Thread::setPriority(const long prio) {
     // xprintf("Setting Prio %ld for %d\n", priority, (int)pt);
     struct sched_param param;
     memset(&param, 0, sizeof(param));
-    param.sched_priority = posixPrio;
+    param.sched_priority = static_cast<int>(posixPrio);
     pthread_setschedparam(pt, SCHED_FIFO, &param);
 
     /*** Only debug ***/

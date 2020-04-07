@@ -405,7 +405,7 @@ void MSS_UART_enable_irq(
          * bit 2 - Receiver Line Status Interrupt
          * bit 3 - Modem Status Interrupt
          */
-        this_uart->hw_reg->IER |= (uint8_t)irq_mask & IIRF_MASK;
+        this_uart->hw_reg->IER |= (uint8_t)(this_uart->hw_reg->IER | ((uint8_t)irq_mask & IIRF_MASK));
 
         /* 
          * bit 4 - Receiver time-out interrupt
@@ -474,9 +474,9 @@ void MSS_UART_set_rx_handler(
         this_uart->rx_handler = handler;
 
         /* Set the receive interrupt trigger level. */
-        this_uart->hw_reg->FCR = (this_uart->hw_reg->FCR &
+        this_uart->hw_reg->FCR = (uint8_t)((this_uart->hw_reg->FCR &
                                   (uint8_t)(~((uint8_t)FCR_TRIG_LEVEL_MASK))) |
-                                 (uint8_t)trigger_level;
+                                 (uint8_t)trigger_level);
         /* Clear any previously pended interrupts */
         NVIC_ClearPendingIRQ(this_uart->irqn);
 
@@ -513,7 +513,7 @@ void MSS_UART_set_loopback(
             case MSS_UART_REMOTE_LOOPBACK_OFF:
             case MSS_UART_AUTO_ECHO_OFF:
                 /* Disable remote loopback & automatic echo*/
-                this_uart->hw_reg->MCR &= ~RLOOP_MASK;
+                this_uart->hw_reg->MCR &= (uint8_t)~RLOOP_MASK;
                 break;
 
             case MSS_UART_REMOTE_LOOPBACK_ON:
@@ -1217,7 +1217,7 @@ void MSS_UART_set_usart_mode(
        (MSS_UART_INVALID_SYNC_MODE > mode)) {
         /* Nothing to do for the baudrate: operates at PCLK / 2 + glitch filter length */
         /* Clear the ESYN bits 2:0 */
-        this_uart->hw_reg->MM0 &= ~SYNC_ASYNC_MODE_MASK;
+        this_uart->hw_reg->MM0 = (uint8_t)(this_uart->hw_reg->MM0 & ~SYNC_ASYNC_MODE_MASK);
         this_uart->hw_reg->MM0 |= (uint8_t)mode;
     }
 }

@@ -16,15 +16,15 @@
 
 namespace RODOS {
 
-UDPIn::UDPIn(const long portNr) : udpRx(portNr) 			      { }
-UDPIn::UDPIn(const long portNr, Topic<GenericMsgRef>* associatedTopic) : udpRx(portNr)  {udpRx.setAsync(associatedTopic); }
+UDPIn::UDPIn(const int32_t portNr) : udpRx(portNr) 			      { }
+UDPIn::UDPIn(const int32_t portNr, Topic<GenericMsgRef>* associatedTopic) : udpRx(portNr)  {udpRx.setAsync(associatedTopic); }
 
 void UDPIn::setAsync(Topic<GenericMsgRef>* associatedTopic)             {udpRx.setAsync(associatedTopic); }
 
-void UDPIn::reopen(const long portNr) 					{ udpRx.reopen(portNr); }
+void UDPIn::reopen(const int32_t portNr) 					{ udpRx.reopen(portNr); }
 
-int32_t UDPIn::get(void* userData, size_t maxLen) 				{ return udpRx.get(userData, maxLen); }
-int32_t UDPIn::get(void* userData, size_t maxLen, uint32_t *ipaddr) 	{ return udpRx.get(userData, maxLen,ipaddr); }
+int32_t UDPIn::get(void* userData, uint16_t maxLen) 				{ return udpRx.get(userData, maxLen); }
+int32_t UDPIn::get(void* userData, uint16_t maxLen, uint32_t *ipaddr) 	{ return udpRx.get(userData, maxLen,ipaddr); }
 bool UDPIn::readyToGet() 						{ return udpRx.readyToGet(); }
 
 bool UDPIn::isConnected() 						{ return udpRx.isInitialised(); }
@@ -36,24 +36,24 @@ void UDPIn::joinMulticastGroup(unsigned long ipaddr) { udpRx.joinMulticastGroup(
 
 /****************/
 
-UDPOut::UDPOut(const long portNr, const char* hostname) 		: udpTx(portNr, hostname) 	{ }
+UDPOut::UDPOut(const int32_t portNr, const char* hostname) 		: udpTx(portNr, hostname) 	{ }
 //UDPOut::UDPOut(const long _portNr) 					: udpTx(_portNr) 	  	{ }
-UDPOut::UDPOut(const long _portNr, uint32_t _ipAddr) 		: udpTx(_portNr, _ipAddr)	{ }
-UDPOut::UDPOut(const long _portNr, int ip0, int ip1, int ip2, int ip3)	: udpTx(_portNr, ip0, ip1, ip2, ip3) { }
+UDPOut::UDPOut(const int32_t _portNr, uint32_t _ipAddr) 		: udpTx(_portNr, _ipAddr)	{ }
+UDPOut::UDPOut(const int32_t _portNr, int ip0, int ip1, int ip2, int ip3)	: udpTx(_portNr, ip0, ip1, ip2, ip3) { }
 
-bool UDPOut::send(const void* userData, const size_t maxLen) 	        	 { return udpTx.send(userData, maxLen); }
-bool UDPOut::sendTo(const void* userData, const size_t maxLen, uint32_t ipAddr) { return udpTx.sendTo(userData, maxLen,ipAddr); }
+bool UDPOut::send(const void* userData, const uint16_t maxLen) 	        	 { return udpTx.send(userData, maxLen); }
+bool UDPOut::sendTo(const void* userData, const uint16_t maxLen, uint32_t ipAddr) { return udpTx.sendTo(userData, maxLen,ipAddr); }
 bool UDPOut::isConnected() 						{ return udpTx.isInitialised(); }
 
 
-UDPInOut::UDPInOut(int broadcastPort):
+UDPInOut::UDPInOut(int32_t broadcastPort):
     udpIn(broadcastPort),
     udpOut(broadcastPort) {
     isBroadcastLink=true;
     RODOS_ASSERT(broadcastPort < 0); // Broadcast UDPInOut defined but port number ist positive
 }
 
-UDPInOut::UDPInOut(int port ,const char* hostname):
+UDPInOut::UDPInOut(int32_t port ,const char* hostname):
     udpIn(port),
     udpOut(port,hostname) {
     isBroadcastLink=false;
@@ -62,7 +62,7 @@ UDPInOut::UDPInOut(int port ,const char* hostname):
     }
 }
 
-UDPInOut::UDPInOut(int localInputPort, int remoteOutputPort,const  char* hostname):
+UDPInOut::UDPInOut(int32_t localInputPort, int32_t remoteOutputPort,const  char* hostname):
     udpIn(localInputPort),
     udpOut(remoteOutputPort,hostname) {
     isBroadcastLink=false;

@@ -17,7 +17,7 @@ int S3pEncoder::getMsgByPolling(int maxLen, uint8_t* msg) {
 
     while(1) {
         if(len >= maxLen) return maxLen;
-        dualByte = (dualByte << 8) | getByte();
+        dualByte = static_cast<uint16_t>((dualByte << 8) | getByte());
 
         switch(dualByte) {
             case BOM:
@@ -45,7 +45,9 @@ int S3pEncoder::getMsgByPolling(int maxLen, uint8_t* msg) {
                 break;
 
             default:
-                if(len >= 0 && !isCommand(dualByte) && !isMark(dualByte)) msg[len++] = dualByte & 0xff;
+                if(len >= 0 && !isCommand(dualByte) && !isMark(dualByte)) {
+                    msg[len++] = static_cast<uint8_t>(dualByte & 0xff);
+                }
         }
     }
 }
@@ -57,7 +59,7 @@ void S3pEncoder::upcallOnInputChar(uint8_t inputByte) {
     static int16_t  len      = -1;
     static uint16_t dualByte = 0;
 
-    dualByte = (dualByte << 8) | inputByte;
+    dualByte = static_cast<uint16_t>((dualByte << 8u) | inputByte);
 
     switch(dualByte) {
         case BOM:

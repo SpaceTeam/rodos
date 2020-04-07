@@ -33,7 +33,7 @@ HW_TCPServer::~HW_TCPServer() {
     close(listen_sock);
 }
 
-bool HW_TCPServer::listen(const int portNr) {
+bool HW_TCPServer::listen(const uint16_t portNr) {
     sockaddr_in server_address;
 
     memset(&server_address, 0, sizeof(server_address));
@@ -69,15 +69,15 @@ bool HW_TCPServer::acceptNewConnection() {
     return true;
 }
 
-int HW_TCPServer::sendData(void* buf, size_t len)   { return ::send(client_sock, buf, len, 0); }
-int HW_TCPServer::getData(void* buf, size_t maxLen) { return recv(client_sock, buf, maxLen, 0); }
+ssize_t HW_TCPServer::sendData(void* buf, size_t len)   { return ::send(client_sock, buf, len, 0); }
+ssize_t HW_TCPServer::getData(void* buf, size_t maxLen) { return recv(client_sock, buf, maxLen, 0); }
 int HW_TCPServer::getErrorCode()                 { return errorCode; }
 
 //_______________________________________________________________________________
 
 HW_TCPClient::~HW_TCPClient() { close(sock); }
 
-bool HW_TCPClient::reopen(const long portNr, const char* hostname) {
+bool HW_TCPClient::reopen(const uint16_t portNr, const char* hostname) {
     sockaddr_in server_address;
     memset(&server_address, 0, sizeof(server_address));
     server_address.sin_family = AF_INET;
@@ -95,8 +95,8 @@ bool HW_TCPClient::reopen(const long portNr, const char* hostname) {
     return errorCode == 0;
 }
 
-int HW_TCPClient::sendData(void* buf, size_t len)   { return ::send(sock, buf, len, 0); }
-int HW_TCPClient::getData(void* buf, size_t maxLen) { return recv(sock, buf, maxLen, 0); }
+ssize_t HW_TCPClient::sendData(void* buf, size_t len)   { return ::send(sock, buf, len, 0); }
+ssize_t HW_TCPClient::getData(void* buf, size_t maxLen) { return recv(sock, buf, maxLen, 0); }
 int HW_TCPClient::getErrorCode() { return errorCode; }
 
 } // namespace RODOS

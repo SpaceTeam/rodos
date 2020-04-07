@@ -281,7 +281,7 @@ void Gateway::run() {
 
 
 void prepareNetworkMessage(NetworkMessage& netMsg, const uint32_t topicId,const void* data, size_t len) {
-    netMsg.put_senderNode(myNodeNr); // Set node ID of sending node
+    netMsg.put_senderNode(static_cast<int32_t>(myNodeNr)); // Set node ID of sending node
     netMsg.put_topicId(topicId);     // ID of calling topic
     netMsg.put_sentTime(NOW());      // Timestamp
     netMsg.put_maxStepsToForward(10);

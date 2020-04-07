@@ -323,7 +323,7 @@ int32_t HW_HAL_I2C::sendAddr(const uint8_t addr, uint8_t rwFlag){
 
 	/* Transmit the slave address and enable writing operation */
 	//I2C_Send7bitAddress wants the address left aligned
-	I2C_Send7bitAddress(I2Cx, addr << 1, rwFlag);
+	I2C_Send7bitAddress(I2Cx, static_cast<uint8_t>(addr << 1), rwFlag);
 
 	/* Test on EV6 and clear it */
 	uint32_t i2cEvent;

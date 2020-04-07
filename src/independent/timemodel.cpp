@@ -81,7 +81,7 @@ int64_t TimeModel::localTime2UTC(const int64_t t) {
 
 /* converts the given UTC time to the corresponding local time. */
 int64_t TimeModel::UTC2LocalTime(const int64_t utc) {
-    long double local = utc - utcDeltaTime + (static_cast<long double>(drift) * static_cast<long double>(tSync));
+    long double local = static_cast<long double>(utc - utcDeltaTime) + (static_cast<long double>(drift) * static_cast<long double>(tSync));
     return (int64_t) (local / static_cast<long double>(1.0 + drift) + 0.5l);
 }
 
@@ -120,8 +120,8 @@ void TimeModel::localTime2Calendar(const int64_t localTime,
 
     hour = (int32_t)(localTimeUnitsOfTheDay / (1*HOURS));
     min  = (int32_t)((localTimeUnitsOfTheDay / (1*MINUTES))%60);
-    sec = (localTimeUnitsOfTheDay / (1*SECONDS))%60 +
-          (localTimeUnitsOfTheDay % (1*SECONDS)) / (1.0*SECONDS);
+    sec = static_cast<double>((localTimeUnitsOfTheDay / (1*SECONDS))%60) +
+          static_cast<double>(localTimeUnitsOfTheDay % (1*SECONDS)) / (1.0*SECONDS);
 }
 
 double TimeModel::localTime2mjd_UTC(const int64_t &localTime) {
@@ -135,8 +135,8 @@ int64_t TimeModel::calendar2LocalTime(int32_t year,
                                     int32_t hour,
                                     int32_t min,
                                     double sec) {
-    int32_t daysFrom2000 = 367L*year-7L*
-                        (year+((month+9)/12))/4+((275*month)/9)+day-730531L;
+    int32_t daysFrom2000 = static_cast<int32_t>(367L*year-7L*
+                        (year+((month+9)/12))/4+((275*month)/9)+day-730531L);
 
     double secondsOfDay = (hour*60 +min)*60 + sec;
 
@@ -157,7 +157,7 @@ double TimeModel::calendar2mjd_UTC( const uint16_t &year,
     uint16_t year_mod = year;
 
     if (month_mod<=2) {
-        month_mod+=12;
+        month_mod=static_cast<uint8_t>(month_mod + 12);
         year_mod--;
     }
     if ( (10000L*year_mod+100L*month+day) <= 15821004L  ) {
@@ -188,13 +188,13 @@ void TimeModel::mjd_UTC2calendar( const double &MJD_UTC,
     // fraction of the day
     q = MJD_UTC - static_cast<int32_t>(MJD_UTC);
 
-    b = static_cast<int32_t>(a-1867216.25f)/36524.25; // gregorian calendar assumed,
+    b = static_cast<int32_t>(static_cast<float>(a)-1867216.25f)/36524.25; // gregorian calendar assumed,
     c = a + b - (b/4) + 1525;
     d = static_cast<int32_t>((c-121.1)/365.25);
     e = static_cast<int32_t>(365.25*d);
     f = static_cast<int32_t>((c-e) / 30.6001);
 
-    day = static_cast<uint8_t>(c - e - static_cast<uint8_t>(30.6001f*f));
+    day = static_cast<uint8_t>(c - e - static_cast<uint8_t>(30.6001f*static_cast<float>(f)));
     month = static_cast<uint8_t>(f - 1 - 12*(f/14));
     year = static_cast<uint16_t>(d - 4715 - (7+month)/10);
     hour =  static_cast<uint8_t>(q*24.0);

@@ -17,7 +17,7 @@ namespace RODOS {
 size_t NetworkMessage::setUserData(const void* data, size_t len) {
     len =  MIN(len, MAX_NETWORK_MESSAGE_LENGTH);
     memcpy(userDataC, data, len);
-    put_len(len);
+    put_len(static_cast<uint16_t>(len));
     return len;
 }
 

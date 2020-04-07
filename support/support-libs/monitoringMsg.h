@@ -13,8 +13,8 @@ namespace RODOS {
 	else they have no use.
  **/
 
-struct MessageTypeId    { int id; };
-extern MessageTypeId EOM(int id);
+struct MessageTypeId    { uint16_t id; };
+extern MessageTypeId EOM(uint16_t id);
 
 
 /*** Montor messages: used for both:
@@ -54,7 +54,7 @@ public:
     /***********************************/
 
     bool serialize(void* src, size_t len);	///< append data to the message
-    void report(int id);		///< distribute the message
+    void report(uint16_t id);		///< distribute the message
 
     // These functions could implement byte-sex (littel/big-endian) convertions
 

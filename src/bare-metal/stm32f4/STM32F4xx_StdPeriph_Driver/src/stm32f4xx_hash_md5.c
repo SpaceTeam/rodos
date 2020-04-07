@@ -106,7 +106,7 @@ ErrorStatus HASH_MD5(uint8_t *Input, uint32_t Ilen, uint8_t Output[16])
 
 
   /* Number of valid bits in last word of the Input data */
-  nbvalidbitsdata = 8 * (Ilen % 4);
+  nbvalidbitsdata = (uint16_t)(8 * (Ilen % 4));
 
   /* HASH peripheral initialization */
   HASH_DeInit();
@@ -183,10 +183,10 @@ ErrorStatus HMAC_MD5(uint8_t *Key, uint32_t Keylen, uint8_t *Input,
   uint32_t outputaddr = (uint32_t)Output;
 
   /* Number of valid bits in last word of the Input data */
-  nbvalidbitsdata = 8 * (Ilen % 4);
+  nbvalidbitsdata = (uint16_t)(8 * (Ilen % 4));
 
   /* Number of valid bits in last word of the Key */
-  nbvalidbitskey = 8 * (Keylen % 4);
+  nbvalidbitskey = (uint16_t)(8 * (Keylen % 4));
    
   /* HASH peripheral initialization */
   HASH_DeInit();

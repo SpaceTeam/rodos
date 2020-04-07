@@ -41,7 +41,7 @@ void TopicReporter::addLocalTopics(TopicListReport& list) {
     ITERATE_LIST(TopicInterface, TopicInterface::topicList) { // scan all subscriver for each topic
         for(Subscriber* subs = (Subscriber*)iter->mySubscribers; subs!=0; subs = (Subscriber*)subs->getNext()) {
             if(subs->isEnabled) { // at least one listener
-                list.add((short)(iter->topicId));
+                list.add((iter->topicId));
                 break; // this topic is processed, do not search mor subscriver for thie topic
             }
         }  

@@ -61,7 +61,7 @@ void udpReader(int) {
     msgRef.msgPtr = inputBuf;
 
     for(int socketCnt = 0; socketCnt < numOfAsyncInputSockets; socketCnt++) {
-        while((msgRef.msgLen = read(asyncInputSocketDescriptor[socketCnt], inputBuf, 1400)) > 0) {
+        while((msgRef.msgLen = static_cast<int32_t>(read(asyncInputSocketDescriptor[socketCnt], inputBuf, 1400))) > 0) {
             asyncInputSocketAssociatedTopic[socketCnt]->publishFromInterrupt(&msgRef, sizeof(GenericMsgRef));
         }
     }
@@ -73,7 +73,7 @@ UDPReceiver::UDPReceiver(const int port) {
 }
 
 
-void UDPReceiver::joinMulticastGroup(unsigned long ipaddr) {
+void UDPReceiver::joinMulticastGroup(uint32_t ipaddr) {
     static struct ip_mreq command;
     //    int loop = 1;
     //    if (setsockopt ( sock,
@@ -104,6 +104,10 @@ void UDPReceiver::reopen(const int port) {
     initialised       = false;
     int myPort        = port;
     if(port < 0) { myPort = -port; enableMultiReader = true; }
+    if(port > UINT16_MAX) {
+        xprintf("KK Reopen0 UDP-in: invalid port\n");
+        return;
+    }
 
     /* create new udp socket */
     sock = socket(PF_INET, SOCK_DGRAM, 0);
@@ -122,7 +126,7 @@ void UDPReceiver::reopen(const int port) {
     memset(&inputAddr, 0, sizeof(inputAddr));
     inputAddr.sin_family      = AF_INET;       // IPv4
     inputAddr.sin_addr.s_addr = INADDR_ANY;    // Use no fixed IP-address for data source
-    inputAddr.sin_port        = htons(myPort); // Save portaddresss in networkorder
+    inputAddr.sin_port        = htons(static_cast<uint16_t>(myPort)); // Save portaddresss in networkorder
     int retval                = bind(sock, (const sockaddr*)&inputAddr, sizeof(inputAddr));
     if(retval != 0) {
         xprintf("!! Reopen2 UDP-in: cannot bind socket port %d\n", port);
@@ -188,7 +192,7 @@ int32_t UDPReceiver::get(void* userData, const size_t maxLen, uint32_t* ipaddr) 
 bool UDPReceiver::readyToGet() {
     if(!initialised) return false;
     char tempBuf[16];
-    int  errcode = recvfrom(sock, tempBuf, 16, MSG_PEEK | MSG_DONTWAIT, 0, 0);
+    ssize_t errcode = recvfrom(sock, tempBuf, 16, MSG_PEEK | MSG_DONTWAIT, 0, 0);
     if(errcode <= 0) return false;
     return true;
 }
@@ -196,7 +200,7 @@ bool UDPReceiver::readyToGet() {
 
 /******************************************************************************/
 
-void UDPTransmitter::openConnection(int port, const char* host) {
+void UDPTransmitter::openConnection(int32_t port, const char* host) {
     initialised = false;
 
     if(port < 0) {
@@ -204,6 +208,10 @@ void UDPTransmitter::openConnection(int port, const char* host) {
         enableBroadCast = true;
     } else {
         enableBroadCast = false;
+    }
+    if(port > UINT16_MAX) {
+        xprintf("!! Openconnection0 UDP-out: invalid port\n");
+        return;
     }
 
     /** Open socket
@@ -227,7 +235,7 @@ void UDPTransmitter::openConnection(int port, const char* host) {
     }
 
     outputAddr.sin_family = AF_INET;
-    outputAddr.sin_port   = htons(port);
+    outputAddr.sin_port   = htons(static_cast<uint16_t>(port));
 
     if(enableBroadCast) {
         // option to allow broadcast
@@ -242,13 +250,13 @@ void UDPTransmitter::openConnection(int port, const char* host) {
 }
 
 
-UDPTransmitter::UDPTransmitter(const int port, const char* host) {
+UDPTransmitter::UDPTransmitter(const int32_t port, const char* host) {
     enableBroadCast = false;
     openConnection(port, host);
 }
 
 
-UDPTransmitter::UDPTransmitter(const long portNr, unsigned long ipAddr) {
+UDPTransmitter::UDPTransmitter(const int32_t portNr, uint32_t ipAddr) {
     char hostname[100];
     int  ip0, ip1, ip2, ip3;
     ip3 = ipAddr & 0xff;
@@ -266,7 +274,7 @@ UDPTransmitter::UDPTransmitter(const long portNr, unsigned long ipAddr) {
 }
 
 
-UDPTransmitter::UDPTransmitter(const long portNr, int ip0, int ip1, int ip2, int ip3) {
+UDPTransmitter::UDPTransmitter(const int32_t portNr, int ip0, int ip1, int ip2, int ip3) {
     char hostname[100];
     xsprintf(hostname, "%d.%d.%d.%d", ip0, ip1, ip2, ip3);
     enableBroadCast = false;
@@ -278,7 +286,7 @@ UDPTransmitter::~UDPTransmitter() { close(sock); }
 
 /*************************************************/
 bool UDPTransmitter::send(const void* msg, const size_t len) {
-    int retval;
+    ssize_t retval;
     if(!initialised) return false;
     retval = sendto(sock, msg, len, 0, (sockaddr*)&outputAddr, sizeof(outputAddr));
     if(retval == -1) {
@@ -287,7 +295,7 @@ bool UDPTransmitter::send(const void* msg, const size_t len) {
     return true;
 }
 
-bool UDPTransmitter::sendTo(const void* userData, const size_t maxLen, unsigned long ipAddr) {
+bool UDPTransmitter::sendTo(const void* userData, const size_t maxLen, uint32_t ipAddr) {
 
     // Here we establish a connection procedure like in send, but connecting to another host.
     hostent*    newHp;
@@ -318,7 +326,7 @@ bool UDPTransmitter::sendTo(const void* userData, const size_t maxLen, unsigned 
     newOutputAddr.sin_port   = outputAddr.sin_port;
 
     // Send to a different host, but the same socket.
-    int sendval = sendto(sock, userData, maxLen, 0, (sockaddr*)&newOutputAddr, sizeof(newOutputAddr));
+    ssize_t sendval = sendto(sock, userData, maxLen, 0, (sockaddr*)&newOutputAddr, sizeof(newOutputAddr));
     if(sendval == -1) {
         return false;
     }

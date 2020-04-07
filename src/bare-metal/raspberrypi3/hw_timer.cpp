@@ -26,7 +26,7 @@ void Timer::init() {
     // get current counter value
     count = read32(SYSTEM_TIMER_CNT_LOW);
     // add period
-    count += Timer::microsecondsInterval;
+    count += static_cast<uint32_t>(Timer::microsecondsInterval);
 
     // set compare value
     write32(SYSTEM_TIMER_COMPARE1, count);

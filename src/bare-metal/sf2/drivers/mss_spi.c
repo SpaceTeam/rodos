@@ -478,7 +478,7 @@ void MSS_SPI_transfer_block(
     ASSERT((this_spi->hw_reg->CONTROL & CTRL_MASTER_MASK) == CTRL_MASTER_MASK);
 
     /* Compute number of bytes to transfer. */
-    transfer_size = cmd_byte_size + rd_byte_size;
+    transfer_size = (uint16_t)(cmd_byte_size + rd_byte_size);
 
     /* Adjust to 1 byte transfer to cater for DMA transfers. */
     if(0u == transfer_size) {

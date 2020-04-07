@@ -451,7 +451,7 @@ static uint8_t clk_switching_fix(void) {
     else if(0xF805u == device_version) {
         /* For APB0_DIVISOR setting */
         divisor[0] = ((g_mssddr_facc1_cr >> 2) & 0x00000007);
-        sequence   = determine_seq(divisor[0], &len);
+        sequence   = determine_seq((uint8_t)divisor[0], &len);
 
         for(var = 1; var < len; var++) {
             temp = SYSREG->MSSDDR_FACC1_CR;
@@ -462,7 +462,7 @@ static uint8_t clk_switching_fix(void) {
 
         /* For APB1_DIVISOR setting */
         divisor[1] = ((g_mssddr_facc1_cr >> 5) & 0x00000007);
-        sequence   = determine_seq(divisor[1], &len);
+        sequence   = determine_seq((uint8_t)divisor[1], &len);
 
         for(var = 1; var < len; var++) {
             temp = SYSREG->MSSDDR_FACC1_CR;
@@ -473,7 +473,7 @@ static uint8_t clk_switching_fix(void) {
 
         /* For M3_CLK_DIVISOR setting */
         divisor[2] = ((g_mssddr_facc1_cr >> 9) & 0x00000007);
-        sequence   = determine_seq(divisor[2], &len);
+        sequence   = determine_seq((uint8_t)divisor[2], &len);
 
         for(var = 1; var < len; var++) {
             temp = SYSREG->MSSDDR_FACC1_CR;
@@ -484,7 +484,7 @@ static uint8_t clk_switching_fix(void) {
 
         /* For FIC64_DIVISOR setting */
         divisor[3] = ((g_mssddr_facc1_cr >> 19) & 0x00000007);
-        sequence   = determine_seq(divisor[3], &len);
+        sequence   = determine_seq((uint8_t)divisor[3], &len);
         for(var = 1; var < len; var++) {
             temp = SYSREG->MSSDDR_FACC1_CR;
             temp &= 0xFFC7FFFFu;
@@ -550,7 +550,7 @@ static void revert_clk_config(void) {
 
     /* Revert back values for 05 devices in reverse sequence. */
     else if(0xF805u == device_version) {
-        sequence = determine_seq(divisor[0], &len);
+        sequence = determine_seq((uint8_t)divisor[0], &len);
         for(var = len; var > 0; var--) {
             temp = SYSREG->MSSDDR_FACC1_CR;
             temp &= 0xFFFFFFE3u;
@@ -559,7 +559,7 @@ static void revert_clk_config(void) {
         }
 
         /* For APB1_DIVISOR setting */
-        sequence = determine_seq(divisor[1], &len);
+        sequence = determine_seq((uint8_t)divisor[1], &len);
         for(var = len; var > 0; var--) {
             temp = SYSREG->MSSDDR_FACC1_CR;
             temp &= 0xFFFFFF1Fu;
@@ -568,7 +568,7 @@ static void revert_clk_config(void) {
         }
 
         /* For M3_CLK_DIVISOR setting */
-        sequence = determine_seq(divisor[2], &len);
+        sequence = determine_seq((uint8_t)divisor[2], &len);
         for(var = len; var > 0; var--) {
             temp = SYSREG->MSSDDR_FACC1_CR;
             temp &= 0xFFFFF1FFu;
@@ -577,7 +577,7 @@ static void revert_clk_config(void) {
         }
 
         /* For FIC64_DIVISOR setting */
-        sequence = determine_seq(divisor[3], &len);
+        sequence = determine_seq((uint8_t)divisor[3], &len);
         for(var = len; var > 0; var--) {
             temp = SYSREG->MSSDDR_FACC1_CR;
             temp &= 0xFFC7FFFFu;
@@ -1555,7 +1555,7 @@ uint8_t MSS_SYS_puf_enroll_key(
     write_ptr_value_into_array(p_key_value, params, 5u);
 
     params[9]  = key_number;
-    params[10] = key_size;
+    params[10] = (uint8_t)key_size; // potential bug for key_size > 255?
 
     status = execute_service(PUF_USER_KEY_CODE_REQUEST_CMD,
                              params,

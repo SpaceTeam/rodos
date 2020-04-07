@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include <stddef.h>
+#include <stdint.h>
 #include "hw_tcp.h"
 
 /**
@@ -19,10 +19,10 @@ protected:
   HW_TCPServer tcp;
 
 public:
-  bool listen(const long portNr);
+  bool listen(const uint16_t portNr);
   bool acceptNewConnection();
-  int sendData(void* buf, size_t len);   // not just send, due to name collision with lwip
-  int getData(void* buf, size_t maxLen); // not just get due to name collision
+  int32_t sendData(void* buf, uint16_t len);   // not just send, due to name collision with lwip
+  int32_t getData(void* buf, uint16_t maxLen); // not just get due to name collision
   int getErrorCode();
 };
 
@@ -31,9 +31,9 @@ protected:
   HW_TCPClient tcp;
 
 public:
-  bool reopen(const long portNr, const char* hostname = "localhost");
-  int sendData(void* buf, size_t len);   // not just send due to name collision with lwip
-  int getData(void* buf, size_t maxLen); // not just get due to name collision
+  bool reopen(const uint16_t portNr, const char* hostname = "localhost");
+  int32_t sendData(void* buf, uint16_t len);   // not just send due to name collision with lwip
+  int32_t getData(void* buf, uint16_t maxLen); // not just get due to name collision
   int getErrorCode();
 };
 

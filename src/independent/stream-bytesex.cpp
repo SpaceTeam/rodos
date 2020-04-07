@@ -101,11 +101,11 @@ double doubleConvertHost2Net(double dw) {
 
 
 /// DEPRECATED... 
-short shortConvertHost2Net(short sw) { if(isHostBigEndian) return sw; return swap16(sw); } 
+int16_t shortConvertHost2Net(int16_t sw) { if(isHostBigEndian) return sw; return swap16(sw); } 
 /// DEPRECATED... 
-long  longConvertHost2Net(long lw) { if(isHostBigEndian) return lw; return swap32(lw); }
+int32_t  longConvertHost2Net(int32_t lw) { if(isHostBigEndian) return lw; return swap32(lw); }
 /// DEPRECATED... 
-long long longlongConvertHost2Net(long long llw) { if(isHostBigEndian) return llw; return swap64(llw); } 
+int64_t longlongConvertHost2Net(int64_t llw) { if(isHostBigEndian) return llw; return swap64(llw); } 
 
 
 //__________________________________________________________________________________________________________
@@ -113,31 +113,37 @@ long long longlongConvertHost2Net(long long llw) { if(isHostBigEndian) return ll
 uint16_t bigEndianToUint16_t(const void* buff) {
     const uint8_t* byteStream = (const uint8_t*)buff;
     if (byteStream == 0) return 0;
-    return   (((uint16_t)(byteStream[0])) << 8)
-           |  ((uint16_t)(byteStream[1]));
+    return static_cast<uint16_t>(
+              (((uint16_t)(byteStream[0])) << 8)
+            | ((uint16_t)(byteStream[1]))
+        );
 }
 
 uint32_t bigEndianToUint32_t(const void* buff) {
     const uint8_t* byteStream = (const uint8_t*)buff;
     if (byteStream == 0) return 0;
-    return    (((uint32_t)(byteStream[0])) << 24)
+    return static_cast<uint32_t>(
+              (((uint32_t)(byteStream[0])) << 24)
             | (((uint32_t)(byteStream[1])) << 16)
-            | (((uint32_t)(byteStream[2])) <<  8)
-            |  ((uint32_t)(byteStream[3]));
+            | (((uint32_t)(byteStream[2])) << 8)
+            | ((uint32_t)(byteStream[3]))
+        );
 }
 
 
 uint64_t bigEndianToUint64_t(const void* buff) {
     const uint8_t* byteStream = (const uint8_t*)buff;
     if (byteStream == 0) return 0;
-    return   (((uint64_t)(byteStream[0])) << 56)
-           | (((uint64_t)(byteStream[1])) << 48)
-           | (((uint64_t)(byteStream[2])) << 40)
-           | (((uint64_t)(byteStream[3])) << 32)
-           | (((uint64_t)(byteStream[4])) << 24)
-           | (((uint64_t)(byteStream[5])) << 16)
-           | (((uint64_t)(byteStream[6])) <<  8)
-           |  ((uint64_t)(byteStream[7]));
+    return static_cast<uint32_t>(
+             (((uint64_t)(byteStream[0])) << 56)
+            | (((uint64_t)(byteStream[1])) << 48)
+            | (((uint64_t)(byteStream[2])) << 40)
+            | (((uint64_t)(byteStream[3])) << 32)
+            | (((uint64_t)(byteStream[4])) << 24)
+            | (((uint64_t)(byteStream[5])) << 16)
+            | (((uint64_t)(byteStream[6])) <<  8)
+            |  ((uint64_t)(byteStream[7]))
+        );
 }
 
 
@@ -227,7 +233,11 @@ void setBitInByteStream (void *byteStream, int bitIndex, bool value) {
     int bitPos =    bitIndex % 8;
     unsigned char* bytes = (unsigned char*)byteStream;
 
-    SET_BIT_IN_BYTE(bytes[byteIndex], bitPos, (value? 1 : 0));
+    if (value) {
+        bytes[byteIndex] = static_cast<unsigned char>(bytes[byteIndex] | (0x1 << (7 - bitPos)));
+    } else {
+        bytes[byteIndex] = static_cast<unsigned char>(bytes[byteIndex] & ~(0x1 << (7 - bitPos)));
+    }
 }
 
 
@@ -252,7 +262,7 @@ void setBitField(void* buffer, size_t bitPos, uint8_t numOfBits, uint32_t val) {
     unsigned char* buf = (unsigned char*) buffer;
     size_t byteIndex = bitPos / 8;
     bitPos        = bitPos % 8;
-    uint8_t shifts    = 24 - (bitPos + numOfBits);
+    uint8_t shifts    = static_cast<uint8_t>(24 - (bitPos + numOfBits));
     uint32_t mask     = ONES(numOfBits) << shifts;
 
     val = val << shifts;
@@ -276,11 +286,11 @@ void setBitField(void* buffer, size_t bitPos, uint8_t numOfBits, uint32_t val) {
   * Warning: CCSDS -> Bit 0 = most significant bit!
   **/
 
-uint32_t getBitField(const void* buffer, int bitPos, int numOfBits) {
+uint32_t getBitField(const void* buffer, size_t bitPos, uint8_t numOfBits) {
     const uint8_t* buf = (const uint8_t*) buffer;
-    int byteIndex = bitPos / 8;
+    size_t byteIndex = bitPos / 8;
     bitPos        = bitPos % 8;
-    uint8_t shifts    = 24 - (bitPos + numOfBits);
+    uint8_t shifts    = static_cast<uint8_t>(24 - (bitPos + numOfBits));
     uint32_t mask     = ONES(numOfBits);  // so many bits set to 1 from leastst significant
 
 

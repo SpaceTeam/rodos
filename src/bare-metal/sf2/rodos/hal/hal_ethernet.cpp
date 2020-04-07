@@ -46,7 +46,7 @@ extern "C" {
 uint32_t lwip_rand() {
     static bool initialized = false;
     if(!initialized) {
-        raninit(&ctx, NOW());
+        raninit(&ctx, static_cast<uint32_t>(NOW() & 0xFFFFFFFF));
         initialized = true;
     }
     return ranval(&ctx);
@@ -54,7 +54,7 @@ uint32_t lwip_rand() {
 }
 
 class HW_HAL_ETH {
-    volatile uint32_t dataLen = 0;
+    volatile uint16_t dataLen = 0;
 
   public:
     HAL_ETH* hal;
@@ -112,7 +112,7 @@ class HW_HAL_ETH {
             uint8_t digit = serialNum[i * 2];
             if(i == 0) {
                 digit |= 0x02;  // Mark as locally administered MAC address
-                digit &= ~0x01; // Mark as unicast
+                digit = static_cast<uint8_t>(digit & ~0x01); // Mark as unicast
             }
             mac_config.mac_addr[i] = digit;
         }
@@ -127,7 +127,7 @@ class HW_HAL_ETH {
         if(!isLinkActive())
             return ETH_ERR_LINKDOWN;
         buf          = pbuf_alloc(PBUF_RAW, BUFFER_SIZE, PBUF_POOL);
-        uint32_t len = MIN(dataLen, BUFFER_SIZE);
+        uint16_t len = MIN(dataLen, BUFFER_SIZE);
         pbuf_take(buf, rxData, len); // BUFFER_SIZE PBUF_POOL_SIZE
         pbuf_realloc(buf, len);
         hasNewData = false;
@@ -175,7 +175,7 @@ class HW_HAL_ETH {
     void rxCallBack([[gnu::unused]] uint8_t* p_rx_packet, uint32_t pckt_length,
                     [[gnu::unused]] void* caller_info) {
         hasNewData = true;
-        dataLen    = pckt_length;
+        dataLen    = static_cast<uint16_t>(pckt_length);
         hal->upCallDataReady();
     }
 

@@ -36,7 +36,7 @@ static void charReader(int) {
     timeout_value.tv_usec = 0;
 
     if(select(STDIN_FILENO + 1, &read_set, NULL, NULL, &timeout_value) > 0) {
-        msgRef.msgLen           = read(STDIN_FILENO, inputBuf, 100);
+        msgRef.msgLen           = static_cast<int32_t>(read(STDIN_FILENO, inputBuf, 100));
         inputBuf[msgRef.msgLen] = 0;
         charInput.publishFromInterrupt(&msgRef, sizeof(GenericMsgRef));
     }
@@ -86,13 +86,13 @@ char getcharNoWait() {
         lastChar = -1;
         return c;
     }
-    return getchar();
+    return static_cast<char>(getchar());
 }
 
 bool isCharReady() {
     if(initialized == false) setNoDelay();
     if(lastChar >= 0) return true;
-    lastChar = getchar();
+    lastChar = static_cast<char>(getchar());
     return (lastChar >= 0);
 }
 

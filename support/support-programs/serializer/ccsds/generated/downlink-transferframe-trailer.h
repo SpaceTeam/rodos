@@ -22,7 +22,7 @@ struct DownlinkTFTrailer {
     uint32_t farmBCnt            ; //  2  bits  current counter of framtes Type B
     uint32_t spare2              ; //  1  bits  
     uint32_t reportValue         ; //  8  bits  next expected frame sequence countrer of frames Type A 
-    uint32_t crc                 ; // 16  bits  cyclic redundancy code in CCSDS called "FRAME ERROR CONTROL FIELD"
+    uint16_t crc                 ; // 16  bits  cyclic redundancy code in CCSDS called "FRAME ERROR CONTROL FIELD"
 
     int serialize(uint8_t*  buf) const;
     int deserialize(const uint8_t* buf);
@@ -47,7 +47,7 @@ inline int DownlinkTFTrailer::serialize(uint8_t* buf) const {
     setBitField(buf,  20,  1, retransmit);
     setBitField(buf,  21,  2, farmBCnt);
     setBitField(buf,  23,  1, spare2);
-    buf[3]      =             reportValue;
+    buf[3]      =             static_cast<uint8_t>(reportValue);
     uint16_tToBigEndian(buf+4,  crc);
 
     return 6;

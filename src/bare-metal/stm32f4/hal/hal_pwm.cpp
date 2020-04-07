@@ -37,7 +37,7 @@ public:
 	TIM_CHAN_TypeDef channel;
 	TIM_TypeDef* timer;
 	uint32_t timerClk;
-    uint32_t GPIO_Pin;
+    uint16_t GPIO_Pin;
     GPIO_TypeDef* GPIO_Port;
 	int PwmIdx;
 
@@ -112,25 +112,25 @@ int HAL_PWM::init(uint32_t frequency, uint32_t increments) {
 		RCC_AHB1PeriphResetCmd(RCC_AHB1Periph_GPIOE , DISABLE);
 		switch (context->channel) {
 		case TIM_CHAN1:
-			context->GPIO_Pin = Gis.GPIO_Pin = GPIO_Pin_9;
+			Gis.GPIO_Pin = context->GPIO_Pin = GPIO_Pin_9;
 			context->GPIO_Port = GPIOE;
 			GPIO_Init(context->GPIO_Port, &Gis);
 			GPIO_PinAFConfig(context->GPIO_Port, GPIO_PinSource9, GPIO_AF_TIM1);
 			break; // PE9 -> CH1
 		case TIM_CHAN2:
-		    context->GPIO_Pin = Gis.GPIO_Pin = GPIO_Pin_11;
+		    Gis.GPIO_Pin = context->GPIO_Pin = GPIO_Pin_11;
 		    context->GPIO_Port = GPIOE;
 			GPIO_Init(context->GPIO_Port, &Gis);
 			GPIO_PinAFConfig(context->GPIO_Port, GPIO_PinSource11, GPIO_AF_TIM1);
 			break; // PE11 -> CH2
 		case TIM_CHAN3:
-		    context->GPIO_Pin = Gis.GPIO_Pin = GPIO_Pin_13;
+		    Gis.GPIO_Pin = context->GPIO_Pin = GPIO_Pin_13;
 		    context->GPIO_Port = GPIOE;
 			GPIO_Init(context->GPIO_Port, &Gis);
 			GPIO_PinAFConfig(context->GPIO_Port, GPIO_PinSource13, GPIO_AF_TIM1);
 			break; // PE13 -> CH3
 		case TIM_CHAN4:
-		    context->GPIO_Pin = Gis.GPIO_Pin = GPIO_Pin_14;
+		    Gis.GPIO_Pin = context->GPIO_Pin = GPIO_Pin_14;
 		    context->GPIO_Port = GPIOE;
 			GPIO_Init(context->GPIO_Port, &Gis);
 			GPIO_PinAFConfig(context->GPIO_Port, GPIO_PinSource14, GPIO_AF_TIM1);
@@ -145,25 +145,25 @@ int HAL_PWM::init(uint32_t frequency, uint32_t increments) {
 
 		switch (context->channel) {
 		case TIM_CHAN1:
-		    context->GPIO_Pin = Gis.GPIO_Pin = GPIO_Pin_0;
+		    Gis.GPIO_Pin = context->GPIO_Pin = GPIO_Pin_0;
 		    context->GPIO_Port = GPIOA;
 			GPIO_Init(context->GPIO_Port, &Gis);
 			GPIO_PinAFConfig(context->GPIO_Port, GPIO_PinSource0, GPIO_AF_TIM2);
 			break; // PA0 -> CH1
 		case TIM_CHAN2:
-		    context->GPIO_Pin = Gis.GPIO_Pin = GPIO_Pin_1;
+		    Gis.GPIO_Pin = context->GPIO_Pin = GPIO_Pin_1;
 		    context->GPIO_Port = GPIOA;
 			GPIO_Init(context->GPIO_Port, &Gis);
 			GPIO_PinAFConfig(context->GPIO_Port, GPIO_PinSource1, GPIO_AF_TIM2);
 			break; // PA1 -> CH2
 		case TIM_CHAN3:
-		    context->GPIO_Pin = Gis.GPIO_Pin = GPIO_Pin_2;
+		    Gis.GPIO_Pin = context->GPIO_Pin = GPIO_Pin_2;
 		    context->GPIO_Port = GPIOA;
 			GPIO_Init(context->GPIO_Port, &Gis);
 			GPIO_PinAFConfig(context->GPIO_Port, GPIO_PinSource2, GPIO_AF_TIM2);
 			break; // PA2 -> CH3
 		case TIM_CHAN4:
-		    context->GPIO_Pin = Gis.GPIO_Pin = GPIO_Pin_3;
+		    Gis.GPIO_Pin = context->GPIO_Pin = GPIO_Pin_3;
 		    context->GPIO_Port = GPIOA;
 			GPIO_PinAFConfig(context->GPIO_Port, GPIO_PinSource3, GPIO_AF_TIM2);
 			GPIO_Init(context->GPIO_Port, &Gis);
@@ -178,25 +178,25 @@ int HAL_PWM::init(uint32_t frequency, uint32_t increments) {
 
 		switch (context->channel) {
 		case TIM_CHAN1:
-		    context->GPIO_Pin = Gis.GPIO_Pin = GPIO_Pin_6;
+		    Gis.GPIO_Pin = context->GPIO_Pin = GPIO_Pin_6;
 		    context->GPIO_Port = GPIOA;
 			GPIO_Init(context->GPIO_Port, &Gis);
 			GPIO_PinAFConfig(context->GPIO_Port, GPIO_PinSource6, GPIO_AF_TIM3);
 			break; // PA6 -> CH1
 		case TIM_CHAN2:
-		    context->GPIO_Pin = Gis.GPIO_Pin = GPIO_Pin_7;
+		    Gis.GPIO_Pin = context->GPIO_Pin = GPIO_Pin_7;
 		    context->GPIO_Port = GPIOC;
 			GPIO_Init(context->GPIO_Port, &Gis);
 			GPIO_PinAFConfig(context->GPIO_Port, GPIO_PinSource7, GPIO_AF_TIM3);
 			break; // PC7 -> CH2
 		case TIM_CHAN3:
-		    context->GPIO_Pin = Gis.GPIO_Pin = GPIO_Pin_0;
+		    Gis.GPIO_Pin = context->GPIO_Pin = GPIO_Pin_0;
 		    context->GPIO_Port = GPIOB;
 			GPIO_Init(context->GPIO_Port, &Gis);
 			GPIO_PinAFConfig(context->GPIO_Port, GPIO_PinSource0, GPIO_AF_TIM3);
 			break; // PB0 -> CH3
 		case TIM_CHAN4:
-		    context->GPIO_Pin = Gis.GPIO_Pin = GPIO_Pin_1;
+		    Gis.GPIO_Pin = context->GPIO_Pin = GPIO_Pin_1;
 		    context->GPIO_Port = GPIOB;
 			GPIO_Init(context->GPIO_Port, &Gis);
 			GPIO_PinAFConfig(context->GPIO_Port, GPIO_PinSource1, GPIO_AF_TIM3);
@@ -211,26 +211,26 @@ int HAL_PWM::init(uint32_t frequency, uint32_t increments) {
 
 		switch (context->channel) {
 		case TIM_CHAN1:
-		    context->GPIO_Pin = Gis.GPIO_Pin = GPIO_Pin_6;
+		    Gis.GPIO_Pin = context->GPIO_Pin = GPIO_Pin_6;
 		    context->GPIO_Port = GPIOB;
 			GPIO_Init(context->GPIO_Port, &Gis);
 			GPIO_PinAFConfig(context->GPIO_Port, GPIO_PinSource6, GPIO_AF_TIM4);
 			break; // PB6 -> CH1
 		case TIM_CHAN2:
-		    context->GPIO_Pin = Gis.GPIO_Pin = GPIO_Pin_7;
+		    Gis.GPIO_Pin = context->GPIO_Pin = GPIO_Pin_7;
 		    context->GPIO_Port = GPIOB;
 			GPIO_Init(context->GPIO_Port, &Gis);
 			GPIO_PinAFConfig(context->GPIO_Port, GPIO_PinSource7, GPIO_AF_TIM4);
 			break; // PB7 -> CH2
 		case TIM_CHAN3:
-		    context->GPIO_Pin = Gis.GPIO_Pin = GPIO_Pin_8;
+		    Gis.GPIO_Pin = context->GPIO_Pin = GPIO_Pin_8;
 		    context->GPIO_Port = GPIOB;
 			GPIO_Init(context->GPIO_Port, &Gis);
 			GPIO_PinAFConfig(context->GPIO_Port, GPIO_PinSource8, GPIO_AF_TIM4);
 			break; // PB8 -> CH3
 		case TIM_CHAN4:
-		    context->GPIO_Pin = Gis.GPIO_Pin = GPIO_Pin_9;
-		    context->GPIO_Port = GPIOB;
+            Gis.GPIO_Pin = context->GPIO_Pin  = GPIO_Pin_9;
+            context->GPIO_Port = GPIOB;
 			GPIO_Init(context->GPIO_Port, &Gis);
 			GPIO_PinAFConfig(context->GPIO_Port, GPIO_PinSource9, GPIO_AF_TIM4);
 			break; // PB9 -> CH4

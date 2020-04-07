@@ -17,7 +17,7 @@ int HAL_CAN::init([[gnu::unused]] uint32_t baudrate) {
 void HAL_CAN::reset(){
 }
 
-int HAL_CAN::config([[gnu::unused]] CAN_PARAMETER_TYPE type, [[gnu::unused]] int paramVal){
+int HAL_CAN::config([[gnu::unused]] CAN_PARAMETER_TYPE type, [[gnu::unused]] uint32_t paramVal){
 	return -1;
 }
 
@@ -42,12 +42,12 @@ bool  HAL_CAN::addIncomingFilter([[gnu::unused]] uint32_t ID, [[gnu::unused]] ui
 		return false;
 }
 
-int HAL_CAN::write([[gnu::unused]] const uint8_t* sendBuf, [[gnu::unused]] uint8_t len, [[gnu::unused]] uint32_t canID, [[gnu::unused]] bool extID, [[gnu::unused]] bool rtr){
+int8_t HAL_CAN::write([[gnu::unused]] const uint8_t* sendBuf, [[gnu::unused]] uint8_t len, [[gnu::unused]] uint32_t canID, [[gnu::unused]] bool extID, [[gnu::unused]] bool rtr){
 
 	return 0;
 }
 
-int HAL_CAN::read([[gnu::unused]] uint8_t* recBuf, [[gnu::unused]] uint32_t* canID, [[gnu::unused]] bool* isExtID, [[gnu::unused]] bool* rtr){
+int8_t HAL_CAN::read([[gnu::unused]] uint8_t* recBuf, [[gnu::unused]] uint32_t* canID, [[gnu::unused]] bool* isExtID, [[gnu::unused]] bool* rtr){
 	return -1;
 }
 
