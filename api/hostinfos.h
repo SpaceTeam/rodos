@@ -19,9 +19,9 @@
 namespace RODOS {
 
 extern bool  getIsHostBigEndian();          ///< never use before main()
-extern long  getSpeedKiloLoopsPerSecond();  ///< only an approximation, max differ +/- 50%
-extern long  getMaxIdleCntPerSecond();      // see rodos-tutorials/development-tests/cpuspeedtest.cpp
-extern long  getYieldTimeOverhead();        ///< number of nanoseconds for a thread switch
+extern int32_t  getSpeedKiloLoopsPerSecond();  ///< only an approximation, max differ +/- 50%
+extern int32_t  getMaxIdleCntPerSecond();      // see rodos-tutorials/development-tests/cpuspeedtest.cpp
+extern int32_t  getYieldTimeOverhead();        ///< number of nanoseconds for a thread switch
 extern const char* getHostCpuArch(); 
 extern const char* getHostBasisOS();
 

@@ -55,16 +55,16 @@ public:
 	HAL_ETH(ETH_IDX ethIdx);
 
 	/* Reset and Initialization of Ethernet interface: called once*/
-	int init();
+	int32_t init();
 	/**
 	 * Check if the link is up/down, Called regularly
 	 * @retval True if link is up, false otherwise
 	 */
 	bool checkLinkStatus();
- 	/* Configuration of uart interface AFTER initialization */
-	int config(ETH_PARAMETER_TYPE type, void* paramVal);
+ 	/* Configuration of ethernet interface AFTER initialization */
+	int32_t config(ETH_PARAMETER_TYPE type, void* paramVal);
 
-	int status(ETH_STATUS_TYPE type);
+	int32_t status(ETH_STATUS_TYPE type);
 
 	const uint8_t* getMACAddr();
 

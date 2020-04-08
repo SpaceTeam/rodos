@@ -25,7 +25,7 @@ static const uint8_t  MARK			=  0xffu;
 
 /*********************************************************************************/
 
-LinkinterfaceUART::LinkinterfaceUART(HAL_UART* uart, long int id, bool enaTXBreak) : Linkinterface(id) {
+LinkinterfaceUART::LinkinterfaceUART(HAL_UART* uart, int64_t id, bool enaTXBreak) : Linkinterface(id) {
     this->uart=uart;
     // this->uart->init();
     readState = WAITING_FOR_START;

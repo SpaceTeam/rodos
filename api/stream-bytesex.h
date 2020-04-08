@@ -25,7 +25,7 @@ double  swapDouble(double dw_);
 
 short   shortConvertHost2Net(short sw_);       ///< DEPRECATED
 long    longConvertHost2Net(long sw_);         ///< DEPRECATED
-int64_t longlongConvertHost2Net(int64_t sw_);  ///< DEPRECATED
+long long longlongConvertHost2Net(long long sw_);  ///< DEPRECATED
 
 int16_t int16ConvertHost2Net(int16_t sw_);
 int32_t int32ConvertHost2Net(int32_t lw_);

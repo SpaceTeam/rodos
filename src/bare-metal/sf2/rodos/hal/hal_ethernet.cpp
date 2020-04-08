@@ -200,7 +200,7 @@ static void packet_tx_complete_handler(void* caller_info) {
     theOneAndOnlyEthContext.txCallBack(caller_info);
 }
 
-int HAL_ETH::init() {
+int32_t HAL_ETH::init() {
     context->hal = this;
     context->ethernet_init();
     return 0;

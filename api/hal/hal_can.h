@@ -63,7 +63,7 @@ public:
      * @param baudrate The desired CAN baud rate.
      * @return 0
      */
-    int init(uint32_t baudrate);
+    int32_t init(uint32_t baudrate);
 
     /*!
      * Reset and disable the interface. Set all its registers and pins to its 
@@ -78,7 +78,7 @@ public:
      * @param paramVal The new value of the parameter.
      * @return -1 if type does not exist, else 0.
      */
-    int config(CAN_PARAMETER_TYPE type, uint32_t paramVal);
+    int32_t config(CAN_PARAMETER_TYPE type, uint32_t paramVal);
 
     /*!
      * Get the status of the CAN interface.

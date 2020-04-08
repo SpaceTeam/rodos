@@ -79,7 +79,7 @@ void UART1_IRQHandler() {
 } // end extern "C"
 
 // initialized in 8N1 mode
-int HAL_UART::init(uint32_t iBaudrate) {
+int32_t HAL_UART::init(uint32_t iBaudrate) {
 	context->baudrate = iBaudrate;
 
 	switch(context->idx) {

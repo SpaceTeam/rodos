@@ -10,6 +10,7 @@
 
 
 #include <stdint.h>
+#include <stddef.h>
 
 #include "listelement.h"
 
@@ -84,7 +85,7 @@ public:
     /** To send requests to applications, The application may answer.
       * @return number of bytes written in answerMsg, <0 -> error, -1 -> not implemented
       */
-    virtual int32_t request(void* requestMsg, int len, void* answerMsg, int maxLen);
+    virtual int32_t request(void* requestMsg, size_t len, void* answerMsg, size_t maxLen);
 
 };
 

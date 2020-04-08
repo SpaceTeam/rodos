@@ -49,7 +49,7 @@ private:
 
   // Activation control
   /**  priority of thread, higher values are serverd first  */
-  volatile long priority = 0;
+  volatile int32_t priority = 0;
 
   /** It will be activated only after this time */
   volatile int64_t suspendedUntil = 0;
@@ -85,9 +85,9 @@ public:
    * @see DEFAULT_STACKSIZE
    */
   [[deprecated("consider using StaticThread!")]]
-  Thread(const char*  name      = "AnonymThread",
-         const long   priority  = DEFAULT_THREAD_PRIORITY,
-         const size_t stackSize = DEFAULT_STACKSIZE);
+  Thread(const char*   name      = "AnonymThread",
+         const int32_t priority  = DEFAULT_THREAD_PRIORITY,
+         const size_t  stackSize = DEFAULT_STACKSIZE);
 
   /**
    * Initialization of the thread. A user should use a meaningful name for the thread.
@@ -105,8 +105,8 @@ public:
    */
   template <size_t STACK_SIZE>
   Thread(char (&stack)[STACK_SIZE],
-         const char* name     = "AnonymThread",
-         const long  priority = DEFAULT_THREAD_PRIORITY)
+         const char*   name     = "AnonymThread",
+         const int32_t priority = DEFAULT_THREAD_PRIORITY)
     : ListElement(threadList, name) {
       this->stackSize  = STACK_SIZE;
       this->stackBegin = stack;
@@ -140,14 +140,14 @@ public:
    *
    * @return The priority of the thread.
    */
-  long getPriority() const;
+  int32_t getPriority() const;
 
   /**
    * Set priority of thread
    *
    * @param[in] prio The new priority of the thread.
    */
-  void setPriority(const long prio);
+  void setPriority(const int32_t prio);
 
   static void startAllThreads(); ///< if required (only on gast OSs) called by scheduler
 
@@ -259,7 +259,7 @@ public:
    *
    * @see setPriority
    */
-  static long setPrioCurrentRunner(long newPrio); 
+  static int32_t setPrioCurrentRunner(int32_t newPrio); 
 
   /**
    * Get the maximum stack usage of the current thread until now. May return 0 if not supported.
@@ -276,7 +276,7 @@ template <size_t STACK_SIZE = DEFAULT_STACKSIZE>
 class StaticThread : public Thread {
     char stack alignas(8)[STACK_SIZE];
 public:
-    StaticThread(const char* name = "AnonymThread", const long priority = DEFAULT_THREAD_PRIORITY)
+    StaticThread(const char* name = "AnonymThread", const int32_t priority = DEFAULT_THREAD_PRIORITY)
      : Thread(stack, name, priority) {}
 };
 
@@ -332,10 +332,10 @@ extern bool globalAtomarUnlock(); ///< returns always true
 // Just create an instance on the stack; it immediately changes priority
 // On destruction it returns to the old priority
 class ScopePriority {
-  long previousPriority;
+  int32_t previousPriority;
 
 public:
-  explicit ScopePriority(long newPriority) { previousPriority = Thread::setPrioCurrentRunner(newPriority); }
+  explicit ScopePriority(int32_t newPriority) { previousPriority = Thread::setPrioCurrentRunner(newPriority); }
   ~ScopePriority()                         { Thread::setPrioCurrentRunner(previousPriority); }
 };
 #define PRIORITY_IN_SCOPE(_prio) ScopePriority   _scopePriority_(_prio)

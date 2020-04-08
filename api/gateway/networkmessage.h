@@ -68,7 +68,7 @@ public:
      * @param length of message, supposed to be <= MAX_NETWORK_MESSAGE_LENGTH
      * @return length of message written
      */
-    size_t setUserData(const void* data, size_t len);
+    uint16_t setUserData(const void* data, uint16_t len);
 
     /** Copies data from message received to a user provided buffer.
      *
@@ -76,7 +76,7 @@ public:
      * @param length of message buffer, supposed to be <= MAX_NETWORK_MESSAGE_LENGTH
      * @return length of message copied
      */
-    size_t getUserData(void* destination, size_t maxLen);
+    uint16_t getUserData(void* destination, uint16_t maxLen);
 
     /* WARNING: Len has to be set befor you call this.  **/
     uint16_t numberOfBytesToSend() const { return static_cast<uint16_t>(HEADER_SIZE + get_len()); }

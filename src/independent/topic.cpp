@@ -27,7 +27,7 @@ namespace RODOS {
 static Application applicationName("Topics & Middleware", APID_MIDDLEWARE);
 
 
-TopicInterface::TopicInterface(long id, size_t len, const char* name, bool _onlyLocal) : ListElement(topicList, name)  {
+TopicInterface::TopicInterface(int64_t id, size_t len, const char* name, bool _onlyLocal) : ListElement(topicList, name)  {
     mySubscribers = 0;
     msgLen        = len;
     onlyLocal     = _onlyLocal;
@@ -39,7 +39,7 @@ TopicInterface::TopicInterface(long id, size_t len, const char* name, bool _only
             topicId +=  FIRST_USER_TOPIC_ID;
         }
     } else {
-        topicId       = static_cast<uint32_t>(id);
+        topicId       = static_cast<uint32_t>(id & 0xFFFFFFFF);
     }
     /** Check for replications **/
     ITERATE_LIST(TopicInterface, topicList) {
@@ -78,7 +78,7 @@ uint32_t TopicInterface::publishMsgPart(void* data, size_t lenToSend, bool shall
     if(!netMsgInfo) {
         localmsgInfo.linkId=RODOS_LOCAL_BROADCAST;
         localmsgInfo.sentTime     = NOW();
-        localmsgInfo.senderNode   = static_cast<int32_t>(static_cast<uint64_t>(getNodeNumber()) & 0xFFFFFFFF);
+        localmsgInfo.senderNode   = getNodeNumber();
         intptr_t ptr=reinterpret_cast<intptr_t>(Thread::getCurrentThread());
         localmsgInfo.senderThreadId=static_cast<uint32_t>(ptr);
         netMsgInfo= & localmsgInfo;

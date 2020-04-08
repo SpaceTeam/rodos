@@ -39,13 +39,13 @@ void Thread::suspendUntilNextBeat() {
 /********************************************************/
 
 
-long Thread::setPrioCurrentRunner(long newPrio) {
+int32_t Thread::setPrioCurrentRunner(int32_t newPrio) {
     Thread* runner = getCurrentThread();
     if(runner==0) {
         errorLog.addRaw("null pointer setPrioCurrentRunner");
         return 0;
     }
-    long previusPriority = runner->getPriority();
+    int32_t previusPriority = runner->getPriority();
     runner->setPriority(newPrio);
     return previusPriority;
 }

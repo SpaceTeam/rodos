@@ -8,9 +8,9 @@ namespace RODOS {
 
 bool  getIsHostBigEndian()          { return isHostBigEndian; }
 
-long  getSpeedKiloLoopsPerSecond()  { return 6995;  } // see .../development-tests/cspuspeedtest.cpp
-long  getMaxIdleCntPerSecond()      { return 70000; } // see rodos-tutorials/development-tests/cpuspeedtest.cpp
-long  getYieldTimeOverhead()        { return 50000; } // see tutorials/core/yieldtime.cpp
+int32_t  getSpeedKiloLoopsPerSecond()  { return 6995;  } // see .../development-tests/cspuspeedtest.cpp
+int32_t  getMaxIdleCntPerSecond()      { return 70000; } // see rodos-tutorials/development-tests/cpuspeedtest.cpp
+int32_t  getYieldTimeOverhead()        { return 50000; } // see tutorials/core/yieldtime.cpp
 const char* getHostCpuArch()        { return "cortex-M4 (STM32F4)";    }
 const char* getHostBasisOS()        { return "baremetal"; }
 }

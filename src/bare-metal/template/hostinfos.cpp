@@ -6,9 +6,9 @@
 namespace RODOS {
 
 
-long  getSpeedKiloLoopsPerSecond()  { return 6995;  } // see tutorials/20-core/compute-hostinfos.cpp
-long  getMaxIdleCntPerSecond()      { return 70000; } // see tutorials/20-core/compute-hostinfos.cpp
-long  getYieldTimeOverhead()        { return 50000; } // see tutorials/20-core/compute-hostinfos.cpp
+int32_t  getSpeedKiloLoopsPerSecond()  { return 6995;  } // see tutorials/20-core/compute-hostinfos.cpp
+int32_t  getMaxIdleCntPerSecond()      { return 70000; } // see tutorials/20-core/compute-hostinfos.cpp
+int32_t  getYieldTimeOverhead()        { return 50000; } // see tutorials/20-core/compute-hostinfos.cpp
 
 bool  getIsHostBigEndian()          { return isHostBigEndian; }  // Yes! Actually getIsHostBigEndian is host independent
 const char* getHostCpuArch()        { return "template";    }

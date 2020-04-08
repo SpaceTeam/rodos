@@ -12,9 +12,9 @@ bool getIsHostBigEndian() { return isHostBigEndian; }
  * !!! speed value depends on compiler optimization !!!
  * !!! this speedtest was performed with the restrictions of 'enable_uart=1' !!!
  */
-long        getSpeedKiloLoopsPerSecond() { return 66640; } // see .../development-tests/cspuspeedtest.cpp
-long        getMaxIdleCntPerSecond() { return 666400; }    // see rodos-tutorials/development-tests/cpuspeedtest.cpp
-long        getYieldTimeOverhead() { return 2200; }        // see tutorials/core/yieldtime.cpp
+int32_t        getSpeedKiloLoopsPerSecond() { return 66640; } // see .../development-tests/cspuspeedtest.cpp
+int32_t        getMaxIdleCntPerSecond() { return 666400; }    // see rodos-tutorials/development-tests/cpuspeedtest.cpp
+int32_t        getYieldTimeOverhead() { return 2200; }        // see tutorials/core/yieldtime.cpp
 const char* getHostCpuArch() { return "raspberrypi3"; }
 const char* getHostBasisOS() { return "baremetal"; }
 

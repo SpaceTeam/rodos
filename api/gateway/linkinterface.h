@@ -43,7 +43,7 @@ public:
      * 					will do. Used to determine from which link a message
      * 					was received.
      */
-    Linkinterface(long linkId) : linkIdentifier((linkId<0) ? linkidentifierCounter++ : static_cast<uint32_t>(linkId)) {
+    Linkinterface(int64_t linkId) : linkIdentifier((linkId<0) ? linkidentifierCounter++ : static_cast<uint32_t>(linkId & 0xFFFFFFFF)) {
         isBroadcastLink = false;
         threadToResume=0;
     }

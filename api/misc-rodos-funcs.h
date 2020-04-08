@@ -21,7 +21,7 @@ extern bool isShuttingDown; // set by hwResetAndReboot(), read by destructors
 /**
  * if a network and a gateway are present, my node number
  */
-long getNodeNumber();
+int32_t getNodeNumber();
 
 int64_t getNumberOfReceivedMsgsFromNetwork();
 
@@ -33,7 +33,7 @@ int64_t getNumberOfReceivedMsgsFromNetwork();
 extern void* xmalloc(size_t len);
 
 extern void hwResetAndReboot();        ///<  End of Program -> reboot Hw dependent
-extern void hwInitWatchdog(long intervalMilliseconds);
+extern void hwInitWatchdog(int32_t intervalMilliseconds);
 extern void hwTriggerWatchdog();        ///<  for CPUS which provide a hardware watchdog
 extern void hwDisableInterrupts();      // global interrupt disable - use carefully
 extern void hwEnableInterrupts();       // global interrupt enable - use carefully

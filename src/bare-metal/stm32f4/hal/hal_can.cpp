@@ -483,7 +483,7 @@ HAL_CAN::HAL_CAN(CAN_IDX canIdx, GPIO_PIN rxPin, GPIO_PIN txPin) {
     }
 }
 
-int HAL_CAN::init(uint32_t baudrate) {
+int32_t HAL_CAN::init(uint32_t baudrate) {
     if (context->ctrl == nullptr) {
         return -1;
     }
@@ -509,7 +509,7 @@ void HAL_CAN::reset() {
     context->ctrl->CANCtrlProtector.leave();
 }
 
-int HAL_CAN::config(CAN_PARAMETER_TYPE type, uint32_t paramVal) {
+int32_t HAL_CAN::config(CAN_PARAMETER_TYPE type, uint32_t paramVal) {
     if (context->ctrl == nullptr) {
         return -1;
     }

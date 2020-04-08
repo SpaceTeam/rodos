@@ -23,7 +23,7 @@ public:
                 PRINTF("-------------------------------------------------------------");
                 hwResetAndReboot();
             }
-            pos.x = pos.y = pos.z = cnt;
+            pos.x = pos.y = pos.z = static_cast<float>(cnt);
             PRINTF("Writing %d\n", cnt);
             buf.put(pos);
             suspendCallerUntil(NOW() + 30 * MILLISECONDS);

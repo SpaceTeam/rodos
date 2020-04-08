@@ -74,14 +74,14 @@ void RODOS_ERROR(const char* text) {
 //	}
 //}
 
-void printCharsHex(const char* titel, void* ptr, unsigned int len) {
+void printCharsHex(const char* titel, void* ptr, size_t len) {
 	unsigned char* vals = (unsigned char*)ptr;
 	PRINTF("%s", titel);
-	for(unsigned int i = 0; i < len; i++) PRINTF("%02x ", vals[i]);
+	for(size_t i = 0; i < len; i++) PRINTF("%02x ", vals[i]);
 	PRINTF("\n");
 }
 
-void printCharsHex_Conditional(uint32_t id, const char* titel, void* ptr, unsigned int len) {
+void printCharsHex_Conditional(uint32_t id, const char* titel, void* ptr, size_t len) {
         if((id & printfMask) == 0 ) return;
         printCharsHex(titel,  ptr, len); 
 }

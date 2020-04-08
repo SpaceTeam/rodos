@@ -16,9 +16,9 @@ bool getIsHostBigEndian() { return isHostBigEndian; }
  *
  *
  */
-long        getSpeedKiloLoopsPerSecond() { return 783; } // see rodos-tutorials/development-tests/cpuspeedtest.cpp
-long        getMaxIdleCntPerSecond() { return 31552; }   // see rodos-tutorials/development-tests/cpuspeedtest.cpp
-long        getYieldTimeOverhead() { return 30000; }     // see tutorials/core/yieldtime.cpp
+int32_t        getSpeedKiloLoopsPerSecond() { return 783; } // see rodos-tutorials/development-tests/cpuspeedtest.cpp
+int32_t        getMaxIdleCntPerSecond() { return 31552; }   // see rodos-tutorials/development-tests/cpuspeedtest.cpp
+int32_t        getYieldTimeOverhead() { return 30000; }     // see tutorials/core/yieldtime.cpp
 const char* getHostCpuArch() { return "arm cortex-m3"; }
 const char* getHostBasisOS() { return "baremetal"; }
 

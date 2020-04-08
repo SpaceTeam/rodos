@@ -88,8 +88,8 @@ void RODOS_ERROR(const char* text);
  * @param[in] ptr pointer to array to be printed as unsigned char
  * @param[in] len number of characters, respectively bytes in the array
  */
-void printCharsHex(const char* titel, void* ptr, unsigned int len);
-void printCharsHex_Conditional(int negligibleLevel, const char* titel, void* ptr, unsigned int len);
+void printCharsHex(const char* titel, void* ptr, size_t len);
+void printCharsHex_Conditional(int negligibleLevel, const char* titel, void* ptr, size_t len);
 
 /** Function to read a character from stream, in case one has been written.
  * Normal getchar (in linux) will stop the complete execution. 

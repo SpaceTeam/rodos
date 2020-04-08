@@ -60,7 +60,7 @@ public:
 	virtual ~HAL_UART() {};
 
 	/* Initialization of UART interface: mode 8N1, no HW flow control*/
-	virtual int init(uint32_t baudrate = 115200);
+	virtual int32_t init(uint32_t baudrate = 115200);
 
 	/* disable interface and set all its registers and pins to its reset state */
 	virtual void reset();

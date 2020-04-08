@@ -78,7 +78,7 @@ HAL_UART::HAL_UART(UART_IDX uartIdx) {
  * USART
  * - all USART will be initialized in 8N1 mode
  */
-int HAL_UART::init(uint32_t iBaudrate) {
+int32_t HAL_UART::init(uint32_t iBaudrate) {
     if((context->idx < UART_IDX_MIN) || (context->idx > UART_IDX_MAX)) {
         return -1;
     }

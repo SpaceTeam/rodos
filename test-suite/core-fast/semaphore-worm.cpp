@@ -52,7 +52,7 @@ class worm : public StaticThread<> {
             last_x         = x;
             last_y         = y;
             printProtector.enter();
-            PRINTF("%c %d %d \n", letter, y, x);
+            PRINTF("%c %d %d \n", letter, static_cast<int>(y), static_cast<int>(x));
             
             printProtector.leave();
             bool inUpperSide = x <= RIGHT_LIMIT;

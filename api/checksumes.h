@@ -21,7 +21,7 @@ uint16_t checkSum(const void *buf, size_t len) ;
 
 
 /** computes a 16 bit crc in a non optimized way, CCSDS recommends 0 (some times 0xffff) as initial value **/
-uint32_t computeCrc(const void* buf, size_t len, uint32_t initialValue);
+uint16_t computeCrc(const void* buf, size_t len, uint16_t initialValue);
 
 
 /** An optimized crc generator.
@@ -31,10 +31,10 @@ uint32_t computeCrc(const void* buf, size_t len, uint32_t initialValue);
   */
 
 class CRC {
-    uint32_t lookUpTable[256];
+    uint16_t lookUpTable[256];
 public:
     CRC(); 
-    uint32_t computeCRC(const void* buf, size_t len, uint32_t initialValue);
+    uint16_t computeCRC(const void* buf, size_t len, uint16_t initialValue);
 };
 
 

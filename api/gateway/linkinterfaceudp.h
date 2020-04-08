@@ -23,8 +23,8 @@ protected:
     UDPIn*  udpFromNetwork;
     UDPOut* udpToNetwork;
 
-    long udpPortNumber;   ///< Number of input port, also distributed to the network
-    long nodeNumber;      ///< node number used in network, linked with udpPortNumber
+    //long udpPortNumber;   ///< Number of input port, also distributed to the network
+    //long nodeNumber;      ///< node number used in network, linked with udpPortNumber
 
 private:
 
@@ -36,7 +36,7 @@ private:
 protected: //This is for LinkinterfaceUDP
 public:
 
-    LinkinterfaceUDP(UDPInOut* udpInOut, long identifier = -1);
+    LinkinterfaceUDP(UDPInOut* udpInOut, int64_t identifier = -1);
 
     virtual ~LinkinterfaceUDP() { }
     /**

@@ -31,7 +31,7 @@ long long oldTimerInterval = -1; // used for sleep mode
 
 /** old style constructor */
 Thread::Thread(const char* name,
-               const long priority,
+               const int32_t priority,
                const size_t _stackSize) :
     ListElement(threadList, name) {
 
@@ -102,12 +102,12 @@ void Thread::activate() {
 /*******************************************************************/
 
 /* get priority of the thread */
-long Thread::getPriority() const {
+int32_t Thread::getPriority() const {
     return priority;
 }
 
 /* set priority of the thread */
-void Thread::setPriority(const long prio) {
+void Thread::setPriority(const int32_t prio) {
     priority = prio;
 }
 
@@ -148,7 +148,10 @@ bool Thread::suspendCallerUntil(const int64_t reactivationTime, void* signaler) 
 void Thread::initializeThreads() {
     xprintf("Threads in System:");
     ITERATE_LIST(Thread, threadList) {
-        xprintf("\n   Prio = %7ld Stack = %6lu %s: ", iter->priority, static_cast<unsigned long>(iter->stackSize), iter->getName());
+        xprintf("\n   Prio = %7ld Stack = %6lu %s: ",
+            static_cast<long>(iter->priority),
+            static_cast<unsigned long>(iter->stackSize),
+            iter->getName());
         iter->init();
         iter->suspendedUntil = 0;
     }

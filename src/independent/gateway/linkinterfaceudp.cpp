@@ -20,7 +20,7 @@ namespace RODOS {
 
 /****************************************************/
 
-LinkinterfaceUDP::LinkinterfaceUDP(UDPInOut* udpInOut, long identifier) : Linkinterface(identifier), Subscriber(udpAsyncTopic),
+LinkinterfaceUDP::LinkinterfaceUDP(UDPInOut* udpInOut, int64_t identifier) : Linkinterface(identifier), Subscriber(udpAsyncTopic),
     udpAsyncTopic(identifier,"udp async topic") {
     udpFromNetwork = &(udpInOut->udpIn);
     udpToNetwork = &(udpInOut->udpOut);

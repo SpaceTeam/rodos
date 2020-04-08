@@ -25,8 +25,8 @@ bool isShuttingDown = false; // set by hwResetAndReboot(), read by destructors
  * In case a network is avialable, the corresponding node nr.
  */
 
-long myNodeNr = -1 ;
-long getNodeNumber() { return myNodeNr; }
+int32_t myNodeNr = -1 ;
+int32_t getNodeNumber() { return myNodeNr; }
 
 /**
  * In case there is a getways: number of arrived messages

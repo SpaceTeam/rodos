@@ -58,9 +58,9 @@ public:
 	 * @param int frequency - frequency of PWM signal
 	 * @param int increments - one PWM period is divided in N increments
 	 */
-	int init(uint32_t frequency = 1000, uint32_t increments = 100);
+	int32_t init(uint32_t frequency = 1000, uint32_t increments = 100);
 
-	int config(PWM_PARAMETER_TYPE type, int paramVal = 0);
+	int32_t config(PWM_PARAMETER_TYPE type, int32_t paramVal = 0);
 
 	void reset();
 
@@ -73,7 +73,7 @@ public:
      * - write(0) -> stop PWM-output
      * @param int pulseWidthInIncs
      */
-    int write(uint32_t pulseWidthInIncs);			// 0 ... +increments
+    int32_t write(uint32_t pulseWidthInIncs);			// 0 ... +increments
 
 };
 

@@ -36,7 +36,7 @@ void threadSigtermHandler([[gnu::unused]] int sig) { }
 
 /** old style constructor */
 Thread::Thread(const char* name,
-               const long priority,
+               const int32_t priority,
                const size_t _stackSize) :
     ListElement(threadList, name) {
 
@@ -140,19 +140,19 @@ void Thread::yield() {
 /*******************************************************************/
 
 /* get priority of the thread */
-long Thread::getPriority() const {
+int32_t Thread::getPriority() const {
     return priority;
 }
 
 /* set priority of the thread */
-void Thread::setPriority(const long prio) {
+void Thread::setPriority(const int32_t prio) {
     //
     // posix priorities range from 1 to 99
     // rodos priorities range from 0 to 2G
     // normaly user uses from 0 to 1000, therfore convert best guess
 
     priority       = prio; // RODOS priority
-    long posixPrio = prio / 10;
+    int32_t posixPrio = prio / 10;
     if(posixPrio < 1) posixPrio = 1;
     if(posixPrio > 99) posixPrio = 99;
 
@@ -234,7 +234,10 @@ bool Thread::suspendCallerUntil(const int64_t reactivationTime, void* signaler) 
 void Thread::initializeThreads() {
     xprintf("Threads in System:");
     ITERATE_LIST(Thread, threadList) {
-        xprintf("\n   Prio = %7ld Stack = %6lu %s: ", iter->priority, static_cast<unsigned long>(iter->stackSize), iter->getName());
+        xprintf("\n   Prio = %7ld Stack = %6lu %s: ",
+            static_cast<long>(iter->priority),
+            static_cast<unsigned long>(iter->stackSize),
+            iter->getName());
         iter->init();
         iter->suspendedUntil = 0;
     }

@@ -42,7 +42,7 @@ void Application::deactivate() {
 	isActivated = false;
 }
 
-int32_t Application::request(void*, int, void*, int) {
+int32_t Application::request(void*, size_t, void*, size_t) {
 	return -1;
 }
 

@@ -7,7 +7,6 @@
 * @brief small support functions
 *
 */
-#include <stdint.h>
 #include <string_pico.h>
 //#include "hw_specific.h"
 //#include "rodos.h"
@@ -42,20 +41,20 @@ uint16_t checkSum(const void *buf, size_t len) {
 
 /** computes a 16-bit crc in a non optimized way **/
 
-uint32_t computeCrc(const void* buf, size_t len, uint32_t initialValue) {
+uint16_t computeCrc(const void* buf, size_t len, uint16_t initialValue) {
 
-    uint32_t currentValue = initialValue;
+    uint16_t currentValue = initialValue;
     const uint8_t* data = static_cast<const uint8_t*>(buf);
 
     for(size_t charCnt = 0; charCnt < len; charCnt++) {
         uint8_t curChar = data[charCnt];
         for(int bitCnt = 0; bitCnt < 8; bitCnt++) {
-            if((curChar & 0x80) ^ ((currentValue & 0x8000) >> 8)) {
-                currentValue = ((currentValue << 1)  ^ 0x1021) & 0xFFFF; // Standard Polinom for CCSDS
+            if((curChar & 0x80u) ^ ((currentValue & 0x8000u) >> 8u)) {
+                currentValue = (static_cast<uint32_t>(currentValue << 1u)  ^ 0x1021u) & 0xFFFFu; // Standard Polinom for CCSDS
             } else {
-                currentValue = (currentValue << 1) & 0xFFFF;
+                currentValue = static_cast<uint32_t>(currentValue << 1u) & 0xFFFFu;
             }
-            curChar = static_cast<uint8_t>((curChar << 1) & 0xFF);
+            curChar = static_cast<uint32_t>(curChar << 1u) & 0xFFu;
         }
     }
     return currentValue;
@@ -69,7 +68,7 @@ uint32_t computeCrc(const void* buf, size_t len, uint32_t initialValue) {
 
 CRC::CRC() {
 		for (int i=0; i < 256; i++) {
-			uint32_t tmp=0;
+			uint16_t tmp=0;
 			if ((i & 1) != 0)   tmp=tmp ^ 0x1021;
 			if ((i & 2) != 0)   tmp=tmp ^ 0x2042;
 			if ((i & 4) != 0)   tmp=tmp ^ 0x4084;
@@ -82,13 +81,13 @@ CRC::CRC() {
 		}
 }
 
-uint32_t CRC::computeCRC(const void* buf, size_t len, uint32_t initialValue) {
+uint16_t CRC::computeCRC(const void* buf, size_t len, uint16_t initialValue) {
 
-		uint32_t currentValue = initialValue;
+		uint16_t currentValue = initialValue;
         const uint8_t* data = static_cast<const uint8_t*>(buf);
 
         for(size_t i = 0; i < len; i++) {
-            currentValue = (((currentValue << 8) & 0xFF00) ^
+            currentValue = static_cast<uint16_t>((static_cast<uint32_t>(currentValue << 8u) & 0xFF00u) ^
 					lookUpTable [(((currentValue >> 8)^ data[i]) & 0x00FF)]);
         }
         return currentValue;
@@ -100,7 +99,7 @@ uint32_t CRC::computeCRC(const void* buf, size_t len, uint32_t initialValue) {
  */
 
 uint16_t hash(const char* str) {
-	uint16_t crc = (uint16_t)computeCrc(str, strlen(str), 0xffffu);
+	uint16_t crc = computeCrc(str, strlen(str), 0xffffu);
 
 	/** To make only printable characters, else it were a normal crc value **/
 
@@ -113,7 +112,7 @@ uint16_t hash(const char* str) {
 
 	/******/
 
-	return static_cast<uint16_t>((a << 8) | b);
+	return static_cast<uint16_t>((a << 8u) | b);
 }
 
 

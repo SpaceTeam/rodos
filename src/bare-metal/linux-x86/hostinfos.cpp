@@ -5,9 +5,9 @@
 #include "rodos.h"
 namespace RODOS {
 bool        getIsHostBigEndian()         { return isHostBigEndian; }
-long        getSpeedKiloLoopsPerSecond() { return 313330; }    // see rodos-tutorials/development-tests/cpuspeedtest.cpp
-long        getMaxIdleCntPerSecond()     { return 4992266; }   // see rodos-tutorials/development-tests/cpuspeedtest.cpp
-long        getYieldTimeOverhead()       { return 990; }       // see tutorials/core/yieldtime.cpp
+int32_t        getSpeedKiloLoopsPerSecond() { return 313330; }    // see rodos-tutorials/development-tests/cpuspeedtest.cpp
+int32_t        getMaxIdleCntPerSecond()     { return 4992266; }   // see rodos-tutorials/development-tests/cpuspeedtest.cpp
+int32_t        getYieldTimeOverhead()       { return 990; }       // see tutorials/core/yieldtime.cpp
 const char* getHostCpuArch()             { return "x86"; }
 const char* getHostBasisOS()             { return "baremetal"; }
 } // namespace RODOS

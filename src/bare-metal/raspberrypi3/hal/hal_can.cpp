@@ -10,14 +10,14 @@ HAL_CAN::HAL_CAN([[gnu::unused]] CAN_IDX canIdx, [[gnu::unused]] GPIO_PIN rxPin 
 
 }
 
-int HAL_CAN::init([[gnu::unused]] uint32_t baudrate) {
+int32_t HAL_CAN::init([[gnu::unused]] uint32_t baudrate) {
     return 0;
 }
 
 void HAL_CAN::reset(){
 }
 
-int HAL_CAN::config([[gnu::unused]] CAN_PARAMETER_TYPE type, [[gnu::unused]] uint32_t paramVal){
+int32_t HAL_CAN::config([[gnu::unused]] CAN_PARAMETER_TYPE type, [[gnu::unused]] uint32_t paramVal){
 	return -1;
 }
 

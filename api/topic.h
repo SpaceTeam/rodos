@@ -66,7 +66,7 @@ public:
 
 public:
 
-    TopicInterface(long id, size_t len, const char* name, bool _onlyLocal = false);
+    TopicInterface(int64_t id, size_t len, const char* name, bool _onlyLocal = false);
 
     virtual ~TopicInterface() { 
         if(isShuttingDown) return;
@@ -100,7 +100,7 @@ public:
       * call puuters from subscribers. Such puters shall proivde data instad of geting it.
       **/
 
-     inline unsigned long requestLocal(void *msg) { return publish(msg, false); }
+     inline uint32_t requestLocal(void *msg) { return publish(msg, false); }
 
      /// return 0 it not found
      static TopicInterface* findTopicId(uint32_t wantedTopicId);
@@ -151,7 +151,7 @@ public:
       * to generate a topic id if it was defined as -1. This is the proposed
        * method.
       */
-    Topic(long id, const char* name, bool _onlyLocal = false) : TopicInterface(id, sizeof(Type), name, _onlyLocal) { }
+    Topic(int64_t id, const char* name, bool _onlyLocal = false) : TopicInterface(id, sizeof(Type), name, _onlyLocal) { }
 
     ~Topic() {
         if(isShuttingDown) return;

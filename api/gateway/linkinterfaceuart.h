@@ -67,7 +67,7 @@ class LinkinterfaceUART : public Linkinterface, IOEventReceiver  {
 
 public:
 
-    LinkinterfaceUART(HAL_UART* uart, long int id = -1, bool enaTXBreak = true);
+    LinkinterfaceUART(HAL_UART* uart, int64_t id = -1, bool enaTXBreak = true);
     void init();
 
     bool isNetworkMsgSent();

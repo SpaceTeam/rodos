@@ -23,7 +23,7 @@ public:
   bool acceptNewConnection();
   int32_t sendData(void* buf, uint16_t len);   // not just send, due to name collision with lwip
   int32_t getData(void* buf, uint16_t maxLen); // not just get due to name collision
-  int getErrorCode();
+  int32_t getErrorCode();
 };
 
 class TCPClient {
@@ -34,7 +34,7 @@ public:
   bool reopen(const uint16_t portNr, const char* hostname = "localhost");
   int32_t sendData(void* buf, uint16_t len);   // not just send due to name collision with lwip
   int32_t getData(void* buf, uint16_t maxLen); // not just get due to name collision
-  int getErrorCode();
+  int32_t getErrorCode();
 };
 
 }  // namespace

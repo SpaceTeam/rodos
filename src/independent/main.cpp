@@ -121,8 +121,14 @@ int main (int argc, char** argv) {
 #endif
 
     xprintf("BigEndianity = %d, cpu-Arc = %s, Basis-Os = %s, Cpu-Speed (K-Loops/sec) = %ld yeildtim (ns) %ld\n",
-            getIsHostBigEndian(), getHostCpuArch(), getHostBasisOS(), getSpeedKiloLoopsPerSecond(), getYieldTimeOverhead());
-    xprintf("Node Number: HEX: %lx Dec: %ld\n",getNodeNumber(),getNodeNumber());
+            getIsHostBigEndian(),
+            getHostCpuArch(),
+            getHostBasisOS(),
+            static_cast<long>(getSpeedKiloLoopsPerSecond()),
+            static_cast<long>(getYieldTimeOverhead()));
+    xprintf("Node Number: HEX: %lx Dec: %ld\n",
+            static_cast<long>(getNodeNumber()),
+            static_cast<long>(getNodeNumber()));
     xprintf("-----------------------------------------------------\n");
 
     MAIN();

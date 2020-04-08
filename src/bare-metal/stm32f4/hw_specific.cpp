@@ -305,7 +305,7 @@ void __asmSaveContextAndCallScheduler() {
  * - max. interval@32kHz: 1/(32kHz/256) * 0xFFF = 32768 ms
  * - max. interval@17kHz: 1/(17kHz/256) * 0xFFF = 61666 ms
  */
-void hwInitWatchdog(long intervalMilliseconds) {
+void hwInitWatchdog(int32_t intervalMilliseconds) {
 	/* Enable write access to IWDG_PR and IWDG_RLR registers */
 	IWDG_WriteAccessCmd(IWDG_WriteAccess_Enable );
 

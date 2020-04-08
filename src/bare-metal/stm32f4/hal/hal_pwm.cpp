@@ -52,7 +52,7 @@ HAL_PWM::HAL_PWM(PWM_IDX idx) {
 }
 
 
-int HAL_PWM::init(uint32_t frequency, uint32_t increments) {
+int32_t HAL_PWM::init(uint32_t frequency, uint32_t increments) {
 
     if ((static_cast<int>(context->PwmIdx) < static_cast<int>(PWM_IDX00)) || (static_cast<int>(context->PwmIdx) > static_cast<int>(PWM_IDX15))) {
         return -1;
@@ -269,7 +269,7 @@ int HAL_PWM::init(uint32_t frequency, uint32_t increments) {
 	return 0;
 }
 
-int HAL_PWM::config(PWM_PARAMETER_TYPE type, int paramVal) {
+int32_t HAL_PWM::config(PWM_PARAMETER_TYPE type, int32_t paramVal) {
     if ((static_cast<int>(context->PwmIdx) < static_cast<int>(PWM_IDX00)) || (static_cast<int>(context->PwmIdx) > static_cast<int>(PWM_IDX15))) {
         return -1;
     }
@@ -394,7 +394,7 @@ void HAL_PWM::reset() {
 
 }
 
-int HAL_PWM::write(uint32_t pulseWidthInIncs) {
+int32_t HAL_PWM::write(uint32_t pulseWidthInIncs) {
 	if ((static_cast<int>(context->PwmIdx) < static_cast<int>(PWM_IDX00)) || (static_cast<int>(context->PwmIdx) > static_cast<int>(PWM_IDX15))) {
         return -1;
     }

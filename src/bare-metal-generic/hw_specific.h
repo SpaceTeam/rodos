@@ -76,7 +76,7 @@ extern void threadStartupWrapper(Thread* thread);
 long* hwInitContext(long* stack, void* object);
 
 /** Node number if a network system **/
-extern long getNodeNumber();
+extern int32_t getNodeNumber();
 
 /********************************************************/
 

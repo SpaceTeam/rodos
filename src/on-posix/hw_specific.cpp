@@ -66,7 +66,7 @@ void deepSleepUntil(int64_t until) {
 
 
 static long long timeOfLastTriggerWatchdog = 0;
-void hwInitWatchdog([[gnu::unused]] long intervalMilliseconds) { }
+void hwInitWatchdog([[gnu::unused]] int32_t intervalMilliseconds) { }
 void hwTriggerWatchdog() { timeOfLastTriggerWatchdog = NOW(); }
 
 /**

@@ -25,7 +25,7 @@ static int prio = 1;        //Priorität des Threads, priority ist bereits in Ro
 
 void MAIN() {
     PRINTF(SCREEN_CLEAR);
-    for(uint32_t i = 0; i < MAX_X; i++) {
+    for(int i = 0; i < MAX_X; i++) {
         PRINTF(SCREEN_MOVE_CURSOR_TO, i, RIGHT_LIMIT + 1);
         PRINTF(":");
     }
@@ -85,7 +85,7 @@ class worm : public StaticThread<> {
             printProtector.enter();
             printProtector.enter();
             printProtector.enter();
-            PRINTF("%c %d %d \n", letter, y, x);
+            PRINTF("%c %d %d \n", letter, static_cast<int>(y), static_cast<int>(x));
             printProtector.leave();
             printProtector.leave();
             printProtector.leave();
