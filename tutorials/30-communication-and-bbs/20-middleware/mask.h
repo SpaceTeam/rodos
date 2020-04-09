@@ -3,6 +3,7 @@
  /**** Generated with support_programs/maskgenerator/generator-splitt.cpp ***/
 #define CNT1         "\x1B[3;22H"
 #define CONST        "\x1B[3;57H"
+#define CNT2         "\x1B[4;22H"
 #define PX       "\x1B[5;22H"
 #define PY       "\x1B[5;31H"
 #define PZ       "\x1B[5;40H"
