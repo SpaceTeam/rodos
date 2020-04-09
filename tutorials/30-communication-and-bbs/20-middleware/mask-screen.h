@@ -6,8 +6,8 @@
 const char* screen[] = {
 "*** See support_programs/maskgen to generate mask.h****",
 "",
-"publishing counter1 [           ]  counter2 conts 100  [           ]",
-"publishing counter2 [           ]",
+"publishing counter1 [           ]  counter2  [           ]",
+"publishing counter2 [           ] (shall be allways 100)",
 "publishing postion  [       ][       ][       ]",
 "_____________________________________________________________________",
 "",

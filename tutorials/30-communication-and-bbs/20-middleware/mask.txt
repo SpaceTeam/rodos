@@ -1,7 +1,7 @@
 *** See support_programs/maskgen to generate mask.h****
 
-publishing counter1 [CNT1       ]  counter2 conts 100  [CONST      ]
-publishing counter2 [CNT2       ]
+publishing counter1 [CNT1       ]  counter2  [CONST      ]
+publishing counter2 [CNT2       ] (shall be allways 100)
 publishing postion  [PX     ][PY     ][PZ     ]
 _____________________________________________________________________
 
