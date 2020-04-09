@@ -13,7 +13,8 @@ RODOS Versioning
 
 ----------------------------------------------
 
-201:    Threads mit statische stack array
+201:    a: Threads mit statische stack array
+        b: rm printf host infor headers from testsuite
 
 200:	Big SIMPLIFICATION!! many ports are missing!
 	a: remove all obsolete scripts in make now in scripts/*

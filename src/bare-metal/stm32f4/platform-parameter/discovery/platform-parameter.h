@@ -30,7 +30,7 @@
 /** uart for printf **/
 #define UART_DEBUG                      UART_IDX2, GPIO_053, GPIO_054 // PD5 and PD6
 // #define UART_DEBUG                        UART_IDX1, GPIO_009, GPIO_010 // PA 9 PA 10 SKITH DEBUG am Programmer 
-//#define UART_DEBUG                      UART_IDX3, GPIO_056, GPIO_057 // PD8 and PD9
+//#define UART_DEBUG                      UART_IDX3, GPIO_056, GPIO_057 // PD8 and PD9 USB at the extension board
 //#define UART_DEBUG                      UART_IDX4, GPIO_000, GPIO_001 // PA0 and PA1
 //#define UART_DEBUG                      UART_IDX5
 
