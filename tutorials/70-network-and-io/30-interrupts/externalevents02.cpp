@@ -25,7 +25,7 @@ class MyThread2 : public StaticThread<> {
 
 // WARNING: this will resime MyThread, even if it is waiting in a semaphore!
 class Resumer : public Putter {
-    bool putGeneric([[gnu::unused]] const long topicId, [[gnu::unused]] const unsigned int msgLen, [[gnu::unused]] const void* msg, [[gnu::unused]] const NetMsgInfo& netMsgInfo) {
+    bool putGeneric([[gnu::unused]] const uint32_t topicId, [[gnu::unused]] const size_t msgLen, [[gnu::unused]] const void* msg, [[gnu::unused]] const NetMsgInfo& netMsgInfo) {
         // from interrupt: no data (msg) expected
         myThread2.resume();
         return true;

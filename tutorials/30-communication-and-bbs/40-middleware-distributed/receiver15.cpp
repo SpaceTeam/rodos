@@ -6,8 +6,8 @@ static Application  receiverName("receiver 15", 1115);
 
 struct JustPrint15 : public Subscriber {
     JustPrint15() : Subscriber(counter5, "justprint15") { }
-    long put([[gnu::unused]] const long topicId, [[gnu::unused]] const long len, void* msg, [[gnu::unused]] const NetMsgInfo& netMsgInfo) {
-        PRINTF("%s%ld", R15, *(long*)msg);
+    uint32_t put([[gnu::unused]] const uint32_t topicId, [[gnu::unused]] const size_t len, void* msg, [[gnu::unused]] const NetMsgInfo& netMsgInfo) {
+        PRINTF("%s%ld", R15, *static_cast<long*>(msg));
         return 1;
     }
 } justPrint15;

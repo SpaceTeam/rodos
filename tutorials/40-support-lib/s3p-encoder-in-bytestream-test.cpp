@@ -64,7 +64,7 @@ class S3P_Test : public StaticThread<> {
 
         // Simulate a Sender (to UART or so)
         PRINTF("_________________________________ Simulate Sender\n");
-        for(int i = 0; i < 20; i++) dataToSend[i] = 0xf0 + i;
+        for(uint8_t i = 0; i < 20; i++) dataToSend[i] = (0xf0u + i) & 0xFFu;
 
         PRINTF("Sending trash before BOM\n"); 
         for(uint8_t i = 0; i < 10; i++) s3pSender.putByteEncoded(i);

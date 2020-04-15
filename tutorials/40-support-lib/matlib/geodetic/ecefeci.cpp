@@ -11,7 +11,7 @@ double fRand(double fMin, double fMax)
 
 void MAIN(void) {
     PRINTF("TEST ECEF<->ECI\n");
-    srand(NOW());
+    srand(static_cast<unsigned int>(NOW()));
     double x,y,z,utc;
     int i;
     utc = 0;

@@ -13,16 +13,16 @@ public:
    void run () {
 	long pingCnt = 0;
 	TIME_LOOP(0, 1*SECONDS) {
-	  PRINTF("ping %ld at %lld\n", pingCnt, static_cast<long long>(NOW()));
-          tSend = NOW();
-	  ping.publish(pingCnt);
-          pingCnt++;
+	   PRINTF("ping %ld at %lld\n", pingCnt, static_cast<long long>(NOW()));
+      tSend = NOW();
+	   ping.publish(pingCnt);
+      pingCnt++;
 	}
    }
 
-   long put([[gnu::unused]] const long topicId, [[gnu::unused]] const long len, void* data, [[gnu::unused]] const NetMsgInfo& netMsgInfo) {
-        tReceive = NOW();
-        long cnt = *(long*)data;
+   uint32_t put([[gnu::unused]] const uint32_t topicId, [[gnu::unused]] const size_t len, void* data, [[gnu::unused]] const NetMsgInfo& netMsgInfo) {
+         tReceive = NOW();
+         long cnt = *(long*)data;
          PRINTF("pong %ld at %lld, dif = %6.3f us\n", cnt, static_cast<long long>(tReceive), (double)(tReceive - tSend)/MICROSECONDS);
          return 1;
    }

@@ -10,8 +10,11 @@ struct ReceiverThread :  public Subscriber,  public StaticThread<>  {
 
   ReceiverThread() : Subscriber(counter1, "receiverthread") { }
 
-  long put(const long topicId, const long len, void* data, [[gnu::unused]] const NetMsgInfo& netMsgInfo) {
-      PRINTF(PL "%ld" PT "%ld"  PD "%ld\n", len, topicId, *(long*)data);
+  uint32_t put(const uint32_t topicId, const size_t len, void* data, [[gnu::unused]] const NetMsgInfo& netMsgInfo) {
+      PRINTF(PL "%lu" PT "%lu"  PD "%ld\n",
+        static_cast<unsigned long>(len),
+        static_cast<unsigned long>(topicId),
+        *static_cast<long*>(data));
       inputMsgBuffer.put(*(long*)data);
       this->resume();                         // not to publish from interrupt, call a thread to do it
       return 1;

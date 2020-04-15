@@ -71,6 +71,8 @@ class S3pEncoder {
     virtual void endOfMessage([[gnu::unused]] int len) {} // upcallOnInputChar()  will call this method when one message is ready. It gives you the length
 
     void upcallOnInputChar(uint8_t inputChar); // the interrupt server shall call this for each arrived byte
+
+    virtual ~S3pEncoder() = default;
 };
 
 } // namespace RODOS

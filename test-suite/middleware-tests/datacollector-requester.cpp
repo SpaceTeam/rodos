@@ -34,8 +34,8 @@ public:
 class FillData : public Subscriber {
 public:
     FillData() :  Subscriber(collectData, "fillData") { }
-        long put([[gnu::unused]] const long topicId, [[gnu::unused]] const long len, void* msg, [[gnu::unused]] const NetMsgInfo& netMsgInfo) {
-		char* toWrite = (char*)msg;
+        uint32_t put([[gnu::unused]] const uint32_t topicId, [[gnu::unused]] const size_t len, void* msg, [[gnu::unused]] const NetMsgInfo& netMsgInfo) {
+		char* toWrite = static_cast<char*>(msg);
 		static int cnt = 0;
 		for(int i = 0; i < 20; i++) toWrite[i] = static_cast<char>(cnt*0x10 + i);
 		cnt++;

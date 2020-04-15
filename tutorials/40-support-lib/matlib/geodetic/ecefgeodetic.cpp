@@ -12,7 +12,7 @@ void MAIN(void) {
 
     PRINTF("TEST ECEF->GEODETIC\n");
 	
-    srand(NOW());	
+    srand(static_cast<unsigned int>(NOW()));	
     int i;
     double theta,phi,h;
     for(i=0;i<100;i++){

@@ -26,7 +26,7 @@ class TcpServerTest : public StaticThread<> {
                 if(len > 0) {
                     PRINTF("received: %d '%s'\n", len, buffer);
                     SPRINTF(buffer, "Server(%d)", cnt++);
-                    if(cnt % 2) tcpServer.sendData(buffer, strlen(buffer)+1);
+                    if(cnt % 2) tcpServer.sendData(buffer, static_cast<uint16_t>(strlen(buffer)+1));
                     nodataCnt = 0;
                 }
                 if(len == 0) {

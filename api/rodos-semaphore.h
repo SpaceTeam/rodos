@@ -35,7 +35,7 @@ private:
   volatile int ownerEnterCnt;
 
 protected:
-  volatile long ownerPriority;
+  volatile int32_t ownerPriority;
   void* context; ///< used only on posix and on host-os
 
 public:

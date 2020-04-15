@@ -61,8 +61,8 @@ public:
     }
 
     /** implements the generic interface of putter, to allow receive from middleware */
-    bool putGeneric([[gnu::unused]] const long topicId, [[gnu::unused]] const unsigned int msgLen, const void* msg, [[gnu::unused]] const NetMsgInfo& netMsgInfo) {
-        accumulateNormalizing(*(const double*)msg);
+    bool putGeneric([[gnu::unused]] const uint32_t topicId, [[gnu::unused]] const size_t msgLen, const void* msg, [[gnu::unused]] const NetMsgInfo& netMsgInfo) {
+        accumulateNormalizing(*static_cast<const double*>(msg));
         return true;
     }
 
@@ -110,8 +110,8 @@ public:
     }
 
     /** implements the generic interface of putter, to allow receive from middleware */
-    bool putGeneric([[gnu::unused]] const long topicId, [[gnu::unused]] const unsigned int msgLen, const void* msg, [[gnu::unused]] const NetMsgInfo& netMsgInfo) {
-        accumulateNormalizing(*(const Type*)msg);
+    bool putGeneric([[gnu::unused]] const uint32_t topicId, [[gnu::unused]] const size_t msgLen, const void* msg, [[gnu::unused]] const NetMsgInfo& netMsgInfo) {
+        accumulateNormalizing(*static_cast<const Type*>(msg));
         return true;
     }
 

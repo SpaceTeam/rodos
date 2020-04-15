@@ -16,8 +16,10 @@ static Application module01("externalEvents");
 class SigTermHandler :  public Subscriber {
 public:
     SigTermHandler() : Subscriber(interruptSigterm, "simplesub") { }
-    void putFromInterrupt([[gnu::unused]] const long topicId, [[gnu::unused]] const void* any, int len) {
-        xprintf("external Event at %3.9f datalen %d\n",  SECONDS_NOW(), len);
+    void putFromInterrupt([[gnu::unused]] const uint32_t topicId, [[gnu::unused]] const void* any, size_t len) {
+        xprintf("external Event at %3.9f datalen %lu\n",
+            SECONDS_NOW(),
+            static_cast<unsigned long>(len));
     }
 } sigTermHandler;
 

@@ -10,7 +10,7 @@ class Transformer : public StaticThread<>{
 long max = 500E3; //m  
 long c = 0;  
 void init(){
-     srand(NOW());
+     srand(static_cast<unsigned int>(NOW()));
      PRINTF("dh \t\t dlat \t\t dlon \n");
 }
 void run(){

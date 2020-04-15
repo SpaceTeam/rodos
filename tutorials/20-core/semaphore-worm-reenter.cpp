@@ -29,21 +29,21 @@ void MAIN() {
 static char wormLetter = 'A';
 
 class worm : public StaticThread<> {
-    int  x, y, speed_x, speed_y;
+    int32_t  x, y, speed_x, speed_y;
     char letter;
 
   public:
     worm() {
-        x       =  uint32Rand() % RIGHT_LIMIT;
-        y       =  uint32Rand() % MAX_Y + 1;
-        speed_x = (uint32Rand() % 3) - 1;
-        speed_y = (uint32Rand() % 3) - 1;
+        x       = static_cast<int32_t>(uint32Rand() % RIGHT_LIMIT);
+        y       = static_cast<int32_t>(uint32Rand() % MAX_Y) + 1;
+        speed_x = static_cast<int32_t>(uint32Rand() % 3) - 1;
+        speed_y = static_cast<int32_t>(uint32Rand() % 3) - 1;
         letter  = wormLetter++;
     }
 
     void run() {
 
-        int last_x, last_y;
+        int32_t last_x, last_y;
         while(1) {
             occupied[x][y] = false;
             last_x         = x;
@@ -61,8 +61,8 @@ class worm : public StaticThread<> {
 
             // Change speed randomly
             if(uint32Rand() % 10 < 2) {
-                speed_x = (uint32Rand() % 3) - 1;
-                speed_y = (uint32Rand() % 3) - 1;
+                speed_x = static_cast<int32_t>(uint32Rand() % 3) - 1;
+                speed_y = static_cast<int32_t>(uint32Rand() % 3) - 1;
                 if(speed_x == 0 && speed_y == 0) speed_y = 1;
             }
 

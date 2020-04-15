@@ -36,7 +36,7 @@ template <typename Type, uint32_t len> class AllocableObejcts {
 public:
 
     uint32_t getNumOfFreeItems()  { return numOfFreeItems;}
-    uint32_t getIndex(Type* item) { return item - buffer; }
+    uint32_t getIndex(Type* item) { return static_cast<uint32_t>(item - buffer); }
 
     void init() {
         freeListsProtector.enter(); {
@@ -51,7 +51,7 @@ public:
         freeListsProtector.enter(); {
             item = (Type*)freeList.getAndRemoveTheFirst();
             if(item != 0) {
-                uint32_t index = item - buffer;
+                uint32_t index = static_cast<uint32_t>(item - buffer);
                 if(index < len) referenceCnt[index] = 1; // the if will be allwas true!
                 numOfFreeItems--;
             }
@@ -60,7 +60,8 @@ public:
     }
     
     void free(Type* item) {
-        uint32_t index = item - buffer;
+        if(item - buffer < 0) return;
+        uint32_t index = static_cast<uint32_t>(item - buffer);
         if(index >= len) return;
         freeListsProtector.enter(); {
             if(referenceCnt[index] >  0) referenceCnt[index]--; // the if will be allwas true!
@@ -73,8 +74,9 @@ public:
 
     Type* copyReference(Type* item) {
         Type*    copy  = item;
-        uint32_t index = item - buffer;
-        if(index >= len) return 0;
+        if(item - buffer < 0) return nullptr;
+        uint32_t index = static_cast<uint32_t>(item - buffer);
+        if(index >= len) return nullptr;
 
         freeListsProtector.enter(); {
            if(referenceCnt[index] > 0) referenceCnt[index]++;

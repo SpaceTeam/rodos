@@ -109,11 +109,11 @@ Topic<Greetings> valentine(22, "valentine");
 // FIND_Charly
 class Charly : public TopicFilter {
 public:
-    void prolog([[gnu::unused]] const long topicId, [[gnu::unused]] const long len, void* data, [[gnu::unused]] const NetMsgInfo& netMsgInfo) {
+    void prolog([[gnu::unused]] const uint32_t topicId, [[gnu::unused]] const size_t len, void* data, [[gnu::unused]] const NetMsgInfo& netMsgInfo) {
         Greetings* grts = (Greetings*)data;
         grts->msg[0]    = 'I'; // correction
     }
-    void epilog([[gnu::unused]] const long topicId, [[gnu::unused]] const long len, [[gnu::unused]] void* data, [[gnu::unused]] const NetMsgInfo& netMsgInfo) {
+    void epilog([[gnu::unused]] const uint32_t topicId, [[gnu::unused]] const size_t len, [[gnu::unused]] void* data, [[gnu::unused]] const NetMsgInfo& netMsgInfo) {
         PRINTF("charly knows, message was distributed\n");
     }
 } charly;

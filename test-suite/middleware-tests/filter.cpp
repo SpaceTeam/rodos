@@ -10,11 +10,11 @@ Topic<int> counter2(21, "counter2");
 
 class Filter : public TopicFilter {
   public:
-    void prolog([[gnu::unused]] const long topicId, [[gnu::unused]] const long len, void* data, [[gnu::unused]] const NetMsgInfo& netMsgInfo) {
-        int* received = (int*)data;
+    void prolog([[gnu::unused]] const uint32_t topicId, [[gnu::unused]] const size_t len, void* data, [[gnu::unused]] const NetMsgInfo& netMsgInfo) {
+        int* received = static_cast<int*>(data);
         *received = *received + 1000000;
     }
-    void epilog([[gnu::unused]] const long topicId, [[gnu::unused]] const long len, [[gnu::unused]] void* data, [[gnu::unused]] const NetMsgInfo& netMsgInfo) {
+    void epilog([[gnu::unused]] const uint32_t topicId, [[gnu::unused]] const size_t len, [[gnu::unused]] void* data, [[gnu::unused]] const NetMsgInfo& netMsgInfo) {
         PRINTF("Filter changed the value\n");
     }
 } filter;

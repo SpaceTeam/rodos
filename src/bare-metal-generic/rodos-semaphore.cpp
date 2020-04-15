@@ -29,7 +29,7 @@ Semaphore::Semaphore() :
  */
 void Semaphore::enter() {
   Thread* caller = Thread::getCurrentThread();
-  long callerPriority = caller->getPriority();
+  int32_t callerPriority = caller->getPriority();
   {
     PRIORITY_CEILER_IN_SCOPE();
     // Check if semaphore is occupied by another thread

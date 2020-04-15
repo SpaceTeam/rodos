@@ -7,11 +7,11 @@ static UDPIn in(5001);
 
 class Receiver : public StaticThread<> {
 
-    static const int DATALEN = 200;
+    static const uint16_t DATALEN = 200;
     char userData[DATALEN];
 
     void run () {
-	unsigned long inAddr;
+	uint32_t inAddr;
 	int ip0, ip1, ip2, ip3;   // Octets of sender address
 	char sendHostAddress[50];  // Output address
 
@@ -47,7 +47,7 @@ protected:
 	    // Wake receiver.
 	    receiver.resume();
 	}
-	t1 = NOW();
+	t1 = SECONDS_NOW();
     }
 
     void init() {

@@ -26,7 +26,6 @@ public:
 
     virtual void init() { }
     virtual void step([[gnu::unused]] int64_t timeNow) { }
-
 };
 
 

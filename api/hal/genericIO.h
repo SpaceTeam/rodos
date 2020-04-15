@@ -19,6 +19,7 @@ public:
     virtual void onWriteFinished() {}
     virtual void onReadFinished() {}
     virtual void onDataReady() {}
+    virtual ~IOEventReceiver() = default;
 };
 
 class GenericIOInterface {
@@ -33,6 +34,7 @@ protected:
 
 public:
     GenericIOInterface(); // create all drivers static but do not init there
+    virtual ~GenericIOInterface() = default;
 
 
     // Commented out in the generic interface, but shall be implemented in the real interface

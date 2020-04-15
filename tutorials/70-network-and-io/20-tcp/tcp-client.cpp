@@ -28,7 +28,7 @@ public:
             SPRINTF(strCnt, "Client(%d)", i);
             PRINTF("sending %d '%s'\n", (int)strlen(strCnt)+1, strCnt);
 
-            tcpClient.sendData(strCnt, strlen(strCnt)+1);
+            tcpClient.sendData(strCnt, static_cast<uint16_t>(strlen(strCnt)+1));
             int n = tcpClient.getData(answer, 90);
             if(n > 0) {
                 PRINTF("received: %d '%s'\n", n, answer);

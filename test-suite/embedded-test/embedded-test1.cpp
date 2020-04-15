@@ -205,12 +205,12 @@ class ChecksumTester : public StaticThread<> {
         CRC crc;
         
         
-        for(int i = 1; i < 100; i++) {
+        for(uint32_t i = 1; i < 100; i++) {
             data.toBeTested *= i;
             data.toBeTested += i;
             SPRINTF(buff, "%u", static_cast<unsigned int>(data.toBeTested));
-            PRINTF("%d Checksum of %u: %u ---- %u ---- %u ---- %u ---- %x\n",
-                i,
+            PRINTF("%u Checksum of %u: %u ---- %u ---- %u ---- %u ---- %x\n",
+                static_cast<unsigned int>(i),
                 static_cast<unsigned int>(data.toBeTested),
                 static_cast<unsigned int>(checkSum(data.data, 4)),
                 static_cast<unsigned int>(computeCrc(data.data, 4, 0)),

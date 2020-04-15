@@ -26,7 +26,7 @@ public:
     suspendedReader = 0;
   }
 
-  bool putGeneric([[gnu::unused]] const long topicId, const unsigned int len, const void* msg, [[gnu::unused]] const NetMsgInfo& netMsgInfo) {
+  bool putGeneric([[gnu::unused]] const uint32_t topicId, const size_t len, const void* msg, [[gnu::unused]] const NetMsgInfo& netMsgInfo) {
     RODOS_ASSERT_IFNOT_RETURN((len <= sizeof(Type)), false); // SyncCommBuffer wrong len
     this->put(*(const Type*)msg);
     return true;

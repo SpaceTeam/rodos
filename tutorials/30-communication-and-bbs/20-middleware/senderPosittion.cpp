@@ -14,9 +14,9 @@ public:
 		long cnt = 10000;
 		TIME_LOOP(3*SECONDS, 3*SECONDS) {
 			PRINTF(PX "%ld" PY "%ld" PZ "%ld\n", cnt, cnt, cnt);
-			myPos.x = cnt++;
-			myPos.y = cnt++;
-			myPos.z = cnt++;
+			myPos.x = static_cast<float>(cnt++);
+			myPos.y = static_cast<float>(cnt++);
+			myPos.z = static_cast<float>(cnt++);
 			position.publish(myPos);
 		}
 	}

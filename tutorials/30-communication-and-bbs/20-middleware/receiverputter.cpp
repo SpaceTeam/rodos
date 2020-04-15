@@ -7,8 +7,11 @@ static Application  receiverName("ReciverPutter", 1100);
 class JustPrint : public Putter {
 
 	/// Implements the complete generic interface of putter
-        bool putGeneric(const long topicId, const unsigned int msgLen, const void* msg, [[gnu::unused]] const NetMsgInfo& netMsgInfo) {
-		PRINTF(NB "%d" MD "%ld" TID "%ld\n", msgLen, *(const long*)msg, topicId);
+        bool putGeneric(const uint32_t topicId, const size_t msgLen, const void* msg, [[gnu::unused]] const NetMsgInfo& netMsgInfo) {
+		PRINTF(NB "%lu" MD "%ld" TID "%lu\n",
+			static_cast<unsigned long>(msgLen),
+			*static_cast<const long*>(msg),
+			static_cast<unsigned long>(topicId));
 		return true;
 	}
 } justPrint;

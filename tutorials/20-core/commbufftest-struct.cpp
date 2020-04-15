@@ -15,7 +15,7 @@ class Sender : public StaticThread<> {
         int      cnt = 0;
         while(1) {
             cnt++;
-            pos.x = pos.y = pos.z = cnt;
+            pos.x = pos.y = pos.z = static_cast<float>(cnt);
             PRINTF("Writing %d\n", cnt);
             buf.put(pos);
             suspendCallerUntil(NOW() + 3 * SECONDS);

@@ -62,7 +62,7 @@ public:
   ListElement(List &list, const char* name = "ListElement", void* myOwner = 0);
 
   /** destructor */
-  ~ListElement();
+  virtual ~ListElement();
 
   void append(List& list);
 

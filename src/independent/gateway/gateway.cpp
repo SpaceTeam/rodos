@@ -280,14 +280,15 @@ void Gateway::run() {
 
 
 
-void prepareNetworkMessage(NetworkMessage& netMsg, const uint32_t topicId,const void* data, uint16_t len) {
+void prepareNetworkMessage(NetworkMessage& netMsg, const uint32_t topicId,const void* data, size_t len) {
     netMsg.put_senderNode(static_cast<int32_t>(myNodeNr)); // Set node ID of sending node
     netMsg.put_topicId(topicId);     // ID of calling topic
     netMsg.put_sentTime(NOW());      // Timestamp
     netMsg.put_maxStepsToForward(10);
     intptr_t ptr=reinterpret_cast<intptr_t>(Thread::getCurrentThread());
     netMsg.put_senderThreadId(static_cast<uint32_t>(ptr));
-    netMsg.setUserData(data, len);
+    if(len > UINT16_MAX) len = UINT16_MAX;
+    netMsg.setUserData(data, static_cast<uint16_t>(len));
     netMsg.setCheckSum();
 }
 

@@ -12,16 +12,16 @@ static Application  receiverName("UDPReceiver");
  */
 class Receiver : public StaticThread<> {
     
-    static const int BUFFSIZE = 200;
+    static const uint16_t BUFFSIZE = 200;
     char userData[BUFFSIZE];      // input data buffer
-    unsigned long inAddr;     // sender address IPv4 
+    uint32_t inAddr;     // sender address IPv4 
     int ip0, ip1, ip2, ip3;   // octets of sender address
     char sendHostAddress[50];  // Sender address
     
 public:
     UDPIn in; // UDP port fo the receiver
 
-    Receiver(const long int portNum) : in(portNum) { }
+    Receiver(const int32_t portNum) : in(portNum) { }
 
     void run () {
 	TIME_LOOP(1*SECONDS, 20*MILLISECONDS) {

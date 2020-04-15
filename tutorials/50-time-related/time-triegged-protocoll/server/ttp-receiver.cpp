@@ -13,7 +13,7 @@ class TTPReceiver : public Subscriber {
     /**
      * Called when a node in the network sends during its time slot.
      */
-    long put([[gnu::unused]] long int _topicId, [[gnu::unused]] long int _len, void* _msg, [[gnu::unused]] const NetMsgInfo& _netMsgInfo) {
+    uint32_t put([[gnu::unused]] uint32_t _topicId, [[gnu::unused]] size_t _len, void* _msg, [[gnu::unused]] const NetMsgInfo& _netMsgInfo) {
 
         int64_t    arrivalTime = sysTime.getUTC();
         TTPMessage msg         = *(TTPMessage*)_msg;

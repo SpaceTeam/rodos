@@ -10,8 +10,8 @@ class CharReceiver : public Subscriber {
   public:
     CharReceiver() : Subscriber(charInput, "CharReceiver") {}
 
-    void putFromInterrupt([[gnu::unused]] const long topicId, const void* data, [[gnu::unused]] int len) {
-        const GenericMsgRef* msg = (const GenericMsgRef*)data;
-        xprintf("\n Async: %d %s\n", (const int)msg->msgLen, msg->msgPtr); // no PRINTF in interrupts (Sempahore)
+    void putFromInterrupt([[gnu::unused]] const uint32_t topicId, const void* data, [[gnu::unused]] size_t len) {
+        const GenericMsgRef* msg = static_cast<const GenericMsgRef*>(data);
+        xprintf("\n Async: %u %s\n", static_cast<unsigned int>(msg->msgLen), msg->msgPtr); // no PRINTF in interrupts (Sempahore)
     }
 } charReceiver;

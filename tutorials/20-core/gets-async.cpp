@@ -24,11 +24,11 @@ class CharReceiver : public Subscriber {
   public:
     CharReceiver() : Subscriber(charInput, "CharReceiver") {}
 
-    void putFromInterrupt([[gnu::unused]] const long topicId, const void* data, [[gnu::unused]] int len) {
-        const GenericMsgRef* msg       = (const GenericMsgRef*)data;
+    void putFromInterrupt([[gnu::unused]] const uint32_t topicId, const void* data, [[gnu::unused]] size_t len) {
+        const GenericMsgRef* msg       = static_cast<const GenericMsgRef*>(data);
         char content[100] = {};
-        memcpy(content, msg->msgPtr, msg->msgLen > 100 ? 100 : msg->msgLen - 1);
+        memcpy(content, msg->msgPtr, static_cast<size_t>(msg->msgLen > 100 ? 100 : msg->msgLen - 1));
         content[msg->msgLen > 100 ? 99 : msg->msgLen] = 0;
-        xprintf("\n Async: %d %s\n", (const int)msg->msgLen, content); // no PRINTF in interrupts (Sempahore)
+        xprintf("\n Async: %u %s\n", static_cast<unsigned int>(msg->msgLen), content); // no PRINTF in interrupts (Sempahore)
     }
 } charReceiver;

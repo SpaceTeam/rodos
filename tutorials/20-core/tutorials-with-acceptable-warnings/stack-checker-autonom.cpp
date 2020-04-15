@@ -17,23 +17,27 @@ class ThreadChecker : public StaticThread<> {
         PRINTF(" \n\n\n****************************************** IMPORTANT \n");
         PRINTF(" ****** to use this, set EMPTY_MEMORY_MARKER in thread_on_hw.cpp to 0 and recompile rodos\n");
         PRINTF(" ******************************************\n");
-        long    minStack        = DEFAULT_STACKSIZE;
+        size_t    minStack        = DEFAULT_STACKSIZE;
         Thread* dangerousThread = 0;
         TIME_LOOP(0, 3 * SECONDS) {
             PRINTF("TST: Threads and stacks:\n");
             ITERATE_LIST(Thread, Thread::threadList) {
-                long  index = 0;
+                size_t  index = 0;
                 char* stk   = iter->stackBegin;
                 for(index = 16; index < iter->stackSize; index++)
                     if(stk[index] != 0) break;
                 if(index < minStack) minStack = index;
                 if(index < LOW_STACK_LIMIT) dangerousThread = iter;
 
-                PRINTF("	%s  Prio = %7ld Stack = %6ld StackFree = %6ld, (min = %6ld)\n",
-                       iter->getName(), iter->priority, iter->stackSize, index, minStack);
+                PRINTF("	%s  Prio = %7ld Stack = %6lu StackFree = %6lu, (min = %6lu)\n",
+                       iter->getName(),
+                       static_cast<long>(iter->priority),
+                       static_cast<unsigned long>(iter->stackSize),
+                       static_cast<unsigned long>(index),
+                       static_cast<unsigned long>(minStack));
             }
             if(minStack < LOW_STACK_LIMIT) {
-                PRINTF("TST: Dager! Stack to low\n");
+                PRINTF("TST: Danger! Stack to low\n");
                 PRINTF("\nTST: Recommend to suspend '%s'****\n\n", dangerousThread->getName());
             }
         }

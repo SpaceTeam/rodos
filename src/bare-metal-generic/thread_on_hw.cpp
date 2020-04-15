@@ -47,7 +47,7 @@ Thread::Thread(const char* name,
 void Thread::initializeStack() {
     //Paint the stack space TODO: Comment out for faster start up
     uint32_t* stackPaint = (uint32_t*)stack;
-    while((uint32_t)stackPaint >= (uint32_t)stackBegin) {
+    while((intptr_t)stackPaint >= (intptr_t)stackBegin) {
         *stackPaint = EMPTY_MEMORY_MARKER;
         stackPaint--;
     }
@@ -268,13 +268,16 @@ Thread* Thread::findNextToRun(int64_t timeNow) {
     } // Iterate list
 
     /** Check stack violations **/
-    if(((int32_t)nextThreadToRun->context - (int32_t)nextThreadToRun->stackBegin) < 300) {
-        xprintf("!StackOverflow! %x DEACTIVATED!: free %d\n", (int)nextThreadToRun, (int)nextThreadToRun->context - (int)nextThreadToRun->stackBegin );
+    if(((intptr_t)nextThreadToRun->context - (intptr_t)nextThreadToRun->stackBegin) < 300) {
+        xprintf("!StackOverflow! %x DEACTIVATED!: free %d\n", 
+            static_cast<unsigned int>(reinterpret_cast<intptr_t>(nextThreadToRun)), 
+            static_cast<int>(reinterpret_cast<intptr_t>(nextThreadToRun->context) - reinterpret_cast<intptr_t>(nextThreadToRun->stackBegin)));
         nextThreadToRun->suspendedUntil = END_OF_TIME;
         nextThreadToRun = &idlethread;
     }
-    if ( *(uint32_t *)(nextThreadToRun->stackBegin) !=  EMPTY_MEMORY_MARKER) { // this thread is going beyond its stack!
-        xprintf("! PANIC %x beyond stack, DEACTIVATED!\n", (int)nextThreadToRun);
+    if ( *reinterpret_cast<uint32_t *>(nextThreadToRun->stackBegin) !=  EMPTY_MEMORY_MARKER) { // this thread is going beyond its stack!
+        xprintf("! PANIC %x beyond stack, DEACTIVATED!\n",
+            static_cast<unsigned int>(reinterpret_cast<intptr_t>(nextThreadToRun)));
         nextThreadToRun->suspendedUntil = END_OF_TIME;
         nextThreadToRun = &idlethread;
     }
@@ -311,7 +314,7 @@ size_t Thread::getMaxStackUsage(){
 
 	//Go to the beginning of the stack(lowest addres)
 	uint32_t* stackScan = (uint32_t*)currentThread->stack;
-	while((uint32_t)stackScan >= (uint32_t)currentThread->stackBegin){
+	while((intptr_t)stackScan >= (intptr_t)currentThread->stackBegin){
 		stackScan--;
 	}
 	stackScan++;

@@ -28,7 +28,7 @@ class MemTest : public StaticThread<> {
         PRINTF("var4: %d@%lx\n", (int)var4, (long)&var4);
 
         uint16_t cnt = 0;
-        uint64_t t0;
+        int64_t t0;
         while(1) {
             cnt++;
             suspendCallerUntil(NOW() + 2 * SECONDS);
