@@ -87,14 +87,69 @@ int HAL_UART::init(unsigned int iBaudrate) {
     t.c_cc[VTIME] = 0;           //TW:/* turn off timer */
 
     switch(iBaudrate) {
+        case 50:
+            cfsetispeed(&t, B50);
+            cfsetospeed(&t, B50);
+            break;
+        case 75:
+            cfsetispeed(&t, B75);
+            cfsetospeed(&t, B75);
+            break;
+        case 110:
+            cfsetispeed(&t, B110);
+            cfsetospeed(&t, B110);
+            break;
+        case 134:
+            cfsetispeed(&t, B134);
+            cfsetospeed(&t, B134);
+            break;
+        case 150:
+            cfsetispeed(&t, B150);
+            cfsetospeed(&t, B150);
+            break;
+        case 300:
+            cfsetispeed(&t, B300);
+            cfsetospeed(&t, B300);
+            break;
+        case 600:
+            cfsetispeed(&t, B600);
+            cfsetospeed(&t, B600);
+            break;
+        case 1200:
+            cfsetispeed(&t, B1200);
+            cfsetospeed(&t, B1200);
+            break;
+        case 2400:
+            cfsetispeed(&t, B2400);
+            cfsetospeed(&t, B2400);
+            break;
+        case 4800:
+            cfsetispeed(&t, B4800);
+            cfsetospeed(&t, B4800);
+            break;
+        case 9600:
+            cfsetispeed(&t, B9600);
+            cfsetospeed(&t, B9600);
+            break;
+        case 19200:
+            cfsetispeed(&t, B19200);
+            cfsetospeed(&t, B19200);
+            break;
         case 38400:
             cfsetispeed(&t, B38400);
+            cfsetospeed(&t, B38400);
             break;
         case 57600:
             cfsetispeed(&t, B57600);
+            cfsetospeed(&t, B57600);
             break;
         case 115200:
             cfsetispeed(&t, B115200); /* normal shall be: B115200 Baud */
+            cfsetospeed(&t, B115200);
+            break;
+        case 230400:
+            cfsetispeed(&t, B230400); /* normal shall be: B115200 Baud */
+            cfsetospeed(&t, B230400);
             break;
         default:
             xprintf("UART: baudrate not supported: %d\n", iBaudrate);
