@@ -46,10 +46,10 @@ struct DownlinkEnvelop : CCSDSEnvelop {
     DownlinkTFTrailer  tfTrailer;
 
     //_____________________________________ Same function nemas for Down & Uplink, but different implementation
-    void initDefaultTFHeaderAndTrailer(uint32_t spaceCraftId); ///< for spacecraft
+    void initDefaultTFHeaderAndTrailer(uint16_t spaceCraftId); ///< for spacecraft
     void initDefaultSPHeader();           ///< for spacecraft
     void beginNewTF();			          ///< for spacecraft, request to write
-    int  beginNewSP();                    ///< for spacecraft, return max len of user data, 0-> TF is full, request to write
+    uint16_t beginNewSP();                    ///< for spacecraft, return max len of user data, 0-> TF is full, request to write
     void commitTF();                      ///< for spacecraft: serialize TF header and trailer and generate CRC
     void commitClcwToTF();                ///< for spacecraft: serialize trailer including CLCW and generate CRC
     void commitSP();                      ///< for spacecraft: if lenOfCurrentUserData is 0, the SP will be discarded
@@ -71,10 +71,10 @@ struct UplinkEnvelop : CCSDSEnvelop {
     UplinkTFTrailer  tfTrailer;
 
     //_____________________________________ Same function nemas for Down & Uplink, but different implementation
-    void initDefaultTFHeaderAndTrailer(uint32_t spaceCraftId); ///< for groundstation
+    void initDefaultTFHeaderAndTrailer(uint16_t spaceCraftId); ///< for groundstation
     void initDefaultSPHeader();           ///< for groundstation
     void beginNewTF();			          ///< for groundstation
-    int  beginNewSP();                    ///< for groundstation  return max len of user data, 0-> TF is full
+    uint16_t  beginNewSP();                    ///< for groundstation  return max len of user data, 0-> TF is full
     void commitTF();                      ///< for groundstation: serialize TF header and generate CRC (for groundstation)
     void commitSP();                      ///< for groundstation: if lenOfCurrentUserData is 0, the SP will be discarded
 
@@ -84,7 +84,7 @@ struct UplinkEnvelop : CCSDSEnvelop {
     UplinkTransferFrame* getTfPtr() { return (UplinkTransferFrame*) buf; }
     UplinkSourcePacket*  getSpPtr() { return (UplinkSourcePacket*) (buf+indexOfCurrentSP); }
 
-    static uint32_t getLenOfCurrentUserData(UplinkSPHeader &spHeader) { return spHeader.length  + 1 - (spHeader.HEADER_SIZE - 6); }
+    static uint32_t getLenOfCurrentUserData(UplinkSPHeader &spHeader) { return spHeader.length  + 1u - (spHeader.HEADER_SIZE - 6u); }
     static uint32_t getLenOfCurrentSP(UplinkSPHeader &spHeader)       { return getLenOfCurrentUserData(spHeader) + spHeader.HEADER_SIZE; }
 };
 

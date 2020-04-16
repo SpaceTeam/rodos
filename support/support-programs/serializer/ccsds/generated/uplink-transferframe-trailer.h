@@ -7,15 +7,15 @@
 
 namespace CCSDS {
 struct UplinkTFTrailer {
-    static const int HEADER_SIZE = 2;
+    static const uint16_t HEADER_SIZE = 2;
     uint16_t crc                 ; // 16  bits  cyclic redundancy code in CCSDS called "FRAME ERROR CONTROL FIELD"
 
-    int serialize(uint8_t * buf) const;
-    int deserialize(const uint8_t * buf);
+    uint32_t serialize(uint8_t * const buf) const;
+    uint32_t deserialize(uint8_t const * const buf);
 };
 
 
-inline int UplinkTFTrailer::serialize(uint8_t* buf) const {
+inline uint32_t UplinkTFTrailer::serialize(uint8_t* const buf) const {
     #ifndef NO_RODOS_NAMESPACE
     using namespace RODOS;
     #endif
@@ -24,7 +24,7 @@ inline int UplinkTFTrailer::serialize(uint8_t* buf) const {
 
     return 2;
 }
-inline int UplinkTFTrailer::deserialize(const uint8_t * buf) {
+inline uint32_t UplinkTFTrailer::deserialize(uint8_t const * const buf) {
     #ifndef NO_RODOS_NAMESPACE
     using namespace RODOS;
     #endif

@@ -84,27 +84,34 @@ int main() {
 
     int totalLen = 0;
     for(int i = 0; i < fieldCnt; i++) totalLen += field[i].numOfBits;
-    printf("    static const int HEADER_SIZE = %d;\n", totalLen/8);
+    if(totalLen / 8 > UINT16_MAX) fprintf(stderr, "uint16_t cannot store header size %d\n", totalLen / 8);
+    printf("    static const uint16_t HEADER_SIZE = %d;\n", totalLen / 8);
     if(totalLen%8 != 0) printf("#warning not a multiple of 8 bits\n");
 
     for(int i = 0; i < fieldCnt; i++) {
-        printf("    uint32_t %-20s; // %2d  bits  %s\n", 
+        if (field[i].numOfBits <=8) {
+            printf("    uint8_t  ");
+        } else if (field[i].numOfBits <=16) {
+            printf("    uint16_t ");
+        } else {
+            printf("    uint32_t ");
+        }
+        printf("%-20s; // %2d  bits  %s\n", 
         field[i].name, field[i].numOfBits, field[i].comment);
     }
     printf("\n");
-    printf("    int serialize(char * const buf) const;\n");
-    printf("    int deserialize(char const * const buf);\n");
+    printf("    uint32_t serialize(uint8_t * const buf) const;\n");
+    printf("    uint32_t deserialize(uint8_t const * const buf);\n");
     printf("};\n\n\n");
 
 
 //_________________________ generate serializer
 
     int bitCnt  = 0;
-    printf("inline int %s::serialize(char* const b) const {\n", className);
+    printf("inline uint32_t %s::serialize(uint8_t* const buf) const {\n", className);
     printf("    #ifndef NO_RODOS_NAMESPACE\n"
            "    using namespace RODOS;\n"
            "    #endif\n\n");
-    printf("    unsigned char* buf = (unsigned char*)b;\n");
     for(int i = 0; i < fieldCnt; i++) {
         if((field[i].numOfBits == 8) && (bitCnt%8 == 0)) {
             printf("    buf[%d]      =             %s;\n", bitCnt/8, field[i].name);
@@ -123,11 +130,10 @@ int main() {
 //_________________________ generate deserializer
 
     bitCnt = 0;
-    printf("inline int %s::deserialize(char const * const b) {\n", className);
+    printf("inline uint32_t %s::deserialize(uint8_t const * const buf) {\n", className);
     printf("    #ifndef NO_RODOS_NAMESPACE\n"
            "    using namespace RODOS;\n"
            "    #endif\n\n");
-    printf("    unsigned char* buf = (unsigned char*)b; // becouse deserialize is const, but getBitFiled not!\n");
     for(int i = 0; i < fieldCnt; i++) {
         if((field[i].numOfBits == 8) && (bitCnt%8 == 0)) {
             printf("    %-16s = buf[%d];\n", field[i].name, bitCnt/8);
@@ -136,7 +142,13 @@ int main() {
         } else if((field[i].numOfBits == 32) && (bitCnt%8 == 0)) {
             printf("    %-16s = bigEndianToUint32_t(buf+%d);\n", field[i].name, bitCnt/8);
         } else {
-            printf("    %-16s = getBitField(buf, %3d, %2d);\n", field[i].name, bitCnt, field[i].numOfBits);
+            printf("    %-16s = ", field[i].name);
+            if(field[i].numOfBits <= 8) {
+                printf("static_cast<uint8_t>");
+            } else if (field[i].numOfBits <= 16) {
+                printf("static_cast<uint16_t>");
+            }
+            printf("(getBitField(buf, %3d, %2d));\n", bitCnt, field[i].numOfBits);
        }
        bitCnt += field[i].numOfBits;
     }

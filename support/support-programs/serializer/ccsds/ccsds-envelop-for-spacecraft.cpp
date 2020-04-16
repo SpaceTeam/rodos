@@ -20,7 +20,7 @@ uint32_t DownlinkMasterFramecounter        = 0;
 
 //______________________________________________________ init Downlinks with default values (Code for spacecraft)
 
-void DownlinkEnvelop::initDefaultTFHeaderAndTrailer(uint32_t spaceCraftId) {
+void DownlinkEnvelop::initDefaultTFHeaderAndTrailer(uint16_t spaceCraftId) {
 
     memset(&tfHeader,  0, sizeof(tfHeader));
     memset(&tfTrailer, 0, sizeof(tfTrailer));
@@ -58,16 +58,16 @@ void DownlinkEnvelop::beginNewTF() {
     indexOfCurrentSP = tfHeader.HEADER_SIZE;
 }
 
-int  DownlinkEnvelop::beginNewSP() {
+uint16_t  DownlinkEnvelop::beginNewSP() {
 
     indexOfCurrentUserData = static_cast<uint16_t>(indexOfCurrentSP + spHeader.HEADER_SIZE);
     userDataBuf            = &buf[indexOfCurrentUserData];
     lenOfCurrentSP         = 0; // will be set bei commit
     lenOfCurrentUserData   = 0;
 
-    int maxUserLen = DOWNLINK_TF_LEN - indexOfCurrentUserData - tfTrailer.HEADER_SIZE;
+    int32_t maxUserLen = DOWNLINK_TF_LEN - indexOfCurrentUserData - tfTrailer.HEADER_SIZE;
     if(maxUserLen < 0) maxUserLen = 0;
-    return maxUserLen;
+    return static_cast<uint16_t>(maxUserLen);
 }
 
 void DownlinkEnvelop::commitSP() {
@@ -78,12 +78,12 @@ void DownlinkEnvelop::commitSP() {
     }
 
     lenOfCurrentSP         = static_cast<uint16_t>(spHeader.HEADER_SIZE + lenOfCurrentUserData);
-    spHeader.dataPackLen   = lenOfCurrentSP - 6u -1u; // 6: len of primary downlink sp header
+    spHeader.dataPackLen   = static_cast<uint16_t>(lenOfCurrentSP - 6u -1u); // 6: len of primary downlink sp header
 
     int64_t timeNow            = sysTime.getUTC();
     spHeader.timeStampSeconds  = (uint32_t)(timeNow/SECONDS);
     spHeader.timeStampFraction = (uint16_t)( ((double)(timeNow%SECONDS) / (double)SECONDS) * 64*1024);
-    spHeader.sourceSeqCnt      = DownlinkApidSequenceCounter[spHeader.applicationId & 2047]++;
+    spHeader.sourceSeqCnt      = static_cast<uint16_t>(DownlinkApidSequenceCounter[spHeader.applicationId & 2047]++);
 
     spHeader.serialize(buf + indexOfCurrentSP);
     indexOfCurrentSP = static_cast<uint16_t>(indexOfCurrentSP + lenOfCurrentSP);
@@ -95,8 +95,8 @@ void DownlinkEnvelop::commitTF() {
 
     addIdleSP();
 
-    tfHeader.masterChanFrameCnt  = DownlinkMasterFramecounter++;
-    tfHeader.virtualChanFrameCnt = DownlinkVirtualChanFrameCnt[tfHeader.virtualChanId & 7]++;
+    tfHeader.masterChanFrameCnt  = static_cast<uint8_t>(DownlinkMasterFramecounter++);
+    tfHeader.virtualChanFrameCnt = static_cast<uint8_t>(DownlinkVirtualChanFrameCnt[tfHeader.virtualChanId & 7]++);
     tfHeader.serialize(buf);
 
     commitClcwToTF();
@@ -111,11 +111,11 @@ void DownlinkEnvelop::commitClcwToTF() {
 }
 
 void DownlinkEnvelop::addIdleSP() {      /** The rest to the end of the TF has to be an iddle SP **/
-    int restLen  =  beginNewSP();
+    uint16_t restLen  =  beginNewSP();
     if(restLen  == 0) return; // there is no room for a SP. rest stays in 0xff....
     initDefaultSPHeader(); // idle
     spHeader.applicationId = 0x7ff;
-    lenOfCurrentUserData = static_cast<uint16_t>(restLen);
+    lenOfCurrentUserData = restLen;
     commitSP();
 }
 

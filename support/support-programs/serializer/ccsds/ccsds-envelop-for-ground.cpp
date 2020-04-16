@@ -15,7 +15,7 @@ Application     applicationGround("CCSDS-groundsegment-envelop");
 
 //______________________________________________________ init Uplinks with default values (Code for groundstation)
 
-void UplinkEnvelop::initDefaultTFHeaderAndTrailer(uint32_t spaceCraftId) {
+void UplinkEnvelop::initDefaultTFHeaderAndTrailer(uint16_t spaceCraftId) {
 
     memset(&tfHeader,  0, sizeof(tfHeader));
     memset(&tfTrailer, 0, sizeof(tfTrailer));
@@ -23,7 +23,7 @@ void UplinkEnvelop::initDefaultTFHeaderAndTrailer(uint32_t spaceCraftId) {
     tfHeader.bypassFlag            = 1; //    0->A: normal (check SeqNr),  1->B: Bypass, accept all cmds
     tfHeader.controllCommandFlag   = 1; //    0->D (data upload protocoll) 1 -> C (Command protocoll)
     tfHeader.spacecraftID          = spaceCraftId;
-    tfHeader.frameLength           = tfHeader.HEADER_SIZE + tfTrailer.HEADER_SIZE - 1;    //  frameLength = real_len - 1; min: TF_header+trailer-1 = 6+2-1
+    tfHeader.frameLength           = tfHeader.HEADER_SIZE + tfTrailer.HEADER_SIZE - 1u;    //  frameLength = real_len - 1; min: TF_header+trailer-1 = 6+2-1
 
     // segment header
     tfHeader.sequenceFlags         = 3;
@@ -54,16 +54,16 @@ void UplinkEnvelop::beginNewTF() {
     indexOfCurrentSP = tfHeader.HEADER_SIZE;
 }
 
-int  UplinkEnvelop::beginNewSP() {
+uint16_t UplinkEnvelop::beginNewSP() {
 
     indexOfCurrentUserData = static_cast<uint16_t>(indexOfCurrentSP + spHeader.HEADER_SIZE);
     userDataBuf            = &buf[indexOfCurrentUserData];
     lenOfCurrentSP         = 0; // will be set at commit
     lenOfCurrentUserData   = 0;
 
-    int maxUserLen = TF_MAX_LEN - indexOfCurrentUserData - tfTrailer.HEADER_SIZE;
+    int32_t maxUserLen = TF_MAX_LEN - indexOfCurrentUserData - tfTrailer.HEADER_SIZE;
     if(maxUserLen < 0) maxUserLen = 0;
-    return maxUserLen;
+    return static_cast<uint16_t>(maxUserLen);
 }
 
 void UplinkEnvelop::commitSP() {
@@ -74,7 +74,7 @@ void UplinkEnvelop::commitSP() {
     }
 
     lenOfCurrentSP       = static_cast<uint16_t>(spHeader.HEADER_SIZE      + lenOfCurrentUserData);
-    spHeader.length      = (spHeader.HEADER_SIZE - 6u) + lenOfCurrentUserData - 1u; // Primary-Header-len: 6, Sec-Hea: spHeader.HEADER_SIZE-6
+    spHeader.length      = static_cast<uint16_t>((spHeader.HEADER_SIZE - 6u) + lenOfCurrentUserData - 1u); // Primary-Header-len: 6, Sec-Hea: spHeader.HEADER_SIZE-6
     spHeader.serialize(buf + indexOfCurrentSP);
     indexOfCurrentSP     = static_cast<uint16_t>(indexOfCurrentSP + lenOfCurrentSP);
     lenOfCurrentTF       = static_cast<uint16_t>(lenOfCurrentTF + lenOfCurrentSP);
@@ -84,7 +84,7 @@ void UplinkEnvelop::commitSP() {
 void UplinkEnvelop::commitTF() {
 
     //addIdleSP(); Not for uplink! for uplink the size of TF is adapted
-    tfHeader.frameLength = lenOfCurrentTF -1u;
+    tfHeader.frameLength = static_cast<uint16_t>(lenOfCurrentTF -1u);
 
     tfHeader.serialize(buf);
     tfTrailer.serialize(buf + lenOfCurrentTF - tfTrailer.HEADER_SIZE);
