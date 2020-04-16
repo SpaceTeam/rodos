@@ -15,7 +15,7 @@ int cnt;
 #include "mask.h"
 
 
-main() {
+int main() {
     INIT_MASK();
 
     for(time = 0; time < 5; time++) {
@@ -25,5 +25,5 @@ main() {
             usleep(50000);
         }
     }
+    return 0;
 }
-

@@ -5,7 +5,7 @@
 
 UDPOutLx udpOut(7022, (char*)"localhost");
 
-main(int argc, char *argv[]) {
+int main([[gnu::unused]] int argc, [[gnu::unused]] char *argv[]) {
 
     printf("Sending to localhost:7022\n");
     char inputline[1300];
@@ -15,4 +15,5 @@ main(int argc, char *argv[]) {
 
         udpOut.send(inputline, 1300);
     }
+    return 0;
 }

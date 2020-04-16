@@ -8,7 +8,7 @@ struct Field {
    int x, y;
 };
 
-main() {
+int main() {
     unsigned char inputLine[500];
     Field field[100];
     int fieldCnt = 0;
@@ -38,4 +38,5 @@ main() {
     for(int i = 0; i < fieldCnt; i++) {
         fprintf(stdout, "#define %s  \"\\n%s = \"\n", field[i].name, field[i].name);
     }
+    return 0;
 }

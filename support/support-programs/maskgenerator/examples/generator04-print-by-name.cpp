@@ -6,7 +6,7 @@
 
 #define PRINTF printf
 
-main() {
+int main() {
     INIT_MASK();
     char val[100];
 
@@ -20,5 +20,5 @@ main() {
             usleep(50000);
         }
     }
+    return 0;
 }
-

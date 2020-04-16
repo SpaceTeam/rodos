@@ -8,7 +8,7 @@
 
 #define PRINTF printf
 
-main() {
+int main() {
     INIT_MASK();
 
     for(int time = 0; time < 5; time++) {
@@ -19,5 +19,5 @@ main() {
             usleep(50000);
         }
     }
+    return 0;
 }
-

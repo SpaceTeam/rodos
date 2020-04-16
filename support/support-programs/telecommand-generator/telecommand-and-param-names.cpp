@@ -80,7 +80,6 @@ int main() {
             break;
         }
         int pos = 0;
-        int fields;
         /** Read all params **/
         for(int i = 0, fields = 4; fields == 4; i++) {
             currCmd.paramType[i][0] = 0;
@@ -161,13 +160,14 @@ int main() {
 
     printf("\n    inline void deserialize(char* buf) {\n");
     for(int i = 0; i < paramCnt; i++) {
-        if(!allParams[i].duplicated)
+        if(!allParams[i].duplicated) {
             if(strcmp(allParams[i].paramType, "char*") != 0) {
                 strcat(allParams[i].paramName, ",");
                 printf("        BasicSerializers::deserialize(%-10s buf+%2d);\n", allParams[i].paramName, allParams[i].posInBuf);
             } else {
                 printf("        %s = buf+%2d;\n", allParams[i].paramName, allParams[i].posInBuf);
             }
+        }
     }
 
     printf("    }\n");

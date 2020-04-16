@@ -6,10 +6,11 @@
 UDPInLx udpIn(7022);
 
 
-main(int argc, char *argv[]) {
+int main([[gnu::unused]] int argc, [[gnu::unused]] char *argv[]) {
     char inString[100];
     while(1) {
         udpIn.get(inString);
         printf("got %s\n", inString);
     }
+    return 0;
 }

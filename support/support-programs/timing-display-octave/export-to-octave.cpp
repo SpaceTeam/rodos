@@ -31,7 +31,7 @@ int64_t checkOverlap ( ThreadTiming t1, ThreadTiming t2 ) {
 
 }
 
-main() {
+int main() {
     ThreadTiming* tt;
     printf("\n\n");
     for(int i = 0; threadTimingList[i] != 0; i++) { 
@@ -61,5 +61,5 @@ main() {
     }
 
     printf("input \"enter to terminate\"\n\n");
-
+    return 0;
 }

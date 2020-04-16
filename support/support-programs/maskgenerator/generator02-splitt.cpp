@@ -8,7 +8,7 @@ struct Field {
    int x, y;
 };
 
-main() {
+int main() {
     char inputLine[500];
     Field field[100];
     int fieldCnt = 0;
@@ -45,4 +45,5 @@ main() {
  
     fclose(fileMakScreen);
     fclose(fileMak);
+    return 0;
 }

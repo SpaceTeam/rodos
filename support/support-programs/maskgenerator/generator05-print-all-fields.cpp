@@ -9,7 +9,7 @@ struct Field {
    int x, y;
 };
 
-main() {
+int main() {
     unsigned char inputLine[500];
     Field field[100];
     int fieldCnt = 0;
@@ -61,5 +61,5 @@ main() {
     }
     fprintf(stdout, "}\n");
 
+    return 0;
 }
-

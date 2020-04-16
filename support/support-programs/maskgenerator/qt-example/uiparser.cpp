@@ -19,7 +19,7 @@ Widget widgets[20] = {
 };
 
 
-main(int pn, char** pv) {
+int main(int pn, char** pv) {
 
 
     char sourceData[50] = "";
@@ -59,5 +59,5 @@ main(int pn, char** pv) {
         } // test search for all widgnet named
     } // for all lines
     printf("}\n");
+    return 0;
 }
-
