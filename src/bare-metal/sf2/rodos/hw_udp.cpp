@@ -168,7 +168,7 @@ void UDPTransmitter::openConnection(const TUDPPortNr port, const char* host) {
 
     strcpy(hostName, host);
     if(strcmp(hostName, "localhost") == 0) strcpy(hostName, "127.0.0.1");
-    tok.setSeparators((const char*)".,; ");
+    tok.setSeparators(".,; ");
     tok.init(hostName);
 
     for(int i = 0; i < 4; i++) {

@@ -287,6 +287,7 @@ void prepareNetworkMessage(NetworkMessage& netMsg, const uint32_t topicId,const 
     netMsg.put_maxStepsToForward(10);
     intptr_t ptr=reinterpret_cast<intptr_t>(Thread::getCurrentThread());
     netMsg.put_senderThreadId(static_cast<uint32_t>(ptr));
+    RODOS_ASSERT(len <= UINT16_MAX);
     if(len > UINT16_MAX) len = UINT16_MAX;
     netMsg.setUserData(data, static_cast<uint16_t>(len));
     netMsg.setCheckSum();
