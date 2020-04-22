@@ -134,8 +134,8 @@ uint32_t bigEndianToUint32_t(const void* buff) {
 uint64_t bigEndianToUint64_t(const void* buff) {
     const uint8_t* byteStream = (const uint8_t*)buff;
     if (byteStream == 0) return 0;
-    return static_cast<uint32_t>(
-             (((uint64_t)(byteStream[0])) << 56)
+    return static_cast<uint64_t>(
+              (((uint64_t)(byteStream[0])) << 56)
             | (((uint64_t)(byteStream[1])) << 48)
             | (((uint64_t)(byteStream[2])) << 40)
             | (((uint64_t)(byteStream[3])) << 32)
