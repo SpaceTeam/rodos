@@ -44,7 +44,7 @@ namespace RODOS {
 #define SIGNAL_HANDLER_STACK_SIZE SIGSTKSZ
 
 /** the timer interval */
-long long Timer::microsecondsInterval = 0;
+int64_t Timer::microsecondsInterval = 0;
 
 
 extern "C" {
@@ -130,7 +130,7 @@ void Timer::stop() {
 /**
 * set timer interval 
 */
-void Timer::setInterval(const long long microsecondsInterval) {
+void Timer::setInterval(const int64_t microsecondsInterval) {
   Timer::microsecondsInterval = microsecondsInterval;
 }
 

@@ -88,7 +88,7 @@ extern int32_t getNodeNumber();
 class Timer {
 
 private:
-  static long long microsecondsInterval;
+  static int64_t microsecondsInterval;
   Timer();
 
 public:
@@ -112,12 +112,12 @@ public:
   /**
   *  Set timer interval.
   */
-  static void setInterval(const long long microsecondsInterval);
+  static void setInterval(const int64_t microsecondsInterval);
 
   /**
   *  Get timer interval.
   */
-  static long long getInterval() { return microsecondsInterval; }
+  static int64_t getInterval() { return microsecondsInterval; }
 };
 
 

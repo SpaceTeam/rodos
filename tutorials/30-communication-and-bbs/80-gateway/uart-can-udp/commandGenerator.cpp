@@ -15,11 +15,15 @@ public:
         PRINTF("Enter Command:");
         TIME_LOOP(0*SECONDS, 100*MILLISECONDS) {
             if((s = getsNoWait())!= 0 ) { 
-                int len = strlen(s);
-                cmdToSend.cmdLen = len;
-                int lenToSend = len + 1 + sizeof(int32_t);
+                size_t len = strlen(s);
+                if (len + 1u > sizeof(cmdToSend.cmdLen)) {
+                    len = sizeof(cmdToSend.cmdLen) - 1u;
+                }
+                cmdToSend.cmdLen = static_cast<int32_t>(len);
+                size_t lenToSend = len + 1u + sizeof(cmdToSend.cmdLen);
                 strcpy(cmdToSend.cmdLine, s);
-                PRINTF("Sending %d chars: %s\nEnter Command:", cmdToSend.cmdLen, s);
+                PRINTF("Sending %ld chars: %s\nEnter Command:",
+                    static_cast<long>(cmdToSend.cmdLen), s);
                 command.publishMsgPart(cmdToSend, lenToSend, true);
             }
         }

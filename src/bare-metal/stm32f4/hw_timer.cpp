@@ -151,7 +151,7 @@ void Timer::stop()
 /**
 * set timer interval 
 */
-void Timer::setInterval(const long long microsecondsInterval) {
+void Timer::setInterval(const int64_t microsecondsInterval) {
   Timer::microsecondsInterval = microsecondsInterval;
 }
 

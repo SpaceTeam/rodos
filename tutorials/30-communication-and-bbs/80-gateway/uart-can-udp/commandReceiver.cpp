@@ -5,9 +5,11 @@ static Application  receiverName("commandReceiver", 1116);
 
 struct CommandReceiver : public Subscriber {
     CommandReceiver() : Subscriber(command, "CommandReceiver") { }
-    long put(const long, const long, const void* msg, const NetMsgInfo&) {
-        UserCmd* cmd = (UserCmd*)msg;
-        PRINTF("command  %d bytes: %s\n", cmd->cmdLen, cmd->cmdLine);
+    uint32_t put([[gnu::unused]] const uint32_t topicId, [[gnu::unused]] const size_t len, const void* data, [[gnu::unused]] const NetMsgInfo& netMsgInfo) {
+        const UserCmd* cmd = (const UserCmd*)data;
+        PRINTF("command  %ld bytes: %s\n",
+            static_cast<long>(cmd->cmdLen),
+            cmd->cmdLine);
         return 1;
     }
 } commandReceiver;
