@@ -43,7 +43,7 @@ class worm : public StaticThread<> {
             last_x         = x;
             last_y         = y;
             printProtector.enter();
-            PRINTF(SCREEN_MOVE_CURSOR_TO, y, x);
+            PRINTF(SCREEN_MOVE_CURSOR_TO, static_cast<int>(y), static_cast<int>(x));
             if(x == RIGHT_LIMIT + 1)
                 PRINTF(":");
             else
@@ -75,7 +75,7 @@ class worm : public StaticThread<> {
             occupied[x][y] = true;
 
             printProtector.enter();
-            PRINTF(SCREEN_MOVE_CURSOR_TO, y, x);
+            PRINTF(SCREEN_MOVE_CURSOR_TO, static_cast<int>(y), static_cast<int>(x));
             PRINTF("%c", letter);
             PRINTF(SCREEN_MOVE_CURSOR_TO, 0, 0);
             printProtector.leave();
