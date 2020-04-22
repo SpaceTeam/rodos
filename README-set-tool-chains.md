@@ -1,4 +1,3 @@
-
 Setup Toolchains in Ubuntu
 ==========================
 
@@ -79,7 +78,7 @@ sudo ./cmake-3.13.2-Linux-x86_64.sh
 sudo ln -s /opt/cmake-3.13.2-Linux-x86_64/bin/* /usr/local/bin
 ```
 
-For AMR
+For ARM
 =======
 
 Install ARM cross compilation toolchain prerequisites
