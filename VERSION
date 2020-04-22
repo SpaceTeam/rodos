@@ -13,8 +13,11 @@ RODOS Versioning
 
 ----------------------------------------------
 
+202:    a: int, long int, long long, etc -> uint32_t, int64_t, etc etc (not concluded)
+
 201:    a: Threads mit statische stack array
         b: rm printf host infor headers from testsuite
+   
 
 200:	Big SIMPLIFICATION!! many ports are missing!
 	a: remove all obsolete scripts in make now in scripts/*
