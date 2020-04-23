@@ -135,7 +135,7 @@ bool LinkinterfaceUART::sendNetworkMsg(NetworkMessage& outgoingMessage)	{
 
 bool LinkinterfaceUART::sendUartBuffer(uint8_t* buf, size_t size){
     size_t txBytes = 0;
-    int32_t retVal = 0;
+    size_t retVal = 0;
     int errCnt = 0;
     while (txBytes < size){
         retVal = uart->write(&buf[txBytes],size-txBytes);
@@ -145,9 +145,9 @@ bool LinkinterfaceUART::sendUartBuffer(uint8_t* buf, size_t size){
                 return false;
             }
             Thread::suspendCallerUntil(NOW() + 1*MILLISECONDS);
-        }else if ( retVal != static_cast<int32_t>(size-txBytes) ){ // the whole buffer couldn't be sent -> wait a moment and send the rest
+        }else if ( retVal != size-txBytes ){ // the whole buffer couldn't be sent -> wait a moment and send the rest
             Thread::suspendCallerUntil(NOW() + 1*MILLISECONDS);
-            txBytes += static_cast<size_t>(retVal);
+            txBytes += retVal;
             errCnt = 0;
         }else{
             return true;

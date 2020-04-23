@@ -140,20 +140,21 @@ void HAL_UART::reset() {
 
 }
 
-int32_t HAL_UART::read(void *recBuf, size_t size) {
-    int32_t readCnt = 0;
-    int32_t i = 0;
-    uint8_t* buf     = static_cast<uint8_t*>(recBuf);
+size_t HAL_UART::read(void *recBuf, size_t size) {
+    int32_t  bufLevel = 0;
+    size_t   readCnt  = 0;
+    uint8_t* buf      = static_cast<uint8_t*>(recBuf);
 
     //read number of bytes available
-    readCnt = this->status(UART_STATUS_RX_BUF_LEVEL);
+    bufLevel = this->status(UART_STATUS_RX_BUF_LEVEL);
 
-    if (readCnt > 0 ) {
-	    if (static_cast<uint32_t>(readCnt) > size) {
-		    readCnt = static_cast<int32_t>(size);
-	    }
-	    //read bytes from buffer and return them
-	    for (i = 0; i < readCnt; i++) {
+    if (bufLevel > 0 ) {
+        readCnt = static_cast<size_t>(bufLevel);
+        if(readCnt > size) {
+            readCnt = size;
+        }
+        //read bytes from buffer and return them
+	    for (size_t i = 0; i < readCnt; i++) {
 		    *buf = *rdPos;
 		    buf++;
 		    rdPos++;
@@ -168,15 +169,15 @@ int32_t HAL_UART::read(void *recBuf, size_t size) {
     return 0;
 }
 
-int32_t HAL_UART::write(const void *sendBuf, size_t size) {
-    uint32_t i = 0;
+size_t HAL_UART::write(const void *sendBuf, size_t size) {
+    size_t i = 0;
     const uint8_t* buf = static_cast<const uint8_t*>(sendBuf);
     //send them byte by byte
     for (i = 0; i < size; i++) {
 	    putcharNoWait(*(buf + i));
     }
 
-    return static_cast<int32_t>(i) + 1;
+    return i + 1;
 }
 
 int16_t HAL_UART::getcharNoWait() {

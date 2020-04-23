@@ -500,9 +500,11 @@ void HAL_UART::reset(){
 }
 
 
-int32_t HAL_UART::read(void* recBuf, size_t size) {
+size_t HAL_UART::read(void* recBuf, size_t size) {
 
-    if ((context->idx < UART_IDX_MIN) || (context->idx > UART_IDX_MAX)) {return -1;}
+    if ((context->idx < UART_IDX_MIN) || (context->idx > UART_IDX_MAX)){
+		return 0;
+	}
     if(size <=0) return 0;
 
     uint8_t* buf = reinterpret_cast<uint8_t*>(recBuf);
@@ -524,16 +526,18 @@ int32_t HAL_UART::read(void* recBuf, size_t size) {
             context->RceiveIntoRxBufWithDMA();
         }
 
-        return static_cast<int32_t>(readCnt);
+        return readCnt;
     } else {
         return 0;
     }
 }
 
 
-int32_t HAL_UART::write(const void* sendBuf, size_t size) {
+size_t HAL_UART::write(const void* sendBuf, size_t size) {
 
-    if ((context->idx < UART_IDX_MIN) || (context->idx > UART_IDX_MAX)) {return -1;}
+    if ((context->idx < UART_IDX_MIN) || (context->idx > UART_IDX_MAX)) {
+        return 0;
+    }
     if(size <=0) return 0;
 
     const uint8_t* buf = reinterpret_cast<const uint8_t*>(sendBuf);
@@ -562,7 +566,7 @@ int32_t HAL_UART::write(const void* sendBuf, size_t size) {
         }
 
 
-        return static_cast<int32_t>(size);
+        return size;
     }else{
         return 0;
     }

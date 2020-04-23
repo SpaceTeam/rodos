@@ -76,13 +76,15 @@ public:
 	/* write()
 	 * blocking -> returns only if "sendBuf" is sent
 	 * TODO: UART write - transmit buffer & transmit interrupts for non-blocking operation
+	 * @return number of bytes written
 	 */
-	virtual int32_t write(const void* sendBuf, size_t len);
+	virtual size_t write(const void* sendBuf, size_t len);
 
 	/* read()
 	 * non-blocking -> returns when uart-receive-buffer is empty or "recBuf" is full
+	 * @return number of bytes read and stored into recBuf
 	 */
-	virtual int32_t read(void* recBuf, size_t maxLen);
+	virtual size_t read(void* recBuf, size_t maxLen);
 
 	virtual int16_t getcharNoWait(); 		// returns character on success else -1
 	virtual int16_t putcharNoWait(uint8_t c); 	// returns c on success else -1

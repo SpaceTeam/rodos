@@ -16,6 +16,6 @@ class CharReceiver : public Subscriber {
 
     void putFromInterrupt([[gnu::unused]] const uint32_t topicId, const void* data, [[gnu::unused]] size_t len) {
         const GenericMsgRef* msg = static_cast<const GenericMsgRef*>(data);
-        xprintf("\n Async: %d %s\n", (int)msg->msgLen, msg->msgPtr); // no PRINTF in interrupts (Sempahore)
+        xprintf("\n Async: %d %s\n", (int)msg->msgLen, static_cast<const char*>(msg->msgPtr)); // no PRINTF in interrupts (Sempahore)
     }
 } charReceiver;

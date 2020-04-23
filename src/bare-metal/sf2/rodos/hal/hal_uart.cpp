@@ -125,9 +125,9 @@ int32_t HAL_UART::config(UART_PARAMETER_TYPE type, int32_t paramVal) {
 void HAL_UART::reset(void) {
 }
 
-int32_t HAL_UART::write(const void* sendBuf, size_t size) {
+size_t HAL_UART::write(const void* sendBuf, size_t size) {
     if((context->idx < UART_IDX_MIN) || (context->idx > UART_IDX_MAX)) {
-        return -1;
+        return 0;
     }
     const uint8_t* buf = static_cast<const uint8_t*>(sendBuf);
     size_t         i   = 0;
@@ -149,16 +149,16 @@ int32_t HAL_UART::write(const void* sendBuf, size_t size) {
 
         while(isWriteFinished() == false) {} // TODO: busy waiting is not good
 
-        return static_cast<int32_t>(size);
+        return size;
     } else {
         return 0;
     }
 }
 
 
-int32_t HAL_UART::read(void* recBuf, size_t size) {
+size_t HAL_UART::read(void* recBuf, size_t size) {
     if((context->idx < UART_IDX_MIN) || (context->idx > UART_IDX_MAX)) {
-        return -1;
+        return 0;
     }
 
     uint8_t* buf = static_cast<uint8_t*>(recBuf);
@@ -174,7 +174,7 @@ int32_t HAL_UART::read(void* recBuf, size_t size) {
             buf[i] = p[i];
         }
         context->receiveBuffer.readConcluded(readCnt);
-        return static_cast<int32_t>(readCnt);
+        return readCnt;
     } else {
         return 0;
     }

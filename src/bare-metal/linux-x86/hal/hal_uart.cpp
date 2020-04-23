@@ -208,27 +208,29 @@ void HAL_UART::reset() {
 }
 
 
-int32_t HAL_UART::read(void* buf, size_t size) {
-    int32_t bytesRed = 0;
+size_t HAL_UART::read(void* buf, size_t size) {
+    size_t bytesRed = 0;
 
     if(size > 0) {
         ssize_t retval;
         retval = ::read(context->fd, buf, size);
         if(retval < 0) return 0;
-        bytesRed = static_cast<int32_t>(retval);
+        bytesRed = static_cast<size_t>(retval);
     }
 
     return bytesRed;
 }
 
 
-int32_t HAL_UART::write(const void* buf, size_t size) {
+size_t HAL_UART::write(const void* buf, size_t size) {
     ssize_t retval;
 
     retval = ::write(context->fd, buf, size);
-    if(retval < 0) return 0;
+    if(retval < 0) {
+        retval = 0;
+    };
 
-    return static_cast<int32_t>(retval);
+    return static_cast<size_t>(retval);
 }
 
 
