@@ -72,7 +72,7 @@ void* memset(void* destP, int val, size_t len) {
     if(!destP) return destP ;
     uint8_t* dest = static_cast<uint8_t*>(destP);
     while(len) {
-      *dest = static_cast<unsigned char>(val);
+      *dest = static_cast<uint8_t>(val);
       dest++;  // Added
       len--;
     }

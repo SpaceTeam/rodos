@@ -23,7 +23,7 @@ char xmallocBuf[XMALLOC_SIZE] = {0,0,0,0} ;
 void* xmalloc(size_t len) {
    static size_t index = 0;
 
-   len = (len+7) & ~0x7u; // round to be 32 bit align (4 bytes) TBD 64 Byte as needed by Thread::stack?
+   len = (len+7) & ~0x7u; // round to be 64 Byte aligned
 
    RODOS_ASSERT_IFNOT_RETURN(len <= XMALLOC_SIZE,        nullptr); // out of memmory?
    RODOS_ASSERT_IFNOT_RETURN(!taskRunning,               nullptr); // Xmalloc after system init completation

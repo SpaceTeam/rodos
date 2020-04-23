@@ -67,30 +67,30 @@ uint16_t computeCrc(const void* buf, size_t len, uint16_t initialValue) {
   */
 
 CRC::CRC() {
-		for (int i=0; i < 256; i++) {
-			uint16_t tmp=0;
-			if ((i & 1) != 0)   tmp=tmp ^ 0x1021;
-			if ((i & 2) != 0)   tmp=tmp ^ 0x2042;
-			if ((i & 4) != 0)   tmp=tmp ^ 0x4084;
-			if ((i & 8) != 0)   tmp=tmp ^ 0x8108;
-			if ((i & 16) != 0)  tmp=tmp ^ 0x1231;
-			if ((i & 32) != 0)  tmp=tmp ^ 0x2462;
-			if ((i & 64) != 0)  tmp=tmp ^ 0x48C4;
-			if ((i & 128) != 0) tmp=tmp ^ 0x9188;
-			lookUpTable [i] = tmp;
-		}
+    for (int i=0; i < 256; i++) {
+        uint16_t tmp=0;
+        if ((i & 1) != 0)   tmp=tmp ^ 0x1021;
+        if ((i & 2) != 0)   tmp=tmp ^ 0x2042;
+        if ((i & 4) != 0)   tmp=tmp ^ 0x4084;
+        if ((i & 8) != 0)   tmp=tmp ^ 0x8108;
+        if ((i & 16) != 0)  tmp=tmp ^ 0x1231;
+        if ((i & 32) != 0)  tmp=tmp ^ 0x2462;
+        if ((i & 64) != 0)  tmp=tmp ^ 0x48C4;
+        if ((i & 128) != 0) tmp=tmp ^ 0x9188;
+        lookUpTable [i] = tmp;
+    }
 }
 
 uint16_t CRC::computeCRC(const void* buf, size_t len, uint16_t initialValue) {
+    uint16_t currentValue = initialValue;
+    const uint8_t* data = static_cast<const uint8_t*>(buf);
 
-		uint16_t currentValue = initialValue;
-        const uint8_t* data = static_cast<const uint8_t*>(buf);
-
-        for(size_t i = 0; i < len; i++) {
-            currentValue = static_cast<uint16_t>((static_cast<uint32_t>(currentValue << 8u) & 0xFF00u) ^
-					lookUpTable [(((currentValue >> 8)^ data[i]) & 0x00FF)]);
-        }
-        return currentValue;
+    for(size_t i = 0; i < len; i++) {
+        currentValue = static_cast<uint16_t>(
+			(static_cast<uint32_t>(currentValue << 8u) & 0xFF00u)
+			^ lookUpTable [(((currentValue >> 8)^ data[i]) & 0x00FF)]);
+    }
+    return currentValue;
 }
 
 
