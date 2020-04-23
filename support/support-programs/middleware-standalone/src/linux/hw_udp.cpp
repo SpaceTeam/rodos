@@ -303,7 +303,7 @@ void sigio_handler(int a){
 
 	udpReader(a);
 	//uart_sig_io_handler(a);
-	can_sig_io_handler(a);
+	//can_sig_io_handler(a);
 
 }
 

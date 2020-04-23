@@ -1,11 +1,9 @@
 
 
 
-
-
 /**
 * @file networkMessages.h
-* @date 2013/06/30 
+* @date 2013/06/30
 * @author Sergio Montenegro
 *
 * @brief Messages to be exchanged between nodes and network
@@ -16,9 +14,9 @@
 
 #define MAX_NETWORK_MESSAGE_LENGTH 1300
 
-
-#include <stdint.h>
-#include <string.h>
+#include <algorithm>
+#include <cstdint>
+#include <cstring>
 #include "checksumes.h"
 #include "stream-bytesex.h"
 
@@ -28,31 +26,28 @@
 namespace RODOS {
 #endif
 
-#define MIN(_a, _b) ( (_a) < (_b) ? (_a) : (_b) ) 
 /**
  * Simple message data protocol to transmit data to a remote node.
  */
 class NetworkMessage {
-    static const int HEADER_SIZE = 26;
+    static const uint16_t HEADER_SIZE = 26;
     uint8_t header [HEADER_SIZE];
 public:
-    inline void    put_checkSum(uint16_t x)          {int16_tToBigEndian(header+0, x); }
+    inline void    put_checkSum(uint16_t x)          {uint16_tToBigEndian(header+0, x); }
     inline void    put_senderNode(int32_t x)         {int32_tToBigEndian(header+2, x); }
     inline void    put_sentTime (int64_t x)          {int64_tToBigEndian(header+6, x); }
-    inline void    put_senderThreadId(uint32_t x)    {int32_tToBigEndian(header+14, x); }
-    inline void    put_topicId(uint32_t x)           {int32_tToBigEndian(header+18, x); }
+    inline void    put_senderThreadId(uint32_t x)    {uint32_tToBigEndian(header+14, x); }
+    inline void    put_topicId(uint32_t x)           {uint32_tToBigEndian(header+18, x); }
     inline void    put_maxStepsToForward(int16_t x)  {int16_tToBigEndian(header+22, x); }
-    inline void    put_len(uint16_t x)               {int16_tToBigEndian(header+24, x); }
-    inline void    put_END_OR_HEADER(int8_t x)       { header[26] = x; }
+    inline void    put_len(uint16_t x)               {uint16_tToBigEndian(header+24, x); }
 
-    inline uint16_t get_checksum()             const { return bigEndianToInt16_t(header+0); }
+    inline uint16_t get_checksum()             const { return bigEndianToUint16_t(header+0); }
     inline int32_t  get_senderNode()           const { return bigEndianToInt32_t(header+2); }
     inline int64_t  get_sentTime ()            const { return bigEndianToInt64_t(header+6); }
-    inline uint32_t get_senderThreadId()       const { return bigEndianToInt32_t(header+14); }
-    inline uint32_t get_topicId()              const { return bigEndianToInt32_t(header+18); }
+    inline uint32_t get_senderThreadId()       const { return bigEndianToUint32_t(header+14); }
+    inline uint32_t get_topicId()              const { return bigEndianToUint32_t(header+18); }
     inline int16_t  get_maxStepsToForward()    const { return bigEndianToInt16_t(header+22); }
-    inline uint16_t get_len()                  const { return bigEndianToInt16_t(header+24); }
-    inline int8_t   get_END_OR_HEADER()        const { return header[26]; }
+    inline uint16_t get_len()                  const { return bigEndianToUint16_t(header+24); }
 
     uint8_t userDataC[MAX_NETWORK_MESSAGE_LENGTH]; ///< local buffer for user data
 
@@ -66,7 +61,7 @@ public:
         return *this;
     }
 
-    inline void dec_maxStepsToForward()    { put_maxStepsToForward(get_maxStepsToForward() - 1); }
+    inline void dec_maxStepsToForward()    { put_maxStepsToForward(static_cast<int16_t>(get_maxStepsToForward() - 1)); }
 
     /** Copies user generated data into the message body.
      *
@@ -74,8 +69,8 @@ public:
      * @param length of message, supposed to be <= MAX_NETWORK_MESSAGE_LENGTH
      * @return length of message written
      */
-    int32_t setUserData(const void* data, uint32_t len) {
-        len =  MIN(len, MAX_NETWORK_MESSAGE_LENGTH); 
+    uint16_t setUserData(const void* data, uint16_t len) {
+        len =  std::min(len, static_cast<uint16_t>(MAX_NETWORK_MESSAGE_LENGTH));
         memcpy(userDataC, data, len);
         put_len(len);
         return len;
@@ -87,15 +82,15 @@ public:
      * @param length of message buffer, supposed to be <= MAX_NETWORK_MESSAGE_LENGTH
      * @return length of message copied
      */
-    uint32_t getUserData(void* destination, uint32_t maxLen) {
-        maxLen = MIN(maxLen, get_len());
+    uint16_t getUserData(void* destination, uint16_t maxLen) {
+        maxLen = std::min(maxLen, get_len());
         memcpy(destination, userDataC, maxLen);
         return maxLen;
     }
 
     /* WARNING: Len has to be set befor you call this.  **/
-    uint32_t numberOfBytesToSend() const { return HEADER_SIZE + get_len(); }
-    uint16_t calculateCheckSum()         { return checkSum(header+2, HEADER_SIZE-2 + get_len()); }
+    uint16_t numberOfBytesToSend() const { return static_cast<uint16_t>(HEADER_SIZE + get_len()); }
+    uint16_t calculateCheckSum()         { return checkSum(header+2, HEADER_SIZE-2u + get_len()); }
     bool     isCheckSumOk()              { return calculateCheckSum() == get_checksum(); }
     void     setCheckSum()               { put_checkSum(calculateCheckSum()); }
 
@@ -111,10 +106,6 @@ public:
     uint32_t linkId;
 };
 
-
-
-
-#undef MIN
 
 #ifndef NO_RODOS_NAMESPACE
 }

@@ -15,7 +15,7 @@
 namespace RODOS {
 #endif
 
-// TODO: SWAPCHARS is already in macros.h
+// Please note: SWAPCHARS is already in macros.h
 /// exchange values of char variables (a) and (b)
 #define SWAPCHARS(_a, _b) {char _tempswap = _a;   _a = _b;   _b = _tempswap; }
 
@@ -103,63 +103,68 @@ double doubleConvertHost2Net(double dw) {
 
 
 /// DEPRECATED... 
-short shortConvertHost2Net(short sw) { if(isHostBigEndian) return sw; return swap16(sw); } 
+int16_t shortConvertHost2Net(int16_t sw) { if(isHostBigEndian) return sw; return swap16(sw); } 
 /// DEPRECATED... 
-long  longConvertHost2Net(long lw) { if(isHostBigEndian) return lw; return swap32(lw); }
+int32_t  longConvertHost2Net(int32_t lw) { if(isHostBigEndian) return lw; return swap32(lw); }
 /// DEPRECATED... 
-long long longlongConvertHost2Net(long long llw) { if(isHostBigEndian) return llw; return swap64(llw); } 
+int64_t longlongConvertHost2Net(int64_t llw) { if(isHostBigEndian) return llw; return swap64(llw); } 
 
 
 //__________________________________________________________________________________________________________
 
 uint16_t bigEndianToUint16_t(const void* buff) {
-    uint8_t* byteStream = (uint8_t*)buff;
+    const uint8_t* byteStream = (const uint8_t*)buff;
     if (byteStream == 0) return 0;
-    return   (((uint16_t)(byteStream[0])) << 8)
-           |  ((uint16_t)(byteStream[1]));
+    return static_cast<uint16_t>(
+              (((uint16_t)(byteStream[0])) << 8)
+            | ((uint16_t)(byteStream[1]))
+        );
 }
 
 uint32_t bigEndianToUint32_t(const void* buff) {
-    uint8_t* byteStream = (uint8_t*)buff;
+    const uint8_t* byteStream = (const uint8_t*)buff;
     if (byteStream == 0) return 0;
-    return    (((uint32_t)(byteStream[0])) << 24)
+    return static_cast<uint32_t>(
+              (((uint32_t)(byteStream[0])) << 24)
             | (((uint32_t)(byteStream[1])) << 16)
-            | (((uint32_t)(byteStream[2])) <<  8)
-            |  ((uint32_t)(byteStream[3]));
+            | (((uint32_t)(byteStream[2])) << 8)
+            | ((uint32_t)(byteStream[3]))
+        );
 }
 
 
 uint64_t bigEndianToUint64_t(const void* buff) {
-    uint8_t* byteStream = (uint8_t*)buff;
+    const uint8_t* byteStream = (const uint8_t*)buff;
     if (byteStream == 0) return 0;
-    return   (((uint64_t)(byteStream[0])) << 56)
-           | (((uint64_t)(byteStream[1])) << 48)
-           | (((uint64_t)(byteStream[2])) << 40)
-           | (((uint64_t)(byteStream[3])) << 32)
-           | (((uint64_t)(byteStream[4])) << 24)
-           | (((uint64_t)(byteStream[5])) << 16)
-           | (((uint64_t)(byteStream[6])) <<  8)
-           |  ((uint64_t)(byteStream[7]));
+    return static_cast<uint64_t>(
+             (((uint64_t)(byteStream[0])) << 56)
+            | (((uint64_t)(byteStream[1])) << 48)
+            | (((uint64_t)(byteStream[2])) << 40)
+            | (((uint64_t)(byteStream[3])) << 32)
+            | (((uint64_t)(byteStream[4])) << 24)
+            | (((uint64_t)(byteStream[5])) << 16)
+            | (((uint64_t)(byteStream[6])) <<  8)
+            |  ((uint64_t)(byteStream[7]))
+        );
 }
 
 
 float bigEndianToFloat(const void* buff) {
-    uint8_t* byteStream = (uint8_t*)buff;
+    const uint8_t* byteStream = (const uint8_t*)buff;
     union {
         float value;
         uint32_t lvalue;
     } value_union;
-    value_union.lvalue = bigEndianToInt32_t(byteStream);
+    value_union.lvalue = bigEndianToUint32_t(byteStream);
     return value_union.value;
 }
 
 double bigEndianToDouble(const void* buff) {
-    uint8_t* byteStream = (uint8_t*)buff;
     union {
         double value;
         uint64_t llvalue;
     } value_union;
-    value_union.llvalue = bigEndianToInt64_t(byteStream);
+    value_union.llvalue = bigEndianToUint64_t(buff);
     return value_union.value;
 }
 
@@ -206,10 +211,10 @@ void floatToBigEndian(void* buff, float value_) {
     uint8_t* byteStream = (uint8_t*)buff;
     union {
         float value;
-        unsigned lvalue;
+        uint32_t lvalue;
     } value_union;
     value_union.value = value_;
-    int32_tToBigEndian(byteStream, value_union.lvalue);
+    uint32_tToBigEndian(byteStream, value_union.lvalue);
 }
 
 void doubleToBigEndian   (void* buff, double value_) {
@@ -219,7 +224,7 @@ void doubleToBigEndian   (void* buff, double value_) {
         uint64_t llvalue;
     } value_union;
     value_union.value = value_;
-    int64_tToBigEndian(byteStream, value_union.llvalue);
+    uint64_tToBigEndian(byteStream, value_union.llvalue);
 }
 
 
@@ -230,13 +235,17 @@ void setBitInByteStream (void *byteStream, int bitIndex, bool value) {
     int bitPos =    bitIndex % 8;
     unsigned char* bytes = (unsigned char*)byteStream;
 
-    SET_BIT_IN_BYTE(bytes[byteIndex], bitPos, (value? 1 : 0));
+    if (value) {
+        bytes[byteIndex] = static_cast<unsigned char>(bytes[byteIndex] | (0x1 << (7 - bitPos)));
+    } else {
+        bytes[byteIndex] = static_cast<unsigned char>(bytes[byteIndex] & ~(0x1 << (7 - bitPos)));
+    }
 }
 
 
 int getBitFromByteStream(const void *byteStream, int bitIndex) {
 
-    unsigned char* bytes = (unsigned char*)byteStream;
+    const uint8_t* bytes = (const uint8_t*)byteStream;
 
     unsigned char selectedByte = bytes[bitIndex/8];
     return GET_BIT_FROM_BYTE(selectedByte, (bitIndex % 8));
@@ -251,18 +260,18 @@ int getBitFromByteStream(const void *byteStream, int bitIndex) {
   * Warning: CCSDS -> Bit 0 = most significant bit!
   **/
 
-void setBitField(void* buffer, int bitPos, int numOfBits, uint32_t val) {
+void setBitField(void* buffer, size_t bitPos, uint8_t numOfBits, uint32_t val) {
     unsigned char* buf = (unsigned char*) buffer;
-    int byteIndex = bitPos / 8;
+    size_t byteIndex = bitPos / 8;
     bitPos        = bitPos % 8;
-    int shifts    = 24 - (bitPos + numOfBits);
-    int32_t mask     = ONES(numOfBits) << shifts;
+    uint8_t shifts    = static_cast<uint8_t>(24 - (bitPos + numOfBits));
+    uint32_t mask     = ONES(numOfBits) << shifts;
 
     val = val << shifts;
 
     // get the word as big-endian (CPU independent)
-    uint32_t word    = (buf[byteIndex] << 16);
-	if(bitPos+numOfBits > 8 ) word |=  buf[byteIndex+1] << 8; //Do not read byte not required to avoid reading beyond the buffer
+    uint32_t word    = static_cast<uint32_t>(buf[byteIndex]) << 16u;
+	if(bitPos+numOfBits > 8 ) word |=  static_cast<uint32_t>(buf[byteIndex+1]) << 8u; //Do not read byte not required to avoid reading beyond the buffer
 	if(bitPos+numOfBits > 16) word |=  buf[byteIndex+2];
 
     word  &= ~ mask;        // Clear bit field
@@ -279,17 +288,17 @@ void setBitField(void* buffer, int bitPos, int numOfBits, uint32_t val) {
   * Warning: CCSDS -> Bit 0 = most significant bit!
   **/
 
-uint32_t getBitField(const void* buffer, int bitPos, int numOfBits) {
+uint32_t getBitField(const void* buffer, size_t bitPos, uint8_t numOfBits) {
     const uint8_t* buf = (const uint8_t*) buffer;
-    int byteIndex = bitPos / 8;
+    size_t byteIndex = bitPos / 8;
     bitPos        = bitPos % 8;
-    int shifts    = 24 - (bitPos + numOfBits);
-    int32_t mask     = ONES(numOfBits);  // so many bits set to 1 from leastst significant
+    uint8_t shifts    = static_cast<uint8_t>(24 - (bitPos + numOfBits));
+    uint32_t mask     = ONES(numOfBits);  // so many bits set to 1 from leastst significant
 
 
     // get the word as big-endian (CPU independent)
-    uint32_t word    = (buf[byteIndex] << 16);
-    if(bitPos+numOfBits > 8 ) word |=  buf[byteIndex+1] << 8; //Do not read byte not required to avoid reading beyond the buffer
+    uint32_t word    = static_cast<uint32_t>(buf[byteIndex]) << 16u;
+    if(bitPos+numOfBits > 8 ) word |=  static_cast<uint32_t>(buf[byteIndex+1]) << 8u; //Do not read byte not required to avoid reading beyond the buffer
     if(bitPos+numOfBits > 16) word |=  buf[byteIndex+2];
 
     return  (word >> shifts) &  mask;
@@ -311,5 +320,3 @@ uint32_t getSetBits(const uint32_t &value) {
 #ifndef NO_RODOS_NAMESPACE
 }
 #endif
-
-
