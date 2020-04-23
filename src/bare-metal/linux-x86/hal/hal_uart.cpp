@@ -148,7 +148,7 @@ int HAL_UART::init(uint32_t iBaudrate) {
             cfsetospeed(&t, B115200);
             break;
         case 230400:
-            cfsetispeed(&t, B230400); /* normal shall be: B115200 Baud */
+            cfsetispeed(&t, B230400);
             cfsetospeed(&t, B230400);
             break;
         default:

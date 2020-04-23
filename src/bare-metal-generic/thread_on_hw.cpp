@@ -269,15 +269,15 @@ Thread* Thread::findNextToRun(int64_t timeNow) {
 
     /** Check stack violations **/
     if(((intptr_t)nextThreadToRun->context - (intptr_t)nextThreadToRun->stackBegin) < 300) {
-        xprintf("!StackOverflow! %x DEACTIVATED!: free %d\n", 
-            static_cast<unsigned int>(reinterpret_cast<intptr_t>(nextThreadToRun)), 
+        xprintf("!StackOverflow! %lx DEACTIVATED!: free %d\n",
+            static_cast<unsigned long>(reinterpret_cast<intptr_t>(nextThreadToRun)),
             static_cast<int>(reinterpret_cast<intptr_t>(nextThreadToRun->context) - reinterpret_cast<intptr_t>(nextThreadToRun->stackBegin)));
         nextThreadToRun->suspendedUntil = END_OF_TIME;
         nextThreadToRun = &idlethread;
     }
     if ( *reinterpret_cast<uint32_t *>(nextThreadToRun->stackBegin) !=  EMPTY_MEMORY_MARKER) { // this thread is going beyond its stack!
-        xprintf("! PANIC %x beyond stack, DEACTIVATED!\n",
-            static_cast<unsigned int>(reinterpret_cast<intptr_t>(nextThreadToRun)));
+        xprintf("! PANIC %lx beyond stack, DEACTIVATED!\n",
+            static_cast<unsigned long>(reinterpret_cast<intptr_t>(nextThreadToRun)));
         nextThreadToRun->suspendedUntil = END_OF_TIME;
         nextThreadToRun = &idlethread;
     }

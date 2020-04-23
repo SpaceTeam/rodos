@@ -23,9 +23,6 @@ protected:
     UDPIn*  udpFromNetwork;
     UDPOut* udpToNetwork;
 
-    //long udpPortNumber;   ///< Number of input port, also distributed to the network
-    //long nodeNumber;      ///< node number used in network, linked with udpPortNumber
-
 private:
 
     Topic<GenericMsgRef> udpAsyncTopic;

@@ -47,9 +47,9 @@ void nop( ... );
 extern float getCpuLoad(); ///< value from 0 to 1, average from the last call
 
 
-inline int getbit(uint32_t bitmap, int bitIndex) { return (bitmap >> bitIndex) & 0x01; }
+inline bool getbit(uint32_t bitmap, uint8_t bitIndex) { return (bitmap >> bitIndex) & 0x01; }
 
-inline void setbit(uint32_t* bitmap, int value, uint8_t bitIndex) {
+inline void setbit(uint32_t* bitmap, bool value, uint8_t bitIndex) {
     if(value) *bitmap |=  (0x01u  << bitIndex);
     else      *bitmap &= ~(0x01u  << bitIndex);
 }

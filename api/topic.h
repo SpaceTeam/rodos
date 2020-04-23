@@ -96,8 +96,8 @@ public:
     void publishFromInterrupt(void *any, size_t len = 0);
 
     /** request is like publish, but the calles expects data back instead of sending it.
-      * The internal mechanims is identical the same like publisch, the middleware will
-      * call puuters from subscribers. Such puters shall proivde data instad of geting it.
+      * The internal mechanims is identical the same like publish, the middleware will
+      * call putters from subscribers. Such puters shall provide data instad of geting it.
       **/
 
      inline uint32_t requestLocal(void *msg) { return publish(msg, false); }
@@ -159,15 +159,15 @@ public:
     }
 
     /** publish/distribute the message to all listeners to the given serviceId.
-     * if shallSendToNetwork the message will be fordarded to gateways too (default)
+     * if shallSendToNetwork the message will be forwarded to gateways too (default)
      * warning 1: Never use it from an interrupt server.
      * warning 2: the pointer to msg will be distributed. A Subscriber may modify its content
      */
-    inline unsigned long publish(Type &msg, bool shallSendToNetwork = true) {
+    inline uint32_t publish(Type &msg, bool shallSendToNetwork = true) {
         return TopicInterface::publish(&msg, shallSendToNetwork);
     }
 
-    inline unsigned long publish(Type &&msg, bool shallSendToNetwork = true) {
+    inline uint32_t publish(Type &&msg, bool shallSendToNetwork = true) {
         return TopicInterface::publish(&msg, shallSendToNetwork);
     }
 
@@ -185,16 +185,16 @@ public:
       *for example for strings
       * warning: Never us it from an interrupt server.
       */
-    inline unsigned long publishMsgPart(Type &msg, size_t lenToSend, bool shallSendToNetwork = true) {
+    inline uint32_t publishMsgPart(Type &msg, size_t lenToSend, bool shallSendToNetwork = true) {
         return TopicInterface::publishMsgPart(&msg, lenToSend, shallSendToNetwork);
     }
 
     /** request is like publish, but the calles expects data back instead of sending it.
-      * The internal mechanims is identical the same like publisch, the middleware will
-      * call puuters from subscribers. Such puters shall proivde data instad of geting it.
+      * The internal mechanims is identical the same like publish, the middleware will
+      * call putters from subscribers. Such puters shall provide data instad of geting it.
       **/
 
-     inline unsigned long requestLocal(Type &msg) { return TopicInterface::publish(&msg, false); }
+     inline uint32_t requestLocal(Type &msg) { return TopicInterface::publish(&msg, false); }
 
 };
 
@@ -206,7 +206,7 @@ public:
 
 struct GenericMsgRef { // V. 128 PTS
     uint64_t  context = 0; ///< any further info you would like to deliver
-    char*     msgPtr = nullptr;
+    void*     msgPtr = nullptr;
     int32_t   msgLen = 0; // Warning: It has to be signed, else endless loop at publish
 
     GenericMsgRef() { }
