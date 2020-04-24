@@ -86,7 +86,7 @@ void hwInit() {
     MSS_CC_enable();
 
     //Determine the Node Number from the first bytes of the chips UID
-    extern long myNodeNr;
+    extern int32_t myNodeNr;
     uint8_t     serialNum[16] = { 0x22, 0x22, 0x22, 0x22, 0x22, 0x22, 0x22, 0x22,
                               0x22, 0x22, 0x22, 0x22, 0x22, 0x22, 0x22, 0x22 };
     MSS_SYS_get_serial_number(serialNum);
@@ -130,7 +130,7 @@ long* hwInitContext(long* stack, void* object) {
  */
 
 // TW: already defind in rodos/src/independent/globaldata.cpp
-//long myNodeNr = -1 ;
+//int32_t myNodeNr = -1 ;
 //long getNodeNumber() { return myNodeNr; }
 void startIdleThread() __attribute__((naked));
 void startIdleThread() {

@@ -19,7 +19,7 @@
 
 namespace RODOS {
 
-extern long myNodeNr; // normally use getNodeNumber(), but gateway is intrinsic function
+extern int32_t myNodeNr; // normally use getNodeNumber(), but gateway is intrinsic function
 extern int64_t numberOfReceivedMsgsFromNetwork;
 
 static Application application("Gateway", APID_GATEWAY_GENERIC);

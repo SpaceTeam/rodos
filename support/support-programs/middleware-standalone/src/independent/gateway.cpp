@@ -21,7 +21,7 @@
 namespace RODOS {
 #endif
 
-long myNodeNr=4;
+int32_t myNodeNr=4;
 extern int64_t numberOfReceivedMsgsFromNetwork;
 
 

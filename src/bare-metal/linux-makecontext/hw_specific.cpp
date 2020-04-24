@@ -34,7 +34,7 @@ void*      signal_stack;   /* global interrupt stack */
  */
 
 extern void sigtermHandler(int sig);
-extern long myNodeNr;
+extern int32_t myNodeNr;
 
 //_____________________________________________________
 void hwInit() {

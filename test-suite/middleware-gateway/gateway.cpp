@@ -8,7 +8,7 @@ static Gateway gateway1(&linkinterfaceUDP, true);
 
 
 namespace RODOS {
-extern long myNodeNr;
+extern int32_t myNodeNr;
 }
 static class SetNodeNr : public Initiator {
     void init() {

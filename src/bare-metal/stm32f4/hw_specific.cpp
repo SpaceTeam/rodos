@@ -82,7 +82,7 @@ void hwInit() {
 	LSIFrequency = GetLSIFrequency();
 
 	//Determine the Node Number from the first bytes of the chips UID
-	extern long myNodeNr;
+	extern int32_t myNodeNr;
 	#define STM32F4_UID ((unsigned char*)(0x1FFF7A10))
 	#define STM32F4_UID_SIZE 12
 	myNodeNr= *(long*)STM32F4_UID;
@@ -210,7 +210,7 @@ long* hwInitContext(long* stack, void* object) {
  */
 
 // TW: already defind in rodos/src/independent/globaldata.cpp
-//long myNodeNr = -1 ;
+//int32_t myNodeNr = -1 ;
 //long getNodeNumber() { return myNodeNr; }
 void startIdleThread() __attribute__ (( naked ));
 void startIdleThread() {

@@ -1,6 +1,6 @@
 
 
-/** msg formant on ca messages:
+/** msg formant on can messages:
  *
  * A middleware message will be encoded in several can telegrams:
  *
@@ -10,17 +10,15 @@
  *  n =  8-bit sender node (not really relevant, just to avoid collitions)
  *
  * can user data max 8 bytes per telegram:
- * 0 : sequenceCouonter: 0 .. 255, 0 == first can telegram of the current middleware message
- * 1 : if (sequenceCouonter == 0) bytes in middleware message:  upper byte ; else message data
- * 2 : if (sequenceCouonter == 0) bytes in middleware message:  lower byte ; else message data
+ * 0 : sequenceCounter: 0 .. 255, 0 == first can telegram of the current middleware message
+ * 1 : if (sequenceCounter == 0) bytes in middleware message:  upper byte ; else message data
+ * 2 : if (sequenceCounter == 0) bytes in middleware message:  lower byte ; else message data
  * 3 .. 7 :  message data
  *
  * last can telegram may contain less than 8 bytes
  * max middleware message len = 255*7 + 5 bytes = 1790 (Internal limited to 1300)
  *
  */
-#include <stdint.h>
-
 
 #include"gateway/linkinterfacecan.h"
 #include "gateway/gateway.h"
@@ -246,7 +244,7 @@ bool LinkinterfaceCAN::appendCANMsgToCurrentNetMsg(BufferedCANMessage* canMsg){
 
 
 	//*error=false;
-	int userDataBegin=1;
+	uint8_t userDataBegin=1;
 
 
 	if(canMsg->data[0] == 0){
@@ -284,7 +282,7 @@ bool LinkinterfaceCAN::appendCANMsgToCurrentNetMsg(BufferedCANMessage* canMsg){
 		*currentDataPointer = canMsg->data[i];
 		currentDataPointer++;
 	}
-	bytesReceived +=canMsg->len-userDataBegin;
+	bytesReceived = static_cast<uint16_t>(bytesReceived + canMsg->len - userDataBegin);
 
 
 	if(bytesReceived >= currentMsg->get_len()){

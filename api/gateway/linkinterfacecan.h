@@ -39,15 +39,15 @@ class LinkinterfaceCAN : public Linkinterface, IOEventReceiver {
 
 	BufferedCANMessage BufferedCANMessage_memory[CAN_MSG_BUFFER_SIZE];
 	BufferedCANMessage* emptyBufferedCANMessages[CAN_MSG_BUFFER_SIZE];
-	int emptyBufferedCANMessagesPos;
+	int32_t emptyBufferedCANMessagesPos;
 	BufferedCANMessage* bufferedCANMsgs_start;
 	BufferedCANMessage* bufferedCANMsgs_end;
 
 	NetworkMessage* currentMsg;
 	uint32_t currentReceiveCANId;
 	uint8_t* currentDataPointer;
-	int bytesReceived;
-	int sequenceCounter;
+	uint16_t bytesReceived;
+	uint8_t sequenceCounter;
 
 	BufferedCANMessage* receiveCANMessage();
 	bool appendCANMsgToCurrentNetMsg(BufferedCANMessage* canMsg);

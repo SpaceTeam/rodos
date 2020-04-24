@@ -194,7 +194,7 @@ void hwEnableInterrupts() {
  * In case a network is avialable, the corresponding node nr.
  */
 /*
-long myNodeNr = -1;
+int32_t myNodeNr = -1;
 
 long getNodeNumber() {
 	return myNodeNr;
