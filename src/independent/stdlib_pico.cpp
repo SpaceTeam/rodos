@@ -3,29 +3,25 @@
 
 namespace RODOS {
 
-int isspace(int c){
+bool isspace(const char c){
     //  htab, line feed, vtab, formfeed, carriage return, space)
-    if ( (c>=0x09 && c<=0x0D) || c==0x20) return 1;
-    else return 0;
+    return ((c >= 0x09 && c <= 0x0D) || c == 0x20);
 }
 
-int isdigit(int c){
-    if (c>='0' && c<='9') return 1;
-    else return 0;
+bool isdigit(const char c){
+    return (c >= '0' && c <= '9');
 }
 
-int isalpha(int c){
-    if ( (c>='a' && c<='z') || (c>='A' && c<='Z')) return 1;
-    else return 0;
+bool isalpha(const char c){
+    return ( (c>='a' && c<='z') || (c>='A' && c<='Z'));
 }
 
-int isupper(int c){
-    if (c>='A' && c<='Z') return 1;
-    else return 0;
+bool isupper(const char c){
+    return (c>='A' && c<='Z');
 }
 
 
-int32_t strtol (const char * nptr, const char ** endptr, uint8_t base) {
+int32_t strToInt32_t (const char * nptr, const char ** endptr, uint8_t base) {
     const char *s = nptr;
     int32_t acc;
     char c;

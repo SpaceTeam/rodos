@@ -17,8 +17,8 @@ Application     applicationGround("CCSDS-groundsegment-envelop");
 
 void UplinkEnvelop::initDefaultTFHeaderAndTrailer(uint16_t spaceCraftId) {
 
-    memset(&tfHeader,  0, sizeof(tfHeader));
-    memset(&tfTrailer, 0, sizeof(tfTrailer));
+    memset(&tfHeader,  '\0', sizeof(tfHeader));
+    memset(&tfTrailer, '\0', sizeof(tfTrailer));
 
     tfHeader.bypassFlag            = 1; //    0->A: normal (check SeqNr),  1->B: Bypass, accept all cmds
     tfHeader.controllCommandFlag   = 1; //    0->D (data upload protocoll) 1 -> C (Command protocoll)
@@ -33,7 +33,7 @@ void UplinkEnvelop::initDefaultTFHeaderAndTrailer(uint16_t spaceCraftId) {
 void UplinkEnvelop::initDefaultSPHeader() {
 
 
-    memset(&spHeader, 0, sizeof(spHeader));
+    memset(&spHeader, '\0', sizeof(spHeader));
     spHeader.type                 = 1;  //  1 -> telecommand
     spHeader.secondaryHeaderFlag  = 1;  //  set to 1 (We have a PUS header)
     spHeader.sequenceFlags        = 3;
@@ -48,7 +48,7 @@ void UplinkEnvelop::initDefaultSPHeader() {
 
 void UplinkEnvelop::beginNewTF() {
 
-    memset(buf, 0xff, TF_MAX_LEN);
+    memset(buf, '\xff', TF_MAX_LEN);
     lenOfCurrentSP = lenOfCurrentUserData = indexOfCurrentUserData = ZERO_IN_SENSE_OF_UNDEF_OR_ERR;
     lenOfCurrentTF = tfHeader.HEADER_SIZE + tfTrailer.HEADER_SIZE;
     indexOfCurrentSP = tfHeader.HEADER_SIZE;

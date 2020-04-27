@@ -22,8 +22,8 @@ uint32_t DownlinkMasterFramecounter        = 0;
 
 void DownlinkEnvelop::initDefaultTFHeaderAndTrailer(uint16_t spaceCraftId) {
 
-    memset(&tfHeader,  0, sizeof(tfHeader));
-    memset(&tfTrailer, 0, sizeof(tfTrailer));
+    memset(&tfHeader,  '\0', sizeof(tfHeader));
+    memset(&tfTrailer, '\0', sizeof(tfTrailer));
 
     tfHeader.spaceCraftId        = spaceCraftId;
     tfHeader.virtualChanId       = 7;   //  0: Real time, 1 history, 7 idle
@@ -38,7 +38,7 @@ void DownlinkEnvelop::initDefaultTFHeaderAndTrailer(uint16_t spaceCraftId) {
 void DownlinkEnvelop::initDefaultSPHeader() {
 
     // primary header  allways 6 bytes
-    memset(&spHeader, 0, sizeof(spHeader));
+    memset(&spHeader, '\0', sizeof(spHeader));
     spHeader.secHeaderFlag       = 1;     //  1 -> secondary header follows
     spHeader.groupingFlags       = 0x3;   //  00: cont packet, 01: first one, 10: last one, 11: no groupping
     spHeader.dataPackLen         = 9;     //  len(secondaryheader + userdata) - 1 , in our case here 10 + userdatalen - 1
@@ -52,7 +52,7 @@ void DownlinkEnvelop::initDefaultSPHeader() {
 
 void DownlinkEnvelop::beginNewTF() {
 
-    memset(buf, 0xff, TF_MAX_LEN);
+    memset(buf, '\xff', TF_MAX_LEN);
     lenOfCurrentSP = lenOfCurrentUserData = indexOfCurrentUserData = ZERO_IN_SENSE_OF_UNDEF_OR_ERR;
     lenOfCurrentTF = DOWNLINK_TF_LEN;
     indexOfCurrentSP = tfHeader.HEADER_SIZE;

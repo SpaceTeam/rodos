@@ -45,7 +45,7 @@ static void charReader(int) {
 
 void activateTopicCharInput() {
     struct sigaction sa;
-    memset(&sa, 0, sizeof(sa));
+    memset(&sa, '\0', sizeof(sa));
     sa.sa_handler = charReader;
     sigaction(SIGIO, &sa, NULL);
     fcntl(0, F_SETOWN, getpid());

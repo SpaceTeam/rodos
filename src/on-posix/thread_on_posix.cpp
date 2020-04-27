@@ -162,7 +162,7 @@ void Thread::setPriority(const int32_t prio) {
     /** Posix code **/
     // xprintf("Setting Prio %ld for %d\n", priority, (int)pt);
     struct sched_param param;
-    memset(&param, 0, sizeof(param));
+    memset(&param, '\0', sizeof(param));
     param.sched_priority = static_cast<int>(posixPrio);
     pthread_setschedparam(pt, SCHED_FIFO, &param);
 

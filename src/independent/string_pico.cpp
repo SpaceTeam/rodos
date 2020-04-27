@@ -68,11 +68,11 @@ const char * strchr ( const char * str, int character ){
     }
 }
 
-void* memset(void* destP, int val, size_t len) {
+void* memset(void* destP, char c, size_t len) {
     if(!destP) return destP ;
-    uint8_t* dest = static_cast<uint8_t*>(destP);
+    char* dest = static_cast<char*>(destP);
     while(len) {
-      *dest = static_cast<uint8_t>(val);
+      *dest = c;
       dest++;  // Added
       len--;
     }
@@ -93,7 +93,7 @@ void* memcpy(void* destP, const void* sP, size_t len) {
     return destP;
 }
 	
-int memcmp(const void* a, const void* b, size_t len) {
+int8_t memcmp(const void* a, const void* b, size_t len) {
     const uint8_t* cA = (const uint8_t*)a;
     const uint8_t* cB = (const uint8_t*)b;
 
@@ -137,7 +137,7 @@ char* strcpyXXXX(char* dest, const char* src) {
   return (char *)memcpy (dest, src, strlen(src)+1);
 }
 
-int strcmp (char const *a, char const *b) {
+int8_t strcmp (char const *a, char const *b) {
   if (a == 0)
     return b == 0 ? 0 : -1;
 
@@ -156,7 +156,7 @@ int strcmp (char const *a, char const *b) {
   return 0;
 }
 
-int strncmp (char const *a, char const *b, size_t n) {
+int8_t strncmp (char const *a, char const *b, size_t n) {
   if (a == 0)
     return b == 0 ? 0 : -1;
 

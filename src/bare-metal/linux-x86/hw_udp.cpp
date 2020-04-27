@@ -123,7 +123,7 @@ void UDPReceiver::reopen(const int port) {
     }
 
     // fills my socket address info
-    memset(&inputAddr, 0, sizeof(inputAddr));
+    memset(&inputAddr, '\0', sizeof(inputAddr));
     inputAddr.sin_family      = AF_INET;       // IPv4
     inputAddr.sin_addr.s_addr = INADDR_ANY;    // Use no fixed IP-address for data source
     inputAddr.sin_port        = htons(static_cast<uint16_t>(myPort)); // Save portaddresss in networkorder
@@ -172,7 +172,7 @@ int32_t UDPReceiver::get(void* userData, const size_t maxLen, uint32_t* ipaddr) 
     sockaddr_in sendAddr;
 
     // Reset sender address information
-    memset(&sendAddr, 0, sizeof(sendAddr));
+    memset(&sendAddr, '\0', sizeof(sendAddr));
     sendAddr.sin_family = AF_INET;  // IPv4
     sendAddr.sin_port   = htons(0); // Receive from any port
     int sendAddrLen     = sizeof(sendAddr);
@@ -225,7 +225,7 @@ void UDPTransmitter::openConnection(int32_t port, const char* host) {
     }
 
     // fills my socket address info
-    memset(&outputAddr, 0, sizeof(outputAddr));
+    memset(&outputAddr, '\0', sizeof(outputAddr));
     hp = gethostbyname(host);
     if(hp != 0) {
         memcpy(&outputAddr.sin_addr, hp->h_addr, static_cast<size_t>(hp->h_length));
@@ -320,7 +320,7 @@ bool UDPTransmitter::sendTo(const void* userData, const size_t maxLen, uint32_t 
     newHp = gethostbyname(remHostAddress);
 
     // Fill in remote host address structure
-    memset(&newOutputAddr, 0, sizeof(newOutputAddr));
+    memset(&newOutputAddr, '\0', sizeof(newOutputAddr));
     memcpy(&newOutputAddr.sin_addr, newHp->h_addr, static_cast<size_t>(newHp->h_length));
     newOutputAddr.sin_family = AF_INET;
     newOutputAddr.sin_port   = outputAddr.sin_port;

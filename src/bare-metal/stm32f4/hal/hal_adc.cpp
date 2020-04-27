@@ -104,7 +104,7 @@ public:
             break;
         }
 
-        memset(channelsInUse,-1,sizeof(channelsInUse));
+        memset(channelsInUse,'\xFF',sizeof(channelsInUse));
     }
 
 private:
