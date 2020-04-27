@@ -35,7 +35,7 @@ namespace RODOS {
 #define SIGNAL_HANDLER_STACK_SIZE SIGSTKSZ
 
 /** the timer interval */
-long long Timer::microsecondsInterval = 0;
+int64_t Timer::microsecondsInterval = 0;
 
 
 /**
