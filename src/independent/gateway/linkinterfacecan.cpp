@@ -23,13 +23,10 @@
 #include"gateway/linkinterfacecan.h"
 #include "gateway/gateway.h"
 
+#include "macros_bits_bytes.h"
 #include "stream-bytesex.h"
 
 namespace RODOS {
-
- //creates a sequence of n 1 bits
-#define ONES(n) ((1 <<(n))-1)
-
 
 
 LinkinterfaceCAN:: LinkinterfaceCAN(HAL_CAN* _can) : Linkinterface(-1), can(*_can), currentMsg(NULL) {
@@ -48,7 +45,10 @@ void LinkinterfaceCAN::init() {
     }
     emptyBufferedCANMessagesPos=CAN_MSG_BUFFER_SIZE-1;
 
-    can.addIncomingFilter(CAN_LINK_ID,ONES(CAN_LINK_NODE_BITS+CAN_LINK_TOPIC_BITS),true);
+    can.addIncomingFilter(
+		CAN_LINK_ID,
+		uint32_tOnes(CAN_LINK_NODE_BITS+CAN_LINK_TOPIC_BITS),
+		true);
     can.setIoEventReceiver(this);
 }
 
@@ -60,8 +60,8 @@ bool LinkinterfaceCAN::sendNetworkMsg(NetworkMessage &outMsg)	{
 	uint8_t buffer[8];
 
 	uint16_t dataLength = outMsg.get_len();
-	uint32_t senderNode = outMsg.get_senderNode() & ONES(CAN_LINK_NODE_BITS);
-	uint32_t topicId= outMsg.get_topicId() & ONES(CAN_LINK_TOPIC_BITS);
+	uint32_t senderNode = static_cast<uint32_t>(outMsg.get_senderNode()) & uint32_tOnes(CAN_LINK_NODE_BITS);
+	uint32_t topicId= outMsg.get_topicId() & uint32_tOnes(CAN_LINK_TOPIC_BITS);
 
 	uint32_t canID = CAN_LINK_ID |(topicId << CAN_LINK_NODE_BITS ) | senderNode; //Construct CAN ID of fixed ID+topicID+nodeID
 
@@ -253,10 +253,10 @@ bool LinkinterfaceCAN::appendCANMsgToCurrentNetMsg(BufferedCANMessage* canMsg){
 		currentReceiveCANId=canMsg->canID;
 
 		currentMsg->put_maxStepsToForward(5);
-		currentMsg->put_senderNode(currentReceiveCANId & ONES(CAN_LINK_NODE_BITS));
+		currentMsg->put_senderNode(static_cast<int32_t>(currentReceiveCANId & uint32_tOnes(CAN_LINK_NODE_BITS)));
 		currentMsg->put_senderThreadId(0);
 		currentMsg->put_sentTime(NOW());
-		currentMsg->put_topicId((currentReceiveCANId >> CAN_LINK_NODE_BITS) & ONES(CAN_LINK_TOPIC_BITS));
+		currentMsg->put_topicId((currentReceiveCANId >> CAN_LINK_NODE_BITS) & uint32_tOnes(CAN_LINK_TOPIC_BITS));
 		currentMsg->put_len(len);
 		currentDataPointer = currentMsg->userDataC;
 		bytesReceived=0;

@@ -47,7 +47,10 @@ namespace RODOS {
 
 #define ROTATE_RIGHT(c) { if ((c) & 01) (c) = ((c) >>1) | 0x8000; else (c) >>= 1; }
 
-#define ONES(n) ((1ul <<(n))-1ul) ///< creates a sequence of n 1 bits (max 31 bits)
+constexpr uint32_t uint32_tOnes(uint8_t n) {
+    constexpr uint32_t one = 1;
+    return (one << n) - one;
+}
 
 
 }  // namespace

@@ -263,7 +263,7 @@ void setBitField(void* buffer, size_t bitPos, uint8_t numOfBits, uint32_t val) {
     size_t byteIndex = bitPos / 8;
     bitPos        = bitPos % 8;
     uint8_t shifts    = static_cast<uint8_t>(24 - (bitPos + numOfBits));
-    uint32_t mask     = ONES(numOfBits) << shifts;
+    uint32_t mask     = uint32_tOnes(numOfBits) << shifts;
 
     val = val << shifts;
 
@@ -291,7 +291,7 @@ uint32_t getBitField(const void* buffer, size_t bitPos, uint8_t numOfBits) {
     size_t byteIndex = bitPos / 8;
     bitPos        = bitPos % 8;
     uint8_t shifts    = static_cast<uint8_t>(24 - (bitPos + numOfBits));
-    uint32_t mask     = ONES(numOfBits);  // so many bits set to 1 from leastst significant
+    uint32_t mask     = uint32_tOnes(numOfBits);  // so many bits set to 1 from leastst significant
 
 
     // get the word as big-endian (CPU independent)
