@@ -12,8 +12,7 @@
 
 #include "platform-parameter.h"
 
-#include "efr32fg1p133f256gm48.h"
-#include "core_cm4.h"
+#include "vendor-headers.h"
 
 namespace RODOS {
 
@@ -36,7 +35,7 @@ extern bool      isSchedulingEnabled;
 
 extern "C" {
 
-unsigned long long nanoTime = 0;
+int64_t nanoTime = 0;
 
 /*
  * Interrupt Service Routine for "SysTick" counter
@@ -120,7 +119,7 @@ void Timer::init() {
     Timer::microsecondsInterval = PARAM_TIMER_INTERVAL;
     timerClock                  = SystemCoreClock;
     SysTick_Config_New(
-      ((uint64_t)timerClock * Timer::microsecondsInterval) / 1000000); // initialization of systick timer, reload value: 190000-1 -> generates an irq every 10ms with 19MHz sys clock
+            (uint32_t )(((int64_t)timerClock * Timer::microsecondsInterval) / 1000000)); // initialization of systick timer, reload value: 190000-1 -> generates an irq every 10ms with 19MHz sys clock
     SysTick_Enable();
 }
 
@@ -164,10 +163,10 @@ void Timer::setInterval(const long long microsecondsInterval) {
  * -> this can happen when they don't have the same priority !!!
  */
 
-unsigned long long hwGetNanoseconds(void) {
+int64_t hwGetNanoseconds(void) {
 
-    unsigned long      count      = 0;
-    unsigned long long returnTime = 0;
+    int64_t count      = 0;
+    int64_t returnTime = 0;
 
     // -> current time = nanoTime + 1 000 000 000 * countRegister/tim2Clock
 
@@ -196,7 +195,7 @@ unsigned long long hwGetNanoseconds(void) {
 	 * - nanos = 8ns * count (for tim2Clock = 125MHz)
 	 * - takes 4 times longer than low precision
 	 */
-    uint64_t nanos = ((uint64_t)count * 1000000) / (timerClock / 1000);
+    int64_t nanos = ((int64_t)count * 1000000) / (timerClock / 1000);
 
     return returnTime + nanos;
 }
@@ -205,7 +204,7 @@ void hwInitTime(void) {
     nanoTime = 0;
 }
 
-unsigned long long hwGetAbsoluteNanoseconds(void) {
+int64_t hwGetAbsoluteNanoseconds(void) {
     return hwGetNanoseconds(); // + timeAtStartup;
 }
 

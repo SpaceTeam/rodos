@@ -3,7 +3,7 @@
 
 #include "hal/hal_gpio.h"
 
-#include "em_gpio.h"
+#include "vendor-headers.h"
 
 #ifndef NO_RODOS_NAMESPACE
 namespace RODOS {

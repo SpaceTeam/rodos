@@ -30,15 +30,15 @@ class UDPReceiver {
 private:
 
 public:
-    UDPReceiver(const int port) { }
+    UDPReceiver([[gnu::unused]] const int port) { }
     ~UDPReceiver()              { }
 
-    void reopen(const int port) { }
+    void reopen([[gnu::unused]] const int port) { }
  
-    void setAsync(Topic<GenericMsgRef>* associatedTopic) { }
+    void setAsync([[gnu::unused]] Topic<GenericMsgRef>* associatedTopic) { }
 
-    long get(void* userData, const unsigned int maxLen=1300)    { return 0; }
-    long get(void* userData, int maxLen, unsigned long *ipaddr) { return 0; }
+    long get([[gnu::unused]] void* userData, [[gnu::unused]]  const unsigned int maxLen=1300)    { return 0; }
+    long get([[gnu::unused]] void* userData, [[gnu::unused]] int maxLen, [[gnu::unused]] unsigned long *ipaddr) { return 0; }
     bool readyToGet()                                           { return false;}
     bool isInitialised()                                        { return true; } 
 };
@@ -52,25 +52,25 @@ public:
     /** init udp communication, can be re-called at any time
      ** WARNING: Negative port number means broadcast **/
 
-    UDPTransmitter(const int port,  const char *host = "localhost")         { }
-    UDPTransmitter(const long _portNr, unsigned long _ipAddr)               { }
-    UDPTransmitter(const long _portNr, int ip0, int ip1, int ip2, int ip3)  { }
+    UDPTransmitter([[gnu::unused]] const int port, [[gnu::unused]]  const char *host = "localhost")         { }
+    UDPTransmitter([[gnu::unused]]const long _portNr, [[gnu::unused]] unsigned long _ipAddr)               { }
+    UDPTransmitter([[gnu::unused]] const long _portNr, [[gnu::unused]] int ip0, [[gnu::unused]] int ip1, [[gnu::unused]] int ip2, [[gnu::unused]] int ip3)  { }
     virtual ~UDPTransmitter()                                               { }
 
-    void openConnection(const int port,  const char *host)                  { }
+    void openConnection([[gnu::unused]] const int port,[[gnu::unused]]  const char *host)                  { }
 
     /** Send it as datagram containing "userdata", default length = all bytes
      * @param data pointer to datafield
      * @param length of data field
      */
-    virtual bool send(const void*msg, const unsigned int len)               { return false; }
+    virtual bool send([[gnu::unused]] const void*msg, [[gnu::unused]] const unsigned int len)               { return false; }
 
     /** Send datagram to a specified host different to the address used during initialisation
      * @param data pointer to datafield
      * @param length of data field
      * @param ipAddr of receiving host
      */
-    bool sendTo(const void* userData, const int maxLen, unsigned long ipAddr) { return false; }
+    bool sendTo([[gnu::unused]] const void* userData, [[gnu::unused]] const int maxLen, [[gnu::unused]] unsigned long ipAddr) { return false; }
     bool isInitialised()                                                      { return true; } 
 };
 

@@ -14,12 +14,10 @@
 #include "rodos.h"
 #include "platform-parameter.h"
 #include "hw_specific.h"
+#include "vendor-headers.h"
 
-#include "efr32fg1p133f256gm48.h"
-#include "core_cm4.h"
-#include "em_chip.h"
-#include "em_wdog.h"
-#include "em_cmu.h"
+#include "bsp.h"
+#include "rail-headers.h"
 
 /* Constants required to set up the initial stack. */
 #define INITIAL_XPSR                    ( 0x01000000 )
@@ -52,15 +50,16 @@ void hwInit (void)
 
 	// Determine the Node Number from the first bytes of the chips UID
 	// Note: the chip unique ID is 64bits. By truncating the number, it may no longer be unique.
-	myNodeNr = SYSTEM_GetUnique() & 0xFFFFFFFF;
+	myNodeNr = static_cast<int32_t>(SYSTEM_GetUnique() & 0xFFFFFFFF);
 
 	/* Initialize Timer for system time */
+	/*
 	CMU_HFXOInit(&hfxoInit);
 	SystemHFXOClockSet(38400000UL);
 	CMU_OscillatorEnable(cmuOsc_HFXO, true, true);
 	CMU_ClockSelectSet(cmuClock_HF, cmuSelect_HFXO);
 	CMU_OscillatorEnable(cmuOsc_HFRCO, false, false);
-
+*/
 	uart_stdout.init(115200);
 	uart_stdout.config(UART_PARAMETER_ENABLE_DMA, 1);	// use UART with DMA
 
@@ -94,7 +93,7 @@ long* hwInitContext(long* stack, void* object)
         
 	// These additional registers are also saved - see PendSV_Handler
 	stack--;
-    *stack = INITIAL_EXEC_RETURN;					// this value is loaded to R14 (LR)
+    *stack = static_cast<long>INITIAL_EXEC_RETURN;					// this value is loaded to R14 (LR)
     stack -= 8;                                     // R11, R10, R9, R8, R7, R6, R5 and R4
 
 	return stack;
@@ -227,9 +226,9 @@ void __asmSaveContextAndCallScheduler()
 }
 
 
-unsigned int log2(unsigned int x)	//logarithm base 2 
+int log2(int x)	//logarithm base 2
 {
-  unsigned int ans = 0;
+  int ans = 0;
   while(x>>=1) ans++;
   return ans;
 }
@@ -244,8 +243,10 @@ unsigned int log2(unsigned int x)	//logarithm base 2
  *		- Max period = 262145ms
  * 	intervalMilliseconds won't be the actaul period time of the wdog
  */
-void hwInitWatchdog(long intervalMilliseconds) 
-{
+void hwInitWatchdog(long intervalMilliseconds) {
+    if (intervalMilliseconds < 0) {
+        intervalMilliseconds = 0;
+    }
   	int persel = 0;
 
   	// Enabling clock to the interface of the low energy modules (including the Watchdog)
@@ -267,7 +268,7 @@ void hwInitWatchdog(long intervalMilliseconds)
 	wdogInit.winSel			= wdogIllegalWindowDisable;	// Disable illegal window interrupt
 
 	//timeOut = (2^(3+persel) + 1)/freq
-	persel = log2(intervalMilliseconds - 1) - 3; 
+	persel = log2(intervalMilliseconds - 1) - 3;
 	if(persel < 0) persel = 0x0;
 	if(persel > 0xf) persel = 0xf;
 	wdogInit.perSel 		= (WDOG_PeriodSel_TypeDef) persel; //selects one of the the periods (check em_wdog.h)

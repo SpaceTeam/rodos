@@ -7,9 +7,8 @@
 
 #pragma once
 
-#include "rail.h"
-#include "rail_types.h"
-#include "rail_config.h"
+
+#include "rail-headers.h"
 #include "platform-parameter.h"
 
 #include <stdint.h>
@@ -53,8 +52,8 @@ class HAL_RADIO : public GenericIOInterface {
   protected:
     RAIL_Handle_t railHandle = NULL;
 
-    int pollChannel = 0;  // different radio chanels to poll and data transmission
-    int dataChannel = 1;  // slaves hear pollChanel, master hears dataChannel
+    uint16_t pollChannel = 0;  // different radio chanels to poll and data transmission
+    uint16_t dataChannel = 1;  // slaves hear pollChanel, master hears dataChannel
 
     uint8_t rxPtr[MAX_NETWORK_MESSAGE_LENGTH];
 
@@ -68,7 +67,7 @@ class HAL_RADIO : public GenericIOInterface {
     bool dataReady = false;
     // Temporary buffer to store the data to be sent
     uint8_t tempBuff[MAX_NETWORK_MESSAGE_LENGTH];
-    int     tempBuffLength = 0;
+    uint16_t     tempBuffLength = 0;
 
     virtual void storeReceivedPackets(uint16_t bytesAvailable) = 0;
     virtual void initMessages(int packetLength)                = 0;

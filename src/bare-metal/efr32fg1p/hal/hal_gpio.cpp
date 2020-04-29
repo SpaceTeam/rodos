@@ -3,8 +3,7 @@
 #include "hal/hal_gpio.h"
 #include "hw_hal_gpio.h"
 
-#include "em_gpio.h"
-#include "em_cmu.h"
+#include "vendor-headers.h"
 
 namespace RODOS {
 
@@ -35,11 +34,11 @@ GPIO_Port_TypeDef HW_HAL_GPIO::getEFR32Port(GPIO_PIN pinIdx)
 
 uint16_t HW_HAL_GPIO::getEFR32Pin(GPIO_PIN pinIdx)
 {
-    if 		(pinIdx < GPIO_012)		return pinIdx;
-    else if (pinIdx < GPIO_017)		return (pinIdx - 1);
-    else if (pinIdx < GPIO_020)		return (pinIdx - 4);
-	else if (pinIdx < GPIO_028)		return (pinIdx - 20);
-	else 	return -1;
+    if 		(pinIdx < GPIO_012)		return (uint16_t)pinIdx;
+    else if (pinIdx < GPIO_017)		return (uint16_t)(pinIdx - 1);
+    else if (pinIdx < GPIO_020)		return (uint16_t)(pinIdx - 4);
+	else if (pinIdx < GPIO_028)		return (uint16_t)(pinIdx - 20);
+	else 	return 0xFFFF;
 }
 
 
@@ -77,7 +76,7 @@ HAL_GPIO::HAL_GPIO(GPIO_PIN pinIdx) {
 }
 
 
-int32_t HAL_GPIO::init(bool isOutput, uint32_t numOfPins, uint32_t initVal)
+int32_t HAL_GPIO::init(bool isOutput, uint8_t numOfPins, uint32_t initVal)
 {
 	if (numOfPins > 0) context->numOfPins = numOfPins; // numOfPins has to be > 0 -> if new value is 0 keep the default value
 
@@ -148,7 +147,7 @@ bool HAL_GPIO::isDataReady(){
 }
 
 //When rising and/or falling edge occures dataReady() == true
-void HAL_GPIO::interruptEnable(bool enable){
+void HAL_GPIO::interruptEnable([[gnu::unused]] bool enable){
 
 }
 

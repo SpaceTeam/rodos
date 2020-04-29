@@ -9,15 +9,10 @@
 #include "hal/hal_radio.h"
 
 extern "C" {
-	#include "rail.h"
-	#include "rail_types.h"
-	#include "rail_config.h"
+
 	#include "hal-config.h"
 	#include "hal_common.h"
-	#include "em_chip.h"
-	#include "em_cmu.h"
-	#include "em_gpio.h"
-	#include "em_emu.h"
+    #include "vendor-headers.h"
 	#include "bsp.h"
 }
 
@@ -100,8 +95,8 @@ RADIO_STATUS_TYPE HAL_RADIO::write(const char* sendBuff, int len)
 	if (len > MAX_NETWORK_MESSAGE_LENGTH) 
 		return RADIO_STATUS_ERROR;
 
-	memcpy(tempBuff, sendBuff, len);
-	tempBuffLength = len;
+	memcpy(tempBuff, sendBuff, static_cast<size_t>(len));
+	tempBuffLength = static_cast<uint16_t>(len);
 
 	sendData = true;
 
@@ -123,7 +118,7 @@ int HAL_RADIO::read(char* recBuf )
 		lastDataPacketLength = MAX_NETWORK_MESSAGE_LENGTH;
 	
 	// Only copy data after protocol header (first 3 bytes)	
-	memcpy(recBuf, &lastDataPacket[3], lastDataPacketLength-3);
+	memcpy(recBuf, &lastDataPacket[3], static_cast<size_t>(lastDataPacketLength-3));
 
 	return lastDataPacketLength-3;
 }
@@ -159,7 +154,7 @@ RAIL_Status_t RAILCb_SetupRxFifo(RAIL_Handle_t railHandle)
 /**
  * Callback called upon failed assertion. 
  */
-void RAILCb_AssertFailed(RAIL_Handle_t railHandle, RAIL_AssertErrorCodes_t errorCode) 
+void RAILCb_AssertFailed([[gnu::unused]] RAIL_Handle_t railHandle, [[gnu::unused]] RAIL_AssertErrorCodes_t errorCode)
 {
     // Reset the chip since an assert is a fatal error
     NVIC_SystemReset();
@@ -176,7 +171,7 @@ void RAIL_callback(RAIL_Handle_t railHandle, RAIL_Events_t events)
 		// Collection of TX packet timestamps. Used for Debug purposes.
 		radioContext->txDetails.isAck = false;
 		radioContext->txDetails.timeSent.timePosition = RAIL_PACKET_TIME_AT_PACKET_END_USED_TOTAL;
-		radioContext->txDetails.timeSent.totalPacketBytes = radioContext->packetLength; 
+		radioContext->txDetails.timeSent.totalPacketBytes = static_cast<uint32_t >(radioContext->packetLength);
 		
 		RAIL_GetTxPacketDetails(railHandle, &radioContext->txDetails);
 		if (++radioContext->txTimestampCounter < 100)

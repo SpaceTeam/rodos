@@ -20,9 +20,8 @@
 #include "hal/hal_uart.h"
 #include "hw_hal_gpio.h"
 
-#include "em_usart.h"
-#include "em_cmu.h"
-#include "em_ldma.h"
+#include "vendor-headers.h"
+
 
 #define UART_IDX_MIN        UART_IDX0
 #define UART_IDX_MAX        UART_IDX1
@@ -53,8 +52,8 @@ class HW_HAL_UART {
 	friend void LDMA_IRQHandler();
 
 	UART_IDX idx;
-	int hwFlowCtrl;
-	int baudrate;
+    uint32_t hwFlowCtrl;
+	uint32_t baudrate;
 	HAL_UART* hal_uart;
 	int uartRxError;
 
@@ -68,16 +67,16 @@ class HW_HAL_UART {
 
 	bool isDMAEnabeld;
 	volatile bool DMATransmitRunning;
-	volatile int DMATransmitRunningSize;
+	volatile size_t DMATransmitRunningSize;
 	volatile bool DMAReceiveRunning;
-	volatile int DMAReceiveRunningSize;
+	volatile size_t DMAReceiveRunningSize;
 
 	LDMA_TransferCfg_t TxTransfer;
 	LDMA_Descriptor_t TxDesc;
 	LDMA_TransferCfg_t RxTransfer;
 	LDMA_Descriptor_t RxDesc;
 
-	int DMAMaxReceiveSize;
+	size_t DMAMaxReceiveSize;
 
 	BlockFifo<uint8_t,UART_BUF_SIZE> receiveBuffer;
 	BlockFifo<uint8_t,UART_BUF_SIZE> transmitBuffer;
@@ -87,8 +86,8 @@ class HW_HAL_UART {
 
 
 	void DMAConfigure();
-	void DMAStartTransfer(void* memoryBuffer, int len);
-	void DMAStartReceive(void* memoryBuffer, int len);
+	void DMAStartTransfer(void* memoryBuffer, size_t len);
+	void DMAStartReceive(void* memoryBuffer, size_t len);
 
 
 	void SendTxBufWithDMA();
@@ -98,7 +97,7 @@ class HW_HAL_UART {
 	void UART_RX_IRQHandler();		
 	void UART_TX_IRQHandler();
 
-	int init(unsigned int baudrate);
+	int init(uint32_t baudrate);
 	void initMembers(HAL_UART* halUart, UART_IDX uartIdx, GPIO_PIN txPin, GPIO_PIN rxPin, GPIO_PIN rtsPin, GPIO_PIN ctsPin);
 
 	IRQn getUARTx_RX_IRQn();
@@ -118,10 +117,7 @@ HW_HAL_UART UART_contextArray[UART_IDX_MAX+1];
 HAL_UART::HAL_UART(UART_IDX uartIdx, GPIO_PIN txPin, GPIO_PIN rxPin, GPIO_PIN rtsPin, GPIO_PIN ctsPin) 
 {
     if ((uartIdx < UART_IDX_MIN) || (uartIdx > UART_IDX_MAX)) {
-        context = &UART_contextArray[UART_IDX3]; // UART_IDX3 is not used in this implementation
-                                                 // -> so we can use this contextArray to save wrong idx
-                                                 // -> with this saved idx all HAL_UART-methods will return correctly with -1
-        context->idx = uartIdx;
+        context = nullptr;
         return;
     }
 
@@ -133,11 +129,8 @@ HAL_UART::HAL_UART(UART_IDX uartIdx, GPIO_PIN txPin, GPIO_PIN rxPin, GPIO_PIN rt
 HAL_UART::HAL_UART(UART_IDX uartIdx)
 {
     if ((uartIdx < UART_IDX_MIN) || (uartIdx > UART_IDX_MAX)) {
-        context = &UART_contextArray[UART_IDX3]; // UART_IDX3 is not used in this implementation
-                                                 // -> so we can use this contextArray to save wrong idx
-                                                 // -> with this saved idx all HAL_UART-methods will return correctly with -1
-        context->idx = uartIdx;
-        return;
+      context = nullptr;
+      return;
     }
 
 	context = &UART_contextArray[uartIdx];
@@ -193,7 +186,7 @@ void LDMA_IRQHandler(void)
   	// Iterate over all LDMA channels.
   	for (ch = 0; ch < DMA_CHAN_COUNT; ch++)
   	{
-    	mask = 0x1 << ch;
+    	mask = 0x1u << ch;
     	if (pending & mask)
    	 	{
       		// Clear interrupt flag.
@@ -227,19 +220,17 @@ void LDMA_IRQHandler(void)
  * USART
  * - all USART will be initialized in 8N1 mode
  */
-int HAL_UART::init(unsigned int iBaudrate) {
+int32_t HAL_UART::init(uint32_t iBaudrate) {
 
-	if ((context->idx < UART_IDX_MIN) || (context->idx > UART_IDX_MAX)) {return -1;}
+	if (context == nullptr) {return -1;}
 
 	return context->init(iBaudrate);
 }
 
 
-int HAL_UART::config(UART_PARAMETER_TYPE type, int paramVal) {
+int32_t HAL_UART::config(UART_PARAMETER_TYPE type, int32_t paramVal) {
 
-	UART_IDX idx = context->idx;
-
-	if ((idx < UART_IDX_MIN) || (idx > UART_IDX_MAX)) {return -1;}
+	if (context == nullptr) {return -1;}
 
 	USART_TypeDef* usart = context->UARTx;
 	USART_InitAsync_TypeDef Uis = USART_INITASYNC_DEFAULT;
@@ -250,8 +241,8 @@ int HAL_UART::config(UART_PARAMETER_TYPE type, int paramVal) {
 		case UART_PARAMETER_BAUDRATE:
 			if (paramVal > 0)
 			{
-				Uis.baudrate = paramVal;
-				context->baudrate = paramVal;
+				Uis.baudrate = static_cast<uint32_t >(paramVal);
+				context->baudrate = static_cast<uint32_t >(paramVal);
 			}
 			else {return -1;}
 			break;
@@ -276,7 +267,7 @@ int HAL_UART::config(UART_PARAMETER_TYPE type, int paramVal) {
 		    if((unsigned int)paramVal > UART_BUF_SIZE)
 		    	context->DMAMaxReceiveSize = UART_BUF_SIZE;
 		    else
-				context->DMAMaxReceiveSize = paramVal; 
+				context->DMAMaxReceiveSize = static_cast<size_t>(paramVal);
 		    context->isDMAEnabeld = true;
 			//context->ReceiveIntoRxBufWithDMA();
 		    return 0;
@@ -297,7 +288,7 @@ int HAL_UART::config(UART_PARAMETER_TYPE type, int paramVal) {
 
 void HAL_UART::reset()
 {
-	if ((context->idx < UART_IDX_MIN) || (context->idx > UART_IDX_MAX)) {return;}
+	if (context == nullptr) {return;}
 
 	USART_TypeDef *usart = context->UARTx;
 
@@ -323,13 +314,13 @@ void HAL_UART::reset()
 }
 
 
-int HAL_UART::read(char* buf, int size) 
+size_t HAL_UART::read(void* buf, size_t size)
 {
-    if ((context->idx < UART_IDX_MIN) || (context->idx > UART_IDX_MAX)) {return -1;}
+    if (context == nullptr) {return 0;}
     if(size <=0) return 0;
 
-    int readCnt = 0;
-    int i = 0;
+    size_t readCnt = 0;
+    size_t i = 0;
 
     uint8_t* p = context->receiveBuffer.getBufferToRead(readCnt);
 
@@ -337,7 +328,7 @@ int HAL_UART::read(char* buf, int size)
         if (readCnt > size) {readCnt = size;}
 
         for (i = 0; i < readCnt; i++ ) {
-            buf[i] = p[i];
+            static_cast<uint8_t*>(buf)[i] = p[i];
         }
         context->receiveBuffer.readConcluded(readCnt);
 
@@ -360,14 +351,14 @@ int HAL_UART::read(char* buf, int size)
 }
 
 
-int HAL_UART::write(const char* buf, int size) 
+size_t HAL_UART::write(const void* buf, size_t size)
 {
-    if ((context->idx < UART_IDX_MIN) || (context->idx > UART_IDX_MAX)) {return -1;}
+    if (context == nullptr) {return 0;}
     if(size <= 0) return 0;
 
-    int i = 0;
+    size_t i = 0;
 
-    int spaceinbuffer;
+    size_t spaceinbuffer;
 
     uint8_t* p = context->transmitBuffer.getBufferToWrite(spaceinbuffer);
 
@@ -380,7 +371,7 @@ int HAL_UART::write(const char* buf, int size)
 
         for (i=0;i<size;i++)
         {
-            p[i]=buf[i];
+            p[i]=static_cast<const uint8_t*>(buf)[i];
         }
         context->transmitBuffer.writeConcluded(size);
         USART_IntDisable(context->UARTx, USART_IEN_TXC);
@@ -400,9 +391,9 @@ int HAL_UART::write(const char* buf, int size)
 }
 
 
-int HAL_UART::getcharNoWait() 
+int16_t HAL_UART::getcharNoWait()
 {
-    if ((context->idx < UART_IDX_MIN) || (context->idx > UART_IDX_MAX)) {return -1;}
+    if (context == nullptr) {return -1;}
 
 	uint8_t c = 0;
 	bool dataAvailible = context->receiveBuffer.get(c);
@@ -427,9 +418,9 @@ int HAL_UART::getcharNoWait()
 }
 
 
-int HAL_UART::putcharNoWait(char c) 
+int16_t HAL_UART::putcharNoWait(uint8_t c)
 {
-    if ((context->idx < UART_IDX_MIN) || (context->idx > UART_IDX_MAX)) {return -1;}
+    if (context == nullptr) {return -1;}
 
 	if(context->transmitBuffer.put(c))
 	{
@@ -450,14 +441,14 @@ int HAL_UART::putcharNoWait(char c)
 }
 
 
-int HAL_UART::status(UART_STATUS_TYPE type) 
+int32_t HAL_UART::status(UART_STATUS_TYPE type)
 {
-    if ((context->idx < UART_IDX_MIN) || (context->idx > UART_IDX_MAX)) {return -1;}
+    if (context == nullptr) {return -1;}
 
 	switch (type)
 	{
 		case UART_STATUS_RX_BUF_LEVEL:
-			return context->receiveBuffer.getElementCount();
+			return static_cast<int32_t>(context->receiveBuffer.getElementCount());
 
 		case UART_STATUS_RX_ERROR:
 			int temp;
@@ -475,14 +466,14 @@ int HAL_UART::status(UART_STATUS_TYPE type)
 
 bool HAL_UART::isWriteFinished() 
 {
-    if ((context->idx < UART_IDX_MIN) || (context->idx > UART_IDX_MAX)) {return true;} // false would create an infinite loop
+    if (context == nullptr) {return true;} // false would create an infinite loop
     return context->transmitBuffer.isEmpty() && (USART_StatusGet(context->UARTx) & USART_STATUS_TXC);
 }
 
 
 bool HAL_UART::isDataReady() 
 {
-    if ((context->idx < UART_IDX_MIN) || (context->idx > UART_IDX_MAX)) {return false;}
+    if (context == nullptr) {return false;}
     return !context->receiveBuffer.isEmpty();
 }
 
@@ -513,7 +504,6 @@ void HW_HAL_UART::initMembers(HAL_UART* halUart, UART_IDX uartIdx, GPIO_PIN txPi
 
 void HW_HAL_UART::DMAConfigure() 
 {
-	if ((idx < UART_IDX_MIN) || (idx > UART_IDX_MAX)) {return;}
 
 	// Initialize the LDMA
   	LDMA_Init_t init;
@@ -564,7 +554,7 @@ void HW_HAL_UART::DMAConfigure()
 
 void HW_HAL_UART::SendTxBufWithDMA() 
 {
-	int len;
+	size_t len;
 	uint8_t*  p = transmitBuffer.getBufferToRead(len);
 
 	if(p)
@@ -575,12 +565,14 @@ void HW_HAL_UART::SendTxBufWithDMA()
 	}
 }
 
-void HW_HAL_UART::DMAStartTransfer(void* memoryBuffer,int len) 
+void HW_HAL_UART::DMAStartTransfer(void* memoryBuffer,size_t len)
 {
-	if ((idx < UART_IDX_MIN) || (idx > UART_IDX_MAX)) {return;}
 	
 	// Complete configuration of Tx DMA Descriptor
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
     TxDesc.xfer.xferCnt      = (len) - 1;						// Number of byte transfers
+#pragma GCC diagnostic pop
 	TxDesc.xfer.srcAddr      = (uint32_t)(memoryBuffer);		// Source address
 	// DMA transfer configuration
   	TxTransfer = LDMA_TRANSFER_CFG_PERIPHERAL(getUARTx_TX_ldmaSignal());
@@ -590,10 +582,9 @@ void HW_HAL_UART::DMAStartTransfer(void* memoryBuffer,int len)
 
 void HW_HAL_UART::DMATransmitFinishedHandler()
 {
-	if ((idx < UART_IDX_MIN) || (idx > UART_IDX_MAX)) {return;}
 
-	uint32_t bytesNotTransfered = LDMA_TransferRemainingCount(idx); 	// idx = channel number
-	int bytesTransfered = DMATransmitRunningSize - bytesNotTransfered;
+    size_t bytesNotTransfered = LDMA_TransferRemainingCount(idx); 	// idx = channel number
+	size_t bytesTransfered = DMATransmitRunningSize - bytesNotTransfered;
 
 	transmitBuffer.readConcluded(bytesTransfered);
 
@@ -610,7 +601,7 @@ void HW_HAL_UART::DMATransmitFinishedHandler()
 
 void HW_HAL_UART::ReceiveIntoRxBufWithDMA() {
 
-	int len;
+	size_t len;
 	uint8_t* p = receiveBuffer.getBufferToWrite(len);
 
 	if(p)
@@ -629,12 +620,14 @@ void HW_HAL_UART::ReceiveIntoRxBufWithDMA() {
 }
 
 
-void HW_HAL_UART::DMAStartReceive(void* memoryBuffer, int len) 
+void HW_HAL_UART::DMAStartReceive(void* memoryBuffer, size_t len)
 {
-	if ((idx < UART_IDX_MIN) || (idx > UART_IDX_MAX)) {return;}
 
 	// Complete configuration of Rx DMA Descriptor
-    RxDesc.xfer.xferCnt      = (len) - 1;						// Number of byte transfers
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+    RxDesc.xfer.xferCnt      = ((len) - 1);						// Number of byte transfers
+#pragma GCC diagnostic pop
 	RxDesc.xfer.dstAddr      = (uint32_t)(memoryBuffer);		// Destination address
 	// DMA transfer configuration
   	RxTransfer = LDMA_TRANSFER_CFG_PERIPHERAL(getUARTx_RX_ldmaSignal());
@@ -644,9 +637,8 @@ void HW_HAL_UART::DMAStartReceive(void* memoryBuffer, int len)
 
 void HW_HAL_UART::DMAReceiveFinishedHandler() 
 {
-	if ((idx < UART_IDX_MIN) || (idx > UART_IDX_MAX)) {return;}
 
-	int bytesTransfered = DMAReceiveRunningSize - LDMA_TransferRemainingCount(idx + 2);	// idx + 2 = channel number
+	size_t bytesTransfered = DMAReceiveRunningSize - LDMA_TransferRemainingCount(idx + 2);	// idx + 2 = channel number
 
 	receiveBuffer.writeConcluded(bytesTransfered);
 
@@ -768,7 +760,7 @@ LDMA_PeripheralSignal_t HW_HAL_UART::getUARTx_RX_ldmaSignal()
 }
 
 
-int HW_HAL_UART::init(unsigned int baudrate) 
+int HW_HAL_UART::init(uint32_t baudrate)
 {
     if ((idx < UART_IDX_MIN) || (idx > UART_IDX_MAX)) {return -1;}
 

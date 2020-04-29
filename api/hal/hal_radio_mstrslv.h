@@ -15,7 +15,7 @@ namespace RODOS {
 class HAL_RADIO_MASTER : public HAL_RADIO {
 
   private:
-    int         numberOfSlaves = INIT_NUMBER_SLAVES;
+    uint8_t         numberOfSlaves = INIT_NUMBER_SLAVES;
     int         slave_rx_counter[MAX_NUMBER_SLAVES];
 
     void poll();
