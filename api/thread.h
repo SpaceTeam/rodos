@@ -110,7 +110,8 @@ public:
     : ListElement(threadList, name) {
       this->stackSize  = STACK_SIZE;
       this->stackBegin = stack;
-      this->stack      = (long*)((unsigned long)(stack + (stackSize - 4)) & (~7u));
+      this->stack      = reinterpret_cast<long*>(
+        (reinterpret_cast<uintptr_t>(stackBegin) + (stackSize - 4)) & (~static_cast<uintptr_t>(7u)));
       this->priority   = priority;
 
       initializeStack();

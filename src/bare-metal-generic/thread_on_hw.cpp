@@ -36,8 +36,8 @@ Thread::Thread(const char* name,
     ListElement(threadList, name) {
 
     this->stackSize = _stackSize;
-    stackBegin = (char*)xmalloc(stackSize);
-    stack = (long*) ((unsigned long) (stackBegin + (stackSize-4)) & (~7u)); // align 8 byte
+    stackBegin = static_cast<char*>(xmalloc(stackSize));
+    stack = reinterpret_cast<long*>((reinterpret_cast<uintptr_t>(stackBegin) + (stackSize-4)) & (~static_cast<uintptr_t>(7u))); // align 8 byte
     this->priority = priority;
 
     //Paint the stack space; TODO: Comment out for faster start up
