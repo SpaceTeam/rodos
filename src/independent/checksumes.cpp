@@ -50,11 +50,11 @@ uint16_t computeCrc(const void* buf, size_t len, uint16_t initialValue) {
         uint8_t curChar = data[charCnt];
         for(int bitCnt = 0; bitCnt < 8; bitCnt++) {
             if((curChar & 0x80u) ^ ((currentValue & 0x8000u) >> 8u)) {
-                currentValue = (static_cast<uint32_t>(currentValue << 1u)  ^ 0x1021u) & 0xFFFFu; // Standard Polinom for CCSDS
+                currentValue = static_cast<uint16_t>((static_cast<uint32_t>(currentValue << 1u)  ^ 0x1021u)); // Standard Polynom for CCSDS
             } else {
-                currentValue = static_cast<uint32_t>(currentValue << 1u) & 0xFFFFu;
+                currentValue = static_cast<uint16_t>(currentValue << 1u);
             }
-            curChar = static_cast<uint32_t>(curChar << 1u) & 0xFFu;
+            curChar = static_cast<uint8_t>(curChar << 1u);
         }
     }
     return currentValue;
