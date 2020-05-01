@@ -33,6 +33,6 @@ class CharReceiver : public Subscriber {
     void putFromInterrupt([[gnu::unused]] const uint32_t topicId, const void* data, [[gnu::unused]] size_t len) {
         const GenericMsgRef* msg = static_cast<const GenericMsgRef*>(data);
         xprintf(READ "                      ");
-        xprintf(READ "%s\n", msg->msgPtr); // no PRINTF in interrupts (Sempahore)
+        xprintf(READ "%s\n", static_cast<char*>(msg->msgPtr)); // no PRINTF in interrupts (Sempahore)
     }
 } charReceiver;

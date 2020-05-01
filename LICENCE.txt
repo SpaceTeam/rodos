@@ -1,8 +1,8 @@
 
 Copyright 
-	DLR [2007 .. 2010]
-	University Würzburg [2010 .. 2020]
-            contact: sergio.montenegro@uni-wuerzburg.de
+    DLR [2007 .. 2010]
+    University Würzburg [2010 .. 2020]
+        contact: sergio.montenegro@uni-wuerzburg.de
     TU München [2020 .. 2020]
 
 Licensed under the Apache License, Version 2.0 (the "License");

@@ -35,3 +35,5 @@ __________________________________________________________ Diffs
  diff -rq   expected-embedded-outputs  tmp-embedded
 _________________________________________________________________
 EOT
+meld    expected-outputs           tmp
+meld    expected-embedded-outputs  tmp-embedded
