@@ -1,6 +1,7 @@
 
 #pragma once
 
+#include <stdint.h>
 
 /**
 * @file Macros.h
@@ -48,8 +49,7 @@ namespace RODOS {
 #define ROTATE_RIGHT(c) { if ((c) & 01) (c) = ((c) >>1) | 0x8000; else (c) >>= 1; }
 
 constexpr uint32_t uint32_tOnes(uint8_t n) {
-    constexpr uint32_t one = 1;
-    return (one << n) - one;
+    return (static_cast<uint32_t>(1)  << n) - static_cast<uint32_t>(1);
 }
 
 
