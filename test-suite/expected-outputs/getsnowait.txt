@@ -1,12 +1,16 @@
 Please type string of characters
-Waiting 0.01 Seconds
-Waiting 0.01 Seconds
-Waiting 0.01 Seconds
-Waiting 0.01 Seconds
-Waiting 0.01 Seconds
-Waiting 0.01 Seconds
-Waiting 0.01 Seconds
-Waiting 0.01 Seconds
-Waiting 0.01 Seconds
-Waiting 0.01 Seconds
+
+
+********* String: 'string1' **********
+Waiting 1 Seconds
+Waiting 1 Seconds
+
+
+********* String: 'string2' **********
+Waiting 1 Seconds
+Waiting 1 Seconds
+
+
+********* String: 'string3' **********
+Waiting 1 Seconds
 -------------------------------------------------------------hw_resetAndReboot() -> exit

@@ -16,15 +16,15 @@ class TestGets : public StaticThread<> {
 
         int cnt = 0;
         
-        TIME_LOOP(300 * MILLISECONDS, 10 * MILLISECONDS) {
+        TIME_LOOP(300 * MILLISECONDS, 1 * SECONDS) {
             cnt++;
-            if (cnt > 100) {
+            if (cnt > 10) {
                 PRINTF("-------------------------------------------------------------");
                 hwResetAndReboot();
             }
             
             PRINTF("I call getsnowait -> topic deactivated! \n");
-            if((s = getsNoWait()) != 0) { PRINTF("\n\n********* String: %s'%s'%s **********\n", SCREEN_GREEN, s, SCREEN_RESET); }
+            if((s = getsNoWait()) != 0) { PRINTF("\n\n********* String: '%s' **********\n", s); }
         }
     }
 } testGets;

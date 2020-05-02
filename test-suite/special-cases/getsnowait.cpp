@@ -12,14 +12,14 @@ class TestGets : public StaticThread<> {
         int cnt = 0;
         char* s;
         PRINTF("Please type string of characters\n");
-        TIME_LOOP(10 * MILLISECONDS, 10 * MILLISECONDS) {
+        TIME_LOOP(10 * MILLISECONDS, 1 * SECONDS) {
             cnt++;
-            if (cnt > 10) {
+            if (cnt > 5) {
                 PRINTF("-------------------------------------------------------------");
                 hwResetAndReboot();
             }
-            if((s = getsNoWait()) != 0) { PRINTF("\n\n********* String: %s'%s'%s **********\n", SCREEN_GREEN, s, SCREEN_RESET); }
-            PRINTF("Waiting 0.01 Seconds\n");
+            if((s = getsNoWait()) != 0) { PRINTF("\n\n********* String: '%s' **********\n", s); }
+            PRINTF("Waiting 1 Seconds\n");
         }
     }
 } testGets;

@@ -21,6 +21,12 @@ cd middleware-gateway
 ./executeit.sh   linux-x86                         tmp
 cd ..
 
+echo "__________________________________________________________ Special cases"
+cd special-cases
+./executeit.sh   linux-x86                         tmp
+cd ..
+
+
 echo "__________________________________________________________ Embedded test programs"
 execute-all.sh   linux-x86        embedded-test     tmp-embedded
 
