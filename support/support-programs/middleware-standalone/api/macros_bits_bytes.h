@@ -12,7 +12,7 @@
 
 
 /* WARNING:
- * THis file is not included in rodos.h or rodos-api.h
+ * This file is not included in rodos.h or rodos.h
  * some drivers from chip provide has different meaning for SET_BIT and GET_BIT! (eg. a mask)
  * to avoid conflicts you shall include this file by your self.
  */
@@ -20,6 +20,13 @@
 #ifndef NO_RODOS_NAMESPACE
 namespace RODOS {
 #endif
+
+#define MINUS_ONE_IN_SENSE_OR_ERR     -1
+#define ZERO_IN_SENSE_OF_UNDEF_OR_ERR  0  ///< this is more clear than just writing 0
+
+#define IN_CLOSED_INTERVAL(_a, _min, _max) (((_min) <= (_a)) && ((_a)) <= (_max))
+#define IN_OPEN_INTERVAL(_a, _min, _max)   (((_min) <  (_a)) && ((_a)) <  (_max))
+
 
 /** Bit Operations for CCSDS Formtas: Bit 0 = most significant!! **/
 
@@ -42,10 +49,12 @@ namespace RODOS {
 
 #define ROTATE_RIGHT(c) { if ((c) & 01) (c) = ((c) >>1) | 0x8000; else (c) >>= 1; }
 
-#define ONES(n) ((1 <<(n))-1) ///< creates a sequence of n 1 bits (max 31 bits)
+constexpr uint32_t uint32_tOnes(uint8_t n) {
+    return (static_cast<uint32_t>(1)  << n) - static_cast<uint32_t>(1);
+}
 
 
 #ifndef NO_RODOS_NAMESPACE
-}
+}  // namespace
 #endif
 
