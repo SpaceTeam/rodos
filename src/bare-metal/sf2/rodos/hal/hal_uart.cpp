@@ -21,8 +21,8 @@ namespace RODOS {
 
 #define MSS_UART_DATA_READY ((uint8_t)0x01)
 
-#define UART_IDX_MIN UART_IDX0
-#define UART_IDX_MAX UART_IDX1
+static constexpr UART_IDX UART_IDX_MIN = UART_IDX0;
+static constexpr UART_IDX UART_IDX_MAX = UART_IDX1;
 
 #define DMA_TIMEOUT 10 * MILLISECONDS
 

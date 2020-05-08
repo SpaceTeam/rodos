@@ -756,7 +756,9 @@ static void mss_i2c_isr(
              */
             this_i2c->is_transaction_pending = 1u;
             /* Fall through to normal ST processing as we are now in slave mode */
+#if defined(__GNUC__) && __GNUC__ >= 7
             __attribute__((fallthrough));
+#endif
 
         case ST_GCA:        /* General call address received, ACK returned */
         case ST_SLAVE_SLAW: /* SLA+W received, ACK returned */
