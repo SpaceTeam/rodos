@@ -61,9 +61,10 @@ set the environment variables directories and default compiler options by callin
 Generate the RODOS lib for some target architectures, for example
 
 ```
-        rodos-lib.sh  linux
-        rodos-lib.sh  linuxMC
-        rodos-lib.sh  stm32f4   # you will need the ARM Corsscompiler
+        rodos-lib.sh linux-x86
+        rodos-lib.sh linux-makecontext
+        rodos-lib.sh on-posix
+        rodos-lib.sh discovery   # you will need the ARM Corsscompiler
     or generate all libraries
         rodos-all-libs.sh
 ```
@@ -80,13 +81,13 @@ target architectures
     cd tutorials
     cd 20-core
 
-    rodos-executable.sh  linux semaphore-worm.cpp 
+    rodos-executable.sh  linux-x86 semaphore-worm.cpp 
     tst       # terminate with control-c
 
-    rodos-executable.sh  posix semaphore-worm.cpp 
+    rodos-executable.sh  on-posix semaphore-worm.cpp 
     tst
 
-    rodos-executable.sh  linuxMC  semaphore-worm.cpp 
+    rodos-executable.sh  linux-makecontext  semaphore-worm.cpp 
     tst
 
 ```
@@ -131,4 +132,3 @@ If you need help, please contact me.
 Cheers
 Sergio Montenegro
 sergio.montenegro@uni-wuerzburg.de
-

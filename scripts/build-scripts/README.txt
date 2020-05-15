@@ -49,7 +49,7 @@ on-posix, on-posix64, stm32f4, sf2, ppc, sparc, leon etc etc.
 
 The scripts rodos-*.sh requires as first parameter the name
 of the target architecture. e.g.
-    rodos-lib.sh stm32f4
+    rodos-lib.sh discovery
 please note, a file named xxx-set-vars.sh, in this example
 stem32f4-set-vars.sh has to exist.
 
@@ -90,9 +90,9 @@ Directories and default compiler options
 
 Generate the RODOS lib for some target architectures
 
-    rodos-lib.sh  linux
-    rodos-lib.sh  linuxMC
-    rodos-lib.sh  posix
+    rodos-lib.sh linux-x86
+    rodos-lib.sh linux-makecontext
+    rodos-lib.sh on-posix
 
 
 Test some tutorial examples using different
@@ -102,13 +102,13 @@ target architectures
     cd tutorials/
     cd 20-core/
 
-    rodos-executable.sh  linux semaphore-worm.cpp 
+    rodos-executable.sh linux-x86 semaphore-worm.cpp 
     tst
 
-    rodos-executable.sh  posix semaphore-worm.cpp 
+    rodos-executable.sh on-posix semaphore-worm.cpp 
     tst
 
-    rodos-executable.sh  stm32f4  semaphore-worm.cpp 
+    rodos-executable.sh discovery semaphore-worm.cpp 
     .. load the elf file tst on your development board and boot it
 
 
