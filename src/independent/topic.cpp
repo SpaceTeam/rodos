@@ -26,7 +26,6 @@ namespace RODOS {
 
 static Application applicationName("Topics & Middleware", APID_MIDDLEWARE);
 
-
 TopicInterface::TopicInterface(int64_t id, size_t len, const char* name, bool _onlyLocal) : ListElement(topicList, name)  {
     mySubscribers = 0;
     msgLen        = len;
@@ -46,7 +45,8 @@ TopicInterface::TopicInterface(int64_t id, size_t len, const char* name, bool _o
         RODOS_ASSERT( (iter->topicId != topicId) || (iter == this) ); // Duplicated topicId
     }
 
-}
+} 
+
 
 void TopicInterface::setTopicFilter(TopicFilter* filter) {
     if(topicFilter != 0) {
