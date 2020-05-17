@@ -40,11 +40,13 @@ TopicInterface::TopicInterface(int64_t id, size_t len, const char* name, bool _o
     } else {
         topicId       = static_cast<uint32_t>(id & 0xFFFFFFFF);
     }
-    /** Check for replications **/
+
+    /** Check for replications - except for udp async topic**/
+    static const uint32_t udpAsyncTopicID = 22582; 
     ITERATE_LIST(TopicInterface, topicList) {
+        if(iter->topicId == udpAsyncTopicID) continue;  // udp async topic can exist more than once, due to multiple link interfaces
         RODOS_ASSERT( (iter->topicId != topicId) || (iter == this) ); // Duplicated topicId
     }
-
 } 
 
 
