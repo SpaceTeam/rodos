@@ -12,7 +12,19 @@ set(CMAKE_SYSTEM_NAME Generic)
 set(CMAKE_C_COMPILER arm-none-eabi-gcc)
 set(CMAKE_CXX_COMPILER arm-none-eabi-g++)
 
-set(OSC_CLK 8000000)
+if(NOT DEFINED OSC_CLK)
+    set(OSC_CLK 8000000)
+    MESSAGE("DID NOT GET OSC_CLK Override, using default: ${OSC_CLK}")
+else()
+    MESSAGE("OSC_CLK used ${OSC_CLK}")
+endif()
+
+if(NOT DEFINED linker_script)
+    set(linker_script ${RODOS_DIR}/src/bare-metal/stm32f4/scripts/stm32_flash.ld)
+    MESSAGE("DID NOT GET linker_script Override, using default: ${linker_script}")
+else()
+    MESSAGE("OSC_CLK used ${linker_script}")
+endif()
 
 add_compile_definitions(HSE_VALUE=${OSC_CLK} STM32F40_41xxx USE_STM32_DISCOVERY USE_STDPERIPH_DRIVER)
 
@@ -20,7 +32,7 @@ set(compile_and_link_options -mcpu=cortex-m4 -mfloat-abi=softfp -mfpu=fpv4-sp-d1
 add_compile_options(-nostdlib -gdwarf-2)
 add_compile_options(${compile_and_link_options} -mthumb)
 add_link_options(${compile_and_link_options})
-add_link_options(-T${RODOS_DIR}/src/bare-metal/stm32f4/scripts/stm32_flash.ld)
+add_link_options(-T${linker_script})
 add_link_options(-nostartfiles -nodefaultlibs -nostdlib -Xlinker --gc-sections -fno-unwind-tables -fno-asynchronous-unwind-tables)
 
 set(sources_to_add
