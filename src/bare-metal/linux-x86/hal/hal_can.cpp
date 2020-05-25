@@ -99,7 +99,9 @@ void HW_HAL_CAN::setupFilters() {
 
 
 HAL_CAN::HAL_CAN(CAN_IDX canIdx, GPIO_PIN, GPIO_PIN) {
-    context              = new(xmalloc(sizeof(HW_HAL_CAN))) HW_HAL_CAN();
+    context              = (HW_HAL_CAN*)xmalloc(sizeof(HW_HAL_CAN));
+    RODOS_ASSERT_IFNOT_RETURN_VOID(context != nullptr);
+    context              = new(context) HW_HAL_CAN();
     context->devName     = canDeviceNames[canIdx];
     context->rxFifoEmpty = true;
     context->s           = 0;

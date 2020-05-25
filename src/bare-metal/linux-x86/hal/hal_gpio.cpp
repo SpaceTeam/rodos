@@ -18,6 +18,7 @@ class HW_HAL_GPIO {
 HAL_GPIO::HAL_GPIO(GPIO_PIN pinIdx) {
     // context = new HW_HAL_GPIO(pinIdx,1,false);
     context = (HW_HAL_GPIO*)xmalloc(sizeof(HW_HAL_GPIO)); // dynamic memory allocation with RODOS function
+    RODOS_ASSERT_IFNOT_RETURN_VOID(context != nullptr);
     context = new(context) HW_HAL_GPIO(pinIdx, 1, false); // placement new to call constructor
 }
 
