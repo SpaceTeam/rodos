@@ -25,11 +25,10 @@
 //#define IP_BROADCAST_ADR      "255.255.255.255"
 
 #ifndef __APPLE__
-#define IP_BROADCAST_ADR        "127.255.255.255"
+constexpr char IP_BROADCAST_ADR[] = "127.255.255.255";
 #else
-#define IP_BROADCAST_ADR        "224.0.0.1"
+constexpr char IP_BROADCAST_ADR[] = "224.0.0.1";
 #endif
-
 
 
 namespace RODOS {
