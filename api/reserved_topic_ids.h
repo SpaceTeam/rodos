@@ -17,30 +17,30 @@ namespace RODOS {
 
 /************ 0 ... 99: Rodos intern topics **************/
 
-#define TOPIC_ID_SUBSCRIBERS_REPORT 	0u
-#define TOPIC_ID_DEF_GATEWAY        	0u
-#define TOPIC_ID_NETWORK_REPORT	 	1u
+constexpr uint32_t TOPIC_ID_SUBSCRIBERS_REPORT  = 0;
+constexpr uint32_t TOPIC_ID_DEF_GATEWAY         = 0;
+constexpr uint32_t TOPIC_ID_NETWORK_REPORT      = 1;
 
-#define TOPIC_ID_TAKS_DISTRIBUTION	2u
-#define TOPIC_ID_MONITORING_MSG		3u
-#define TOPIC_ID_DEBUG_CMD_MSG		4u
+constexpr uint32_t TOPIC_ID_TAKS_DISTRIBUTION	= 2;
+constexpr uint32_t TOPIC_ID_MONITORING_MSG		= 3;
+constexpr uint32_t TOPIC_ID_DEBUG_CMD_MSG		= 4;
 
 
 /************ 100 ... 999:  Input / Output services ***/
 
-#define TOPICID_UART_CONF 		110u
-#define TOPICID_UART_IN			111u
-#define TOPICID_UART_OUT		112u
+constexpr uint32_t TOPICID_UART_CONF     = 110;
+constexpr uint32_t TOPICID_UART_IN       = 111;
+constexpr uint32_t TOPICID_UART_OUT      = 112;
 
-#define TOPIC_ID_PWM_CONF		120u
-#define TOPIC_ID_PWM_WIDTH		121u
+constexpr uint32_t TOPIC_ID_PWM_CONF     = 120;
+constexpr uint32_t TOPIC_ID_PWM_WIDTH    = 121;
 
-#define TOPIC_ID_ANALOG_CONF		123u
-#define TOPIC_ID_ANALOG_CHANS		124u
+constexpr uint32_t TOPIC_ID_ANALOG_CONF  = 123;
+constexpr uint32_t TOPIC_ID_ANALOG_CHANS = 124;
 
 /******************************************************/
 
-#define FIRST_USER_TOPIC_ID 		1000u
+constexpr uint32_t FIRST_USER_TOPIC_ID = 1000;
 
 }  // namespace
 

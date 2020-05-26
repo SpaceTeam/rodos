@@ -17,22 +17,20 @@ namespace RODOS {
 
 /************ 0 ... 99: Rodos intern topics **************/
 
-#define APID_ANONYM                 	  0
-#define APID_MIDDLEWARE			 10
+constexpr int32_t APID_ANONYM     = 0;
+constexpr int32_t APID_MIDDLEWARE = 10;
 
 
 /************ 100 ... 999:  Input / Output Sercies ***/
 
-#define APID_GATEWAY_GENERIC         	 20
-#define APID_GATEWAY_UDP             	 21
-#define APID_GATEWAY_UART            	 22
+constexpr int32_t APID_GATEWAY_GENERIC = 20;
+constexpr int32_t APID_GATEWAY_UDP     = 21;
+constexpr int32_t APID_GATEWAY_UART    = 22;
 
 
 /******************************************************/
 
-#define FIRST_USER_APID  		100 
-
+constexpr int32_t FIRST_USER_APID = 100;
 
 
 }  // namespace
-
