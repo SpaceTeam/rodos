@@ -22,23 +22,23 @@ namespace RODOS {
  * (eg. Nanoseconds, but it could be milliseconds). The
  * Macros SECONDS, MILLISECONDS, etc correspond to this unit
  *
- * **************** WARNING:  Dpereacted, use int64_t
+ * **************** WARNING:  Depreacted, use int64_t
  */
 
 typedef int64_t TTime; ///< WARNING: DEPRECATED, use int64_t
 
 /** this implementation: nanoseconds about 150 Years from now */
-#define END_OF_TIME   0x7FFFFFFFFFFFFFFFLL
+constexpr int64_t END_OF_TIME = 0x7FFFFFFFFFFFFFFFLL;
 
 // Example of usage: waitFor(3*SECONDS); int64_t t0 = 10*HOURS;
-#define NANOSECONDS    1LL
-#define MICROSECONDS   (1000LL * NANOSECONDS)
-#define MILLISECONDS   (1000LL * MICROSECONDS)
-#define SECONDS        (1000LL * MILLISECONDS)
-#define MINUTES        (60LL * SECONDS)
-#define HOURS          (60LL * MINUTES)
-#define DAYS           (24LL * HOURS)
-#define WEEKS          (7LL  * DAYS)
+constexpr int64_t NANOSECONDS  = 1LL;
+constexpr int64_t MICROSECONDS = (1000LL * NANOSECONDS);
+constexpr int64_t MILLISECONDS = (1000LL * MICROSECONDS);
+constexpr int64_t SECONDS      = (1000LL * MILLISECONDS);
+constexpr int64_t MINUTES      = (60LL * SECONDS);
+constexpr int64_t HOURS        = (60LL * MINUTES);
+constexpr int64_t DAYS         = (24LL * HOURS);
+constexpr int64_t WEEKS        = (7LL * DAYS);
 
 /**
 * @class TimeModel
@@ -81,7 +81,7 @@ class TimeModel {
     TimeModel();
 
     /** current time in nanoseconds,
-     * DEPRECATED! do not use, use the macro NOW()
+     * DEPRECATED! do not use, use NOW()
      **/
     static int64_t getNanoseconds();
 
@@ -104,7 +104,7 @@ class TimeModel {
     int64_t getUTC();
 
     /** UTC2, or gpsTime: UTC without leapseconds (we add leapseconds!) **/
-    int64_t getGpsTime() { return getUTC() + (int64_t)leapSeconds*SECONDS; }
+    int64_t getGpsTime() { return getUTC() + (int64_t)leapSeconds * SECONDS; }
 
     /** Sets the UTC drift parameter of the clock model */
     void setDrift(const double drift);
@@ -208,12 +208,13 @@ extern TimeModel sysTime;
  * This function is redundant to Time::getTime(), but
  * this so so often required/used than it deserves a shortcut.
  */
-
-#define NOW() RODOS::TimeModel::getNanoseconds()
-
+inline int64_t NOW() {
+    return RODOS::TimeModel::getNanoseconds();
+}
 
 /// Time NOW() in seconds as double
-#define SECONDS_NOW() ((double)RODOS::TimeModel::getNanoseconds() / (double)SECONDS)
-
+inline double SECONDS_NOW() {
+    return ((double)RODOS::TimeModel::getNanoseconds() / (double)SECONDS);
+}
 
 } // namespace RODOS
