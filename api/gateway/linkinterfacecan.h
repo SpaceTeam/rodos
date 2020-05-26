@@ -12,16 +12,16 @@
 namespace RODOS {
 
 
-#define CAN_LINK_NODE_BITS 8
-#define CAN_LINK_TOPIC_BITS 16
+constexpr uint8_t CAN_LINK_NODE_BITS = 8;
+constexpr uint8_t CAN_LINK_TOPIC_BITS = 16;
 //#define CAN_LINK_ID (0b11100 <<(CAN_LINK_NODE_BITS+CAN_LINK_TOPIC_BITS)) // GCC only
-  #define CAN_LINK_ID (0x1C    <<(CAN_LINK_NODE_BITS+CAN_LINK_TOPIC_BITS))
+constexpr uint32_t CAN_LINK_ID = (0x1C << (CAN_LINK_NODE_BITS + CAN_LINK_TOPIC_BITS));
 
-//Number of CAN messages to buffer when multiple meessages are interleaved during receiving
-#define CAN_MSG_BUFFER_SIZE 128
+//Number of CAN messages to buffer when multiple messages are interleaved during receiving
+constexpr int32_t CAN_MSG_BUFFER_SIZE = 128;
 
 //Timeout after which transmitting is canceld if no ack is received
-#define CAN_TX_TIMEOUT (50 * MILLISECONDS)
+constexpr int64_t CAN_TX_TIMEOUT = (50 * MILLISECONDS);
 
 
 struct BufferedCANMessage {

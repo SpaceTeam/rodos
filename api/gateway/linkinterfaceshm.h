@@ -10,8 +10,8 @@
 #include "hal/hal_sharedmemory.h"
 #include "thread.h"
 
-#define FIFOSIZE 10
-#define MAXMEMBERS 50 //defines the maximum amount of participants in the fifo and shared memory
+constexpr size_t   FIFOSIZE   = 10;
+constexpr uint32_t MAXMEMBERS = 50; //defines the maximum amount of participants in the fifo and shared memory
 
 namespace RODOS {
 

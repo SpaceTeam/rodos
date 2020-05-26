@@ -8,7 +8,7 @@
 
 #pragma once
 
-#define MAX_NUMBER_OF_GATEWAYS_PER_ROUTER 8
+constexpr int MAX_NUMBER_OF_GATEWAYS_PER_ROUTER = 8;
 
 
 #include "gateway/gateway.h"
