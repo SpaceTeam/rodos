@@ -8,7 +8,8 @@
 
 namespace RODOS {
 
-#define BUFFER_SIZE 1518
+constexpr uint16_t BUFFER_SIZE = 1518;
+
 static void mac_rx_callback(uint8_t* p_rx_packet, uint32_t pckt_length,
                             void* caller_info);
 
@@ -127,7 +128,7 @@ class HW_HAL_ETH {
         if(!isLinkActive())
             return ETH_ERR_LINKDOWN;
         buf          = pbuf_alloc(PBUF_RAW, BUFFER_SIZE, PBUF_POOL);
-        uint16_t len = MIN(dataLen, BUFFER_SIZE);
+        uint16_t len = min(dataLen, BUFFER_SIZE);
         pbuf_take(buf, rxData, len); // BUFFER_SIZE PBUF_POOL_SIZE
         pbuf_realloc(buf, len);
         hasNewData = false;

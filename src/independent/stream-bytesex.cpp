@@ -246,8 +246,7 @@ int getBitFromByteStream(const void *byteStream, int bitIndex) {
     const uint8_t* bytes = (const uint8_t*)byteStream;
 
     unsigned char selectedByte = bytes[bitIndex/8];
-    return GET_BIT_FROM_BYTE(selectedByte, (bitIndex % 8));
-
+    return ((selectedByte) >> (7 - (bitIndex % 8))) & 0x01;
 }
 
 

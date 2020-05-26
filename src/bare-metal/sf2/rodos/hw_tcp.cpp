@@ -142,7 +142,7 @@ int HW_TCPClient::getData(void* buf, uint16_t maxLen) {
 }
 
 int TCPBase::sendData(void* buf, uint16_t len) {
-    uint16_t sendLen = MIN(tcp_sndbuf(pcb), len);
+    uint16_t sendLen = min(tcp_sndbuf(pcb), len);
     tcp_write(pcb, buf, sendLen, 0);
     tcp_output(pcb);
     return static_cast<int>(sendLen);
@@ -151,7 +151,7 @@ int TCPBase::sendData(void* buf, uint16_t len) {
 int TCPBase::getData(void* buf, uint16_t maxLen) {
     if(!recvBuf) return 0;
 
-    uint16_t copyLen = static_cast<uint16_t>(MIN(recvBuf->tot_len - readPos, maxLen));
+    uint16_t copyLen = min(static_cast<uint16_t>(recvBuf->tot_len - readPos), maxLen);
     pbuf_copy_partial(recvBuf, buf, copyLen, readPos);
 
     if(recvBuf->tot_len - readPos <= copyLen) {
