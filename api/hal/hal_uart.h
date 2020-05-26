@@ -13,7 +13,7 @@
 
 namespace RODOS {
 
-#define UART_BUF_SIZE 256u
+constexpr size_t UART_BUF_SIZE = 256;
 
 enum UART_PARAMETER_TYPE {
 	UART_PARAMETER_BAUDRATE,

@@ -14,7 +14,6 @@ namespace RODOS {
 
 constexpr uint8_t CAN_LINK_NODE_BITS = 8;
 constexpr uint8_t CAN_LINK_TOPIC_BITS = 16;
-//#define CAN_LINK_ID (0b11100 <<(CAN_LINK_NODE_BITS+CAN_LINK_TOPIC_BITS)) // GCC only
 constexpr uint32_t CAN_LINK_ID = (0x1C << (CAN_LINK_NODE_BITS + CAN_LINK_TOPIC_BITS));
 
 //Number of CAN messages to buffer when multiple messages are interleaved during receiving

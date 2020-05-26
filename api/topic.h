@@ -16,13 +16,14 @@
 #include "rodos-debug.h"
 #include "gateway/networkmessage.h"
 #include "misc-rodos-funcs.h"
+#include <stdint.h>
 
 namespace RODOS {
 
 class NetMsgInfo;
 class TopicFilter;
 
-#define	RODOS_LOCAL_BROADCAST	0
+constexpr uint32_t RODOS_LOCAL_BROADCAST = 0;
 
 /**
  *  @class TopicInterface
@@ -56,10 +57,10 @@ public:
 //protected:
 	static List topicList; ///< List of all topics present in the system
 	List mySubscribers; ///< List of pointers to subscribers associated to one topic instance
-        TopicFilter* topicFilter; ///< a filter may modify the content of the message befor the subscriver get it.
+        TopicFilter* topicFilter; ///< a filter may modify the content of the message befor the subscriber get it.
         
 	uint32_t topicId;   ///< Topic ID used for identification by network tramsmitions
-	size_t msgLen;    ///< Size of message transfered via this topic
+	size_t msgLen;    ///< Size of message transferred via this topic
 	bool onlyLocal; ///< if true, never call the gateways for this topic, even if publish says ditritribute to network
 
 
@@ -199,9 +200,9 @@ public:
 };
 
 /***
- ** very often we need a generiv type for topics which contians just
+ ** very often we need a generiv type for topics which contains just
  ** a pointer and a len.
- ** to avoid 100x declarations fo this struct, we define ohe here
+ ** to avoid 100x declarations fo this struct, we define one here
  **/
 
 struct GenericMsgRef { // V. 128 PTS
@@ -215,7 +216,7 @@ struct GenericMsgRef { // V. 128 PTS
 /**************************************************************/
 /** A topic only for gateways */
 
-extern Topic<GenericMsgRef> defaultGatewayTopic; //All localy publiched Topics go here for the Gateways and/or Routers to send out
+extern Topic<GenericMsgRef> defaultGatewayTopic; //All locally publiched Topics go here for the Gateways and/or Routers to send out
 extern Topic<NetworkMessage> defaultRouterTopic; //All incoming Messages are publiched here by the Gateways.
 /************ Predifined Topics from Interrupt servers **********/
 
