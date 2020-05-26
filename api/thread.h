@@ -289,8 +289,9 @@ public:
  * A pointer to the currently running thread.
  **/
 
-#define RUNNER() Thread::getCurrentThread()
-
+inline RODOS::Thread* RUNNER() {
+    return Thread::getCurrentThread();
+}
 
 /**
  * TIME_LOOP is a shortcut for setting and using time beats
