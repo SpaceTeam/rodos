@@ -11,6 +11,7 @@
 
 
 #include "hw_specific.h"
+#include "rodos-assert.h"
 #include "timemodel.h"
 
 
@@ -164,7 +165,7 @@ double TimeModel::calendar2mjd_UTC( const uint16_t &year,
         // julian
         Mjd_0h = static_cast<uint32_t>(365L*year_mod - 679004L + -2 + ((year_mod+4716)/4) - 1179 + int(30.6001*(month+1)) + day);
     } else {
-        // gregorian 
+        // gregorian
         Mjd_0h = static_cast<uint32_t>(365L*year_mod - 679004L + (year_mod/400)-(year_mod/100)+(year_mod/4) + int(30.6001*(month_mod+1)) + day);
     }
 
@@ -214,13 +215,17 @@ double TimeModel::mjd_TTfromUT1( const double &MJD_UT1, const double &UT1_UTC, c
 }
 
 int64_t TimeModel::computeNextBeat(const int64_t begin,
-                                 const int64_t period,
-                                 const int64_t timeNow) {
+                                   const int64_t period,
+                                   const int64_t timeNow) {
+    RODOS_ASSERT_IFNOT_RETURN(begin >= 0, END_OF_TIME);
+    RODOS_ASSERT_IFNOT_RETURN(period >= 0, END_OF_TIME);
+    RODOS_ASSERT_IFNOT_RETURN(timeNow >= 0, END_OF_TIME);
 
-    if (begin > timeNow) return begin;
-    if (period == 0)     return END_OF_TIME;;
-    
-    return   ((((timeNow-begin)/period)+1)*period)+begin;
+    if (begin > timeNow)              return begin;
+    if (period == 0)                  return END_OF_TIME;
+    if (period >= END_OF_TIME - begin) return END_OF_TIME;
+
+    return ((((timeNow - begin) / period) + 1) * period) + begin;
 }
 
 /**
