@@ -15,15 +15,14 @@
 #include "scheduler.h"
 #include "hw_specific.h"
 
-#define EMPTY_MEMORY_MARKER 0xDEADBEEF
+namespace RODOS {
+
+constexpr uint32_t EMPTY_MEMORY_MARKER = 0xDEADBEEF;
 
 // at which time before the next thread becomes active, should the processor wake up?
-#define TIME_BEFORE_WAKEUP  (3*MILLISECONDS)
+constexpr int64_t TIME_BEFORE_WAKEUP = 3 * MILLISECONDS;
 // if in the next "TIME_DONT_SLEEP"  nanoseconds the next thread becomes active, do sleep. 999 Seconds is as good as deactivated
-#define TIME_DONT_SLEEP (999*SECONDS)
-
-
-namespace RODOS {
+constexpr int64_t TIME_DONT_SLEEP = 999*SECONDS;
 
 //List Thread::threadList = 0;
 //Thread* Thread::currentThread = 0;
@@ -242,7 +241,9 @@ Thread* idlethreadP = &idlethread;
 
 /*********************************************************************************/
 
-#define EARLIER(a,b) ((a) < (b) ? (a) : (b) )
+constexpr int64_t earlier(const int64_t a, const int64_t b) {
+    return (a < b) ? a : b;
+}
 
 Thread* Thread::findNextToRun(int64_t timeNow) {
     Thread* nextThreadToRun = &idlethread; // Default, if no one else wants
@@ -261,7 +262,7 @@ Thread* Thread::findNextToRun(int64_t timeNow) {
 			// if there is a thread with higher or same priority in the future, we must call the scheduler then
 			// so that the thread will be executed
             if(iter->getPriority() >= nextThreadToRun->getPriority()) { 
-                timeToTryAgainToSchedule = EARLIER(timeToTryAgainToSchedule, iter->suspendedUntil) ;
+                timeToTryAgainToSchedule = earlier(timeToTryAgainToSchedule, iter->suspendedUntil) ;
             }
 			// threads with lower priority will not be executed until nextThreadToRun suspends
         }

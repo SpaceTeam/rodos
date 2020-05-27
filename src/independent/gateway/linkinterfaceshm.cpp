@@ -6,10 +6,9 @@
 #include "hal/hal_sharedmemory.h"
 #include "rodos-assert.h"
 
-
-#define FIFO_MAGIC_WORD 1234
-
 namespace RODOS {
+
+constexpr int32_t FIFO_MAGIC_WORD = 1234;
 
 HAL_Sharedmemory hal_sharedmemory(Sharedmemory_IDX0);
 

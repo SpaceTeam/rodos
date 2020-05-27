@@ -14,7 +14,7 @@
 
 namespace RODOS {
 
-#define not0(a) ((a)?1:0)
+constexpr int not0(void* a) { return (a) ? 1 : 0; }
 
 Router::Router(bool forwardTopicReports_, Gateway* gateway1, Gateway* gateway2, Gateway* gateway3, Gateway* gateway4) :
     Subscriber(defaultRouterTopic,"Router"),
