@@ -13,9 +13,12 @@
 
 namespace RODOS {
 
-// Please note: SWAPCHARS is already in macros.h
 /// exchange values of char variables (a) and (b)
-#define SWAPCHARS(_a, _b) {char _tempswap = _a;   _a = _b;   _b = _tempswap; }
+inline void swapChars(char& a, char& b) {
+    const char tmp = a;
+    a              = b;
+    b              = tmp;
+}
 
 int16_t swap16(int16_t sw_);
 int32_t swap32(int32_t sw_);
@@ -33,23 +36,23 @@ double  doubleConvertHost2Net(double sw_);
 int16_t swap16(int16_t sw_) {
     int16_t sw = sw_;
     char *c = (char*)&sw;
-    SWAPCHARS(c[0], c[1]);
+    swapChars(c[0], c[1]);
     return sw;
 }
 
 int32_t swap32(int32_t lw_) {
     int32_t lw = lw_;
     char *c = (char*)&lw;
-    SWAPCHARS(c[0], c[3]);
-    SWAPCHARS(c[1], c[2]);
+    swapChars(c[0], c[3]);
+    swapChars(c[1], c[2]);
     return lw;
 }
 
 float swapFloat(float fw_) {
     float fw = fw_;
     char *c = (char*)&fw;
-    SWAPCHARS(c[0], c[3]);
-    SWAPCHARS(c[1], c[2]);
+    swapChars(c[0], c[3]);
+    swapChars(c[1], c[2]);
     return fw;
 }
 
@@ -57,20 +60,20 @@ float swapFloat(float fw_) {
 int64_t swap64(int64_t llw_) {
     int64_t  llw = llw_;
     char *c = (char*)&llw;
-    SWAPCHARS(c[0], c[7]);
-    SWAPCHARS(c[1], c[6]);
-    SWAPCHARS(c[2], c[5]);
-    SWAPCHARS(c[3], c[4]);
+    swapChars(c[0], c[7]);
+    swapChars(c[1], c[6]);
+    swapChars(c[2], c[5]);
+    swapChars(c[3], c[4]);
     return llw;
 }
 
 double swapDouble(double dw_) {
     double  dw = dw_;
     char *c = (char*)&dw;
-    SWAPCHARS(c[0], c[7]);
-    SWAPCHARS(c[1], c[6]);
-    SWAPCHARS(c[2], c[5]);
-    SWAPCHARS(c[3], c[4]);
+    swapChars(c[0], c[7]);
+    swapChars(c[1], c[6]);
+    swapChars(c[2], c[5]);
+    swapChars(c[3], c[4]);
     return dw;
 }
 

@@ -20,23 +20,28 @@ namespace RODOS {
 /****************************************************/
 
 
-#define ROTATE_RIGHT(c) { if ((c) & 01) (c) = ((c) >>1) | 0x8000; else (c) >>= 1; }
+inline void rotateRight(uint16_t& c) {
+    if (c & 0x01) {
+        c = static_cast<uint16_t>((c >> 1) | static_cast<uint16_t>(0x8000));
+    } else {
+        c = static_cast<uint16_t>(c >> 1);
+    }
+}
 
 
 /** Computes a 16-bit checksum (len in bytes) adding bytes and rotating result */
 
 uint16_t checkSum(const void *buf, size_t len) {
 
-    uint32_t checksum = 0; /* The checksum mod 2^16. */
+    uint16_t checksum = 0; /* The checksum mod 2^16. */
     size_t cnt;
     const uint8_t* data = static_cast<const uint8_t*>(buf);
 
     for(cnt = 0; cnt < len; cnt++) {
-		ROTATE_RIGHT (checksum);
-		checksum += data[cnt];
-		checksum &= 0xffff; /* Keep it within bounds. */
+		rotateRight(checksum);
+		checksum = static_cast<uint16_t>(checksum + data[cnt]);
 	}
-	return static_cast<uint16_t>(checksum);
+	return checksum;
 
 }
 
