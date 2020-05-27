@@ -54,6 +54,14 @@ inline void setbit(uint32_t* bitmap, bool value, uint8_t bitIndex) {
     else      *bitmap &= ~(0x01u  << bitIndex);
 }
 
+template <typename T>
+constexpr T min(const T a, const T b) {
+    return (a < b) ? a : b;
+}
+
+constexpr uint32_t uint32_tOnes(uint8_t n) {
+    return (static_cast<uint32_t>(1)  << n) - static_cast<uint32_t>(1);
+}
 
 }  // namespace
 

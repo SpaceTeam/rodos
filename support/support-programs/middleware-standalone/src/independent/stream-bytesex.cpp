@@ -1,6 +1,5 @@
 #include <stdint.h>
 #include "stream-bytesex.h"
-#include "macros_bits_bytes.h"
 
 /** Bytesex Convertions
  *  byte string allwas in Big-endian (internet, ccsds, net, motorola) format

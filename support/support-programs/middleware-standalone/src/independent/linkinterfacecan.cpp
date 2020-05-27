@@ -5,7 +5,6 @@
 #include"gateway/linkinterfacecan.h"
 #include "gateway/gateway.h"
 
-#include "macros_bits_bytes.h"
 #include "stream-bytesex.h"
 
 #include "hal/hal_can.h"

@@ -23,7 +23,7 @@
 #include"gateway/linkinterfacecan.h"
 #include "gateway/gateway.h"
 
-#include "macros_bits_bytes.h"
+#include "misc-rodos-funcs.h"
 #include "stream-bytesex.h"
 
 namespace RODOS {

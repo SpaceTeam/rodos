@@ -16,8 +16,6 @@
 
 #include "rodos-errorcodes.h"
 
-#include "macros_bits_bytes.h"
-
 #include "string_pico.h"
 //#include "stdlib_pico.h"
 

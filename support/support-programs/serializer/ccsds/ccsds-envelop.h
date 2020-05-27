@@ -1,7 +1,6 @@
 
 #pragma once
 
-#include "macros_bits_bytes.h"
 #include "checksumes.h"
 #include "generated/ccsds-headers.h"
 
@@ -21,6 +20,8 @@ struct DownlinkSourcePacket { unsigned char buf[CCSDS::DOWNLINK_SP_MAX_LEN]; };
 
 
 //___________________________________________
+
+constexpr uint8_t ZERO_IN_SENSE_OF_UNDEF_OR_ERR = 0; ///< this is more clear than just writing 0
 
 class CCSDSEnvelop {
 

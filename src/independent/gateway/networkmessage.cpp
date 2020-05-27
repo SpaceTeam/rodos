@@ -10,7 +10,7 @@
 
 
 #include "gateway/networkmessage.h"
-#include "macros_bits_bytes.h"
+#include "misc-rodos-funcs.h"
 
 namespace RODOS {
 
