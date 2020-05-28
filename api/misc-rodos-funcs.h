@@ -59,8 +59,36 @@ constexpr T min(const T a, const T b) {
     return (a < b) ? a : b;
 }
 
+template <typename T>
+constexpr T max(const T a, const T b) {
+    return (a > b) ? a : b;
+}
+
+template <typename T>
+constexpr T abs(const T a) {
+    return (a >= 0) ? a : -a;
+}
+
 constexpr uint32_t uint32_tOnes(uint8_t n) {
     return (static_cast<uint32_t>(1)  << n) - static_cast<uint32_t>(1);
+}
+
+template <typename T>
+constexpr bool inClosedInterval(const T& a, const T& min, const T& max) {
+    return (min <= a) && (a <= max);
+}
+
+template <typename T>
+constexpr bool inOpenInterval(const T& a, const T& min, const T& max) {
+    return (min < a) && (a < max);
+}
+
+constexpr const char * string(const char * a) {
+    return a ? a : "--NULL--"; 
+}
+
+constexpr uint16_t chars2short(const char a, const char b) {
+    return static_cast<uint16_t>((a << 8) + b);
 }
 
 }  // namespace
