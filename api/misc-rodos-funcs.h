@@ -83,10 +83,6 @@ constexpr bool inOpenInterval(const T& a, const T& min, const T& max) {
     return (min < a) && (a < max);
 }
 
-constexpr const char * string(const char * a) {
-    return a ? a : "--NULL--"; 
-}
-
 constexpr uint16_t chars2short(const char a, const char b) {
     return static_cast<uint16_t>((a << 8) + b);
 }

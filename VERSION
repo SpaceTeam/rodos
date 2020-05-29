@@ -14,6 +14,7 @@ RODOS Versioning
 ----------------------------------------------
 
 202:    a: int, long int, long long, etc -> uint32_t, int64_t, etc etc (not concluded)
+        b: #defines & Macros -> c++ expressions
 
 201:    a: Threads mit statische stack array
         b: rm printf host infor headers from testsuite
