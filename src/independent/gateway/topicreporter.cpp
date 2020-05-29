@@ -11,14 +11,15 @@
 
 namespace RODOS {
 
-constexpr int not0(void* a) { return (a) ? 1 : 0; }
+constexpr uint8_t not0(const void* a) { return (a) ? 1 : 0; }
 
 TopicReporter::TopicReporter(Gateway* gateway1, Gateway* gateway2, Gateway* gateway3, Gateway* gateway4) {
     gateways[0]      = gateway1;
     gateways[1]      = gateway2;
     gateways[2]      = gateway3;
     gateways[3]      = gateway4;
-    numberOfGateways = not0(gateway1) + not0(gateway2) + not0(gateway3) + not0(gateway4);
+    numberOfGateways = static_cast<uint8_t>(
+      not0(gateway1) + not0(gateway2) + not0(gateway3) + not0(gateway4));
 }
 
 void TopicReporter::run() {
@@ -77,6 +78,7 @@ void TopicReporter::addGateway(Gateway* gateway) {
     gateways[numberOfGateways]= gateway;
     numberOfGateways++;
 
+    static_assert(MAX_NUMBER_OF_GATEWAYS_PER_ROUTER < UINT8_MAX, "potential overflow in numberOfGatways!");
     if(numberOfGateways > MAX_NUMBER_OF_GATEWAYS_PER_ROUTER) {
         RODOS_ERROR("Too many Gateway added to a TopicReporter\n");
         numberOfGateways--;

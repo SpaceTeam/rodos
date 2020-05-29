@@ -14,7 +14,7 @@
 
 namespace RODOS {
 
-constexpr int not0(void* a) { return (a) ? 1 : 0; }
+constexpr uint8_t not0(const void* a) { return (a) ? 1 : 0; }
 
 Router::Router(bool forwardTopicReports_, Gateway* gateway1, Gateway* gateway2, Gateway* gateway3, Gateway* gateway4) :
     Subscriber(defaultRouterTopic,"Router"),
@@ -25,7 +25,8 @@ Router::Router(bool forwardTopicReports_, Gateway* gateway1, Gateway* gateway2, 
     gateways[1]      = gateway2;
     gateways[2]      = gateway3;
     gateways[3]      = gateway4;
-    numberOfGateways = not0(gateway1) + not0(gateway2) + not0(gateway3) + not0(gateway4);
+    numberOfGateways   = static_cast<uint8_t>(
+      not0(gateway1) + not0(gateway2) + not0(gateway3) + not0(gateway4));
 }
 
 
@@ -49,7 +50,7 @@ void Router::routeMsg(NetworkMessage& msg,uint32_t linkid) {
     if(shouldRouteThisMsg(msg,linkid)) {
         msg.setCheckSum();
 
-        for(int i=0; i<numberOfGateways; i++) {
+        for(uint8_t i=0; i<numberOfGateways; i++) {
             if(shouldRouteThisMsgToGateway(msg,linkid,gateways[i])) {
                 gateways[i]->sendNetworkMessage(msg);
             }
@@ -72,6 +73,7 @@ void Router::addGateway(Gateway* gateway) {
     gateways[numberOfGateways]= gateway;
     numberOfGateways++;
 
+    static_assert(MAX_NUMBER_OF_GATEWAYS_PER_ROUTER < UINT8_MAX, "potential overflow in numberOfGatways!");
     if(numberOfGateways > MAX_NUMBER_OF_GATEWAYS_PER_ROUTER) {
         RODOS_ERROR("Too many Gateway added to a router\n");
         numberOfGateways--;

@@ -24,7 +24,7 @@ namespace RODOS {
 constexpr int MAX_UART_MESSAGE_LENGTH = (MAX_NETWORK_MESSAGE_LENGTH + 6);
 
 constexpr size_t OUTPUT_BUF_SIZE = 64;
-static_assert(OUTPUT_BUF_SIZE > 2, "linkinterface uart: output buffer to small");
+static_assert(OUTPUT_BUF_SIZE > 1, "linkinterface uart: output buffer to small");
 
 class LinkinterfaceUART : public Linkinterface, IOEventReceiver  {
 

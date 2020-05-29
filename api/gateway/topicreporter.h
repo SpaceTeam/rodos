@@ -20,7 +20,7 @@ protected:
     TopicListReport topiclist;
 
     Gateway* gateways[MAX_NUMBER_OF_GATEWAYS_PER_ROUTER];
-    int numberOfGateways;
+    uint8_t numberOfGateways;
 
 public:
     TopicReporter(Gateway* gateway1=0, Gateway* gateway2=0, Gateway* gateway3=0, Gateway* gateway4=0);

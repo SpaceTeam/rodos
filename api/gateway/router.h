@@ -8,9 +8,6 @@
 
 #pragma once
 
-constexpr int MAX_NUMBER_OF_GATEWAYS_PER_ROUTER = 8;
-
-
 #include "gateway/gateway.h"
 #include "putter.h"
 #include "subscriber.h"
@@ -19,13 +16,15 @@ constexpr int MAX_NUMBER_OF_GATEWAYS_PER_ROUTER = 8;
 
 namespace RODOS {
 
+constexpr uint8_t MAX_NUMBER_OF_GATEWAYS_PER_ROUTER = 8;
+
 class Router : public Subscriber,Putter  {
     Subscriber localTopics;
     NetworkMessage localMessage;
 
 protected:
     Gateway* gateways[MAX_NUMBER_OF_GATEWAYS_PER_ROUTER];
-    int numberOfGateways;
+    uint8_t numberOfGateways;
     bool forwardTopicReports;
 
 public:

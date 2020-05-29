@@ -29,7 +29,7 @@ namespace RODOS {
  * Simple message data protocol to transmit data to a remote node.
  */
 class NetworkMessage {
-    static const uint16_t HEADER_SIZE = 26;
+    static constexpr uint16_t HEADER_SIZE = 26;
     uint8_t header [HEADER_SIZE];
 public:
     inline void    put_checkSum(uint16_t x)          {uint16_tToBigEndian(header+0, x); }
