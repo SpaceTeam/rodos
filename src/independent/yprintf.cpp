@@ -97,6 +97,11 @@ void Yprintf::vaprintf(const char *fmt) {
             base = 10;
             break;
 
+        case 'i':
+            is_signed = 0;
+            base = 10;
+            break;
+
         case 'u':
             base = 10;
             break;
