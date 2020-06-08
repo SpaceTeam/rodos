@@ -98,7 +98,7 @@ long* hwInitContext(long* stack, void* object) {
     }
     makecontext(contextT, (void (*)())threadStartupWrapper, 1, object);
 
-    return (long*)contextT;
+    return reinterpret_cast<long*>(contextT);
 }
 
 void sp_partition_yield() { }

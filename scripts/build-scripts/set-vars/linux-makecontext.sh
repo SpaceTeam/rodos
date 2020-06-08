@@ -15,7 +15,7 @@ SRCS[3]="${RODOS_SRC}/bare-metal/${ARCH}/hal"
 export INCLUDES=${INCLUDES}" -I ${RODOS_SRC}/bare-metal/${ARCH} "  # only for platform-parameter.h
 export INCLUDES_TO_BUILD_LIB=" -I ${RODOS_SRC}/bare-metal-generic "  
 
-export CFLAGS=${CFLAGS}" -m32 "
+export CFLAGS=${CFLAGS}" -m32 -DIS_LINUX_MAKECONTEXT "
 export LINKFLAGS=" -L ${RODOS_LIBS}/${TARGET_LIB} -lrodos -lm "
 
 
