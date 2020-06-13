@@ -43,6 +43,10 @@ UDPOut::UDPOut(const long portNr, const char* hostname) 		: udpTx(portNr, hostna
 UDPOut::UDPOut(const long _portNr, unsigned long _ipAddr) 		: udpTx(_portNr, _ipAddr)	{ }
 UDPOut::UDPOut(const long _portNr, int ip0, int ip1, int ip2, int ip3)	: udpTx(_portNr, ip0, ip1, ip2, ip3) { }
 
+void UDPOut::reopen(const long portNr, const char* hostname) {
+    udpTx.reopen(portNr, hostname);
+}
+
 bool UDPOut::send(const void* userData, const int maxLen) 	        	 { return udpTx.send(userData, maxLen); }
 bool UDPOut::sendTo(const void* userData, const int maxLen, unsigned long ipAddr) { return udpTx.sendTo(userData, maxLen,ipAddr); }
 bool UDPOut::isConnected() 						{ return udpTx.isInitialised(); }
@@ -73,6 +77,11 @@ UDPInOut::UDPInOut(int localInputPort, int remoteOutputPort,const  char* hostnam
     if(localInputPort <=0 || remoteOutputPort <=0) {
         ERROR("Non-Broadcast UDPInOut defined but port number ist negative");
     }
+}
+
+void UDPInOut::reopen(int localInputPort, int remoteOutputPort, const char* hostname) {
+    udpIn.reopen(localInputPort);
+    udpOut.reopen(remoteOutputPort, hostname);
 }
 
 

@@ -44,14 +44,14 @@ namespace RODOS {
  **   for each signal from udp, search all descriptor...
  **************************************************************/
 
-#define MAX_UDP_PORTS 20 
+#define MAX_UDP_PORTS 20
 static int numOfAsyncInputSockets = 0;
 static int asyncInputSocketDescriptor[MAX_UDP_PORTS];
 static Putter* asyncInputSocketAssociatedTopic[MAX_UDP_PORTS];
 static char inputBuf[1400];// as long as a UDP packet can be
 
 void udpReader(int a) {
-    
+
     int len;
     NetMsgInfo dummy;
 
@@ -70,6 +70,8 @@ UDPReceiver::UDPReceiver(const TUDPPortNr port) {
 
 
 void UDPReceiver::reopen(const TUDPPortNr port) {
+    if(sock) close(sock);
+
     enableMultiReader = false;
     initialised = false;
     int myPort = port;
@@ -247,6 +249,15 @@ UDPTransmitter::~UDPTransmitter() { close(sock);}
 
 
 /*************************************************/
+void UDPTransmitter::reopen(const TUDPPortNr port,  const char *host) {
+    if(sock) close(sock);
+
+    enableBroadCast = false;
+    int myPort = port;
+    if(port < 0) { myPort = -port;  enableBroadCast = true; }
+    openConnection(myPort, host);
+}
+
 bool UDPTransmitter::send(const void* msg, const unsigned int len) {
     int retval;
     if(!initialised) return false;

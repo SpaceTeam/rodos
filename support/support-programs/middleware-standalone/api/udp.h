@@ -107,6 +107,13 @@ public:
      */
     UDPOut(const long _portNr, int ip0, int ip1, int ip2, int ip3);//MSul
 
+    /** Opens a socket for UDP sending.
+     * On success attribute 'initialised' is set true.
+     * @param portNr port number on remote host, negative -> broadcast to this port
+     * @param hostname IP-hostname of remote host
+     */
+    void reopen(const long portNr, const char* hostname = "localhost");
+
     /** Send user data
      * @param[in] userData pointer to output data stream
      * @param[in] maxLen size of data block to be send, must be <= max allowed length
@@ -141,6 +148,8 @@ public:
     UDPInOut(int broadcastPort);
     UDPInOut(int port,const char* hostname );
     UDPInOut(int localInputPort, int remoteOutputPort,const  char* hostname);
+
+    void reopen(int localInputPort, int remoteOutputPort,const  char* hostname);
 };
 
 

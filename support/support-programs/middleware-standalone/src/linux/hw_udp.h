@@ -97,6 +97,8 @@ public:
     UDPTransmitter(const long _portNr, int ip0, int ip1, int ip2, int ip3);
     virtual ~UDPTransmitter();
 
+    void reopen(const TUDPPortNr port,  const char *host = "localhost");
+
     /** Send it as datagram contining "userdata", default length = all bytes
      * @param data pointer to datafield
      * @param length of data field
