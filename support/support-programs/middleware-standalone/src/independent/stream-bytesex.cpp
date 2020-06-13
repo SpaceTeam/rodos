@@ -1,5 +1,8 @@
-#include <stdint.h>
 #include "stream-bytesex.h"
+
+#include "macros_bits_bytes.h"
+
+#include <cstdint>
 
 /** Bytesex Convertions
  *  byte string allwas in Big-endian (internet, ccsds, net, motorola) format
@@ -139,7 +142,7 @@ uint64_t bigEndianToUint64_t(const void* buff) {
     const uint8_t* byteStream = (const uint8_t*)buff;
     if (byteStream == 0) return 0;
     return static_cast<uint64_t>(
-             (((uint64_t)(byteStream[0])) << 56)
+              (((uint64_t)(byteStream[0])) << 56)
             | (((uint64_t)(byteStream[1])) << 48)
             | (((uint64_t)(byteStream[2])) << 40)
             | (((uint64_t)(byteStream[3])) << 32)
@@ -250,8 +253,7 @@ int getBitFromByteStream(const void *byteStream, int bitIndex) {
     const uint8_t* bytes = (const uint8_t*)byteStream;
 
     unsigned char selectedByte = bytes[bitIndex/8];
-    return GET_BIT_FROM_BYTE(selectedByte, (bitIndex % 8));
-
+    return ((selectedByte) >> (7 - (bitIndex % 8))) & 0x01;
 }
 
 
