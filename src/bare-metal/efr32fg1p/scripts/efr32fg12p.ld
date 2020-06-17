@@ -1,6 +1,5 @@
 /***************************************************************************//**
- * Linker script for Silicon Labs EFR32FG1P devices
- * @version 5.8.3
+ * Linker script for Silicon Labs EFR32FG12P devices
  *******************************************************************************
  * # License
  * <b>Copyright 2019 Silicon Laboratories Inc. www.silabs.com</b>
@@ -31,8 +30,8 @@
 
 MEMORY
 {
-  FLASH (rx) : ORIGIN = 0x00000000, LENGTH = 262144
-  RAM (rwx)  : ORIGIN = 0x20000000, LENGTH = 31744
+  FLASH (rx) : ORIGIN = 0x00000000, LENGTH = 1048576
+  RAM (rwx)  : ORIGIN = 0x20000000, LENGTH = 262144
 }
 
 /* Linker script to place sections and symbol values. Should be used together
@@ -71,7 +70,7 @@ MEMORY
 ENTRY(Reset_Handler)
 
 /* Highest address of the user mode stack */
-_estack = 0x20007C00;    /* end of 31744 (31k) RAM on AHB bus*/
+_estack = 0x20040000;    /* end of 31744 (31k) RAM on AHB bus*/
 
 /* Generate a link error if heap and stack don't fit into RAM */
 _Min_Heap_Size = 0x1000;    /* required amount of heap: 0x1000 = 4k */
@@ -124,7 +123,7 @@ SECTIONS
 
   /* To copy multiple ROM to RAM sections,
    * uncomment .copy.table section and,
-   * define __STARTUP_COPY_MULTIPLE in startup_ARMCMx.S 
+   * define __STARTUP_COPY_MULTIPLE in startup_ARMCMx.S */
   /*
   .copy.table :
   {
@@ -234,13 +233,12 @@ SECTIONS
 
   /* Check if FLASH usage exceeds FLASH size */
   ASSERT( LENGTH(FLASH) >= (__etext + SIZEOF(.data)), "FLASH memory overflowed !")
-   
-   /* Remove information from the standard libraries */
+  
+     /* Remove information from the standard libraries */
   /DISCARD/ :
   {
     libc.a ( * )
     libm.a ( * )
     libgcc.a ( * )
   }
-  
 }

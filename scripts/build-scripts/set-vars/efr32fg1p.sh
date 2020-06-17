@@ -3,15 +3,29 @@
 # Author Marcelo Alves (Uni Minho), Oct 2019
 # 	 Jorge Oliveira (Uni Minho)
 
+if [ -z $TARGET_LIB ]; then
+  cat << EOT1
+  ****************
+  *** Do not use this architecture directly, please use
+  *** one of its derivates:
+  ***    gecko
+  ***    gecko1M
+  *********************
+EOT1
+exit 
+fi
+
+
+
 export ARCH=efr32fg1p    #used to select compile directories
-export TARGET_LIB=gecko  #used as name for the generated lib
+
 
 #---------------------------------------------- from here the same for all sub architectures
 
 RODOS_ARCH_SRC1="${RODOS_SRC}/bare-metal/${ARCH}"
 RODOS_ARCH_SRC2="${RODOS_SRC}/bare-metal/${ARCH}/emlib/inc"
 RODOS_ARCH_SRC3="${RODOS_SRC}/bare-metal/${ARCH}/CMSIS/Include"
-RODOS_ARCH_SRC4="${RODOS_SRC}/bare-metal/${ARCH}/EFR32FG1P/Include"
+RODOS_ARCH_SRC4="${RODOS_SRC}/bare-metal/${ARCH}/${SUB_ARCH_DIR}/Include"
 RODOS_ARCH_SRC5="${RODOS_SRC}/bare-metal/${ARCH}/hal"
 RODOS_ARCH_SRC6="${RODOS_SRC}/bare-metal/${ARCH}/rail_lib/common"
 RODOS_ARCH_SRC7="${RODOS_SRC}/bare-metal/${ARCH}/rail_lib/hal"
@@ -28,8 +42,8 @@ SRCS[1]="${RODOS_SRC}/bare-metal-generic"
 SRCS[2]="${RODOS_SRC}/bare-metal/${ARCH}"
 SRCS[3]="${RODOS_SRC}/bare-metal/${ARCH}/emlib/src"
 SRCS[4]="${RODOS_ARCH_SRC1}"
-SRCS[5]="${RODOS_SRC}/bare-metal/${ARCH}/EFR32FG1P/Source/GCC"
-SRCS[6]="${RODOS_SRC}/bare-metal/${ARCH}/EFR32FG1P/Source"
+SRCS[5]="${RODOS_SRC}/bare-metal/${ARCH}/${SUB_ARCH_DIR}/Source/GCC"
+SRCS[6]="${RODOS_SRC}/bare-metal/${ARCH}/${SUB_ARCH_DIR}/Source"
 SRCS[7]="${RODOS_SRC}/bare-metal/${ARCH}/hal"
 SRCS[8]="${RODOS_SRC}/bare-metal/${ARCH}/sleeptimer/src"
 SRCS[9]="${RODOS_SRC}/bare-metal/${ARCH}/rail_lib/hal"
@@ -40,7 +54,7 @@ SRCS[13]="${RODOS_SRC}/bare-metal/${ARCH}/common/drivers/used"
 SRCS[14]="${RODOS_SRC}/bare-metal/${ARCH}/rail-config"
 
 export INCLUDES=${INCLUDES}" -I ${RODOS_SRC}/bare-metal/${ARCH} \
-	-I${RODOS_SRC}/bare-metal/${ARCH}/EFR32FG1P/Include \
+	-I${RODOS_SRC}/bare-metal/${ARCH}/${SUB_ARCH_DIR}/Include \
 	-I${RODOS_SRC}/bare-metal/${ARCH}/CMSIS/Include \
 	-I${RODOS_SRC}/bare-metal/${ARCH}/rail_lib/common \
 	-I${RODOS_SRC}/bare-metal/${ARCH}/common/bsp \
@@ -69,10 +83,11 @@ export INCLUDES_TO_BUILD_LIB=" -I ${RODOS_SRC}/bare-metal-generic \
     -I ${RODOS_ARCH_SRC15} "
 
 export CFLAGS_BASICS_COMMON=" -g3 -gdwarf-2 -DHSE_VALUE=${OSC_CLK} "
-export CFLAGS_BASICS="${CFLAGS_BASICS_COMMON} -DCORTEXM3 -DCORTEXM3_EFR32_MICRO -DCORTEXM3_EFR32 -DEFR32FG1P -DEFR32FG1P133F256GM48 -DEFR32_SERIES1_CONFIG1_MICRO"
+export CFLAGS_BASICS="${CFLAGS_BASICS_COMMON} -DCORTEXM3 -DCORTEXM3_EFR32_MICRO -DCORTEXM3_EFR32 ${SUB_ARCH_FLAGS}"
 export HWCFLAGS=" -mcpu=cortex-m4 -mthumb -mfloat-abi=softfp -mfpu=fpv4-sp-d16 -specs=nano.specs -specs=nosys.specs"
-export LINKFLAGS=" -T${RODOS_ARCH_SRC1}/scripts/efr32fg1p.ld -I${RODOS_ARCH_SRC1}/scripts/ -nostartfiles -Xlinker --gc-sections -L${RODOS_LIBS}/${TARGET_LIB} -fno-unwind-tables -fno-asynchronous-unwind-tables -lm -lgcc -L${RODOS_SRC}/bare-metal/${ARCH} -lrodos -lrail_efr32xg1_gcc_release "
-export CFLAGS=${CFLAGS}" ${CFLAGS_BASICS} ${HWCFLAGS} "
+export LINKFLAGS=" -T${RODOS_ARCH_SRC1}/scripts/${SUB_ARCH}.ld -I${RODOS_ARCH_SRC1}/scripts/ -nostartfiles -nodefaultlibs -nostdlib -Xlinker --gc-sections -L${RODOS_LIBS}/${TARGET_LIB} -fno-unwind-tables -fno-asynchronous-unwind-tables -L${RODOS_SRC}/bare-metal/${ARCH} -lrodos -lm -lrail_efr32xg1_gcc_release "
+export CFLAGS=${CFLAGS}" ${CFLAGS_BASICS} ${HWCFLAGS}  -Wno-unused-parameter -Wno-sign-conversion -Wno-conversion"
+export CPPFLAGS=${CPPFLAGS}" -Wunused-parameter -Wsign-conversion -Wconversion"
 
 export ARM_TOOLS=""
 export CPP_COMP="${ARM_TOOLS}arm-none-eabi-g++ "
