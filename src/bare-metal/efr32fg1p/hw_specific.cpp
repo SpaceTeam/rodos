@@ -35,8 +35,8 @@ extern long myNodeNr;
 /** Responsible for hardware initialization */
 void hwInit (void)
 {
-	CMU_HFXOInit_TypeDef hfxoInit = CMU_HFXOINIT_DEFAULT;
-	hfxoInit.ctuneSteadyState = 355;
+	//CMU_HFXOInit_TypeDef hfxoInit = CMU_HFXOINIT_DEFAULT;
+	//hfxoInit.ctuneSteadyState = 355;
 
 	taskRunning = 0;
 
@@ -47,6 +47,7 @@ void hwInit (void)
 	SystemCoreClockUpdate();
 	/* Initialize the chip */
 	CHIP_Init();
+	halInit();
 
 	// Determine the Node Number from the first bytes of the chips UID
 	// Note: the chip unique ID is 64bits. By truncating the number, it may no longer be unique.

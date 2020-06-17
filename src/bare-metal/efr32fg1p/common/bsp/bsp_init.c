@@ -126,8 +126,8 @@ void BSP_initClocks(void)
   // Initialize HFXO if present
 
 #if BSP_CLK_HFXO_PRESENT
-  // HFXO
-  // CMU_HFXOInit_TypeDef hfxoInit = BSP_CLK_HFXO_INIT;
+   //HFXO
+   CMU_HFXOInit_TypeDef hfxoInit = BSP_CLK_HFXO_INIT;
   int ctune = -1;
 
 #if defined(_DEVINFO_MODXOCAL_HFXOCTUNE_MASK) // Series 1
@@ -152,14 +152,14 @@ void BSP_initClocks(void)
 
   if (ctune != -1) {
 #if defined(_SILICON_LABS_32B_SERIES_1)
-    // hfxoInit.ctuneSteadyState = ctune;
+     hfxoInit.ctuneSteadyState = ctune;
 #elif defined(_SILICON_LABS_32B_SERIES_2)
-    // hfxoInit.ctuneXoAna = ctune;
-    // hfxoInit.ctuneXiAna = ctune;
+     hfxoInit.ctuneXoAna = ctune;
+     hfxoInit.ctuneXiAna = ctune;
 #endif
   }
-  // CMU_HFXOInit(&hfxoInit);
-  // SystemHFXOClockSet(BSP_CLK_HFXO_FREQ);
+   CMU_HFXOInit(&hfxoInit);
+   SystemHFXOClockSet(BSP_CLK_HFXO_FREQ);
 #endif // BSP_CLK_HFXO_PRESENT
 
   // --------------------------------
@@ -189,8 +189,8 @@ void BSP_initClocks(void)
   // Enable HFXO if selected as HFCLK
 
 #if (HAL_CLK_HFCLK_SOURCE == HAL_CLK_HFCLK_SOURCE_HFXO)
-  // Enable HFXO oscillator, and wait for it to be stable
-  // CMU_OscillatorEnable(cmuOsc_HFXO, true, true);
+   //Enable HFXO oscillator, and wait for it to be stable
+   CMU_OscillatorEnable(cmuOsc_HFXO, true, true);
 
 #if defined(HAL_CLK_HFXO_AUTOSTART) && HAL_CLK_HFXO_AUTOSTART == HAL_CLK_HFXO_AUTOSTART_SELECT
   // Automatically start and select HFXO
@@ -211,7 +211,7 @@ void BSP_initClocks(void)
 
   // HFRCO not needed when using HFXO
 #if defined(_CMU_OSCENCMD_HFRCOEN_MASK)
-  // CMU_OscillatorEnable(cmuOsc_HFRCO, false, false);
+   CMU_OscillatorEnable(cmuOsc_HFRCO, false, false);
 #endif
 
 #elif (HAL_CLK_HFCLK_SOURCE == HAL_CLK_HFCLK_SOURCE_HFRCO)
