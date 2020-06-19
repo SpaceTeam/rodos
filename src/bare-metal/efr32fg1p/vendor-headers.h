@@ -21,6 +21,7 @@
 #include "em_gpio.h"
 #include "em_usart.h"
 #include "em_ldma.h"
+#include "em_adc.h"
 
 
 #pragma GCC diagnostic pop
