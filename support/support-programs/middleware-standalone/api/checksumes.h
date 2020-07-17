@@ -1,13 +1,14 @@
 /**
-* @file debuecksumes.h
+* @file checksumes.h
 * @date 2008/06/17 10:46
-* @author Sergio MOntenegro
+* @author Sergio Montenegro
 *
 * @brief simple misc functions
 */
 
 #pragma once
 
+#include <cstddef>
 
 #ifndef NO_RODOS_NAMESPACE
 namespace RODOS {
