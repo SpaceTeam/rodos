@@ -15,10 +15,6 @@
 #include "scheduler.h"
 #include "hw_specific.h"
 
-#ifdef IS_LINUX_MAKECONTEXT
-#include <ucontext.h>
-#endif
-
 namespace RODOS {
 
 constexpr uint32_t EMPTY_MEMORY_MARKER = 0xDEADBEEF;
@@ -273,27 +269,17 @@ Thread* Thread::findNextToRun(int64_t timeNow) {
     } // Iterate list
 
     /** Check stack violations **/
-#ifdef IS_LINUX_MAKECONTEXT
-    // special treatment for "linux-makecontext"-port... i don't like it, but necessary.
-    // Note that the use of the esp register is save here, because "linux-makecontext"
-    // compiles to run on any i386 system (-m32)
-    int context_esp = reinterpret_cast<ucontext_t *>(nextThreadToRun->context)->uc_mcontext.gregs[REG_ESP];
-    if((context_esp - (intptr_t)nextThreadToRun->stackBegin) < 300) {
-        xprintf("!StackOverflow! %lx DEACTIVATED!: free %d\n",
-            static_cast<unsigned long>(reinterpret_cast<intptr_t>(nextThreadToRun)),
-            static_cast<int>(context_esp - reinterpret_cast<intptr_t>(nextThreadToRun->stackBegin)));
-#else
-    if(((intptr_t)nextThreadToRun->context - (intptr_t)nextThreadToRun->stackBegin) < 300) {
-        xprintf("!StackOverflow! %lx DEACTIVATED!: free %d\n",
-            static_cast<unsigned long>(reinterpret_cast<intptr_t>(nextThreadToRun)),
-            static_cast<int>(reinterpret_cast<intptr_t>(nextThreadToRun->context) - reinterpret_cast<intptr_t>(nextThreadToRun->stackBegin)));
-#endif
+    constexpr size_t stackMargin = 300;
+    uintptr_t minimumStackAddr = reinterpret_cast<uintptr_t>(nextThreadToRun->stackBegin)+stackMargin;
+    if(nextThreadToRun->getCurrentStackAddr() < minimumStackAddr) {
+        xprintf("!StackOverflow! %s DEACTIVATED!: free %d\n",
+            nextThreadToRun->name,
+            static_cast<int>(nextThreadToRun->getCurrentStackAddr() - reinterpret_cast<uintptr_t>(nextThreadToRun->stackBegin)));
         nextThreadToRun->suspendedUntil = END_OF_TIME;
         nextThreadToRun = &idlethread;
     }
     if ( *reinterpret_cast<uint32_t *>(nextThreadToRun->stackBegin) !=  EMPTY_MEMORY_MARKER) { // this thread is going beyond its stack!
-        xprintf("! PANIC %lx beyond stack, DEACTIVATED!\n",
-            static_cast<unsigned long>(reinterpret_cast<intptr_t>(nextThreadToRun)));
+        xprintf("! PANIC %s beyond stack, DEACTIVATED!\n", nextThreadToRun->name);
         nextThreadToRun->suspendedUntil = END_OF_TIME;
         nextThreadToRun = &idlethread;
     }

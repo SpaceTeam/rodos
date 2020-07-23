@@ -213,6 +213,11 @@ public:
     void resumeAndYield() { resume() ; yield(); }
 
   /**
+   * Returns the current stack pointer of the thread.
+   */
+  uintptr_t getCurrentStackAddr();
+
+  /**
    * Cause the currently running thread to pause and perform a reschedule.
    */
   static void yield();
