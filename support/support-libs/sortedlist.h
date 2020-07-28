@@ -1,10 +1,7 @@
 
 #pragma once
 
-#ifndef NO_RODOS_NAMESPACE
 namespace RODOS {
-#endif
-
 
 /** SortedChainable are entries in a sortedList.
  *
@@ -170,8 +167,7 @@ public:
     for (__type* iter = (__type*)(__list).getFirst(); !(__list).endOfList(iter); iter = (__type*)iter->getNext())
 
 
+#define FOR_ALL_i(_limit) for(int i = 0; i < _limit; i++)
 
-#ifndef NO_RODOS_NAMESPACE
 }
-#endif
 

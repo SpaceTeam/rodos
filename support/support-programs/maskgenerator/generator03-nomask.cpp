@@ -10,7 +10,7 @@ struct Field {
 
 int main() {
     unsigned char inputLine[500];
-    Field field[100];
+    Field field[300];
     int fieldCnt = 0;
     
     fprintf(stdout, "\n\n /**** Generated with support_programs/maskgenerator/generator-nomask.cpp ***/\n");

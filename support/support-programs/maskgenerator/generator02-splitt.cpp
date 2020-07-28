@@ -10,7 +10,7 @@ struct Field {
 
 int main() {
     char inputLine[500];
-    Field field[100];
+    Field field[300];
     int fieldCnt = 0;
 
     FILE* fileMakScreen = fopen("mask-screen.h", "w");
