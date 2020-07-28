@@ -74,8 +74,9 @@ public:
 	virtual bool isDataReady();
 
 	/* write()
-	 * blocking -> returns only if "sendBuf" is sent
+	 * non-blocking -> if internal buffer is full it takes less than "len"
 	 * TODO: UART write - transmit buffer & transmit interrupts for non-blocking operation
+         * WARNING if the internal buffer is full, it will write less than "len". Please check Always the return value!
 	 * @return number of bytes written
 	 */
 	virtual size_t write(const void* sendBuf, size_t len);
