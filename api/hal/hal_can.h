@@ -123,7 +123,7 @@ public:
     bool addIncomingFilter(uint32_t ID, uint32_t IDMask = 0, bool extID = true, bool rtr = false);
 
     /*!
-     * Write a CAN Message, non-blocking if there is space in output buffer.
+     * Write a CAN Message, non-blocking.
      * 
      * @param sendBuf Pointer to transmit data.
      * @param len Length of transmit data( max. 8 bytes).

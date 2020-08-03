@@ -83,6 +83,7 @@ public:
 
     /**
      * @brief   Send data to a spi slave device.
+     *          Does not return until transfer is finished(blocking).
      * @param   sendBuf pointer to transmit buffer
      * @param   len     size of transmit buffer
      * @retval  int32_t number of sent bytes, value < 0 on failure
@@ -93,6 +94,7 @@ public:
      * @brief   Request data from a spi slave device.
      *          To get data from slave the master must generate the SPI clock and dummy
      *          data must be sent. For it recBuf will be used.
+     *          Does not return until transfer is finished(blocking).
      * @param   recBuf  pointer to receive buffer
      * @param   maxLen  size of receive buffer
      * @retval  int32_t number of received bytes, value < 0 on failure
@@ -106,6 +108,7 @@ public:
 	 *          get requested data.
 	 *          If sendBuf is bigger than recBuf you will only get the first
 	 *          received bytes until recBuf is full.
+	 *          Does not return until transfer is finished(blocking).
 	 * @param   sendBuf pointer to transmit buffer
 	 * @param   len     size of transmit buffer
 	 * @param   recBuf  pointer to receive buffer

@@ -53,7 +53,7 @@ public:
 	bool isReadFinished();
 
    /**
-	 * Transmit data
+	 * Transmit data.  Does not return until transfer is finished(blocking).
 	 * @param addr I2C address of chip
 	 * @param txBuf pointer to transmit buffer
 	 * @param txBufSize size of transmit buffer
@@ -62,7 +62,7 @@ public:
 	int32_t write(const uint8_t addr, const uint8_t *txBuf, uint32_t txBufSize);
 
    /**
-     * Receive data
+     * Receive data.  Does not return until transfer is finished(blocking).
      * @param addr I2C address of chip
      * @param rxBuf pointer to receive buffer
      * @param rxBufSize size of receive buffer
@@ -71,7 +71,7 @@ public:
 	int32_t read(const uint8_t addr, uint8_t *rxBuf, uint32_t rxBufSize);
 
    /**
-	 * Send and receive data without a STOP condition between
+	 * Send and receive data without a STOP condition between.  Does not return until transfer is finished(blocking).
 	 * @param addr I2C address of chip
 	 * @param txBuf	pointer to transmit buffer
 	 * @param txBufSize size of transmit buffer
