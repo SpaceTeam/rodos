@@ -239,7 +239,7 @@ int8_t HAL_CAN::write(const uint8_t* sendBuf, uint8_t len, uint32_t canID, bool 
         return -1;
     }
 
-    return 1;
+    return 0;
 }
 
 
