@@ -1,5 +1,7 @@
 macro(add_rodos_executable)
-  add_compile_options( $<$<COMPILE_LANGUAGE:CXX>:-fno-rtti>)
+  if (NOT ENABLE_RODOS_RTTI)
+    add_compile_options($<$<COMPILE_LANGUAGE:CXX>:-fno-rtti>)
+  endif()
   add_executable(${ARGN})
   target_link_libraries(${ARGV0} PUBLIC rodos)
 endmacro()
