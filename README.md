@@ -1,4 +1,4 @@
-﻿
+
 RODOS
 =====
 
@@ -32,12 +32,10 @@ as a distributed software network of simple BBs.
 The Building Blocks API on the top of the middleware is a service oriented interface.
 BBs interact by providing services to other BBs and using services from other BBs.
 
-Take a look to the short introduction in  
+Take a look to the short introduction at  
 
-```
-	https://en.wikipedia.org/wiki/Rodos_%28operating_system%29 
-	https://de.wikipedia.org/wiki/Rodos_%28Betriebssystem%29
-```
+* [https://en.wikipedia.org/wiki/Rodos_(operating_system)](https://en.wikipedia.org/wiki/Rodos_%28operating_system%29) 
+* [https://de.wikipedia.org/wiki/Rodos_(Betriebssystem)](https://de.wikipedia.org/wiki/Rodos_%28Betriebssystem%29)
 
 
 And take a look to all other README file in this directory and
