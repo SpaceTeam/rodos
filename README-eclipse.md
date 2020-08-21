@@ -27,7 +27,7 @@
 ```
 
     
-9. Don't name your application *test*, it will cause problems. For mor details about Cmake, read *README-cmake.md*.
+9. Don't name your application *test*, it will cause problems. For more details about Cmake, read *README-cmake.md*.
 
 10. Create build-folder:
 
