@@ -2,28 +2,20 @@ cmake_minimum_required(VERSION 3.10)
 
 set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
 
-add_compile_options(-g -Wall -Wpedantic -Wextra -Wcast-qual -Wconversion -Wsign-conversion -Wfloat-conversion
-    -Wdouble-promotion -Wnull-dereference -Wstrict-aliasing -Wno-long-long -Wno-cpp -fno-exceptions -O0)
-add_compile_options($<$<COMPILE_LANGUAGE:CXX>:-std=c++14>)
-option(ENABLE_RODOS_RTTI "Build RODOS with run-time type information" OFF)
-if (NOT ENABLE_RODOS_RTTI)
-  add_compile_options($<$<COMPILE_LANGUAGE:CXX>:-fno-rtti>)
-endif()
-
 project(rodos C CXX ASM)
 
 if (COVERAGE)
   if (NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Debug")
     message(STATUS "Coverage enabled, setting build type to Debug")
-  endif()
+  endif ()
   include(cmake/CodeCoverage.cmake)
   append_coverage_compiler_flags()
-endif()
+endif ()
 
-if(NOT DEFINED port_dir)
+if (NOT DEFINED port_dir)
   message(FATAL_ERROR "port not correct (CMAKE_TOOCHAIN_FILE, see readme)")
-endif()
+endif ()
 
 #___________________________________________________________________
 file(GLOB_RECURSE independent_sources
@@ -45,6 +37,16 @@ target_include_directories(rodos PUBLIC
     src/${port_dir}
     src/${port_dir}/include
     support/support-libs)
+
+target_compile_options(rodos PUBLIC -fno-exceptions -g -Wall -Wpedantic -Wextra -Wcast-qual -Wconversion
+    -Wsign-conversion -Wfloat-conversion -Wdouble-promotion -Wnull-dereference -Wstrict-aliasing -Wno-long-long
+    -Wno-cpp -O0)
+target_compile_options(rodos PUBLIC $<$<COMPILE_LANGUAGE:CXX>:-std=c++14>)
+
+option(ENABLE_RODOS_RTTI "Build RODOS with run-time type information" OFF)
+if (NOT ENABLE_RODOS_RTTI)
+  target_compile_options(rodos PUBLIC $<$<COMPILE_LANGUAGE:CXX>:-fno-rtti>)
+endif ()
 
 
 #___________________________________________________________________
@@ -81,15 +83,15 @@ endif ()
 
 if (COVERAGE)
   setup_lcov_coverage(
-    NAME coverage
-    LCOV_ARGS "--no-external")
+      NAME coverage
+      LCOV_ARGS "--no-external")
   message("Generate coverage report with 'make coverage_collect'")
   add_custom_command(TARGET coverage_collect POST_BUILD
-        COMMAND sed -ie "s@SF:${CMAKE_CURRENT_SOURCE_DIR}/\\(.*\\)@SF:\\1@g"
-        ${CMAKE_CURRENT_BINARY_DIR}/coverage.info
-        COMMENT "Changing paths in coverage.info to relative paths."
-        VERBATIM
-    )
-endif()
+      COMMAND sed -ie "s@SF:${CMAKE_CURRENT_SOURCE_DIR}/\\(.*\\)@SF:\\1@g"
+      ${CMAKE_CURRENT_BINARY_DIR}/coverage.info
+      COMMENT "Changing paths in coverage.info to relative paths."
+      VERBATIM
+      )
+endif ()
 enable_testing()
 add_subdirectory(test-suite)
