@@ -48,7 +48,7 @@ public:
         writeIndex = 0;
         readIndex  = 0;
         occupiedCnt = 0;
-        currentWrite = -1;
+        currentWrite = UINT32_MAX;
     }
 
     T* getNextEntryToPut() { return &vals[writeIndex]; }
@@ -60,7 +60,7 @@ public:
         if (writeIndex  >= poolSize) writeIndex = 0;
         if (occupiedCnt <  poolSize) occupiedCnt++;
         writeCnt++;
-        currentWrite = -1;
+        currentWrite = UINT32_MAX;
     }
 
     /// get the next
