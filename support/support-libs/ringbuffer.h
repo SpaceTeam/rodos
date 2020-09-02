@@ -31,7 +31,7 @@ public:
     uint32_t   writeIndex;
     uint32_t   readIndex;
     uint32_t   currentWrite;
-    T          vals[poolSize]; 
+    T          vals[poolSize];
 
 public:
     /// How often it was written
@@ -53,7 +53,7 @@ public:
 
     T* getNextEntryToPut() { return &vals[writeIndex]; }
 
-    void put(T& newdata) {
+    void put(const T& newdata) {
         currentWrite = writeIndex;
         vals[writeIndex] = newdata;
         writeIndex++;
