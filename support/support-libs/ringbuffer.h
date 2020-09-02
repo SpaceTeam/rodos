@@ -28,28 +28,18 @@ namespace RODOS {
 template <class T, uint32_t poolSize>
 class RingBuffer {
 public:
-    uint32_t   writeIndex;
-    uint32_t   readIndex;
-    uint32_t   currentWrite;
+    uint32_t   writeIndex = 0;
+    uint32_t   readIndex = 0;
+    uint32_t   currentWrite = UINT32_MAX;
     T          vals[poolSize];
 
 public:
     /// How often it was written
-    uint64_t writeCnt;
+    uint64_t writeCnt = 0;
     /// How often it was readed
-    uint64_t readCnt;
+    uint64_t readCnt = 0;
     /// How many objects are in FIFO ( == writeCnt - readCnt)
-    uint32_t occupiedCnt;
-
-    ///
-    RingBuffer() {
-        readCnt = 0;
-        writeCnt = 0;
-        writeIndex = 0;
-        readIndex  = 0;
-        occupiedCnt = 0;
-        currentWrite = UINT32_MAX;
-    }
+    uint32_t occupiedCnt = 0;
 
     T* getNextEntryToPut() { return &vals[writeIndex]; }
 
