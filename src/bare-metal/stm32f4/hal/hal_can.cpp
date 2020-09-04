@@ -686,12 +686,12 @@ int8_t HAL_CAN::read(uint8_t* recBuf, uint32_t* canID, bool* isExtID, bool* rtr)
 }
 
 extern "C" {
-    void CAN1_TX_IRQHandler();
-    void CAN2_TX_IRQHandler();
-    void CAN1_RX0_IRQHandler();
-    void CAN2_RX0_IRQHandler();
-    void CAN1_SCE_IRQHandler();
-    void CAN2_SCE_IRQHandler();
+    void CAN1_TX_IRQHandler() __attribute__((weak));
+    void CAN2_TX_IRQHandler() __attribute__((weak));
+    void CAN1_RX0_IRQHandler() __attribute__((weak));
+    void CAN2_RX0_IRQHandler() __attribute__((weak));
+    void CAN1_SCE_IRQHandler() __attribute__((weak));
+    void CAN2_SCE_IRQHandler() __attribute__((weak));
 
     void CAN1_TX_IRQHandler() {
         CAN_Ctrl::CANs[0].TxIRQHandler();

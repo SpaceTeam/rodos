@@ -57,22 +57,22 @@
 namespace RODOS {
 
 extern "C"{
-	void USART1_IRQHandler();
-	void USART2_IRQHandler();
-	void USART3_IRQHandler();
-	void UART4_IRQHandler();
-	void UART5_IRQHandler();
-	void USART6_IRQHandler();
-	void UART7_IRQHandler();
-	void UART8_IRQHandler();
+	void USART1_IRQHandler() __attribute__((weak));
+	void USART2_IRQHandler() __attribute__((weak));
+	void USART3_IRQHandler() __attribute__((weak));
+	void UART4_IRQHandler() __attribute__((weak));
+	void UART5_IRQHandler() __attribute__((weak));
+	void USART6_IRQHandler() __attribute__((weak));
+	void UART7_IRQHandler() __attribute__((weak));
+	void UART8_IRQHandler() __attribute__((weak));
 
-	void DMA2_Stream7_IRQHandler();
-	void DMA1_Stream6_IRQHandler();
-	void DMA1_Stream3_IRQHandler();
+	void DMA2_Stream7_IRQHandler() __attribute__((weak));
+	void DMA1_Stream6_IRQHandler() __attribute__((weak));
+	void DMA1_Stream3_IRQHandler() __attribute__((weak));
 
-	void DMA2_Stream5_IRQHandler();
-	void DMA1_Stream5_IRQHandler();
-	void DMA1_Stream1_IRQHandler();
+	void DMA2_Stream5_IRQHandler() __attribute__((weak));
+	void DMA1_Stream5_IRQHandler() __attribute__((weak));
+	void DMA1_Stream1_IRQHandler() __attribute__((weak));
 }
 
 #define DMA_TIMEOUT 10*MILLISECONDS
