@@ -7,6 +7,7 @@ with import <nixpkgs> {};
 let doit = (target: env: env.mkDerivation {
  name = "rodos-${target}";
  src = ./.;
+
  buildPhase =
   ''
   patchShebangs scripts/**/rodos-lib.sh
@@ -27,6 +28,7 @@ let doit = (target: env: env.mkDerivation {
   fi
   popd
   '';
+
  installPhase =
   ''
   mkdir staging
@@ -49,10 +51,10 @@ in
 
   map (cfg: doit (builtins.elemAt cfg 0) (builtins.elemAt cfg 1))
   [
-  ["linuxMC" pkgsi686Linux.stdenv]
-  ["linux" pkgsi686Linux.stdenv]
-  ["posix" pkgsi686Linux.stdenv]
-  ["posix64" stdenv]
+  ["linux-makecontext" pkgsi686Linux.stdenv]
+  ["linux-x86" pkgsi686Linux.stdenv]
+  ["on-posix" pkgsi686Linux.stdenv]
+  ["on-posix64" stdenv]
   ["discovery" pkgsCross.arm-embedded.stdenv]
   ["skith" pkgsCross.arm-embedded.stdenv]
   ["raspberrypi3" pkgsCross.arm-embedded.stdenv]
