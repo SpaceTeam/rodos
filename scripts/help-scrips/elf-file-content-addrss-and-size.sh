@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #date -d "21 Oct 2015  14:15:16"
 
 

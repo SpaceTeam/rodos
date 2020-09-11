@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 echo "::: Running $1 against $2"
 set -e
 # Kill test executable (with SIGKILL) after 8 seconds.  Necessary

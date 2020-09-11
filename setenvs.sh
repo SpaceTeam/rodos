@@ -1,5 +1,4 @@
-
-#!/bin/bash
+#!/usr/bin/env bash
 scriptName=$_
 
 #_________________________________________Check it has to be sourced!
@@ -72,4 +71,4 @@ ______________________________________________________
 EOT2
 
 complete -W "efr32fg1p gecko linux-x86 linux-makecontext on-posix on-posix64 on-posixmac sf2 discovery skith" rodos-lib.sh
-#complete -W "efr32fg1p gecko linu-x86x linux-makecontext on-posix on-posix64 on-posixmac sf2 discovery skith" rodos-executable.sh
+#complete -W "efr32fg1p gecko linux-x86 linux-makecontext on-posix on-posix64 on-posixmac sf2 discovery skith" rodos-executable.sh

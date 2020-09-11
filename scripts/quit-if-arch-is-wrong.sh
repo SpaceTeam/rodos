@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 VARS_FILE=$RODOS_VARS_DIR/${1}.sh
 

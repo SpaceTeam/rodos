@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 export TARGET_LIB=sf2   #used as name for the generated lib
 export ARCH=sf2         #used to select compile directories

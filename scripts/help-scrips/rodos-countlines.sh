@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 cd $RODOS_DIR
 decomment api/*.h src/bare-metal-generic/*.h  src/independent/*.cpp src/independent/gateway/*.cpp \

@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 rm test-report.txt &>/dev/null || true
 touch test-report.txt
 for diff in $(printf '%s' "$@" | tr ';' ' ')

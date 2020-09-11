@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 if [ ! -z $ARCH ]; then  # it is ok!
   return
 fi
