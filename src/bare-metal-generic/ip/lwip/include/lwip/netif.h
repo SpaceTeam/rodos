@@ -116,7 +116,7 @@ typedef err_t (*netif_input_fn)(struct pbuf *p, struct netif *inp);
  * @param ipaddr The IP address to which the packet shall be sent
  */
 typedef err_t (*netif_output_fn)(struct netif *netif, struct pbuf *p,
-       ip_addr_t *ipaddr);
+       const ip_addr_t *ipaddr);
 /** Function prototype for netif->linkoutput functions. Only used for ethernet
  * netifs. This function is called by ARP when a packet shall be sent.
  *
@@ -272,9 +272,9 @@ struct netif *netif_find(char *name);
 
 void netif_set_default(struct netif *netif);
 
-void netif_set_ipaddr(struct netif *netif, ip_addr_t *ipaddr);
-void netif_set_netmask(struct netif *netif, ip_addr_t *netmask);
-void netif_set_gw(struct netif *netif, ip_addr_t *gw);
+void netif_set_ipaddr(struct netif *netif, const ip_addr_t *ipaddr);
+void netif_set_netmask(struct netif *netif, const ip_addr_t *netmask);
+void netif_set_gw(struct netif *netif, const ip_addr_t *gw);
 
 void netif_set_up(struct netif *netif);
 void netif_set_down(struct netif *netif);

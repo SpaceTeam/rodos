@@ -11,7 +11,10 @@ int main([[gnu::unused]] int argc, [[gnu::unused]] char *argv[]) {
     char inputline[1300];
     while(1) {
         printf("Data to send:");
-        fgets(inputline, 1300, stdin);
+
+        if (fgets(inputline, 1300, stdin) == nullptr) {
+            return -1;
+        }
 
         udpOut.send(inputline, 1300);
     }

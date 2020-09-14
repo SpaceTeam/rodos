@@ -9,7 +9,7 @@ public:
     void run () {
         int32_t cnt = 100;
         TIME_LOOP(3500*MILLISECONDS, 3*SECONDS) {
-            PRINTF("Sending %d...\n", cnt);
+            PRINTF("Sending %d...\n", static_cast<int>(cnt));
             myPos.x = cnt++;
             myPos.y = cnt++;
             myPos.z = cnt++;

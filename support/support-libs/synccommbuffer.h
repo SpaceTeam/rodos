@@ -1,5 +1,10 @@
 #pragma once
 
+#include "commbuffer.h"
+#include "thread.h"
+
+namespace RODOS {
+
 /*
  * @class SyncCommBuffer
  * @brief Commbuffer with blocking reads
@@ -8,13 +13,7 @@
  *
  * @param Type Type of the data to synchonize by CommBuffer
  */
-
-
-#include "rodos.h"
-
-namespace RODOS {
-
-template <class Type> class SyncCommBuffer : private CommBuffer<Type> {
+template <class Type> class SyncCommBuffer : public CommBuffer<Type> {
 protected:
   Thread* suspendedReader;
 

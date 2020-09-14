@@ -124,13 +124,13 @@ struct udp_pcb * udp_new        (void);
 void             udp_remove     (struct udp_pcb *pcb);
 err_t            udp_bind       (struct udp_pcb *pcb, const ip_addr_t *ipaddr,
                                  u16_t port);
-err_t            udp_connect    (struct udp_pcb *pcb, ip_addr_t *ipaddr,
+err_t            udp_connect    (struct udp_pcb *pcb, const ip_addr_t *ipaddr,
                                  u16_t port);
 void             udp_disconnect (struct udp_pcb *pcb);
 void             udp_recv       (struct udp_pcb *pcb, udp_recv_fn recv,
                                  void *recv_arg);
 err_t            udp_sendto_if  (struct udp_pcb *pcb, struct pbuf *p,
-                                 ip_addr_t *dst_ip, u16_t dst_port,
+                                 const ip_addr_t *dst_ip, u16_t dst_port,
                                  struct netif *netif);
 err_t            udp_sendto     (struct udp_pcb *pcb, struct pbuf *p,
                                  ip_addr_t *dst_ip, u16_t dst_port);

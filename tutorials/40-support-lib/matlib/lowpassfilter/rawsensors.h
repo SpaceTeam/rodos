@@ -17,7 +17,7 @@ public:
         if(!measurements) measurements = fopen("measurements.m", "r");
         if(measurements == 0) return false;
         while(!feof(measurements)) {
-            fgets(inputLine, 200, measurements);
+            if(fgets(inputLine, 200, measurements) == nullptr) continue;
             if(inArray && inputLine[0] != ' ') return false;
             if(inputLine[0] == ' ') inArray = true;
             if(!inArray) continue;

@@ -39,7 +39,7 @@ public:
         char buffer[100] = {};
         memcpy(buffer, msg->msgPtr, static_cast<size_t>(msg->msgLen > 100 ? 100 : msg->msgLen));
         buffer[msg->msgLen > 100? 99 : msg->msgLen - 1] = 0;
-        xprintf("\n Async: %d %s\n", static_cast<int>(msg->msgLen), msg->msgPtr); // no PRINTF in interrupts (Sempahore)
+        xprintf("\n Async: %d %s\n", static_cast<int>(msg->msgLen), static_cast<char*>(msg->msgPtr)); // no PRINTF in interrupts (Sempahore)
     }
 } udpReceiver;
 

@@ -41,4 +41,5 @@ int main() {
             if(collTime != 0) printf("%s and %s : %d\n", threadTimingList[i]->name, 
                  threadTimingList[j]->name, collTime);
         }
+    return 0;
 }

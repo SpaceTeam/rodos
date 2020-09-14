@@ -13,7 +13,7 @@ public:
     int32_t priority;
 
     Activity(const char* name = "anonymActiviy", int prio=100, int64_t startAt=END_OF_TIME, int64_t _period=0);
-    ~Activity() { 
+    virtual ~Activity() {
         if(RODOS::isShuttingDown) return;
         RODOS_ERROR("activity deleted");
     }
