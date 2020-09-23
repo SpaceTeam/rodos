@@ -32,7 +32,7 @@
 
 /** Time interval between timer interrupts in microseconds */
 #undef PARAM_TIMER_INTERVAL
-#define PARAM_TIMER_INTERVAL 10000
+#define PARAM_TIMER_INTERVAL 1000
 
 /** Time interval between context switches under priority conflict */
 #undef TIME_SLICE_FOR_SAME_PRIORITY

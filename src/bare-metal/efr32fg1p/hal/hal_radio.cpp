@@ -35,7 +35,7 @@ HAL_RADIO::HAL_RADIO()
 RADIO_STATUS_TYPE HAL_RADIO::init (void)
 {
 	// Hardware initialization.
-	halInit();
+	//halInit();
 	CMU_ClockEnable(cmuClock_GPIO, true);
 	BSP_Init(BSP_INIT_BCC);
 	

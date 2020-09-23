@@ -82,6 +82,7 @@ class HAL_RADIO : public GenericIOInterface {
     int packetLength = 16; // debuging purposes -> used on the Callback
 
   public:
+    int8_t lastPacketRssi = 0;
     HAL_RADIO();
     ~HAL_RADIO() {};
 
@@ -109,6 +110,10 @@ class HAL_RADIO : public GenericIOInterface {
     RAIL_PacketTimeStamp_t rx_timestamp[100];
     volatile int           txTimestampCounter = 0;
     volatile int           rxTimestampCounter = 0;
+
+    volatile int pollPackets = 0;
+    volatile int dataPackets = 0;
+
 };
 
 } // namespace RODOS

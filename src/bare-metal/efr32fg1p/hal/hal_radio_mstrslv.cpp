@@ -104,8 +104,12 @@ void HAL_RADIO_MASTER::poll()
 	// Schedule transmission of poll at the instant, which corresponds to the beginning of the first Slave’s timeslot.
 	RAIL_ScheduleTxConfig_t scheduleTxConfig;
 
-	scheduleTxConfig.when		= timeForNextTransmission;
-	scheduleTxConfig.mode		= RAIL_TIME_ABSOLUTE;
+	RAIL_Time_t now = RAIL_GetTime();
+	RAIL_Time_t delay = timeForNextTransmission - now;
+	if (delay > 1000000) delay = 0;
+
+	scheduleTxConfig.when		= delay;
+	scheduleTxConfig.mode		= RAIL_TIME_DELAY;
 	scheduleTxConfig.txDuringRx = RAIL_SCHEDULED_TX_DURING_RX_POSTPONE_TX;
 
 	RAIL_Status_t status = RAIL_StartScheduledTx(railHandle, pollChannel, RAIL_TX_OPTIONS_DEFAULT, &scheduleTxConfig, NULL);
@@ -113,12 +117,12 @@ void HAL_RADIO_MASTER::poll()
 	// Failure to schedule poll TX properly.
 	if (status != RAIL_STATUS_NO_ERROR)
 	{
-		// Ignore the failure, continue as if it was correctly scheduled and sent.
+	  // Ignore the failure, continue as if it was correctly scheduled and sent.
 		packetSent = 1u;
 	}
 	
 	// Next poll/data transmission will only happen after the Slave’s timeslots have elapsed.
-	timeForNextTransmission += DATA_TIMESLOT_INTERVAL*numberOfSlaves + POLL_TIMESLOT_INTERVAL;
+	timeForNextTransmission += DATA_TIMESLOT_INTERVAL*numberOfSlaves*6 + POLL_TIMESLOT_INTERVAL;
 }
 
 /**
@@ -132,7 +136,7 @@ void HAL_RADIO_MASTER::listen()
 
 	RAIL_StartRx(railHandle, dataChannel, NULL);
 	
-	RAIL_SetTimer(railHandle, timeForNextTransmission-LISTEN_INTERVAL, RAIL_TIME_ABSOLUTE, NULL); 
+	RAIL_SetTimer(railHandle, timeForNextTransmission, RAIL_TIME_ABSOLUTE, NULL);
 }
 
 /**
@@ -147,23 +151,24 @@ void HAL_RADIO_MASTER::data()
 	RAIL_WriteTxFifo(railHandle, tempBuff, tempBuffLength, false);
 
 	// Schedule transmission of data at the instant "timeForNextTransmission", which corresponds to the beginning of the Master’s timeslot.
-	RAIL_ScheduleTxConfig_t scheduleTxConfig;
+	/*RAIL_ScheduleTxConfig_t scheduleTxConfig;
 	scheduleTxConfig.when		= timeForNextTransmission;
 	scheduleTxConfig.mode		= RAIL_TIME_ABSOLUTE;
 	scheduleTxConfig.txDuringRx = RAIL_SCHEDULED_TX_DURING_RX_POSTPONE_TX;
-
+*/
 	// Note: Master must send data in the poll channel, because Slaves only listen in that channel.
-	RAIL_Status_t status = RAIL_StartScheduledTx(railHandle, pollChannel, RAIL_TX_OPTIONS_DEFAULT, &scheduleTxConfig, NULL);
+	RAIL_Status_t status = RAIL_StartTx(railHandle, pollChannel, RAIL_TX_OPTIONS_DEFAULT, NULL);
 
 	// Failure to schedule data TX properly. 
 	if (status != RAIL_STATUS_NO_ERROR)
 	{
 		// Ignore the failure, continue as if it was correctly scheduled and sent.
+	  PRINTF("Failed to schedule data packet\n");
 		packetSent = 1;	
 	}
 	
 	// Next poll transmission will only happen after the Master’ timeslots have elapsed.
-	timeForNextTransmission += DATA_TIMESLOT_INTERVAL;
+	timeForNextTransmission += DATA_TIMESLOT_INTERVAL*3;
 }
 
 /**
@@ -226,6 +231,7 @@ void HAL_RADIO_MASTER::storeReceivedPackets(uint16_t bytesAvailable)
 		rxDetails.timeReceived.totalPacketBytes = rxReceived;
 		rxDetails.timeReceived.timePosition = RAIL_PACKET_TIME_AT_PACKET_END_USED_TOTAL;
 		RAIL_GetRxPacketDetails(railHandle, RAIL_RX_PACKET_HANDLE_NEWEST, &rxDetails);
+		lastPacketRssi = rxDetails.rssi;
 		if (++rxTimestampCounter < 100)
 			rx_timestamp[rxTimestampCounter-1] = rxDetails.timeReceived;
 	}
@@ -433,6 +439,8 @@ void HAL_RADIO_SLAVE::storeReceivedPackets(uint16_t bytesAvailable)
 		rxReceived = static_cast<uint16_t>(RAIL_ReadRxFifo(railHandle, rxPtr, bytesAvailable));
 		rxExpected = static_cast<uint16_t>((rxPtr[0] << 8) + rxPtr[1] + PACKET_HEADER_LEN);
 
+		RAIL_GetRxPacketDetails(railHandle, RAIL_RX_PACKET_HANDLE_NEWEST, &rxDetails);
+
 		// Packet was completely received.
 		if(rxExpected == rxReceived) 
 			rxExpected = 0;
@@ -443,6 +451,7 @@ void HAL_RADIO_SLAVE::storeReceivedPackets(uint16_t bytesAvailable)
 		{
 			tx_delay = ((RAIL_Time_t)rxPtr[3+id]*DATA_TIMESLOT_INTERVAL) + POLL_TIMESLOT_INTERVAL;
 			pollReceived = 1;
+			pollPackets++;
 		}
 		
 		// It is a DATA packet.
@@ -450,13 +459,15 @@ void HAL_RADIO_SLAVE::storeReceivedPackets(uint16_t bytesAvailable)
 		{
 			memcpy(lastDataPacket, rxPtr, rxReceived);
 			lastDataPacketLength = rxReceived;
+			lastPacketRssi = rxDetails.rssi;
 			dataReady = true;
+			dataPackets++;
 		}
 
 		// Collection of RX packet timestamps. Used for Debug purposes.
 		rxDetails.timeReceived.totalPacketBytes = rxReceived;
 		rxDetails.timeReceived.timePosition = RAIL_PACKET_TIME_AT_PACKET_END_USED_TOTAL;
-		RAIL_GetRxPacketDetails(railHandle, RAIL_RX_PACKET_HANDLE_NEWEST, &rxDetails);
+
 		if (++rxTimestampCounter < 100)
 			rx_timestamp[rxTimestampCounter-1] = rxDetails.timeReceived;
 	} 
