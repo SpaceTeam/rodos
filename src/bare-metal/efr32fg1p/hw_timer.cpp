@@ -7,6 +7,7 @@
  *
  * @brief Timer for system time and preemption
  */
+#include <emlib/inc/em_timer.h>
 #include "rodos.h"
 #include "hw_specific.h"
 
@@ -35,7 +36,7 @@ extern bool      isSchedulingEnabled;
 
 extern "C" {
 
-int64_t nanoTime = 0;
+volatile int64_t nanoTime = 0;
 
 /*
  * Interrupt Service Routine for "SysTick" counter
@@ -48,7 +49,7 @@ int64_t nanoTime = 0;
  */
 void SysTick_Handler();
 void SysTick_Handler() {
-    nanoTime += PARAM_TIMER_INTERVAL * 1000; // 10M ns for each 10ms-tick
+    //nanoTime += PARAM_TIMER_INTERVAL * 1000; // 10M ns for each 10ms-tick
 
     if(!isSchedulingEnabled) {
         return;
@@ -163,9 +164,13 @@ void Timer::setInterval(const long long microsecondsInterval) {
  * -> this can happen when they don't have the same priority !!!
  */
 
+int64_t NANOS_PER_TIMERTICK;
+
 int64_t hwGetNanoseconds(void) {
 
-    int64_t count      = 0;
+
+
+    uint32_t count      = 0;
     int64_t returnTime = 0;
 
     // -> current time = nanoTime + 1 000 000 000 * countRegister/tim2Clock
@@ -175,7 +180,7 @@ int64_t hwGetNanoseconds(void) {
     // Read nanoTime twice, to make sure it has not changed while reading counter value
     do {
         returnTime = nanoTime;
-        count      = timerClock - SysTick->VAL; // CMSIS/core_cmr.h
+        count      = TIMER_CounterGet(TIMER0);
     } while(returnTime != nanoTime);
 
     /**
@@ -195,17 +200,51 @@ int64_t hwGetNanoseconds(void) {
 	 * - nanos = 8ns * count (for tim2Clock = 125MHz)
 	 * - takes 4 times longer than low precision
 	 */
-    int64_t nanos = ((int64_t)count * 1000000) / (timerClock / 1000);
+    //int64_t nanos = ((int64_t)count * 1000000) / (timerClock / 1000);
+     int64_t nanos = ((returnTime << 16) | static_cast<int64_t>(count)) * NANOS_PER_TIMERTICK;
 
-    return returnTime + nanos;
+    return nanos;
 }
 
 void hwInitTime(void) {
+    NANOS_PER_TIMERTICK = 16*SECONDS / static_cast<int64_t>(CMU_ClockFreqGet(cmuClock_TIMER0));
+    CMU_ClockEnable(cmuClock_TIMER0, true);
+    TIMER_Init_TypeDef timerInit;
+    timerInit.enable     = true,
+    timerInit.debugRun   = true,
+    timerInit.prescale   = timerPrescale16,
+    timerInit.clkSel     = timerClkSelHFPerClk,
+    timerInit.fallAction = timerInputActionNone,
+    timerInit.riseAction = timerInputActionNone,
+    timerInit.mode       = timerModeUp,
+    timerInit.dmaClrAct  = false,
+    timerInit.quadModeX4 = false,
+    timerInit.oneShot    = false,
+    timerInit.sync       = false,
+
+    /* Enable overflow interrupt */
+    TIMER_IntEnable(TIMER0, TIMER_IF_OF);
     nanoTime = 0;
+    NVIC_EnableIRQ(TIMER0_IRQn);
+    TIMER_TopSet(TIMER0, 0xFFFF);
+    TIMER_Init(TIMER0, &timerInit);
+
+
+    TIMER_Enable(TIMER0,true);
 }
 
 int64_t hwGetAbsoluteNanoseconds(void) {
     return hwGetNanoseconds(); // + timeAtStartup;
 }
 
+extern "C" {
+void TIMER0_IRQHandler(void) {
+    /* Clear flag for TIMER0 overflow interrupt */
+    TIMER_IntClear(TIMER0, TIMER_IF_OF);
+    NVIC_ClearPendingIRQ(TIMER0_IRQn);
+
+    nanoTime++;
+}
+
+}
 } /* namespace RODOS */
