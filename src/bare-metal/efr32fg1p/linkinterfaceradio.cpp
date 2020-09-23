@@ -78,7 +78,7 @@ void LinkinterfaceRADIO::onDataReady()
 	return;
 }
 
-void LinkinterfaceRADIO::suspendUntilDataReady(int64_t reactivationTime){
+void LinkinterfaceRADIO::suspendUntilDataReady([[gnu::unused]] int64_t reactivationTime){
 	//Not yet race condition safe
 	Thread::suspendCallerUntil(NOW()+100*MILLISECONDS);
 }
