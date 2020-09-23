@@ -59,6 +59,7 @@
 #define BSP_CLK_HFXO_INIT                      CMU_HFXOINIT_DEFAULT
 #define HAL_CLK_HFXO_AUTOSTART                (HAL_CLK_HFXO_AUTOSTART_NONE)
 #define BSP_CLK_HFXO_CTUNE                    (344)
+//#define BSP_CLK_HFXO_CTUNE                    (355)
 #define BSP_CLK_LFXO_PRESENT                  (1)
 #define BSP_CLK_LFXO_INIT                      CMU_LFXOINIT_DEFAULT
 #define BSP_CLK_LFXO_FREQ                     (32768U)

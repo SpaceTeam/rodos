@@ -51,7 +51,7 @@ SRCS[10]="${RODOS_SRC}/bare-metal/${ARCH}/rail_lib/hal/efr32"
 SRCS[11]="${RODOS_SRC}/bare-metal/${ARCH}/common/src"
 SRCS[12]="${RODOS_SRC}/bare-metal/${ARCH}/common/bsp"
 SRCS[13]="${RODOS_SRC}/bare-metal/${ARCH}/common/drivers/used"
-SRCS[14]="${RODOS_SRC}/bare-metal/${ARCH}/rail-config"
+SRCS[14]="${RODOS_SRC}/bare-metal/${ARCH}/rail-config/${SUB_ARCH}"
 
 export INCLUDES=${INCLUDES}" -I ${RODOS_SRC}/bare-metal/${ARCH} \
 	-I${RODOS_SRC}/bare-metal/${ARCH}/${SUB_ARCH_DIR}/Include \
@@ -85,7 +85,7 @@ export INCLUDES_TO_BUILD_LIB=" -I ${RODOS_SRC}/bare-metal-generic \
 export CFLAGS_BASICS_COMMON=" -g3 -gdwarf-2 -DHSE_VALUE=${OSC_CLK} "
 export CFLAGS_BASICS="${CFLAGS_BASICS_COMMON} -DCORTEXM3 -DCORTEXM3_EFR32_MICRO -DCORTEXM3_EFR32 ${SUB_ARCH_FLAGS}"
 export HWCFLAGS=" -mcpu=cortex-m4 -mthumb -mfloat-abi=softfp -mfpu=fpv4-sp-d16 -specs=nano.specs -specs=nosys.specs"
-export LINKFLAGS=" -T${RODOS_ARCH_SRC1}/scripts/${SUB_ARCH}.ld -I${RODOS_ARCH_SRC1}/scripts/ -nostartfiles -nodefaultlibs -nostdlib -Xlinker --gc-sections -L${RODOS_LIBS}/${TARGET_LIB} -fno-unwind-tables -fno-asynchronous-unwind-tables -L${RODOS_SRC}/bare-metal/${ARCH} -lrodos -lm -lrail_efr32xg1_gcc_release "
+export LINKFLAGS=" -T${RODOS_ARCH_SRC1}/scripts/${SUB_ARCH}.ld -I${RODOS_ARCH_SRC1}/scripts/ -nostartfiles -nodefaultlibs -nostdlib -Xlinker --gc-sections -L${RODOS_LIBS}/${TARGET_LIB} -fno-unwind-tables -fno-asynchronous-unwind-tables -L${RODOS_SRC}/bare-metal/${ARCH} -lrodos -lm -l${RAIL_LIB} -lrodos"
 export CFLAGS=${CFLAGS}" ${CFLAGS_BASICS} ${HWCFLAGS}  -Wno-unused-parameter -Wno-sign-conversion -Wno-conversion"
 export CPPFLAGS=${CPPFLAGS}" -Wunused-parameter -Wsign-conversion -Wconversion"
 
