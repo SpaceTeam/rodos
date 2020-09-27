@@ -68,5 +68,5 @@ Some known users of RODOS are:
 
 <span>
 <img align="left" src="https://gitlab.com/rodos/rodos/-/raw/list-users/doc/logos/Kamaro_Logo.png?inline=false" width="128">
-<p></t>Kamaro Engineering e.V. - Modular Field Robot Beteigeuze NOVA</p>
+<p>&emsp;Kamaro Engineering e.V. - Modular Field Robot Beteigeuze NOVA</p>
 </span>
