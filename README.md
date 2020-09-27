@@ -63,3 +63,10 @@ sergio.montenegro@uni-wuerzburg.de
 
 We want to improve it. We hear your suggestions!
 
+# Our Users
+Some known users of RODOS are:
+
+<span>
+<img align="left" src="todo" width="128">
+<p>Kamaro Engineering e.V.</br>Modular Field Robot Beteigeuze NOVA</p>
+</span>
