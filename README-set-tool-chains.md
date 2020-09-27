@@ -17,7 +17,7 @@ sudo apt upgrade
 sudo apt install build-essential xz-utils curl 
 ```
 
-Add CLang toolchain repository. 
+Optional: Add CLang toolchain repository. 
 ------------------------------
 
 Note: In case you want the easy way, do not use clang, use g++ instead.
@@ -39,7 +39,7 @@ Append the following lines to **/etc/apt/sources.list**
 ```
 
 
-Install CLang toolchain 
+Install toolchain for CLang
 -----------------------
 
 ```
@@ -52,23 +52,31 @@ sudo update-alternatives --install /usr/bin/cc cc /usr/bin/clang-7 100
 sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-7 100
 ```
 
-Other tools
+Other tools always required for GCC and CLang
 -----------
 
 ```
-  build-essential
-  gcc-multilib
-  g++-multilib
-  clang
-  clang++
+sudo apt install build-essential gcc-multilib g++-multilib
 ```
 
 
 Manually install latest cmake 
 -----------------------------
 
+Ubuntu 20.04 and later ship a suitable CMake version:
+
+```
+sudo apt install cmake
+```
+
+To check your version run:
+
+```
+cmake --version
+```
+
 at the time of writing, version 3.13 was not yet part of the canonical
-repository. Replace commands with latest version 
+repository of earlier Ubuntu versions. Replace commands with latest version 
 
 ```
 sudo apt remove cmake
@@ -91,10 +99,18 @@ sudo apt install libncurses5-dbg libncurses5-dev libncursesw5
 sudo apt install libncursesw5-dbg libncursesw5-dev zlibc
 ```
 
-Manually install ARM cross compilation toolchain 
+Install ARM cross compilation toolchain 
 -------------------------------------------------
 
-replace link with latest Linux binary from https://developer.arm.com 
+There are two options to install the ARM toolchain: Either through the package manager or manually.
+
+Through apt: 
+
+```
+sudo apt install binutils-arm-none-eabi gcc-arm-none-eabi libnewlib-arm-none-eabi
+```
+
+Manually: replace link with latest Linux binary from https://developer.arm.com 
 
 
 ```
