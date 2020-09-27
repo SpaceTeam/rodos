@@ -64,9 +64,8 @@ sergio.montenegro@uni-wuerzburg.de
 We want to improve it. We hear your suggestions!
 
 # Our Users
-Some known users of RODOS are:
 
 <span>
 <img align="left" src="https://gitlab.com/rodos/rodos/-/raw/list-users/doc/logos/Kamaro_Logo.png?inline=false" width="128">
-<p>&emsp;Kamaro Engineering e.V. - Modular Field Robot Beteigeuze NOVA</p>
+<p>&emsp;&emsp;Kamaro Engineering e.V. - Modular Field Robot Beteigeuze NOVA</p>
 </span>
