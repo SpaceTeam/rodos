@@ -8,6 +8,8 @@ project(
     LANGUAGES C CXX ASM
 )
 
+set (CMAKE_CXX_STANDARD 17)
+
 if (COVERAGE)
     if (NOT CMAKE_BUILD_TYPE)
         set(CMAKE_BUILD_TYPE "Debug")
@@ -94,7 +96,7 @@ if (libraries_to_link)
 endif ()
 
 if (linker_script)
-  target_link_options(rodos PUBLIC -${linker_script})
+  target_link_options(rodos PUBLIC -T${linker_script})
 endif()
 
 if (EXECUTABLE)
