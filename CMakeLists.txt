@@ -93,6 +93,10 @@ if (libraries_to_link)
     target_link_libraries(rodos_rodos PUBLIC ${libraries_to_link})
 endif ()
 
+if (linker_script)
+  target_link_options(rodos PUBLIC -${linker_script})
+endif()
+
 if (EXECUTABLE)
     include(cmake/executable.cmake)
     add_subdirectory(tutorials)

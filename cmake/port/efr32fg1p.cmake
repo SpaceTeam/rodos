@@ -19,14 +19,14 @@ set(compile_and_link_options -mcpu=cortex-m4 -mfloat-abi=softfp -mfpu=fpv4-sp-d1
 add_compile_options(-nostdlib -gdwarf-2)
 add_compile_options(${compile_and_link_options} -mthumb)
 add_link_options(${compile_and_link_options})
-add_link_options(-T${RODOS_DIR}/src/bare-metal/efr32fg1p/scripts/${SUB_ARCH}.ld)
 add_link_options(-nostartfiles -nostdlib -Xlinker --gc-sections -fno-unwind-tables -fno-asynchronous-unwind-tables -lm) # -l${RAIL_LIB})
 link_libraries(${RAIL_LIB})
 link_directories(${RODOS_DIR}/src/bare-metal/efr32fg1p/)
+set(linker_script ${RODOS_DIR}/src/bare-metal/efr32fg1p/scripts/${SUB_ARCH}.ld)
 
 
 set(sources_to_add
-    ${RODOS_DIR}/src/bare-metal/efr32fg1p/emlib/src/*.c    
+    ${RODOS_DIR}/src/bare-metal/efr32fg1p/emlib/src/*.c
     ${RODOS_DIR}/src/bare-metal/efr32fg1p/${SUB_ARCH_DIR}/Source/GCC/*.S
     ${RODOS_DIR}/src/bare-metal/efr32fg1p/${SUB_ARCH_DIR}/Source/*.c
     ${RODOS_DIR}/src/bare-metal/efr32fg1p/sleeptimer/src/*.c
@@ -36,7 +36,7 @@ set(sources_to_add
     ${RODOS_DIR}/src/bare-metal/efr32fg1p/rail_lib/hal/*.c
     ${RODOS_DIR}/src/bare-metal/efr32fg1p/rail_lib/hal/efr32/*.c
     ${RODOS_DIR}/src/bare-metal/efr32fg1p/rail-config/*.c
-)
+    )
 
 set(directories_to_include
     ${RODOS_DIR}/src/bare-metal/efr32fg1p/CMSIS/Include
@@ -54,4 +54,4 @@ set(directories_to_include
     ${RODOS_DIR}/src/bare-metal/efr32fg1p/rail_lib/hal/efr32
     ${RODOS_DIR}/src/bare-metal/efr32fg1p/sleeptimer/config
     ${RODOS_DIR}/src/bare-metal/efr32fg1p/sleeptimer/inc
-)
+    )
