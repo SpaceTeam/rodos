@@ -12,16 +12,13 @@ set(CMAKE_SYSTEM_NAME Generic)
 set(CMAKE_C_COMPILER arm-none-eabi-gcc)
 set(CMAKE_CXX_COMPILER arm-none-eabi-g++)
 
-
-add_compile_definitions(CORTEXM3 CORTEXM3_EFR32_MICRO CORTEXM3_EFR32 ${SUB_ARCH_FLAGS})
-
+set(compile_definitions CORTEXM3 CORTEXM3_EFR32_MICRO CORTEXM3_EFR32 ${SUB_ARCH_FLAGS})
 set(compile_and_link_options -mcpu=cortex-m4 -mfloat-abi=softfp -mfpu=fpv4-sp-d16)
-add_compile_options(-nostdlib -gdwarf-2)
-add_compile_options(${compile_and_link_options} -mthumb)
-add_link_options(${compile_and_link_options})
-add_link_options(-nostartfiles -nostdlib -Xlinker --gc-sections -fno-unwind-tables -fno-asynchronous-unwind-tables -lm) # -l${RAIL_LIB})
-link_libraries(${RAIL_LIB})
-link_directories(${RODOS_DIR}/src/bare-metal/efr32fg1p/)
+set(compile_options ${compile_and_link_options} -nostdlib -gdwarf-2 -mthumb)
+set(link_options ${compile_and_link_options} -nostartfiles -nostdlib -Xlinker
+    --gc-sections -fno-unwind-tables -fno-asynchronous-unwind-tables -lm)
+set(libraries_to_link ${RAIL_LIB})
+set(directories_to_link ${RODOS_DIR}/src/bare-metal/efr32fg1p/)
 set(linker_script ${RODOS_DIR}/src/bare-metal/efr32fg1p/scripts/${SUB_ARCH}.ld)
 
 

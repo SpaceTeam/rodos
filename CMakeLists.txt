@@ -80,6 +80,18 @@ endif ()
 #___________________________________________________________________
 #    optional extra files which are port dependent. See cmake/port/xxx.cmake
 #___________________________________________________________________
+if (compile_definitions)
+  target_compile_definitions(rodos PUBLIC ${compile_definitions})
+endif ()
+
+if (compile_options)
+  target_compile_options(rodos PUBLIC ${compile_options})
+endif ()
+
+if (link_options)
+  target_link_options(rodos PUBLIC ${link_options})
+endif ()
+
 if (sources_to_add)
     file(GLOB files ${sources_to_add})
     target_sources(rodos_rodos PRIVATE ${files})
@@ -89,6 +101,10 @@ if (directories_to_include)
     foreach(dir ${directories_to_include})
         target_include_directories(rodos_rodos PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${dir}>)
     endforeach()
+endif ()
+
+if (directories_to_link)
+  target_link_directories(rodos PUBLIC ${directories_to_link})
 endif ()
 
 if (libraries_to_link)
