@@ -1,4 +1,4 @@
-﻿
+
 Get RODOS
 =========
 
@@ -6,17 +6,21 @@ Inf you have questions, please contact sergio.montenegro@uni-wuerzburg.de
 
 (By the way, you can format this file using the program okular)
 
-Please download RODOS from
+There are two easy ways to get RODOS:
 
-```
-	URL ... To be defined ....
-```
-
-Extract:
-
+1.   download RODOS [ here ](https://gitlab.com/rodos/rodos/-/archive/master/rodos-master.tar.gz) and extract it with:
 ```
 	tar -jxvf rodos-dist.tar.gz
 ```
+
+2.  clone  it from gitlab with
+
+```
+    git clone https://gitlab.com/rodos/rodos.git
+    cd rodos
+```
+
+
 Take a look to the short introduction in  
 
 ```
