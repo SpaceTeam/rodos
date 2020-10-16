@@ -1,4 +1,3 @@
-
 Get RODOS
 =========
 
@@ -10,7 +9,7 @@ There are two easy ways to get RODOS:
 
 1.   download RODOS [ here ](https://gitlab.com/rodos/rodos/-/archive/master/rodos-master.tar.gz) and extract it with:
 ```
-	tar -jxvf rodos-dist.tar.gz
+	tar -jxvf rodos-master.tar.gz
 ```
 
 2.  clone  it from gitlab with
