@@ -7,7 +7,7 @@ Inf you have questions, please contact sergio.montenegro@uni-wuerzburg.de
 
 There are two easy ways to get RODOS:
 
-1.   download RODOS [ here ](https://gitlab.com/rodos/rodos/-/archive/master/rodos-master.tar.gz) and extract it with:
+1.   download RODOS [ here ]( https://gitlab.com/rodos/rodos/-/archive/master/rodos-master.tar.bz2 ) and extract it with:
 ```
 	tar -jxvf rodos-master.tar.gz
 ```
