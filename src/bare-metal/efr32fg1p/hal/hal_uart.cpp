@@ -775,15 +775,22 @@ int HW_HAL_UART::init(uint32_t baudrate)
 	// set pin modes for USART TX and RX pins and VCOM enable
 	HW_HAL_GPIO::configurePin(this->rx, gpioModeInput, 0);
 	HW_HAL_GPIO::configurePin(this->tx, gpioModePushPull, 1);
+
+#ifndef EFR32FG12P433F1024GM68
 	if(idx == UART_IDX0) 				// Enable VCOM - USART0 only!!
-		GPIO_PinModeSet(gpioPortA, 5, gpioModePushPull, 1);  
+		GPIO_PinModeSet(gpioPortA, 5, gpioModePushPull, 1);
+#endif
 
     Uis.baudrate = baudrate;  			// set baudrate
 	USART_InitAsync(UARTx, &Uis);		// init USART
 	
 	// Route pins
 	if(idx == UART_IDX0)
-		UARTx->ROUTELOC0 = USART_ROUTELOC0_RXLOC_LOC0 | USART_ROUTELOC0_TXLOC_LOC0;	// !!
+#ifdef EFR32FG12P433F1024GM68
+		UARTx->ROUTELOC0 = USART_ROUTELOC0_RXLOC_LOC9 | USART_ROUTELOC0_TXLOC_LOC9;	// !!
+#else
+	UARTx->ROUTELOC0 = USART_ROUTELOC0_RXLOC_LOC0 | USART_ROUTELOC0_TXLOC_LOC0; // !!
+#endif
 	else
 		UARTx->ROUTELOC0 = USART_ROUTELOC0_RXLOC_LOC6 | USART_ROUTELOC0_TXLOC_LOC6;	// !!					
   	

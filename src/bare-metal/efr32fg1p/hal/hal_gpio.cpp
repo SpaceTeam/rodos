@@ -24,27 +24,19 @@ HW_HAL_GPIO::HW_HAL_GPIO(GPIO_PIN pinIdx, uint8_t numOfPins, bool isOutput):
 
 GPIO_Port_TypeDef HW_HAL_GPIO::getEFR32Port(GPIO_PIN pinIdx)
 {
-    if      (pinIdx < GPIO_006) 	return gpioPortA; 
-    else if (pinIdx < GPIO_012)     return gpioPortC; 
-    else if (pinIdx < GPIO_017)     return gpioPortB; 
-    else if (pinIdx < GPIO_020)     return gpioPortD; 
-    else if (pinIdx < GPIO_028)     return gpioPortF; 
-    else 	return gpioPortA; 
+    int32_t portIdx = pinIdx / 16;
+    return static_cast<GPIO_Port_TypeDef>(gpioPortA + portIdx);
 }
 
 uint16_t HW_HAL_GPIO::getEFR32Pin(GPIO_PIN pinIdx)
 {
-    if 		(pinIdx < GPIO_012)		return (uint16_t)pinIdx;
-    else if (pinIdx < GPIO_017)		return (uint16_t)(pinIdx - 1);
-    else if (pinIdx < GPIO_020)		return (uint16_t)(pinIdx - 4);
-	else if (pinIdx < GPIO_028)		return (uint16_t)(pinIdx - 20);
-	else 	return 0xFFFF;
+	return pinIdx % 16 ;
 }
 
 
 int32_t HW_HAL_GPIO::configurePin(GPIO_PIN pinIdx, GPIO_Mode_TypeDef pinMode, uint16_t dout)
 {
-    if (pinIdx < GPIO_000 || pinIdx > GPIO_028) return -1;
+    if (pinIdx < GPIO_000 || pinIdx > GPIO_095) return -1;
     GPIO_Port_TypeDef port = getEFR32Port(pinIdx);
     uint16_t pin = getEFR32Pin(pinIdx);
 
@@ -58,7 +50,7 @@ int32_t HW_HAL_GPIO::configurePin(GPIO_PIN pinIdx, GPIO_Mode_TypeDef pinMode, ui
 
 int32_t HW_HAL_GPIO::resetPin(GPIO_PIN pinIdx)
 {
-    if (pinIdx < GPIO_000 || pinIdx > GPIO_028) return -1;
+    if (pinIdx < GPIO_000 || pinIdx > GPIO_095) return -1;
     GPIO_Port_TypeDef port = getEFR32Port(pinIdx);
     uint16_t pin = getEFR32Pin(pinIdx);
 

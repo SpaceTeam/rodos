@@ -29,7 +29,12 @@ volatile long *contextT;
 namespace RODOS {
 #endif
 
-HAL_UART uart_stdout(UART_IDX0);
+#ifdef EFR32FG12P433F1024GM68
+HAL_UART uart_stdout(UART_IDX0,GPIO_030,GPIO_031);
+#else
+HAL_UART uart_stdout(UART_IDX0,GPIO_000,GPIO_001);
+#endif
+
 extern long myNodeNr;
 
 /** Responsible for hardware initialization */
