@@ -13,7 +13,7 @@
 3. Run the following command
 
 ```
-   git checkout https://gitlab.com/rodos/rodos.git  
+   git clone https://gitlab.com/rodos/rodos.git  
 ```
 
     
