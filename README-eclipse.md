@@ -4,43 +4,43 @@
 
 2. Create the folder of your project
 
-```
-    mkdir myProject
-    cd myProject
-```
+    ```
+        mkdir myProject
+        cd myProject
+    ```
 
     
 3. Run the following command
 
-```
-   git clone https://gitlab.com/rodos/rodos.git  
-```
+    ```
+        git clone https://gitlab.com/rodos/rodos.git  
+    ```
 
     
 7. Create your first .cpp-file, e. g. myHello.cpp
 
 8. Create CMakeLists.txt in the project folder with the following lines:
 
-```
-    add_subdirectory(rodos)
-    add_rodos_executable(myhello myHello.cpp)
-```
+    ```
+        add_subdirectory(rodos)
+        add_rodos_executable(myhello myHello.cpp)
+    ```
 
     
 9. Don't name your application *test*, it will cause problems. For more details about Cmake, read *README-cmake.md*.
 
 10. Create build-folder:
 
-```
-    mkdir build
-    cd build
-```
+    ```
+        mkdir build
+        cd build
+    ```
 
 11. Run the following command:
 
-```
-    cmake -DCMAKE_TOOLCHAIN_FILE=../rodos/cmake/port/posix.cmake -DEXECUTABLE=ON ..
-```
+    ```
+        cmake -DCMAKE_TOOLCHAIN_FILE=../rodos/cmake/port/posix.cmake -DEXECUTABLE=ON ..
+    ```
 
 12. Now start Eclipse
 
