@@ -14,6 +14,7 @@
 #include "rodos.h"
 #include "scheduler.h"
 #include "hw_specific.h"
+#include "platform-parameter.h"
 
 namespace RODOS {
 
@@ -26,7 +27,6 @@ constexpr int64_t TIME_DONT_SLEEP = 999*SECONDS;
 
 //List Thread::threadList = 0;
 //Thread* Thread::currentThread = 0;
-long long oldTimerInterval = -1; // used for sleep mode
 
 /** old style constructor */
 Thread::Thread(const char* name,
@@ -89,10 +89,7 @@ void Thread::yield() {
 void Thread::activate() {
     currentThread = this;
     if (taskRunning < 0xfffff) taskRunning++; // just a very big (impossible) limit
-    if(oldTimerInterval > 0) {
-      Timer::setInterval(oldTimerInterval);
-      oldTimerInterval = -1;
-    }
+    Timer::setInterval(PARAM_TIMER_INTERVAL);
     Timer::start();
     __asmSwitchToContext((long*)context);
 }
@@ -219,7 +216,6 @@ void IdleThread::run() {
         timerInterval -= TIME_BEFORE_WAKEUP;
         if(timerInterval > TIME_DONT_SLEEP) {
           Timer::stop();
-          oldTimerInterval = Timer::getInterval();
           Timer::setInterval(timerInterval / 1000l); // nanoseconds to microsenconds
           Timer::start();
           enterSleepMode();
