@@ -218,6 +218,8 @@ void IdleThread::run() {
           Timer::setInterval(timerInterval / 1000l); // nanoseconds to microsenconds
           Timer::start();
           enterSleepMode();
+          Timer::setInterval(PARAM_TIMER_INTERVAL);
+          Timer::start();
         }
     }
 }
