@@ -51,7 +51,7 @@ int32_t Thread::setPrioCurrentRunner(int32_t newPrio) {
 }
 
 
-volatile int32_t taskRunning = 0;
+volatile bool schedulerRunning = false;
 
 }
 

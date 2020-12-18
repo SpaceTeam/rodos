@@ -89,7 +89,6 @@ void Thread::create() {
     // xprintf("Thread %lx context %ld\n", (long)this, (long)context);
 
     setPriority(priority);
-    taskRunning++;
 }
 
 
@@ -133,7 +132,7 @@ void Thread::yield() {
 /** not used in posix?? */
 // void Thread::activate() {
 // currentThread = this;
-// taskRunning = 1;  /* a bit to early, but no later place possible */
+// schedulerRunning = true;  /* a bit to early, but no later place possible */
 // }
 
 

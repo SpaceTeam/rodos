@@ -84,7 +84,7 @@ HAL_UART uart_stdout(UART_DEBUG);
  * -> hwInit() is called in main() (src/independent/main.cpp)
  */
 void hwInit() {
-    taskRunning = 0;
+    schedulerRunning = false;
 
     // Init UART
     uart_stdout.init();

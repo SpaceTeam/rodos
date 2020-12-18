@@ -18,6 +18,8 @@
 
 namespace RODOS {
 
+bool isSchedulerRunning() { return schedulerRunning; }
+
 char xmallocBuf[XMALLOC_SIZE] = {0,0,0,0} ;
 
 void* xmalloc(size_t len) {
@@ -26,7 +28,7 @@ void* xmalloc(size_t len) {
    len = (len+7) & ~0x7u; // round to be 64 Byte aligned
 
    RODOS_ASSERT_IFNOT_RETURN(len <= XMALLOC_SIZE,        nullptr); // out of memmory?
-   RODOS_ASSERT_IFNOT_RETURN(!taskRunning,               nullptr); // Xmalloc after system init completation
+   RODOS_ASSERT_IFNOT_RETURN(!isSchedulerRunning(),      nullptr); // Xmalloc after system init completation
    RODOS_ASSERT_IFNOT_RETURN(index + len < XMALLOC_SIZE, nullptr); // xmalloc out of mem
 
    void *allocated =  &xmallocBuf[index];
@@ -58,8 +60,6 @@ float getCpuLoad() {
     if(cpuLoad < 0.0) cpuLoad = 0.0;
     return static_cast<float>(cpuLoad);
 }
-
-bool isSchedulerRunning() { return (taskRunning > 0); }
 
 }
 

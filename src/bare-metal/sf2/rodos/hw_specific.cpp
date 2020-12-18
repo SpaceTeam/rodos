@@ -66,7 +66,7 @@ void hwEnableInterrupts() {
 }
 
 void hwInit() {
-    taskRunning = 0;
+    schedulerRunning = false;
     /* Turn off the watchdog */
     SYSREG->WDOG_CR = 0;
     /* Make PendSV, SysTick and Timer2 the same priroity */

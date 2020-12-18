@@ -88,7 +88,6 @@ void Thread::yield() {
 /* restore context of this thread and continue execution of this thread */
 void Thread::activate() {
     currentThread = this;
-    if (taskRunning < 0xfffff) taskRunning++; // just a very big (impossible) limit
     Timer::setInterval(PARAM_TIMER_INTERVAL);
     Timer::start();
     __asmSwitchToContext((long*)context);

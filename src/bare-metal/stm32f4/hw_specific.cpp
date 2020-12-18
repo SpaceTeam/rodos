@@ -59,7 +59,7 @@ static uint32_t LSIFrequency = 0;
 static void initRtcInterrupt();
 
 void hwInit() {
-	taskRunning = 0;
+	schedulerRunning = false;
 
 	/* Make PendSV, SysTick and Timer2 the same priroity */
 	NVIC_SetPriority(PendSV_IRQn, 255);

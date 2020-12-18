@@ -362,8 +362,8 @@ public:
 #define PRIORITY_FLOORING_IN_SCOPE() ScopePriority _scopePriority_ (FLOORING_PRIORITY)
 
 
-/** to see how many threads are running but please do not modify it! (yes, yes, later I will make a function of it)*/
-extern int32_t volatile taskRunning;
+/** to see if the scheduler is active but please do not modify it! (yes, yes, later I will make a function of it)*/
+extern volatile bool schedulerRunning;
 
 }  // namespace
 

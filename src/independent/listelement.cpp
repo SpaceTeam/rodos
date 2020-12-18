@@ -35,7 +35,7 @@ ListElement::ListElement(List& list, const char* name, void* myOwner) {
 void ListElement::append(List& list) {
     next = list;
     list = this;
-    RODOS_ASSERT(!taskRunning); // Listelement::Constructor after sys initialisation List was created not static
+    RODOS_ASSERT(!isSchedulerRunning()); // Listelement::Constructor after sys initialisation List was created not static
 }
 
 /*

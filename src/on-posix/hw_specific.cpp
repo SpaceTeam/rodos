@@ -30,7 +30,7 @@ extern void sigtermHandler(int sig);
 extern int32_t myNodeNr;
 
 void hwInit() {
-    taskRunning = 0;
+    schedulerRunning = false;
 
     /* External interrupts simulator */
     signal(SIGTERM, sigtermHandler);

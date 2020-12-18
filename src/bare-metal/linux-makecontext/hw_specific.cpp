@@ -34,7 +34,7 @@ extern int32_t myNodeNr;
 
 //_____________________________________________________
 void hwInit() {
-    taskRunning = 0;
+    schedulerRunning = false;
     signal(SIGTERM, sigtermHandler); // External interrupts simulator
     myNodeNr = getpid(); // a default node number, may be replaced by the link interface (gateway)
 }

@@ -53,7 +53,7 @@ void Scheduler::idle() {
 
 
   Thread::currentThread = idlethreadP;
-  taskRunning = 1;  /* a bit to early, but no later place possible */
+  schedulerRunning = true;  /* a bit to early, but no later place possible */
 
   /* - the order of activate() and startIdleThread() is important -> don't change
    * - For all cortex ports a global context pointer is initialised in activate()
