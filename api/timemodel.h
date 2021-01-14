@@ -106,6 +106,9 @@ class TimeModel {
     /** UTC2, or gpsTime: UTC without leapseconds (we add leapseconds!) **/
     int64_t getGpsTime() { return getUTC() + (int64_t)leapSeconds * SECONDS; }
 
+    /** Gets the UTC drift parameter of the clock model */
+    double getDrift();
+    
     /** Sets the UTC drift parameter of the clock model */
     void setDrift(const double drift);
 
