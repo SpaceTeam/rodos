@@ -54,6 +54,9 @@ public:
         writeX = 0;
     }
 
+    uint32_t putErrors = 0;
+    uint32_t getErrors = 0;
+
     /** implements the generic interface of putter */
     bool putGeneric([[gnu::unused]] const uint32_t topicId, const size_t msgLen, const void* msg, [[gnu::unused]] const NetMsgInfo& netMsgInfo) {
         RODOS_ASSERT_IFNOT_RETURN(msgLen <= sizeof(Type), false);
@@ -64,6 +67,7 @@ public:
     bool put(const Type& val) {
         size_t index =  advanceIndex(writeX);
         if(index == readX) {
+            putErrors++;
             return false; /* full! */
         }
 
@@ -75,6 +79,7 @@ public:
     /** return true == ok, false = fifo empty, val not modified */
     bool get(Type& val) {
         if(readX == writeX) {
+            getErrors++;
             return false;
         }
         val = buffer[readX];
@@ -206,12 +211,13 @@ public:
 template <typename Type, size_t len, uint32_t numOfreaders >
 class MultipleReaderFifo : public Putter {
 
-protected:
+public:
 
     Type buffer[len];
 
-    volatile size_t writeX;
-    volatile size_t readX[numOfreaders];
+    volatile size_t   writeX;
+    volatile size_t   readX[numOfreaders];
+    volatile uint32_t overflowCnt[numOfreaders];
     uint32_t readerCnt; ///< used only to generate readerId, if user wishes!
 
     /** advance index to next position
@@ -222,12 +228,13 @@ protected:
     }
 
 
-public:
-
     MultipleReaderFifo() {
         readerCnt = 0;
         writeX = 0;
-        for(uint32_t i = 0; i < numOfreaders; i++) readX[i] = 0;
+        for(uint32_t i = 0; i < numOfreaders; i++) {
+            readX[i] = 0;
+            overflowCnt[i] = 0;
+        }
     }
 
     int32_t getReaderId() { //< Warning: not thread safe!!!
@@ -237,23 +244,28 @@ public:
     }
 
     /** implements the generic interface of putter */
-    bool putGeneric([[gnu::unused]] const uint32_t topicId, const size_t msgLen, const void* msg, [[gnu::unused]] const NetMsgInfo& netMsgInfo) {
+    bool putGeneric([[gnu::unused]] const uint32_t topicId, const size_t msgLen,
+            const void* msg, [[gnu::unused]] const NetMsgInfo& netMsgInfo) {
         RODOS_ASSERT_IFNOT_RETURN(msgLen <= sizeof(Type), false);
-        return put(*(const Type*)msg);
+        put(*(const Type*)msg); // Always puts, even if it overwrites !
+        return true;
     }
 
-    /**  returns true == ok, false == fifo full */
-    bool put(const Type& val) {
-        size_t index =  advanceIndex(writeX);
+    /**  Always puts, even if it overwrites !  Return index where data was written */
+    size_t put(const Type& val) {
+        size_t writtenPos =  writeX;
+        size_t nextIndex  =  advanceIndex(writeX);
+
         for(uint32_t i = 0; i < numOfreaders; i++) {
-            if(index == readX[i]) { // one reading is to slow -> shift him!
-                readX[i] = advanceIndex(readX[i]); // Warning: thread safe?!?!
+            if(nextIndex == readX[i]) { // one reader is to slow -> shift him!
+                readX[i] = advanceIndex(readX[i]); 
+                overflowCnt[i]++;
             }
         }
 
         buffer[writeX] = val;
-        writeX = index;
-        return true;
+        writeX         = nextIndex;
+        return writtenPos;
     }
 
     /** return true == ok, false = fifo empty, val not modified */

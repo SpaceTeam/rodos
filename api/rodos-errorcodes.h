@@ -40,6 +40,9 @@ enum class ErrorCode : uint32_t {
     //..... to be extended (by RODOS Developers)
 
     //_______IO errors
+    NO_DATA_AVAILABLE, 
+    TIMING_ERR,
+    WAITING,
     // .... = 700, (by RODOS Developers)
 
     //_______File errors
