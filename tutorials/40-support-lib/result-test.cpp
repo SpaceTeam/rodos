@@ -4,7 +4,7 @@
  * @date 2019/08/03
  * @author Sergio Montenegro, Uni Wuerzburg
  *
- * @brief demonstrate how to use the Result class
+ * @brief demonstrate how to use the Result class to return values or error codes
  *
  */
 

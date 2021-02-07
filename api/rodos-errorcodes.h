@@ -25,6 +25,9 @@ enum class ErrorCode : uint32_t {
     //_______Parameter out or range
     WRONG_PARAM = 200,
     NO_RESULT = 201,
+    OUT_OF_RANGE,
+    BAD_INDEX,
+    BAD_POINTER,
     // .... to be extended (by RODOS Developers)
     //_______Communication errors
     // .... = 400 to be extended (by RODOS Developers)

@@ -1,11 +1,19 @@
 
+/**
+* @file allocableobjects.h
+* @date 2021/02/11
+* @author Sergio Montenegro
+*
+* @brief AllocableObject malloc/free with reference counter
+*
+*/
+
 
 #pragma once
+#include "stdint.h"
+#include "rodos-result.h"
   
-#ifndef NO_RODOS_NAMESPACE
 namespace RODOS {
-#endif
-
 
 /**
  * Memory allocation with reference counter, for a "Reference Counting Garbage Collection"
@@ -19,75 +27,59 @@ namespace RODOS {
  * An object's reference count is incremented when a reference to it is created, and decremented when a reference is destroyed.
  * When the count reaches zero, the object's memory is reclaimed (not automatically, but when calling free)
  *
- * Objects (see Type) has to be subclases from SortedChainable.
- * Objects may have an init method, if so it shall call the init from SortedChainable
- * Thread safe: It uses internally a semaphore
+ * WARNING! Not Thread safe, if required protect with a semaphore 
  *
  */
 
-template <typename Type, uint32_t len> class AllocableObejcts {
+template <typename Type, uint32_t len> class AllocableObjects {
 
-    Type       buffer[len];
-    uint32_t   referenceCnt[len];
-    SortedList freeList;
-    Semaphore  freeListsProtector;
-    uint32_t    numOfFreeItems;
+    Type      buffer[len];
+    uint32_t  referenceCnt[len];
+    uint32_t  freeCnt;
 
 public:
+    Result<uint32_t> indexOf(Type* item)  { 
+        uint32_t index = (uint32_t)(item - buffer); 
+        if(index > len) return ErrorCode::BAD_POINTER;
+        return index;
+    }
 
-    uint32_t getNumOfFreeItems()  { return numOfFreeItems;}
-    uint32_t getIndex(Type* item) { return static_cast<uint32_t>(item - buffer); }
+    uint32_t getNumOfFreeItems()  { return freeCnt; }
 
     void init() {
-        freeListsProtector.enter(); {
-            numOfFreeItems = len;
-            for(uint32_t i = 0; i < len; i++) { referenceCnt[i] = 0; buffer[i].init();  }
-            for(uint32_t i = 0; i < len; i++) freeList.appendForce(&buffer[i],0);
-        } freeListsProtector.leave();
+        freeCnt = len;
+        for(uint32_t i = 0; i < len; i++)  referenceCnt[i] = 0;
     }
   
+    // Returns pointer to the new object or 0 if no object is free
     Type* alloc() {
-        Type* item;
-        freeListsProtector.enter(); {
-            item = (Type*)freeList.getAndRemoveTheFirst();
-            if(item != 0) {
-                uint32_t index = static_cast<uint32_t>(item - buffer);
-                if(index < len) referenceCnt[index] = 1; // the if will be allwas true!
-                numOfFreeItems--;
+        for(uint32_t i = 0; i < len; i++) {
+            if(referenceCnt[i] == 0) {
+                freeCnt--;
+                referenceCnt[i] = 1;
+                return &buffer[i];
             }
-        } freeListsProtector.leave();
-        return item;
+        }
+        return nullptr;
     }
     
-    void free(Type* item) {
-        if(item - buffer < 0) return;
-        uint32_t index = static_cast<uint32_t>(item - buffer);
-        if(index >= len) return;
-        freeListsProtector.enter(); {
-            if(referenceCnt[index] >  0) referenceCnt[index]--; // the if will be allwas true!
-            if(referenceCnt[index] == 0) {
-                freeList.appendForce(item, 0);
-                numOfFreeItems++;
-            }
-        } freeListsProtector.leave();
+    bool free(Type* item) {
+        Result<uint32_t> index = indexOf(item);
+        if(!index.isOk())               return false;
+        if(referenceCnt[index.val] < 1) return false;
+        referenceCnt[index.val]--; 
+        if(referenceCnt[index.val] == 0) freeCnt++;
+        return true;
     }
 
+    // Returns pointer to the same item, or 0 if invalid
     Type* copyReference(Type* item) {
-        Type*    copy  = item;
-        if(item - buffer < 0) return nullptr;
-        uint32_t index = static_cast<uint32_t>(item - buffer);
-        if(index >= len) return nullptr;
-
-        freeListsProtector.enter(); {
-           if(referenceCnt[index] > 0) referenceCnt[index]++;
-           else                        copy = 0; // there shall exist no copy of it! it is in the free list!
-        } freeListsProtector.leave();
-        return copy;
+        Result<uint32_t> index = indexOf(item);
+        if(!index.isOk())                return nullptr;
+        if(referenceCnt[index.val] == 0) return nullptr;
+        referenceCnt[index.val]++; 
+        return item;
     }
-
 };
-
-#ifndef NO_RODOS_NAMESPACE
-}
-#endif
+} // namespace
 
