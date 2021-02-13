@@ -12,4 +12,6 @@
 // #include "filesystem.h"
 #include "scanf-substitue.h"
 #include "synccommbuffer.h"
-#include "s3p-encoder.h"
+#include "s3p-code.h"
+#include "s3p-synchronous-interface.h"
+#include "s3p-asynchronous-interface.h"
