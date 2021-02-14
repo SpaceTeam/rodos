@@ -126,24 +126,15 @@ class S3pReceiverAsyncrhonous : S3pCode {
         if(msg == 0) msg = requestBufferToWrite(maxLen);  // maxLen shall be updated by you
 
         dualByte  = (uint16_t)(dualByte  << 8 ) | (uint16_t)inputByte;
-        if(inputByte == MARK) return;  // be aware, it could be NODATA = (MARK,MARK)
-        if(len >= maxLen)     dualByte = EOM;
+        if(inputByte == MARK) return; // here the msb, next call with the lsb
+        if(msb(dualByte) == 0 ) dualByte = 0; // It is data, 0 is just to have some thing for the case
 
         switch(dualByte) {
-            case NODATA:                                   break; // redundant, but ok
-            case STOP:     mayPutBytes = false;            break;
-            case CONTINUE: mayPutBytes = true;             break;
-            case SYNC:     syncTime();                     break;
-            case BOM:      if(msg != 0) len = 0;           break;
-            case STUFF:    if(len >= 0) msg[len++] = MARK; break;
-            case EOM:      if(len >= 0) { 
-                               endOfMessage(len); 
-                               msg = 0; 
-                               len = -1;
-                           }  break;
-
-            default: // shall be normal data
-            if(isDataByte(dualByte) && len >= 0) msg[len++] = inputByte;
+            case 0:        if(msg != 0 && len >= 0 && len < maxLen) msg[len++] = inputByte; break;
+            case STUFF:    if(msg != 0 && len >= 0 && len < maxLen) msg[len++] = MARK;      break;
+            case EOM:      if(len >= 0) { endOfMessage(len); msg = 0; len = -1; }           break;
+            case BOM:      if(msg != 0) len = 0;                                            break;
+            default: executeCommand(dualByte);
         }
         dualByte = 0;
     } // putByte

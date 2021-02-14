@@ -32,9 +32,7 @@ class S3pSenderSyncrhonous : public S3pCode {
     // _________________________ UPCALL _________________ You shall override this method to write to the UART/Radiolink
     virtual void putByte([[gnu::unused]] uint8_t c) {} // override to send or store encoded messages, (busy waiting) Wait until data is written!
 
-  public:
-    // Calls from the application side
-
+  public: // Calls from the application side
     inline void putDataByte(const uint8_t c)  {   
         if(c == MARK) putCommand(STUFF);
         else putByte(c);
@@ -72,34 +70,22 @@ class S3pReceiverSyncrhonous : S3pCode {
 
   public:
     // Calls from the application side
-
-    inline uint16_t getDualByte() {
-        uint8_t c = getByte();
-        if(c != MARK) return (uint16_t)c;                 // normal data, 0x00XX
-        return (uint16_t)(COMMAND | (uint16_t)getByte()); // we get most significant first now least significant
-    }
-
     int getMsg(int maxLen, uint8_t* msg) {
         int len = -1;
         while(1) {
-            if(len >= maxLen) return maxLen;
-            uint16_t dualByte = getDualByte();  // Warning: it suspends until data arrives
-
-            switch(dualByte) {
-                case NODATA:                                 break;
-                case STOP:     mayPutBytes = false;          break;
-                case CONTINUE: mayPutBytes = true;           break;
-                case SYNC:     syncTime();                   break;
-                case BOM:      len = 0;                      break;
-                case STUFF:    if(len>=0) msg[len++] = MARK; break;                     
-                case EOM:      if(len>=0) return len;        break; //<<--- return here
-
-                default: // shall be normal data
-                if(isDataByte(dualByte) && len>=0) msg[len++] = dataByte(dualByte);
-            } // switch
-        }     // loop
+            uint8_t c = getByte();
+            if(c != MARK && len >= 0 && len < maxLen) { msg[len++] = c; continue; }
+            if(c == MARK) {
+                uint16_t dualByte =  (uint16_t)(COMMAND | (uint16_t)getByte()); // we get most significant first now least significant
+                switch(dualByte) {
+                    case BOM:   len = 0;                   break;
+                    case EOM:   if(len >= 0)  return len;  break;
+                    case STUFF: if(len >= 0 && len < maxLen) msg[len++] = MARK; break;                     
+                    default: executeCommand(dualByte);
+                } // switch
+            } // If command
+        } // loop
     }
 };
-
 } // namespace RODOS
 
