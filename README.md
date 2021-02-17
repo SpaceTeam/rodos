@@ -65,9 +65,10 @@ We want to improve it. We hear your suggestions!
 # Our Users
 
 <span>
-<img align="left" src="https://gitlab.com/rodos/rodos/-/wikis/uploads/d15c43bc579fbc20139b74743426256f/Kamaro_Logo.png" width="128" height="80">
+<img align="left" src="https://gitlab.com/rodos/rodos/-/wikis/uploads/d15c43bc579fbc20139b74743426256f/Kamaro_Logo.png" width="128">
 <p>&emsp;&emsp;Kamaro Engineering e.V. - Modular Field Robot Beteigeuze NOVA</p>
 </span>
+<br/><br/>
 
 
 # How to cite RODOS?
