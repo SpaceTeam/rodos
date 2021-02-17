@@ -74,9 +74,9 @@ We want to improve it. We hear your suggestions!
 # How to cite RODOS?
 If you intend to cite RODOS in your work, please cite the following references:
 - `@article{montenegro2009rodos,
-  title={RODOS-real time kernel design for dependability},
+  title={RODOS - real time kernel design for dependability},
   author={Montenegro, Sergio and Dannemann, Frank},
-  journal={DASIA 2009-DAta Systems in Aerospace},
+  journal={DASIA 2009 - DAta Systems in Aerospace},
   volume={669},
   pages={66},
   year={2009}
