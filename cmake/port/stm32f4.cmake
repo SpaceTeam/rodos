@@ -45,3 +45,7 @@ set(directories_to_include
     ${RODOS_DIR}/src/bare-metal/stm32f4/CMSIS/Device/ST/STM32F4xx/Include
     ${RODOS_DIR}/src/bare-metal/stm32f4/CMSIS/Include
     ${RODOS_DIR}/src/bare-metal/stm32f4/platform-parameter/${board})
+
+set(libraries_to_link
+    m
+)
