@@ -876,7 +876,7 @@ etharp_output_to_arp_index(struct netif *netif, struct pbuf *q, u8_t arp_idx)
  * or the return type of either etharp_query() or etharp_send_ip().
  */
 err_t
-etharp_output(struct netif *netif, struct pbuf *q, ip_addr_t *ipaddr)
+etharp_output(struct netif *netif, struct pbuf *q, const ip_addr_t *ipaddr)
 {
   struct eth_addr *dest;
   struct eth_addr mcastaddr;
