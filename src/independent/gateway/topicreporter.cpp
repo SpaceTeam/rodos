@@ -61,7 +61,7 @@ void TopicReporter::addTopicsFromGateway(TopicListReport& list, Gateway* gateway
 
 
 void TopicReporter::sendToAllGateways(TopicListReport& list) {
-    prepareNetworkMessage(topicMessage,0,&list,list.numberOfBytesToSend());
+    prepareNetworkMessage(topicMessage, TOPIC_ID_FOR_TOPIC_REPORT, &list, list.numberOfBytesToSend());
     for(int i=0; i<numberOfGateways; i++) {
         gateways[i]->sendNetworkMessage(topicMessage);
     }

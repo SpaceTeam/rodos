@@ -1,4 +1,3 @@
-
 RODOS
 =====
 
@@ -63,3 +62,22 @@ sergio.montenegro@uni-wuerzburg.de
 
 We want to improve it. We hear your suggestions!
 
+# Our Users
+
+<span>
+<img align="left" src="https://gitlab.com/rodos/rodos/-/wikis/uploads/d15c43bc579fbc20139b74743426256f/Kamaro_Logo.png" width="128">
+<p>&emsp;&emsp;Kamaro Engineering e.V. - Modular Field Robot Beteigeuze NOVA</p>
+</span>
+<br/><br/>
+
+
+# How to cite RODOS?
+If you intend to cite RODOS in your work, please cite the following references:
+- `@article{montenegro2009rodos,
+  title={RODOS - real time kernel design for dependability},
+  author={Montenegro, Sergio and Dannemann, Frank},
+  journal={DASIA 2009 - DAta Systems in Aerospace},
+  volume={669},
+  pages={66},
+  year={2009}
+}`
