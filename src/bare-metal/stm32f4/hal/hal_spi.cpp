@@ -507,7 +507,7 @@ int32_t HAL_SPI::config(SPI_PARAMETER_TYPE type, int32_t value) {
         return -1;
 
     case SPI_PARAMETER_MODE: // MODE:CPOL/CPHA  0:0/0   1:0/1   2:1/0   3:1/1
-        if (value >= 0 || value <= 3){
+        if (value >= 0 && value <= 3){
             uint16_t cr1 = context->SPIx->CR1;
             cr1          = static_cast<uint16_t>(cr1 & ~0x0003); // clear CPOL & CPHA
             cr1          = static_cast<uint16_t>(cr1 | value);   // set CPOL & CPHA
