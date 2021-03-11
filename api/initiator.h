@@ -44,7 +44,15 @@ protected:
     virtual void init(void) { }
 
 public:
+    /**
+     * Constructor.
+     * @param name The name of the initiator object.
+     */
     Initiator(const char* name = "Initiator") : ListElement(initiatorList, name) { }
+
+    /**
+     * Destructor.
+     */
     virtual ~Initiator()  { }
 
 };

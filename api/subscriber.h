@@ -23,8 +23,21 @@ namespace RODOS {
 class Putter;
 
 /**
+ * Data structure containing information about topic messages sent via network (gateway).
+ */
+class NetMsgInfo {
+  public:
+    int32_t  senderNode;     ///< Node ID of sending instance of RODOS
+    int64_t  sentTime;       ///< Time in localTime units
+    uint32_t senderThreadId; ///< The ID of the sending thread
+    uint32_t linkId;         ///< The ID of the %Linkinterface from which the message was received.
+};
+
+
+
+/**
 * @class Subscriber
-* @brief Subscriber to receive messages
+* @brief Subscriber to receive topic messages
 *
 *  The middleware communication is based on the publisher/subscriber protocol.
 *  Publishers make messages public under a given topic.
@@ -40,16 +53,6 @@ class Putter;
 * for each subscriber where the topic matches the associated putter will be called
 * to store a copy of the published message.
 */
-
-class NetMsgInfo {
-public:
-    int32_t senderNode;	///< Node ID of sending instance of RODOS
-    int64_t sentTime;   ///< Time in localTime units 
-    uint32_t senderThreadId;
-    uint32_t linkId;
-};
-
-
 class Subscriber : public ListElement {
 
     friend class TopicInterface;
@@ -108,7 +111,7 @@ public:
     Subscriber(TopicInterface &topic, const char* name = "anonymThreadSubscriber");
 
     /// Destructor, should not be called in nominal operation.
-    virtual ~Subscriber() { 
+    virtual ~Subscriber() {
         if(isShuttingDown) return;
         RODOS_ERROR("Subscriber deleted");
     }
@@ -133,31 +136,56 @@ public:
 };
 
 
-/** Simple Subscriber interface for users ************/
-
+/**
+ * Simple Subscriber interface for users.
+ * @tparam Type The data type of the topic message that shall be received by the %SubscriberReceiver.
+ */
 template <class Type>
 class SubscriberReceiver : public Subscriber {
-    void (*receiverFunc)(Type &msg); // a function to be called for each message (optional)
+    void (*receiverFunc)(Type &msg); ///< a function to be called for each message (optional)
 
 public:
+    /**
+     * This constructor is usually used when developers inherit from this class in order to implement message handling
+     * in the overridden put() method.
+     * @param topic A reference to the topic that shall be subscribed.
+     * @param name The name of the subscriber.
+     */
     SubscriberReceiver(TopicInterface &topic, const char* name = "anonymSubscriber") :
         Subscriber(topic, name) {
         receiverFunc = 0;
     }
+
+    /**
+     * This constructor is usually used when developers just create an instance in order to call the passed message
+     * handling function.
+     * @param topic A reference to the topic that shall be subscribed.
+     * @param funcPtr The pointer to the function that is called every time a topic message arrives.
+     * @param name The name of the subscriber.
+     */
     SubscriberReceiver(TopicInterface &topic,  void (*funcPtr)(Type&), const char* name = "anonymSubscriber") :
         Subscriber(topic, name) {
         receiverFunc = funcPtr;
     }
 
+    /**
+     * This method is called every time a topic message arrives.
+     * @param msg The message that was published to the topic.
+     */
     virtual void put(Type &msg) {
         if(receiverFunc) (*receiverFunc)(msg);
     }
 
+    /**
+     * This method is called every time a topic message arrives.
+     * @param msg The message that was published to the topic.
+     * @param netMsgInfo Meta information about the message (path).
+     */
     virtual void put(Type &msg, [[gnu::unused]] const NetMsgInfo& netMsgInfo) {
         put(msg);
     }
 
-    uint32_t put([[gnu::unused]] const uint32_t topicId, [[gnu::unused]] const size_t len, void* data, const NetMsgInfo& netMsgInfo) override { 
+    uint32_t put([[gnu::unused]] const uint32_t topicId, [[gnu::unused]] const size_t len, void* data, const NetMsgInfo& netMsgInfo) override {
         put(*(Type*)data,netMsgInfo);
         return 1;
     }
@@ -168,8 +196,6 @@ public:
  ** WARNING: Please be very careful when using filters
  ** do not abuse it. It is intended for voters, Kalman filter, etc
  **/
-
-
 class TopicFilter {
 public:
     virtual ~TopicFilter() = default;

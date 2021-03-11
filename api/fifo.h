@@ -26,18 +26,18 @@ namespace RODOS {
 *  If one side has more than one owner, the fifo has to be
 *  protected using priority_ceiling, or semaphores.
 *
-*  @param Type    data type of fifo entries
-*  @param len     maximal number of entries must be at least 2 (real capacity = len-1)
+*  @tparam Type    data type of fifo entries
+*  @tparam len     maximal number of entries must be at least 2 (real capacity = len-1)
 *
 */
 template < typename Type, size_t len > class Fifo : public Putter {
 
 protected:
 
-    Type buffer[len];
+    Type buffer[len];   ///< Array containing the elements of the fifo.
 
-    volatile size_t writeX;
-    volatile size_t readX;
+    volatile size_t writeX; ///< index of where to write
+    volatile size_t readX;  ///< index of where to read
 
     /** advance index to next position
     * with overflow to 0 to implement a ring
@@ -54,8 +54,8 @@ public:
         writeX = 0;
     }
 
-    uint32_t putErrors = 0;
-    uint32_t getErrors = 0;
+    uint32_t putErrors = 0; ///< counter of writing errors
+    uint32_t getErrors = 0; ///< counter of reading errors
 
     /** implements the generic interface of putter */
     bool putGeneric([[gnu::unused]] const uint32_t topicId, const size_t msgLen, const void* msg, [[gnu::unused]] const NetMsgInfo& netMsgInfo) {
@@ -63,7 +63,11 @@ public:
         return put(*(const Type*)msg);
     }
 
-    /**  returns true == ok, false == fifo full */
+    /**
+     * Puts data into the fifo
+     * @param[in] val The value that should be written into the fifo.
+     * @return false if the fifo is full, true otherwise
+     */
     bool put(const Type& val) {
         size_t index =  advanceIndex(writeX);
         if(index == readX) {
@@ -76,7 +80,11 @@ public:
         return true;
     }
 
-    /** return true == ok, false = fifo empty, val not modified */
+    /**
+     * Retrieve a value from the fifo.
+     * @param[out] val A variable reference whose value is overwritten with the value from the fifo.
+     * @return false if fifo is empty (val is untouched), true otherwise.
+     */
     bool get(Type& val) {
         if(readX == writeX) {
             getErrors++;
@@ -87,18 +95,46 @@ public:
         return true;
     }
 
+    /**
+     * Returns the capacity of the fifo.
+     * @return The capacity of the fifo.
+     */
     size_t getLen() { return len; }
 
-    size_t getElementCount() { ///< warning: not thread safe
+    /**
+     * Returns the number of elements currently stored in the fifo.
+     * @warning This method is not thread safe.
+     * @return The number of elements currently stored in the fifo.
+     */
+    size_t getElementCount() {
         size_t r = readX;
         size_t w = writeX;
         return (r <= w) ? (w-r) : (len-r+w);
     }
-    size_t getFreeSpaceCount() { ///< warning: not thread safe
+
+    /**
+     * Returns the number of unused elements.
+     * @warning This method is not thread safe.
+     * @return The number of unused elements.
+     */
+    size_t getFreeSpaceCount() {
         return len - getElementCount() - 1;
     }
-    bool isFull()  { return advanceIndex(writeX)==readX; } ///< warning: not thread safe
-    bool isEmpty() { return readX == writeX;}              ///< warning: not thread safe
+
+    /**
+     * Determines whether the fifo is full.
+     * @warning This method is not thread safe.
+     * @return true if the fifo is full, false otherwise.
+     */
+    bool isFull()  { return advanceIndex(writeX)==readX; }
+
+    /**
+     * Determines whether the fifo is empty.
+     * @warning This method is not thread safe.
+     * @return true if the fifo is empty, false otherwise.
+     */
+    bool isEmpty() { return readX == writeX;}
+
     void clear()   { readX = writeX = 0; }                 ///< erases all content
 };
 
@@ -120,8 +156,8 @@ public:
 template <class Type, size_t len> class SyncFifo : public Fifo<Type, len> {
 
 protected:
-    Thread* suspendedReader;
-    Thread* suspendedWriter;
+    Thread* suspendedReader;    ///< A pointer to the waiting reader thread.
+    Thread* suspendedWriter;    ///< A pointer to the waiting writer thread.
 
 public:
 
@@ -146,7 +182,11 @@ public:
         return ok;
     }
 
-    /**  suspends while fifo is full. Returns true == ok, false == timeout, */
+    /**
+     * Puts data into the fifo
+     * @param[in] val The value that should be written into the fifo.
+     * @return false if the fifo is full, true otherwise
+     */
     bool syncPut(const Type &val, const int64_t timeout = END_OF_TIME) {
         bool ok = false;
         {
@@ -175,7 +215,11 @@ public:
         return ok;
     }
 
-    /** return true == ok, false = fifo empty, val not modified */
+    /**
+     * Retrieve a value from the fifo.
+     * @param[out] val A variable reference whose value is overwritten with the value from the fifo.
+     * @return false if fifo is empty (val is untouched), true otherwise.
+     */
     bool syncGet(Type &val, const int64_t timeout = END_OF_TIME) {
         bool ok = false;
         {

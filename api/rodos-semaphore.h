@@ -31,11 +31,11 @@ namespace RODOS {
 class Semaphore {
 
 private:
-  Thread* volatile owner;
-  volatile int ownerEnterCnt;
+  Thread* volatile owner;       ///< A pointer to the thread that currently has entered the semaphore.
+  volatile int ownerEnterCnt;   ///< Counts how often the owner enters the semaphore.
 
 protected:
-  volatile int32_t ownerPriority;
+  volatile int32_t ownerPriority;   ///< The scheduling priority of the thread that currently has entered the semaphore.
   void* context; ///< used only on posix and on host-os
 
 public:
@@ -43,7 +43,7 @@ public:
   Semaphore();
   // ~Semaphore() { } // Shall never be called. Semaphores may not disappear
 
-  /** caller will be blocked if semaphore is occupied 
+  /** caller will be blocked if semaphore is occupied
    ** The owner may reenter the semaphore without deadlock */
   void enter();
 
@@ -54,7 +54,7 @@ public:
   *   Warning: next it can be occupied by someone else
   */
   // bool isFree();
- 
+
   /// This is just a help for the macro PROTECT_WITH_SEMAPHORE (DEPRECATED)
   // inline bool enterRetTrue() { enter(); return true; }
 };
@@ -63,17 +63,30 @@ public:
 // Just create an instance on the stack; it immediately enters a given semaphore.
 // On destruction it leaves the semaphore.
 class ScopeProtector {
-  Semaphore *sema;
-  bool left = false;
+  Semaphore *sema;    ///< Pointer to the semaphore that is used for protection.
+  bool left = false;  ///< Indicates whether the semaphore has already been left.
 
 public:
+  /**
+   * The constructor immediately enters the passed semaphore.
+   * @param inputSema The semaphore that shall be entered.
+   */
   explicit ScopeProtector(Semaphore *const inputSema) : sema(inputSema) { sema->enter(); }
+
+  /**
+   * The destructor leaves the semaphore.
+   */
   ~ScopeProtector() { leave(); }
 
-  // If you want to leave the semaphore preliminary, use this method.
+  /*
+   * If the semaphore should be left before destroying the protector object, invoke this method.
+   */
   void leave() { if(!left) sema->leave(); left = true; }
 };
 
+/**
+ * Macro that initializes a %ScopeProtector object on the stack.
+ */
 #define PROTECT_IN_SCOPE(_sema) ScopeProtector _scope_protector_(&(_sema));
 
 #if 0

@@ -30,6 +30,8 @@ long* hwInitContext(long* stack, void* thread);
 /**
 * @class Thread
 * @brief %Thread provides stack and context management
+* To implement a thread, users must inherit from a thread class and implement the run() method.
+* The standard way is to inherit from %StaticThread, which uses a static allocated stack.
 */
 class Thread : public ListElement {
   friend void schedulerWrapper(long* ctx);
@@ -58,7 +60,7 @@ private:
   void* waitingFor = nullptr;
 
   int64_t nextBeat = END_OF_TIME;  ///<  the next time to awake (used in wait)
-  int64_t period = 0;    ///<  To repeate every period localTime units
+  int64_t period = 0;    ///<  To repeat every period localTime units
 
   void create(); ///< called in main() after all constuctors, to create/init thread
 
@@ -152,7 +154,7 @@ public:
 
   static void startAllThreads(); ///< if required (only on gast OSs) called by scheduler
 
-  /**  
+  /**
    * Suspend the thread until a given time or a wake up by a call to the method resume.
    * By the optional pointer to a signaler the thread could be woken up. A signal is for
    * example an object of type inherited from class Event.
@@ -265,7 +267,7 @@ public:
    *
    * @see setPriority
    */
-  static int32_t setPrioCurrentRunner(int32_t newPrio); 
+  static int32_t setPrioCurrentRunner(int32_t newPrio);
 
   /**
    * Get the maximum stack usage of the current thread until now. May return 0 if not supported.
@@ -278,12 +280,22 @@ public:
 };
 
 
+/**
+ * This class is the standard way to use threads.
+ * By inheriting from this class, developers can implement their own threads.
+ * @tparam STACK_SIZE The size of the stack.
+ */
 template <size_t STACK_SIZE = DEFAULT_STACKSIZE>
 class StaticThread : public Thread {
-    char stack alignas(8)[STACK_SIZE];
+    char stack alignas(8)[STACK_SIZE];  ///< The stack as a member byte array.
 public:
+    /**
+    * Constructor initializing the %Thread.
+    * @param name The name of the thread.
+    * @param priority The priority of the thread.
+    */
     StaticThread(const char* name = "AnonymThread", const int32_t priority = DEFAULT_THREAD_PRIORITY)
-     : Thread(stack, name, priority) {}
+      : Thread(stack, name, priority) {}
 };
 
 /******************************************************
@@ -312,10 +324,21 @@ inline RODOS::Thread* RUNNER() {
  * use AT(time); ....
  * to suspend for always use
  * AT(END_OF_TIME);
+ * @param time The time in internal Rodos (up)time.
  */
+inline void AT(const int64_t time)     { Thread::suspendCallerUntil(time); }
 
-inline void AT(int64_t _time)     { Thread::suspendCallerUntil(_time); }
-inline void AT_UTC(int64_t _time) { Thread::suspendCallerUntil(sysTime.UTC2LocalTime(_time)); }
+/**
+ * AT_UTC is a shortcut to wait until a time point, given in UTC.
+ * @param timeInUTC The time in UTC
+ */
+inline void AT_UTC(const int64_t timeInUTC) { Thread::suspendCallerUntil(sysTime.UTC2LocalTime(timeInUTC)); }
+
+/**
+ * This function returns as soon as the passed time was reached.
+ * The thread is not suspended explicitly, it keeps the CPU busy.
+ * @param endWaitingTime
+ */
 inline void BUSY_WAITING_UNTIL(int64_t endWaitingTime) { while(NOW() < (endWaitingTime)) ; }
 
 
@@ -335,16 +358,29 @@ extern bool globalAtomarLock();   ///< returns always true
 extern bool globalAtomarUnlock(); ///< returns always true
 
 
-// Use this class to change Priority in a scope 
-// Just create an instance on the stack; it immediately changes priority
-// On destruction it returns to the old priority
+/* Use this class to change Priority in a scope.
+ * Just create an instance on the stack; it immediately changes priority.
+ * On destruction it returns to the old priority.
+ */
 class ScopePriority {
-  int32_t previousPriority;
+  int32_t previousPriority; ///< The original priority that should be restored when leaving the given priority.
 
 public:
+  /**
+   * The constructor taking the temporary  thread priority that should be used during the object's lifecycle.
+   * @param newPriority The temporary thread priority that should be used during the object's lifecycle.x
+   */
   explicit ScopePriority(int32_t newPriority) { previousPriority = Thread::setPrioCurrentRunner(newPriority); }
+
+  /**
+   * Destructor resetting the thread priority back to the original value.
+   */
   ~ScopePriority()                         { Thread::setPrioCurrentRunner(previousPriority); }
 };
+
+/**
+ * Macro that initializes a %ScopePriority object on the stack.
+ */
 #define PRIORITY_IN_SCOPE(_prio) ScopePriority   _scopePriority_(_prio)
 
 

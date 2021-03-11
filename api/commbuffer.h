@@ -45,11 +45,11 @@ protected:
      * in order to prevent data conflicts.
      */
     volatile bool readingNow;
-    volatile bool newDataAvailable;
+    volatile bool newDataAvailable; ///< indicates whether new data is available
 
 public:
-  uint64_t writeCnt;
-  uint64_t readCnt;
+  uint64_t writeCnt;    ///< counter of writing actions
+  uint64_t readCnt;     ///< counter of reading actions
 
   CommBuffer() {
     writer = &buffer[0];
@@ -79,7 +79,7 @@ public:
    * Implements the put operation of data to the CommBuffer. The data is
    * stored in the buffer, and swap read and write buffer for next write.
    * Put methods should only used by one thread.
-   * @param data Reference of the message data to put.
+   * @param[in] data Reference of the message data to put.
    */
   void put(const Type& data) {
     *writer = data;
@@ -110,7 +110,7 @@ public:
   /**
    * Get the next consistent message from the CommBuffer.
    * The method get should only used by one thread.
-   * @param data Reference of the message data to get.
+   * @param[out] data Reference of the message data to get.
    */
   void get(Type &data) {
     newDataAvailable = false;
@@ -121,7 +121,11 @@ public:
     readCnt++;
   }
  
- /** like get, but modify out parameter only if there is new data **/
+ /**
+  * Like get, but modifies the out parameter only if there is new data.
+  * @param[out] data Reference of the message data to get.
+  * @return true if new data was available and the parameter's value was overwritten, false otherwise.
+  */
 
   bool getOnlyIfNewData(Type &data) {
     if(newDataAvailable) {
