@@ -66,10 +66,16 @@ We want to improve it. We hear your suggestions!
 
 <span>
 <img align="left" src="https://gitlab.com/rodos/rodos/-/wikis/uploads/d15c43bc579fbc20139b74743426256f/Kamaro_Logo.png" width="128">
-<p>&emsp;&emsp;Kamaro Engineering e.V. - Modular Field Robot Beteigeuze NOVA</p>
+<p>&emsp;&emsp;<a href="https://kamaro-engineering.de/">Kamaro Engineering e.V. - Modular Field Robot Beteigeuze NOVA</a></p>
 </span>
 <br/><br/>
 
+<span>
+<img align="left" src="https://gitlab.com/rodos/rodos/-/wikis/uploads/a5cd452ed15dc470a136c9c379c1e31a/wuespace.png" width="128">
+<p>&emsp;&emsp;<a href="https://www.wuespace.de/">WüSpace e.V. - Aerospace association Würzburg</a></p>
+</span>
+<br/><br/>
+<br/><br/>
 
 # How to cite RODOS?
 If you intend to cite RODOS in your work, please cite the following references:
