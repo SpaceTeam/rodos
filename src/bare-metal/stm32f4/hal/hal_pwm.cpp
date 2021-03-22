@@ -530,6 +530,9 @@ void HW_HAL_PWM::updateSettings(){
 
     TIM_TimeBaseInit(timer, &timStruct);
 
+    /* Preload enable */
+    TIM_ARRPreloadConfig(timer, ENABLE);
+
     /**** pwm output settings ****/
     TIM_OCStructInit(&timOCInitStruct); // set init structure to default values
 
@@ -547,15 +550,19 @@ void HW_HAL_PWM::updateSettings(){
     switch (channel) {
     case TIM_CHAN1:
         TIM_OC1Init(timer, &timOCInitStruct);
+        TIM_OC1PreloadConfig(timer, TIM_OCPreload_Enable);
         break; // channel 1 init
     case TIM_CHAN2:
         TIM_OC2Init(timer, &timOCInitStruct);
+        TIM_OC2PreloadConfig(timer, TIM_OCPreload_Enable);
         break; // channel 2 init
     case TIM_CHAN3:
         TIM_OC3Init(timer, &timOCInitStruct);
+        TIM_OC3PreloadConfig(timer, TIM_OCPreload_Enable);
         break; // channel 3 init
     case TIM_CHAN4:
         TIM_OC4Init(timer, &timOCInitStruct);
+        TIM_OC4PreloadConfig(timer, TIM_OCPreload_Enable);
         break; // channel 4 init
     default:
         return;
