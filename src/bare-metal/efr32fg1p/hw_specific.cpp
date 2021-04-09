@@ -43,7 +43,7 @@ void hwInit (void)
 	//CMU_HFXOInit_TypeDef hfxoInit = CMU_HFXOINIT_DEFAULT;
 	//hfxoInit.ctuneSteadyState = 355;
 
-	taskRunning = 0;
+    schedulerRunning = false;
 
 	/* Make PendSV, SysTick and Timer0 (set in TIMER0_init) the same priroity */
 	NVIC_SetPriority(PendSV_IRQn, 255);
