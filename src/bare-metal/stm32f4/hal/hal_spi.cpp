@@ -530,6 +530,9 @@ int32_t HAL_SPI::status(SPI_STATUS_TYPE type) {
     switch (type){
     case SPI_STATUS_BAUDRATE:
         return static_cast<int32_t>(context->baudrate);
+    case SPI_STATUS_MODE:
+    	// Only send last two bits of control register (CPOL/CPHA)
+    	return (context->SPIx->CR1 & 0x0003);
     default:
         return -1;
     }
