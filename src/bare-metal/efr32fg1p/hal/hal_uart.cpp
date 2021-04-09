@@ -269,7 +269,8 @@ int32_t HAL_UART::config(UART_PARAMETER_TYPE type, int32_t paramVal) {
 		    else
 				context->DMAMaxReceiveSize = static_cast<size_t>(paramVal);
 		    context->isDMAEnabeld = true;
-			//context->ReceiveIntoRxBufWithDMA();
+            USART_IntDisable(context->UARTx, USART_IEN_RXDATAV);
+			context->ReceiveIntoRxBufWithDMA();
 		    return 0;
 
 		default: return -1;
@@ -799,7 +800,7 @@ int HW_HAL_UART::init(uint32_t baudrate)
   	// Enable USART Interrupts
   	NVIC_EnableIRQ(getUARTx_RX_IRQn());
   	NVIC_EnableIRQ(getUARTx_TX_IRQn());  
-  	//USART_IntEnable(UARTx, USART_IEN_RXDATAV);
+  	USART_IntEnable(UARTx, USART_IEN_RXDATAV);
     return 0;
 }
 
