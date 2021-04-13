@@ -4,7 +4,7 @@
 
 if [ $# -ne 1 ]
 then
-  echo "searchs in .elf file FILE and prints its address and sizes"
+  echo "searches in .elf file FILE and prints its address and sizes"
   echo "use ADDRESS FILE"
   exit 1
 fi

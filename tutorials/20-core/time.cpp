@@ -13,9 +13,9 @@ static class TestTime : public StaticThread<> {
         AT(3 * SECONDS);
         PRINTF("after 3rd second\n");
 
-        PRINTF("waiting until 1 second has pased\n");
+        PRINTF("waiting until 1 second has passed\n");
         AT(NOW() + 1 * SECONDS);
-        PRINTF("1 second has pased\n");
+        PRINTF("1 second has passed\n");
 
         PRINTF("print every 2 seconds, start at 5 seconds\n");
         TIME_LOOP(5 * SECONDS, 2 * SECONDS) {

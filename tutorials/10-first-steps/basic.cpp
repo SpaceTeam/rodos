@@ -16,4 +16,4 @@ class HelloWorld : public StaticThread<> {
     }
 };
 
-HelloWorld helloworld;
+HelloWorld helloWorld;

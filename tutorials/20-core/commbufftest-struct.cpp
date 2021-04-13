@@ -25,10 +25,10 @@ class Sender : public StaticThread<> {
 
 class Receiver : public StaticThread<> {
     void run() {
-        Position mypos;
+        Position myPos;
         while(1) {
-            buf.get(mypos);
-            PRINTF("Reading %d, %d, %d\n", (int)mypos.x, (int)mypos.y, (int)mypos.z);
+            buf.get(myPos);
+            PRINTF("Reading %d, %d, %d\n", (int)myPos.x, (int)myPos.y, (int)myPos.z);
             suspendCallerUntil(NOW() + 2 * SECONDS);
         }
     }

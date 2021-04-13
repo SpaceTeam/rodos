@@ -17,7 +17,7 @@ class Sender : public StaticThread<> {
                 PRINTF("Fifo full\n");
             }
             if((cnt % 15) == 0) {
-                PRINTF("Wainting 3 seconds\n");
+                PRINTF("Waiting 3 seconds\n");
                 AT(NOW() + 3 * SECONDS);
             }
         }

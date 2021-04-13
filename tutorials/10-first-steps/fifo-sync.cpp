@@ -10,12 +10,12 @@ class Sender : public StaticThread<> {
             cnt++;
             bool ok = fifo.syncPut(cnt);
             if(ok) {
-                PRINTF("sent %d\n", cnt);
+                PRINTF("send %d\n", cnt);
             } else {
                 PRINTF("Fifo full\n");
             }
             if((cnt % 20) == 0) {
-                PRINTF("Sender Wainting 3 seconds\n");
+                PRINTF("Sender Waiting 3 seconds\n");
                 AT(NOW() + 3 * SECONDS);
             }
         }
@@ -33,7 +33,7 @@ class Receiver : public StaticThread<> {
                 PRINTF("read %d\n", cntIn);
             }
             if((cnt % 50) == 0) {
-                PRINTF("Reciver wait 15 seconds\n");
+                PRINTF("Receiver wait 15 seconds\n");
                 AT(NOW() + 15 * SECONDS);
             }
         }

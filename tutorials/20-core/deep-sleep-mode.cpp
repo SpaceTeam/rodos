@@ -14,7 +14,7 @@ class TestTimeBeat : public StaticThread<> {
 class Speeler : public StaticThread<> {
   public:
     void run() {
-        PRINTF("In 5 Secons, Sleep for 10 Seconds\n");
+        PRINTF("In 5 Seconds, Sleep for 10 Seconds\n");
         AT(5 * SECONDS);
         PRINTF("Deepsleep now\n");
         deepSleepUntil(15 * SECONDS);

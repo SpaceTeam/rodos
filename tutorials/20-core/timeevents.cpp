@@ -40,12 +40,12 @@ static TimeEventTestPeriodic te02;
 class TimeEventTest3 : public TimeEvent {
   protected:
     void handle() {
-        xprintf("activateIn Time Event at %3.9f, reactivation in 2 seconds\n", SECONDS_NOW());
+        xprintf("activateAt Time Event at %3.9f, reactivation in 2 seconds\n", SECONDS_NOW());
         activateAt(NOW() + 2 * SECONDS);
     }
 
     void init() {
-        xprintf("activateIn( 1234*MILLISECONDS) now=%3.9f\n", SECONDS_NOW());
+        xprintf("activateAt (1234*MILLISECONDS) now=%3.9f\n", SECONDS_NOW());
         activateAt(NOW() + 1234 * MILLISECONDS);
     }
 };

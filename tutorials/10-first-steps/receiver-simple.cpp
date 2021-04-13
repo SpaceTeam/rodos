@@ -1,7 +1,7 @@
 #include "rodos.h"
 #include "topics.h"
 
-static Application reciverSimple("ReciverSimple", 1100);
+static Application receiverSimple("ReceiverSimple", 1100);
 
 class SimpleSub : public Subscriber {
   public:

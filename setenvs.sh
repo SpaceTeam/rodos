@@ -31,7 +31,7 @@ export RODOS_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 export RODOS_ROOT=$RODOS_DIR  # sorry! Some times so, some times so!
 
 export RODOS_BUILD_SCRIPTS=${RODOS_DIR}/scripts/build-scripts
-export RODOS_HELP_SCRIPTS=${RODOS_DIR}/scripts/help-scrips
+export RODOS_HELP_SCRIPTS=${RODOS_DIR}/scripts/help-scripts
 export RODOS_VARS_DIR=${RODOS_BUILD_SCRIPTS}/set-vars
 
 export RODOS_BUILD=${RODOS_DIR}/build       # place the build dir any where you want
@@ -66,7 +66,7 @@ ______________________________________________________
    from anywhere, and come back here using "cdrodos"
 ....
    if you are using git I recommend to use: 
-   source ${RODOS_HELP_SCRIPTS}/set-git-aware-promt.sh
+   source ${RODOS_HELP_SCRIPTS}/set-git-aware-prompt.sh
 ______________________________________________________
 EOT2
 

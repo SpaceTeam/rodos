@@ -6,7 +6,7 @@ void MAIN() {
     activateTopicCharInput(); //<........ THIS IS IT!!!!
 }
 
-/***** outpus ********/
+/***** output ********/
 class ThreadAA : public StaticThread<> {
   public:
     void run() {
@@ -33,6 +33,6 @@ class CharReceiver : public Subscriber {
     void putFromInterrupt([[gnu::unused]] const uint32_t topicId, const void* data, [[gnu::unused]] size_t len) {
         const GenericMsgRef* msg = static_cast<const GenericMsgRef*>(data);
         xprintf(READ "                      ");
-        xprintf(READ "%s\n", static_cast<char*>(msg->msgPtr)); // no PRINTF in interrupts (Sempahore)
+        xprintf(READ "%s\n", static_cast<char*>(msg->msgPtr)); // no PRINTF in interrupts (Semaphore)
     }
 } charReceiver;

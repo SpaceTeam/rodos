@@ -11,7 +11,7 @@ public:
     void run () {
         char buf[20];
         TIME_LOOP(1*SECONDS, 2*SECONDS) {
-            PRINTF("Colleting data\n");
+            PRINTF("Collecting data\n");
             collectData.requestLocal(buf);
             printCharsHex("Collected:", buf, 20);
         }

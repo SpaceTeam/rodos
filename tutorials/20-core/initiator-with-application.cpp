@@ -12,8 +12,8 @@ class MyInitiator : public Initiator {
 
 class MyInitiatorApplic : public Application {
   public:
-    MyInitiatorApplic() : Application("initatorApplic", 2000) {}
+    MyInitiatorApplic() : Application("initiatorApplic", 2000) {}
     void init() {
-        xprintf(" This is the initator from applicasions\n");
+        xprintf(" This is the initiator from applications\n");
     }
-} mayInitiatorApplic;
+} myInitiatorApplic;

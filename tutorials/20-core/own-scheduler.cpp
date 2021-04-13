@@ -19,9 +19,9 @@ class TestTime : public StaticThread<> {
 TestTime t[4];
 
 
-class MySchedluler : public StaticThread<> {
+class MyScheduler : public StaticThread<> {
   public:
-    MySchedluler() : StaticThread<>("mySchedluler", 10) {}
+    MyScheduler() : StaticThread<>("myScheduler", 10) {}
     void run() {
         TIME_LOOP(1 * SECONDS, 2 * SECONDS) {
             PRINTF("-----------------------------------\n");

@@ -2,10 +2,10 @@
 
 #include "demo_topics.h"
 
-static Application senderName("Publisher 02 Timeevent", 1200);
+static Application senderName("Publisher 02 TimeEvent", 1200);
 
 /** ANTI-Example
- ** do no publish from an interrutp server
+ ** do no publish from an interrupt server
  *  see tutorials interrupts to see how to do it
  */
 

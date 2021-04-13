@@ -15,7 +15,7 @@ class Sender : public StaticThread<> {
                 xprintf("Fifo full\n");
             }
             if((cnt % 20) == 0) {
-                xprintf("Sender Wainting 3 seconds\n");
+                xprintf("Sender Waiting 3 seconds\n");
                 suspendCallerUntil(NOW() + 3 * SECONDS);
             }
         }

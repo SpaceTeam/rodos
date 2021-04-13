@@ -4,7 +4,7 @@ static Application module02("PriorityCeiling", 3000);
 
 class PriorityCeiler : public StaticThread<> {
   public:
-    PriorityCeiler() : StaticThread<>("PriotyCeiler", 20) {
+    PriorityCeiler() : StaticThread<>("PriorityCeiler", 20) {
     }
 
     void init() {
@@ -14,22 +14,22 @@ class PriorityCeiler : public StaticThread<> {
 
     void run() {
         suspendCallerUntil(3 * SECONDS);
-        int64_t aproxLoopsFor3Seconds = getSpeedKiloLoopsPerSecond() * 1500LL;
-        int64_t aproxLoopsForPrint    = aproxLoopsFor3Seconds / 80;
+        int64_t approxLoopsFor3Seconds = getSpeedKiloLoopsPerSecond() * 1500LL;
+        int64_t approxLoopsForPrint    = approxLoopsFor3Seconds / 80;
 
         xprintf("\nPriority ceiler 122 times normal\n");
-        for(int64_t cnt = 0; cnt < aproxLoopsFor3Seconds; cnt++) {
-            if(cnt % aproxLoopsForPrint == 0) {
+        for(int64_t cnt = 0; cnt < approxLoopsFor3Seconds; cnt++) {
+            if(cnt % approxLoopsForPrint == 0) {
                 xprintf("-");
                 FFLUSH();
             }
         }
 
-        xprintf("\nPriority ceiler 122 tmes prio ceiling\n");
+        xprintf("\nPriority ceiler 122 times prio ceiling\n");
         {
             PRIORITY_CEILER_IN_SCOPE();
-            for(int64_t cnt = 0; cnt < aproxLoopsFor3Seconds; cnt++) {
-                if(cnt % aproxLoopsForPrint == 0) {
+            for(int64_t cnt = 0; cnt < approxLoopsFor3Seconds; cnt++) {
+                if(cnt % approxLoopsForPrint == 0) {
                     xprintf("-");
                     FFLUSH();
                 }
@@ -37,8 +37,8 @@ class PriorityCeiler : public StaticThread<> {
         }
 
         xprintf("\nPriority ceiler 122 times normal\n");
-        for(int64_t cnt = 0; cnt < aproxLoopsFor3Seconds; cnt++) {
-            if(cnt % aproxLoopsForPrint == 0) {
+        for(int64_t cnt = 0; cnt < approxLoopsFor3Seconds; cnt++) {
+            if(cnt % approxLoopsForPrint == 0) {
                 xprintf("-");
                 FFLUSH();
             }
@@ -46,8 +46,8 @@ class PriorityCeiler : public StaticThread<> {
 
 
         xprintf("\nPriority ceiler 122 times normal\n");
-        for(int64_t cnt = 0; cnt < aproxLoopsFor3Seconds; cnt++) {
-            if(cnt % aproxLoopsForPrint == 0) {
+        for(int64_t cnt = 0; cnt < approxLoopsFor3Seconds; cnt++) {
+            if(cnt % approxLoopsForPrint == 0) {
                 xprintf("-");
                 FFLUSH();
             }

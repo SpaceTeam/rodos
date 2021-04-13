@@ -2,7 +2,7 @@
 #include "demo_topics.h"
 #include "mask.h"
 
-static Application  receiverName("ReciverPutter", 1100);
+static Application  receiverName("ReceiverPutter", 1100);
 
 class JustPrint : public Putter {
 
@@ -16,7 +16,7 @@ class JustPrint : public Putter {
 	}
 } justPrint;
 
-/** Two subscriber doint the same.... */
+/** Two subscribers doing the same.... */
 static Subscriber nameNotImportant01(counter1, justPrint, "justprint01");
 static Subscriber nameNotImportant02(counter2, justPrint, "justprint02");
 //static Subscriber nameNotImportant03(position, justPrint, "justprint03");

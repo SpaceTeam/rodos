@@ -2,7 +2,7 @@
 #include "demo_topics.h"
 #include "mask.h"
 
-static Application  receiverName("ReciverSync", 1400);
+static Application  receiverName("ReceiverSync", 1400);
 
 static SyncFifo<long, 5> fifo;
 static Subscriber nameNotImportant02(counter1, fifo, "fifo");

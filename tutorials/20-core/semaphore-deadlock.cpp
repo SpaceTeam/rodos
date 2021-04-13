@@ -1,7 +1,7 @@
 #include "rodos.h"
 #include "random.h"
 
-static Application module("semaphordeadlok");
+static Application module("semaphoreDeadlock");
 
 Semaphore s1, s2;
 

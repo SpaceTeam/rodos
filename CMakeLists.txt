@@ -14,7 +14,7 @@ if (COVERAGE)
 endif ()
 
 if (NOT DEFINED port_dir)
-  message(FATAL_ERROR "port not correct (CMAKE_TOOCHAIN_FILE, see readme)")
+  message(FATAL_ERROR "port not correct (CMAKE_TOOLCHAIN_FILE, see readme)")
 endif ()
 
 #___________________________________________________________________

@@ -30,7 +30,7 @@ class TestTimeBeat : public StaticThread<> {
         while(1) {
             resumer.resumeThreadAt(this, NOW() + 3 * SECONDS);
             double t0 = SECONDS_NOW();
-            PRINTF("Timenow =  %3.9f\n", t0);
+            PRINTF("Time now = %3.9f\n", t0);
             suspendCallerUntil();
         }
     }

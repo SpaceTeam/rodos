@@ -30,7 +30,7 @@ class HiPriorityThread : public StaticThread<> {
         int64_t          intervalToPrint = getSpeedKiloLoopsPerSecond() * 10;
         xprintf("\nHi prio waits 1 second and then print +\n");
         AT(1 * SECONDS);
-        xprintf("\nHi Priority in bussy waiting\n");
+        xprintf("\nHi Priority in busy waiting\n");
         while(NOW() < 5 * SECONDS) {
             if(++cnt % intervalToPrint == 0) {
                 xprintf("+");

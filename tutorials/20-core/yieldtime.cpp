@@ -1,6 +1,6 @@
 #include "rodos.h"
 
-static Application module01("YieldTimeMeassure");
+static Application module01("YieldTimeMeasure");
 
 Semaphore printProtect;
 
@@ -18,7 +18,7 @@ class TestThread : public StaticThread<> {
                 printProtect.enter();
                 PRINTF(" %s: ", getName());
                 PRINTF("cnt = %ld, ", (long)yieldCnt);
-                PRINTF("totalyiels = %ld, ", (long)getScheduleCounter());
+                PRINTF("totalyields = %ld, ", (long)getScheduleCounter());
                 PRINTF("Time = %3.9f, ", (double)timeNow / SECONDS);
                 PRINTF("nsec/dispatchCnt = %ld  ", (long)(((double)timeNow / (double)getScheduleCounter()) * NANOSECONDS));
                 PRINTF("nsec/yieldCnt = %ld\n", (long)(((double)timeNow / (double)yieldGlobal) * NANOSECONDS));

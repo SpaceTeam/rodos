@@ -8,7 +8,7 @@ class IdelCntPrinter : public StaticThread<> {
         int64_t timeToEnd;
 
         getCpuLoad();
-        PRINTF("\n--------------------- meassuremens every 2 seconds\n");
+        PRINTF("\n--------------------- measurements every 2 seconds\n");
         PRINTF("\n----------------------- 0 cpu load:\n");
         getCpuLoad();
         suspendCallerUntil(NOW() + 2 * SECONDS);

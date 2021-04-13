@@ -11,7 +11,7 @@ class Sender : public StaticThread<> {
         while(1) {
             fifo.put(cnt++);
             if((cnt % 15) == 0) {
-                PRINTF("Wainting 3 seconds\n");
+                PRINTF("Waiting 3 seconds\n");
                 suspendCallerUntil(NOW() + 3 * SECONDS);
             }
         }

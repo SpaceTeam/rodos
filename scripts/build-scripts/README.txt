@@ -59,7 +59,7 @@ to ${RODOS_BUILD} which is defined in setenvs.sh
 The final executable will be in the same directory where
 you call rodos-executable.sh xxx <list of source files>
 
-Scrips you will use:
+Scripts you will use:
     rodos-lib.sh <architecture>     
         compile the required rodos sources and generates the rodoslib.a
         it will be places in ${RODOS_LIBS}/<architecture>/rodoslib.a

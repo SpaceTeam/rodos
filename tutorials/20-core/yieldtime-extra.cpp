@@ -10,7 +10,7 @@ class SimpleThread : public StaticThread<> {
             yieldCnt++;
             if((yieldCnt % 100000) == 0) {
                 long long timeNow = NOW();
-                PRINTF(" %s: cnt = %lld, totalyiels = %lld, Time = %3.9f  nsec/dispatchCnt = %ld\n",
+                PRINTF(" %s: cnt = %lld, totalyields = %lld, Time = %3.9f  nsec/dispatchCnt = %ld\n",
                        getName(),
                        yieldCnt,
                        getScheduleCounter(),

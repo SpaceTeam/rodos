@@ -13,7 +13,7 @@ public:
 	void run () {
 		long cnt = 10000;
 		TIME_LOOP(3*SECONDS, 3*SECONDS) {
-			PRINTF(PX "%ld" PY "%ld" PZ "%ld\n", cnt, cnt, cnt);
+			PRINTF(PX "%ld" PY "%ld" PZ "%ld\n", cnt, cnt+1, cnt+2);
 			myPos.x = static_cast<float>(cnt++);
 			myPos.y = static_cast<float>(cnt++);
 			myPos.z = static_cast<float>(cnt++);

@@ -12,11 +12,11 @@ void MAIN() {
 }
 
 
-static Application module01("utcprinter");
+static Application module01("utcPrinter");
 
 class PrintTime : public StaticThread<> {
   public:
-    PrintTime() : StaticThread<>("printtime") {}
+    PrintTime() : StaticThread<>("printTime") {}
     void init() { PRINTF("Waiting 2 seconds"); }
     void run();
 };
