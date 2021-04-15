@@ -217,4 +217,8 @@ inline double SECONDS_NOW() {
     return ((double)RODOS::TimeModel::getNanoseconds() / (double)SECONDS);
 }
 
+inline void busyWaitUntil(int64_t endTime){
+    while(NOW()<endTime);
+}
+
 } // namespace RODOS

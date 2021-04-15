@@ -1,4 +1,3 @@
-
 /**
 * @file misc.cc
 * @date 2008/04/22 17:08
@@ -20,7 +19,7 @@ namespace RODOS {
 
 bool isSchedulerRunning() { return schedulerRunning; }
 
-char xmallocBuf[XMALLOC_SIZE] = {0,0,0,0} ;
+char xmallocBuf alignas(uint64_t) [XMALLOC_SIZE] = {0,0,0,0} ;
 
 void* xmalloc(size_t len) {
    static size_t index = 0;
@@ -34,6 +33,15 @@ void* xmalloc(size_t len) {
    void *allocated =  &xmallocBuf[index];
    index += len;
    return allocated;
+}
+
+void* xmallocAndTrapOnFailure(size_t len){
+    void* p { xmalloc(len) };
+    if(p==nullptr){
+        __builtin_trap();    
+    }else{
+        return p;
+    }
 }
 
 
