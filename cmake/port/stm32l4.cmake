@@ -22,7 +22,7 @@ endif()
 set(CMAKE_CXX_STANDARD 20 CACHE STRING "C++ Standard (toolchain)" FORCE)
 set(compile_and_link_options
     -mcpu=cortex-m4
-    -mfloat-abi=hard
+    -mfloat-abi=softfp
     -mfpu=fpv4-sp-d16)
 add_compile_options(
     ${compile_and_link_options}
