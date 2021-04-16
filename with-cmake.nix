@@ -46,5 +46,5 @@ in
   skith = compile_only "skith" pkgsCross.arm-embedded.stdenv;
   raspberrypi3 = compile_only "raspberrypi3" pkgsCross.arm-embedded.stdenv;
   sf2 = compile_only "sf2" pkgsCross.arm-embedded.stdenv;
-
+  nucleo_l496zg = compile_only "nucleo_l496zg" pkgsCross.arm-embedded.stdenv;
 }

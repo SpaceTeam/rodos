@@ -70,6 +70,13 @@ skith:
   variables:
     TARGET: skith
 
+nucleo_l496zg:
+  extends: .compile_tmpl
+  before_script:
+    - nix-channel --add https://nixos.org/channels/nixpkgs-unstable nixpkgs
+    - nix-channel --update
+  variables:
+    TARGET: nucleo_l496zg
 
 
 
