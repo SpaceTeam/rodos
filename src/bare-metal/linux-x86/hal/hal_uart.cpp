@@ -64,6 +64,103 @@ HAL_UART::HAL_UART(UART_IDX uartIdx) {
     context->fd       = -1;
 }
 
+/**
+ * Maps a given baudrate to a c_cflags speed constant
+ * (Basically the magic constants that you have to give the
+ * cfsetispeed function).
+ * The POSIX constants are defined in bits/termios.h,
+ * and the extra non-POSIX ones are from x86_64-linux-gnu/bits/termios-baud.h
+ * Returns zero if the baudrate is not listed in here
+ */
+static speed_t standardBaudrateLookup(unsigned int baudrate) {
+
+    switch(baudrate) {
+        // POSIX standard baudrates
+        case 50: return B50;
+        case 75: return B75;
+        case 110: return B110;
+        case 134: return B134;
+        case 150: return B150;
+        case 200: return B200;
+        case 300: return B300;
+        case 600: return B600;
+        case 1200: return B1200;
+        case 1800: return B1800;
+        case 2400: return B2400;
+        case 4800: return B4800;
+        case 9600: return B9600;
+        case 19200: return B19200;
+        case 38400: return B38400;
+
+        // extra non-POSIX baudrates
+        // hidded behind ifdef checks so we dont fail to compile on
+        // platforms where this is not supported
+
+#ifdef B57600
+        case 57600: return B57600;
+#endif
+
+#ifdef B115200
+        case 115200: return B115200;
+#endif
+
+#ifdef B230400
+        case 230400: return B230400;
+#endif
+
+#ifdef B460800
+        case 460800: return B460800;
+#endif
+
+#ifdef B500000
+        case 500000: return B500000;
+#endif
+
+#ifdef B576000
+        case 576000: return B576000;
+#endif
+
+#ifdef B921600
+        case 921600: return B921600;
+#endif
+
+#ifdef B1000000
+        case 1000000: return B1000000;
+#endif
+
+#ifdef B1152000
+        case 1152000: return B1152000;
+#endif
+
+#ifdef B1500000
+        case 1500000: return B1500000;
+#endif
+
+#ifdef B2000000
+        case 2000000: return B2000000;
+#endif
+
+#ifdef B2500000
+        case 2500000: return B2500000;
+#endif
+
+#ifdef B3000000
+        case 3000000: return B3000000;
+#endif
+
+#ifdef B3500000
+        case 3500000: return B3500000;
+#endif
+
+#ifdef B4000000
+        case 4000000: return B4000000;
+#endif
+
+        // nothing matched
+        default: return 0;
+    }
+}
+
 
 /*
  * USART
@@ -86,74 +183,19 @@ int HAL_UART::init(uint32_t iBaudrate) {
     t.c_cc[VMIN]  = 1;           //TW:/* wait for 1 byte */
     t.c_cc[VTIME] = 0;           //TW:/* turn off timer */
 
-    switch(iBaudrate) {
-        case 50:
-            cfsetispeed(&t, B50);
-            cfsetospeed(&t, B50);
-            break;
-        case 75:
-            cfsetispeed(&t, B75);
-            cfsetospeed(&t, B75);
-            break;
-        case 110:
-            cfsetispeed(&t, B110);
-            cfsetospeed(&t, B110);
-            break;
-        case 134:
-            cfsetispeed(&t, B134);
-            cfsetospeed(&t, B134);
-            break;
-        case 150:
-            cfsetispeed(&t, B150);
-            cfsetospeed(&t, B150);
-            break;
-        case 300:
-            cfsetispeed(&t, B300);
-            cfsetospeed(&t, B300);
-            break;
-        case 600:
-            cfsetispeed(&t, B600);
-            cfsetospeed(&t, B600);
-            break;
-        case 1200:
-            cfsetispeed(&t, B1200);
-            cfsetospeed(&t, B1200);
-            break;
-        case 2400:
-            cfsetispeed(&t, B2400);
-            cfsetospeed(&t, B2400);
-            break;
-        case 4800:
-            cfsetispeed(&t, B4800);
-            cfsetospeed(&t, B4800);
-            break;
-        case 9600:
-            cfsetispeed(&t, B9600);
-            cfsetospeed(&t, B9600);
-            break;
-        case 19200:
-            cfsetispeed(&t, B19200);
-            cfsetospeed(&t, B19200);
-            break;
-        case 38400:
-            cfsetispeed(&t, B38400);
-            cfsetospeed(&t, B38400);
-            break;
-        case 57600:
-            cfsetispeed(&t, B57600);
-            cfsetospeed(&t, B57600);
-            break;
-        case 115200:
-            cfsetispeed(&t, B115200); /* normal shall be: B115200 Baud */
-            cfsetospeed(&t, B115200);
-            break;
-        case 230400:
-            cfsetispeed(&t, B230400);
-            cfsetospeed(&t, B230400);
-            break;
-        default:
-            xprintf("UART: baudrate not supported: %d\n", iBaudrate);
-            return -1;
+    speed_t speed = standardBaudrateLookup(iBaudrate);
+    if(speed != 0) {
+        // can use a "default" baudrate, no hacks required
+        cfsetispeed(&t, speed);
+        cfsetospeed(&t, speed);
+    } else {
+        // non-default baudrate, hacks would be required...
+        // if you find yourself here, needing a non-default baudrate on linux,
+        // maybe the following is of some help?
+        // https://stackoverflow.com/a/19440269
+
+        xprintf("UART: baudrate not supported: %d\n", iBaudrate);
+        return -1;
     }
 
     int fd      = open(devname, O_RDWR | O_NDELAY);
