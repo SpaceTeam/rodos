@@ -15,10 +15,7 @@
 namespace RODOS {
 
   /* ToDo:
-   * - set baudrate
    * - test writeRead()
-   * - reset()
-   * - config()?
    * - timeout for while-loops?
    * - slave mode
    * - interrupts?
@@ -217,13 +214,13 @@ int32_t HAL_I2C::init(uint32_t speed) {
 
     // Initializing the I2C
     I2C_Init_TypeDef i2cInit = I2C_INIT_DEFAULT; // Using default settings
+    i2cInit.freq = speed;
     I2C_Init(context->I2Cx, &i2cInit);
-
-    //context->I2Cx->CTRL = I2C_CTRL_AUTOSN; // send a STOP if a NACK is received
 
     context->isMaster = true;
     context->initialized = true;
 
+    //PRINTF("I2C peripheral clock: %d\n", CMU_ClockFreqGet(cmuClock_I2C0));
     //PRINTF("I2C clock: %d\n", I2C_BusFreqGet(context->I2Cx));
 
     return 0;
@@ -233,6 +230,13 @@ int32_t HAL_I2C::init(uint32_t speed) {
 void HAL_I2C::reset() {
     context->isMaster = false;
     context->initialized = false;
+
+    if (context->I2Cx == NULL) return;
+
+    I2C_Reset(context->I2Cx);
+
+    GPIO_PinModeSet(HW_HAL_GPIO::getEFR32Port(context->GPIO_Pin_SCL), HW_HAL_GPIO::getEFR32Pin(context->GPIO_Pin_SCL), gpioModeDisabled, 0);
+    GPIO_PinModeSet(HW_HAL_GPIO::getEFR32Port(context->GPIO_Pin_SDA), HW_HAL_GPIO::getEFR32Pin(context->GPIO_Pin_SDA), gpioModeDisabled, 0);
 }
 
 
@@ -247,7 +251,8 @@ bool HAL_I2C::isReadFinished(){
 
 
 int32_t HAL_I2C::write(const uint8_t addr, const uint8_t* txBuf, uint32_t txBufSize) {
-	if (txBufSize == 0) return 0;
+  if (!context->initialized) return -1;
+ 	if (txBufSize == 0) return 0;
 
   // Transfer structure
   I2C_TransferSeq_TypeDef i2cTransfer;
@@ -290,6 +295,7 @@ int32_t HAL_I2C::write(const uint8_t addr, const uint8_t* txBuf, uint32_t txBufS
 
 
 int32_t HAL_I2C::read(const uint8_t addr, uint8_t* rxBuf, uint32_t rxBufSize) {
+  if (!context->initialized) return -1;
 	if (rxBufSize == 0) return 0;
 
 	// Transfer structure
@@ -334,6 +340,7 @@ int32_t HAL_I2C::read(const uint8_t addr, uint8_t* rxBuf, uint32_t rxBufSize) {
 
 
 int32_t HAL_I2C::writeRead(const uint8_t addr, const uint8_t* txBuf, uint32_t txBufSize, uint8_t* rxBuf, uint32_t rxBufSize) {
+  if (!context->initialized) return -1;
 
   // Transfer structure
   I2C_TransferSeq_TypeDef i2cTransfer;
@@ -400,5 +407,5 @@ int32_t HAL_I2C::writeRead(const uint8_t addr, const uint8_t* txBuf, uint32_t tx
 }
 
 
-}
+} // namespace RODOS
 
