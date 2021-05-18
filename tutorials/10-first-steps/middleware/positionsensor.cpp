@@ -3,16 +3,17 @@
 #include "random.h"
 
 class PositionSensor : public StaticThread<> {
-  public:
+public:
     PositionSensor() : StaticThread<>("PositionSensor") {}
 
     void run() {
-        Pos p = { 0.0, 0.0, 0.0 };
+        Pos p = {0.0, 0.0, 0.0};
         TIME_LOOP(2 * SECONDS, 3 * SECONDS) {
+            // calculates random movement
             p.x += (uint32Rand() % 40) * 0.05 - 1;
             p.y += (uint32Rand() % 40) * 0.05 - 1;
             p.z += (uint32Rand() % 40) * 0.05 - 1;
-            position.publish(p);
+            position.publish(p); // publishes new position in topic "position"
         }
     }
 } positionSensor;

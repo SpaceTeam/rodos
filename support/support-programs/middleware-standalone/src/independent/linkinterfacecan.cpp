@@ -29,7 +29,7 @@ void LinkinterfaceCAN::init() {
 
     can.addIncomingFilter(
 		CAN_LINK_ID,
-		uint32_tOnes(CAN_LINK_NODE_BITS+CAN_LINK_TOPIC_BITS),
+		uint32_t(CAN_LINK_NODE_BITS+CAN_LINK_TOPIC_BITS),
 		true);
     can.setIoEventReceiver(this);
 }
@@ -42,8 +42,8 @@ bool LinkinterfaceCAN::sendNetworkMsg(NetworkMessage &outMsg)	{
 	char buffer[8];
 
 	uint16_t dataLength = outMsg.get_len();
-	uint32_t senderNode = outMsg.get_senderNode() & uint32_tOnes(CAN_LINK_NODE_BITS);
-	uint32_t topicId= outMsg.get_topicId() & uint32_tOnes(CAN_LINK_TOPIC_BITS);
+	uint32_t senderNode = outMsg.get_senderNode() & uint32_t(CAN_LINK_NODE_BITS);
+	uint32_t topicId= outMsg.get_topicId() & uint32_t(CAN_LINK_TOPIC_BITS);
 
 	uint32_t canID = CAN_LINK_ID |(topicId << CAN_LINK_NODE_BITS ) | senderNode; //Construct CAN ID of fixed ID+topicID+nodeID
 
@@ -221,10 +221,10 @@ bool LinkinterfaceCAN::appendCANMsgToCurrentNetMsg(BufferedCANMessage* canMsg){
 		currentReceiveCANId=canMsg->canID;
 
 		currentMsg->put_maxStepsToForward(5);
-		currentMsg->put_senderNode(static_cast<int32_t>(currentReceiveCANId & uint32_tOnes(CAN_LINK_NODE_BITS)));
+		currentMsg->put_senderNode(static_cast<int32_t>(currentReceiveCANId & uint32_t(CAN_LINK_NODE_BITS)));
 		currentMsg->put_senderThreadId(0);
 		currentMsg->put_sentTime(fakeTime++);
-		currentMsg->put_topicId((currentReceiveCANId >> CAN_LINK_NODE_BITS) & uint32_tOnes(CAN_LINK_TOPIC_BITS));
+		currentMsg->put_topicId((currentReceiveCANId >> CAN_LINK_NODE_BITS) & uint32_t(CAN_LINK_TOPIC_BITS));
 		currentMsg->put_len(len);
 		currentDataPointer = currentMsg->userDataC;
 		bytesReceived=0;

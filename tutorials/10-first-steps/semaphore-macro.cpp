@@ -1,10 +1,10 @@
 #include "rodos.h"
 
 Semaphore onlyOne;
-char      globalCnt = 'A';
+char globalCnt = 'A';
 
 class Watcher : public StaticThread<> {
-  public:
+public:
     void run() {
 
         char myId;
@@ -14,13 +14,13 @@ class Watcher : public StaticThread<> {
         myId = globalCnt++;
         onlyOne.leave();
 
-        while(1) {
-            PROTECT_IN_SCOPE(onlyOne);
+        while (1) {
+            PROTECT_IN_SCOPE(onlyOne); // protection with semaphore "onlyOne"
 
             PRINTF(" only one, I am -- %c -- ", myId);
             yield(); // Just to show that the semaphore protects
             PRINTF("time %3.9f from %c\n", SECONDS_NOW(), myId); // Shall be the same from the first printf
-        }
+        } // end of critical section
     }
 
 } team[20];

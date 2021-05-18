@@ -47,7 +47,7 @@ void LinkinterfaceCAN::init() {
 
     can.addIncomingFilter(
 		CAN_LINK_ID,
-		uint32_tOnes(CAN_LINK_NODE_BITS+CAN_LINK_TOPIC_BITS),
+		uint32_t(CAN_LINK_NODE_BITS+CAN_LINK_TOPIC_BITS),
 		true);
     can.setIoEventReceiver(this);
 }
