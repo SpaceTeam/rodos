@@ -5,7 +5,7 @@
 ├── doc
 ├── scripts
 │   ├── build-scripts
-│   └── help-scripss
+│   └── help-scripts
 │       └── git-aware-prompt
 ├── src
 │   ├── bare-metal
