@@ -6,7 +6,7 @@ Semaphore protector;
 
 class TestThread : public StaticThread<> {
     void run() {
-        while(1) {
+        while (1) {
             xprintf("%s\n", getName());
             yield();
             xprintf("%s before protector \n", getName());
@@ -31,8 +31,8 @@ class TestThread : public StaticThread<> {
         }
     }
 
-  public:
-    TestThread(const char* name) : StaticThread<>(name) {}
+public:
+    TestThread(const char *name) : StaticThread<>(name) {}
 };
 
 

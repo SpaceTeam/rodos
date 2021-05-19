@@ -9,7 +9,7 @@ uint32_t printfMask = 0; //Be aware: it is outside of namespace RODOS
 
 
 class TestPrint : public StaticThread<> {
-  public:
+public:
     void run() {
         int loopCnt = 0;
 

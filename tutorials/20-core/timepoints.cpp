@@ -12,19 +12,20 @@ static Application module01("TestTimePoints");
 
 class TestThread : public StaticThread<> {
 
-  private:
+private:
     TimePoints<30> tp;
 
-  public:
-    TestThread(const char* name = "TestThread") : StaticThread<>(name) {}
+public:
+    TestThread(const char *name = "TestThread") : StaticThread<>(name) {}
 
     void run() {
         int i = 0;
         tp.add("run");
         tp.add("next entry");
-        tp.printAll(); tp.clear();
-        while(1) {
-            if((i % 30) == 0) {
+        tp.printAll();
+        tp.clear();
+        while (1) {
+            if ((i % 30) == 0) {
                 PRINTF("\n\n____________________________________\n");
                 PRINTF("my own log:\n");
                 tp.printAll();

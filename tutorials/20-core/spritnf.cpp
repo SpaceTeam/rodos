@@ -2,7 +2,7 @@
 
 
 class TestPrint : public StaticThread<> {
-  public:
+public:
     void run() {
         char outbuf[100];
 

@@ -10,11 +10,11 @@
 static Application module01("TestErrorLog");
 
 class TestErrorLog : public StaticThread<> {
-  public:
+public:
     TestErrorLog() : StaticThread<>("TestErrorLog") {}
 
     void run() {
-        if(!errorLog.isEmpty()) {
+        if (!errorLog.isEmpty()) {
             PRINTF("Errors prior to my execution: ");
             errorLog.printAll();
         }
@@ -24,8 +24,8 @@ class TestErrorLog : public StaticThread<> {
 
         errorLog.add("here starts my loop");
         int loopCnt = 0;
-        while(1) {
-            if(loopCnt > 10) {
+        while (1) {
+            if (loopCnt > 10) {
                 PRINTF("________________________ error log:\n");
                 errorLog.printAll();
                 errorLog.clear();

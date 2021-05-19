@@ -7,7 +7,8 @@ void MAIN() {
     int64_t timeNow;
 
     timeNow = TimeModel::calendar2LocalTime(2008, 11, 12, 17, 35, 34.21);
-    xprintf("Time now (now == creation of this prog) in localTime (nanoseconds)  = %lld\n", static_cast<long long>(timeNow));
+    xprintf("Time now (now == creation of this prog) in localTime (nanoseconds)  = %lld\n",
+            static_cast<long long>(timeNow));
     sysTime.setUTC(timeNow);
 }
 
@@ -15,9 +16,11 @@ void MAIN() {
 static Application module01("utcPrinter");
 
 class PrintTime : public StaticThread<> {
-  public:
+public:
     PrintTime() : StaticThread<>("printTime") {}
+
     void init() { PRINTF("Waiting 2 seconds"); }
+
     void run();
 };
 
@@ -27,7 +30,7 @@ void PrintTime::run() {
     int32_t day;
     int32_t hour;
     int32_t min;
-    double  sec;
+    double sec;
 
     uint32_t ccsdsSeconds;
     uint32_t ccsdsFraction;
@@ -38,10 +41,11 @@ void PrintTime::run() {
         PRINTF("UTC in localTime (nanoseconds)  = %lld  ", static_cast<long long>(utcNow));
         TimeModel::localTime2Calendar(utcNow, year, month, day, hour, min, sec);
         PRINTF("  -> %d.%d.%d  %d:%d:  %6.3f\n",
-               (int)day, (int)month, (int)year, (int)hour, (int)min, sec);
+               (int) day, (int) month, (int) year, (int) hour, (int) min, sec);
 
         TimeModel::splitTimeECSS(NOW(), ccsdsSeconds, ccsdsFraction);
-        PRINTF("CCSDS Time = (%d 0x%08x).(%d 0x%08x)\n", (int)ccsdsSeconds, (int)ccsdsSeconds, (int)ccsdsFraction, (int)ccsdsFraction);
+        PRINTF("CCSDS Time = (%d 0x%08x).(%d 0x%08x)\n", (int) ccsdsSeconds, (int) ccsdsSeconds, (int) ccsdsFraction,
+               (int) ccsdsFraction);
     }
 }
 

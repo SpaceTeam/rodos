@@ -7,11 +7,12 @@
 static Application terminateTestApp("terminateTest");
 
 class TerminateTest : public StaticThread<> {
-  public:
+public:
     TerminateTest() : StaticThread<>("TerminateTest", CEILING_PRIORITY) {}
+
     void run() {
         PRINTF("\nThis run (test) will be terminated in %d Seconds\n", TIME_TO_END);
-        AT(TIME_TO_END*SECONDS);
+        AT(TIME_TO_END * SECONDS);
         PRINTF("\nThis run (test) terminates now! (%s)\n", LOCATION);
         hwResetAndReboot();
     }

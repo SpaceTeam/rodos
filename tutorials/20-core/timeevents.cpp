@@ -12,7 +12,7 @@
 static Application module01("TestTimeEvents");
 
 class TimeEventTest : public TimeEvent {
-  protected:
+protected:
     void handle() {
         xprintf("SINGLE Time Event at %3.9f\n", SECONDS_NOW());
     }
@@ -25,7 +25,7 @@ class TimeEventTest : public TimeEvent {
 static TimeEventTest te01;
 
 class TimeEventTestPeriodic : public TimeEvent {
-  public:
+public:
     void handle() {
         xprintf("Periodic Time Event at %3.9f\n", SECONDS_NOW());
     }
@@ -38,7 +38,7 @@ class TimeEventTestPeriodic : public TimeEvent {
 static TimeEventTestPeriodic te02;
 
 class TimeEventTest3 : public TimeEvent {
-  protected:
+protected:
     void handle() {
         xprintf("activateAt Time Event at %3.9f, reactivation in 2 seconds\n", SECONDS_NOW());
         activateAt(NOW() + 2 * SECONDS);

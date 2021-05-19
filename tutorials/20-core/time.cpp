@@ -4,7 +4,7 @@ static Application module02("TestTimeAT");
 
 static class TestTime : public StaticThread<> {
 
-  public:
+public:
     TestTime() : StaticThread<>("waitAT") {}
 
     void run() {

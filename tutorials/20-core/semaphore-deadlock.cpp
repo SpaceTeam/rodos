@@ -9,7 +9,7 @@ Semaphore s1, s2;
 class Requester : public StaticThread<> {
     char id;
 
-  public:
+public:
     Requester(char name) {
         id = name;
     }
@@ -21,30 +21,30 @@ class Requester : public StaticThread<> {
 
         TIME_LOOP(0, 100 * MILLISECONDS) {
             int action = uint32Rand() % 4;
-            switch(action) {
+            switch (action) {
                 case 0:
-                    if(s1Lock) break;
+                    if (s1Lock) break;
                     PRINTF("%c enter 1\n", id);
                     s1.enter();
                     s1Lock = true;
                     break;
 
                 case 1:
-                    if(s2Lock) break;
+                    if (s2Lock) break;
                     PRINTF("%c enter 2\n", id);
                     s2.enter();
                     s2Lock = true;
                     break;
 
                 case 2:
-                    if(!s1Lock) break;
+                    if (!s1Lock) break;
                     PRINTF("%c leave 1\n", id);
                     s1.leave();
                     s1Lock = false;
                     break;
 
                 case 3:
-                    if(!s2Lock) break;
+                    if (!s2Lock) break;
                     PRINTF("%c leave 2\n", id);
                     s2.leave();
                     s2Lock = false;

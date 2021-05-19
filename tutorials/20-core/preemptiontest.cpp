@@ -5,7 +5,7 @@
 static Application module01("PreemptiveTest", 2000);
 
 class HighPriorityThread : public StaticThread<> {
-  public:
+public:
     HighPriorityThread() : StaticThread<>("HiPriority", 25) {
     }
 
@@ -14,7 +14,7 @@ class HighPriorityThread : public StaticThread<> {
     }
 
     void run() {
-        while(1) {
+        while (1) {
             xprintf("*");
             FFLUSH();
             suspendCallerUntil(NOW() + 500 * MILLISECONDS);
@@ -24,7 +24,7 @@ class HighPriorityThread : public StaticThread<> {
 
 
 class LowPriorityThread : public StaticThread<> {
-  public:
+public:
     LowPriorityThread() : StaticThread<>("LowPriority", 10) {
     }
 
@@ -33,11 +33,11 @@ class LowPriorityThread : public StaticThread<> {
     }
 
     void run() {
-        volatile int64_t cnt             = 0;
-        int64_t          intervalToPrint = getSpeedKiloLoopsPerSecond() * 10;
-        while(1) {
+        volatile int64_t cnt = 0;
+        int64_t intervalToPrint = getSpeedKiloLoopsPerSecond() * 10;
+        while (1) {
             cnt++;
-            if(cnt % intervalToPrint == 0) {
+            if (cnt % intervalToPrint == 0) {
                 xprintf(".");
                 FFLUSH();
             }
@@ -49,6 +49,6 @@ class LowPriorityThread : public StaticThread<> {
 /******************/
 
 HighPriorityThread highPriorityThread;
-LowPriorityThread  lowPriorityThread;
+LowPriorityThread lowPriorityThread;
 
 /******************/

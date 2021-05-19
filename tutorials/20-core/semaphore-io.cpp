@@ -2,12 +2,12 @@
 
 /****** Use modulId 2000 just be be found by other example: ceiler **/
 
-void veryLowSpeedPrinter(const char* text) {
+void veryLowSpeedPrinter(const char *text) {
     int32_t intervalToPrint = getSpeedKiloLoopsPerSecond() * 10;
-    int64_t cnt             = 0;
-    for(const char* cptr = text; *cptr != 0;) {
+    int64_t cnt = 0;
+    for (const char *cptr = text; *cptr != 0;) {
         cnt++;
-        if(cnt % intervalToPrint == 0) {
+        if (cnt % intervalToPrint == 0) {
             xprintf("%c", *cptr);
             cptr++;
             FFLUSH();

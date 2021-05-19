@@ -21,7 +21,7 @@ enum class AnomalyId : uint32_t {
 class TestError : public StaticThread<> {
     void run() {
         PRINTF("\n\n________________________________- Error log (shall be empty)\n");
-        if(!errorLog.isEmpty()) errorLog.printAll();
+        if (!errorLog.isEmpty()) errorLog.printAll();
 
 
         printErrorReports = false; // Silent!
@@ -29,7 +29,7 @@ class TestError : public StaticThread<> {
         RODOS_ERROR("Second error");
 
         PRINTF("\n\n________________________________- Error log (first and second)\n");
-        if(!errorLog.isEmpty()) errorLog.printAll();
+        if (!errorLog.isEmpty()) errorLog.printAll();
 
         PRINTF("\n\n________________________________ now verbose error reports\n");
         printErrorReports = true; // verbose
@@ -37,7 +37,7 @@ class TestError : public StaticThread<> {
         RODOS_ERROR("Error nr 4");
 
         PRINTF("\n\n________________________________- Error log (first and second)\n");
-        if(!errorLog.isEmpty()) errorLog.printAll();
+        if (!errorLog.isEmpty()) errorLog.printAll();
 
     }
 } testError;

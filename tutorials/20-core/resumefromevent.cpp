@@ -3,9 +3,9 @@
 static Application module01("resumeFromEvent");
 
 class TestWaiter : public StaticThread<> {
-  public:
+public:
     void run() {
-        while(1) {
+        while (1) {
             PRINTF("Suspend and wait until some one resumes me\n");
             suspendCallerUntil();
             double t0 = SECONDS_NOW();
@@ -19,7 +19,7 @@ static TestWaiter testWaiter;
 
 
 class TimeEventTest : public TimeEvent {
-  public:
+public:
     void handle() {
         xprintf("   Time Event at %3.9f\n", SECONDS_NOW());
         testWaiter.resume();

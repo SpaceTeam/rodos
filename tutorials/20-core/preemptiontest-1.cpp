@@ -7,7 +7,7 @@ static Application module01("PreemptiveTest", 2000);
 class LowPriorityThread : public StaticThread<> {
     char symbol;
 
-  public:
+public:
     LowPriorityThread(char symbol) : StaticThread<>("LowPriority", 20) {
         this->symbol = symbol;
     }
@@ -17,11 +17,11 @@ class LowPriorityThread : public StaticThread<> {
     }
 
     void run() {
-        volatile int64_t cnt             = 0;
-        int64_t          intervalToPrint = getSpeedKiloLoopsPerSecond() * 10;
-        while(1) {
+        volatile int64_t cnt = 0;
+        int64_t intervalToPrint = getSpeedKiloLoopsPerSecond() * 10;
+        while (1) {
             cnt++;
-            if(cnt % intervalToPrint == 0) {
+            if (cnt % intervalToPrint == 0) {
                 xprintf("%c", symbol);
                 FFLUSH();
             }

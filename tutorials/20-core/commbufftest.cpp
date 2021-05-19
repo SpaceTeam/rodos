@@ -7,11 +7,11 @@ CommBuffer<int> buf;
 class Sender : public StaticThread<> {
     void run() {
         int cnt = 0;
-        while(1) {
+        while (1) {
             cnt++;
             PRINTF("Writing %d\n", cnt);
             buf.put(cnt);
-            if(cnt % 3 == 0) {
+            if (cnt % 3 == 0) {
                 PRINTF("Writing Zero\n");
                 buf.putZero();
             }
@@ -23,7 +23,7 @@ class Sender : public StaticThread<> {
 class Receiver : public StaticThread<> {
     void run() {
         int cnt;
-        while(1) {
+        while (1) {
             buf.get(cnt);
             PRINTF("Reading %d\n", cnt);
             suspendCallerUntil(NOW() + 2 * SECONDS);
@@ -33,5 +33,5 @@ class Receiver : public StaticThread<> {
 
 /******************************/
 
-Sender   sender;
+Sender sender;
 Receiver receiver;

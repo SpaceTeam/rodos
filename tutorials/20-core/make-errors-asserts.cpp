@@ -30,11 +30,11 @@ int testReturnWithAssert() {
 }
 
 class MakeError : public StaticThread<> {
-  public:
+public:
     MakeError() : StaticThread<>("makeError") {}
 
     void run() {
-        if(!errorLog.isEmpty()) {
+        if (!errorLog.isEmpty()) {
             PRINTF("Errors prior to my execution: ");
             errorLog.printAll();
         }

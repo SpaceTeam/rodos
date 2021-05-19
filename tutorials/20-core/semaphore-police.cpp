@@ -2,10 +2,10 @@
 #include "rodos.h"
 
 Semaphore onlyOne;
-int       globalCnt = 0;
+int globalCnt = 0;
 
 class Watcher : public StaticThread<> {
-  public:
+public:
     void run() {
         onlyOne.enter();
         int myId = globalCnt++;

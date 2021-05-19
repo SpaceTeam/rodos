@@ -1,7 +1,7 @@
 #include "rodos.h"
 
 class TestSNPrintf : public StaticThread<> {
-  public:
+public:
     void run() {
         char buffer[32];
 

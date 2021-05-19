@@ -8,7 +8,7 @@ void MAIN() {
 
 /***** output ********/
 class ThreadAA : public StaticThread<> {
-  public:
+public:
     void run() {
         int cnt = 0;
         TIME_LOOP(1 * SECONDS, 1 * SECONDS) { PRINTF(CNTAA "%d" INPUTLINE, cnt++); }
@@ -17,7 +17,7 @@ class ThreadAA : public StaticThread<> {
 
 
 class ThreadBB : public StaticThread<> {
-  public:
+public:
     void run() {
         int cnt = 0;
         TIME_LOOP(3 * SECONDS, 500 * MILLISECONDS) { PRINTF(CNTBB "%d" INPUTLINE, cnt++); }
@@ -27,12 +27,12 @@ class ThreadBB : public StaticThread<> {
 /********* Input *********/
 
 class CharReceiver : public Subscriber {
-  public:
+public:
     CharReceiver() : Subscriber(charInput, "CharReceiver") {}
 
-    void putFromInterrupt([[gnu::unused]] const uint32_t topicId, const void* data, [[gnu::unused]] size_t len) {
-        const GenericMsgRef* msg = static_cast<const GenericMsgRef*>(data);
+    void putFromInterrupt([[gnu::unused]] const uint32_t topicId, const void *data, [[gnu::unused]] size_t len) {
+        const GenericMsgRef *msg = static_cast<const GenericMsgRef *>(data);
         xprintf(READ "                      ");
-        xprintf(READ "%s\n", static_cast<char*>(msg->msgPtr)); // no PRINTF in interrupts (Semaphore)
+        xprintf(READ "%s\n", static_cast<char *>(msg->msgPtr)); // no PRINTF in interrupts (Semaphore)
     }
 } charReceiver;

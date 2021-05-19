@@ -8,7 +8,7 @@ static Application module01("priorityTest", 3000);
 
 
 class HiPriorityThread : public StaticThread<> {
-  public:
+public:
     HiPriorityThread() : StaticThread<>("HiPriority", 100) {
     }
 
@@ -18,10 +18,10 @@ class HiPriorityThread : public StaticThread<> {
 
     void run() {
         long long loopCnt = 0;
-        long long cnt     = 0;
-        while(cnt < LOOPS * 10) {
+        long long cnt = 0;
+        while (cnt < LOOPS * 10) {
             cnt++;
-            if(cnt % LOOPS == 0) {
+            if (cnt % LOOPS == 0) {
                 loopCnt++;
                 PRINTF("  hi pri cnt = %lld\n", loopCnt);
             }
@@ -33,7 +33,7 @@ class HiPriorityThread : public StaticThread<> {
 /******************/
 
 class LowPriorityThread : public StaticThread<> {
-  public:
+public:
     LowPriorityThread() : StaticThread<>("LowPriority", 30) {
     }
 
@@ -43,10 +43,10 @@ class LowPriorityThread : public StaticThread<> {
 
     void run() {
         long long loopCnt = 0;
-        long long cnt     = 0;
-        while(cnt < LOOPS * 10) {
+        long long cnt = 0;
+        while (cnt < LOOPS * 10) {
             cnt++;
-            if(cnt % LOOPS == 0) {
+            if (cnt % LOOPS == 0) {
                 loopCnt++;
                 PRINTF(" low pri cnt = %lld\n", loopCnt);
             }

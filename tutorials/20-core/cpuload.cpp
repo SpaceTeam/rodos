@@ -2,9 +2,9 @@
 
 
 class IdelCntPrinter : public StaticThread<> {
-  public:
+public:
     void run() {
-        float  cpuLoad;
+        float cpuLoad;
         int64_t timeToEnd;
 
         getCpuLoad();

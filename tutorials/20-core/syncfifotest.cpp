@@ -6,15 +6,15 @@ class Sender : public StaticThread<> {
     void run() {
         int cnt = 0;
         suspendCallerUntil(NOW() + 5 * SECONDS);
-        while(1) {
+        while (1) {
             cnt++;
             bool ok = fifo.syncPut(cnt);
-            if(ok) {
+            if (ok) {
                 xprintf("sent %d\n", cnt);
             } else {
                 xprintf("Fifo full\n");
             }
-            if((cnt % 20) == 0) {
+            if ((cnt % 20) == 0) {
                 xprintf("Sender Waiting 3 seconds\n");
                 suspendCallerUntil(NOW() + 3 * SECONDS);
             }
@@ -25,14 +25,14 @@ class Sender : public StaticThread<> {
 class Receiver : public StaticThread<> {
     void run() {
         int cntIn = 0;
-        int cnt   = 0;
-        while(1) {
+        int cnt = 0;
+        while (1) {
             cnt++;
             bool ok = fifo.syncGet(cntIn);
-            if(ok) {
+            if (ok) {
                 xprintf("read %d\n", cntIn);
             }
-            if((cnt % 50) == 0) {
+            if ((cnt % 50) == 0) {
                 xprintf("Reciver wait 15 seconds\n");
                 suspendCallerUntil(NOW() + 15 * SECONDS);
             }
@@ -42,5 +42,5 @@ class Receiver : public StaticThread<> {
 
 /******************************/
 
-Sender   sender;
+Sender sender;
 Receiver receiver;
