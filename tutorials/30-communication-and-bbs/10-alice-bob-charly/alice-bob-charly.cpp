@@ -51,7 +51,7 @@ class Bob : public StaticThread<> {
 class Alice : public SubscriberReceiver<Greetings> {
   public:
     Alice() : SubscriberReceiver<Greetings>(valentine, "aliceSubs") {}
-    void put(Greetings& data) {
+    void put(Greetings &data) {
         Greetings* greetingsForMe = (Greetings*)&data;
         PRINTF("Alice got date %lld:  msg: %s\n", static_cast<long long>(greetingsForMe->date), greetingsForMe->msg);
     }

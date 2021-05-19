@@ -8,12 +8,12 @@ static CommBuffer<Position> buf;
 static Subscriber nameNotImportant02(position, buf, "receiverBuf");
 
 class ReceiverBuf : public StaticThread<> {
-  void run () {
-    Position myPos;
-    TIME_LOOP(10*SECONDS, 2*SECONDS) {
-    	buf.get(myPos);
-    	PRINTF( CX "%d" CY "%d" CZ "%d\n",(int)myPos.x, (int)myPos.y, (int)myPos.z);
+    void run() {
+        Position myPos;
+        TIME_LOOP(10 * SECONDS, 2 * SECONDS) {
+            buf.get(myPos);
+            PRINTF(CX "%d" CY "%d" CZ "%d\n", (int) myPos.x, (int) myPos.y, (int) myPos.z);
+        }
     }
-  }
 } recbuf;
 
