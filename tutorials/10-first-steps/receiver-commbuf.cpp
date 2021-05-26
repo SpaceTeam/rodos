@@ -16,4 +16,4 @@ class ReceiverBuf : public StaticThread<> {
             PRINTF("ReceiverComBuffer - counter1: %ld\n", cnt);
         }
     }
-} receiverBuf;
+} receiverBufThread;
