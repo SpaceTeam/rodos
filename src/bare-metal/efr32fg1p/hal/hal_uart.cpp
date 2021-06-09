@@ -14,20 +14,36 @@
  * USART3   PB6   PB7   PB8   PB9
  */
 
+   USART1 -  		Tx:  PB11 (LOC6)	Rx:  PB12 (LOC6)
+            		CTS: PB13 (LOC4)	RTS: PB14 (LOC4)          
+*/
 
+#include "rodos.h"
+#include "hal/hal_uart.h"
+#include "hw_hal_gpio.h"
 
+#include "vendor-headers.h"
 
 /* ToDo:
  * hwFlowCtrl testen
  * enable VCOM über config oder Makro!? -> sonst ist Treiber HW-abhängig
  */
 
+#define UART_IDX_MIN        UART_IDX0
+#define UART_IDX_MAX        UART_IDX1
 
 #include "hw_hal_uart.h"
 
+extern "C"
+{
+	void USART0_RX_IRQHandler();
+	void USART0_TX_IRQHandler();
+	void USART1_RX_IRQHandler();
+	void USART1_TX_IRQHandler();
 
 #include "vendor-headers.h"
 
+class HW_HAL_UART {
 
 #define UART_IDX_MIN        UART_IDX0
 #define UART_IDX_MAX        UART_IDX3
@@ -209,6 +225,11 @@ int32_t HAL_UART::config(UART_PARAMETER_TYPE type, int32_t paramVal) {
 
 	if (context == nullptr) {return -1;}
 
+	USART_TypeDef* usart = context->UARTx;
+	USART_InitAsync_TypeDef Uis = USART_INITASYNC_DEFAULT;
+
+	Uis.baudrate = context->baudrate;
+
 	switch (type) {
 		case UART_PARAMETER_BAUDRATE:
 		  if ( (paramVal > 0) ){ //  && isWriteFinished()){    not working because after reset isWriteFinished returns false because of TXC-Bit
@@ -254,6 +275,7 @@ int32_t HAL_UART::config(UART_PARAMETER_TYPE type, int32_t paramVal) {
 			}else{
 			    return -1;
 			}
+			break;  // end case UART_PARAMETER_HW_FLOW_CONTROL
 
 			return 0;  // end case UART_PARAMETER_HW_FLOW_CONTROL
 
@@ -277,6 +299,8 @@ int32_t HAL_UART::config(UART_PARAMETER_TYPE type, int32_t paramVal) {
 		    context->ReceiveIntoRxBufWithDMA();
 		    return 0;
 
+		default: return -1;
+	}
 
     case UART_PARAMETER_DMA_WR:
         DMADRV_Init();
@@ -381,6 +405,7 @@ size_t HAL_UART::read(void* buf, size_t size)
                 this->suspendUntilDataReady();
             }
         }
+        context->receiveBuffer.readConcluded(readCnt);
 
         if(!context->blockingRdEnable){
             break;
@@ -435,6 +460,7 @@ size_t HAL_UART::write(const void* buf, size_t size)
         if(!context->blockingWrEnable){
             break;
         }
+        return size;
     }
 
     return writeCnt;
@@ -535,6 +561,7 @@ void HW_HAL_UART::initMembers(HAL_UART* halUart, UART_IDX uartIdx, GPIO_PIN txPi
     rx = rxPin;
     rts = rtsPin;
     cts = ctsPin;
+}
 
     /* pin routing
      */
@@ -815,6 +842,8 @@ int HW_HAL_UART::init(uint32_t baudrate) {
     if ((idx < UART_IDX_MIN) || (idx > UART_IDX_MAX)) {return -1;}
 
     this->baudrate = baudrate;
+
+    USART_InitAsync_TypeDef Uis = USART_INITASYNC_DEFAULT;	
 
     CMU_ClockEnable(getUARTx_Clock(), true); // Enable oscillator to USART module
     
