@@ -22,6 +22,7 @@
 #include "em_usart.h"
 #include "em_ldma.h"
 #include "em_adc.h"
+#include "em_opamp.h"
 
 
 #pragma GCC diagnostic pop
