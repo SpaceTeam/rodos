@@ -209,7 +209,7 @@ int64_t hwGetNanoseconds(void) {
 void hwInitTime(void) {
     NANOS_PER_TIMERTICK = 16*SECONDS / static_cast<int64_t>(CMU_ClockFreqGet(cmuClock_TIMER0));
     CMU_ClockEnable(cmuClock_TIMER0, true);
-    TIMER_Init_TypeDef timerInit;
+    TIMER_Init_TypeDef timerInit = TIMER_INIT_DEFAULT;
     timerInit.enable     = true,
     timerInit.debugRun   = true,
     timerInit.prescale   = timerPrescale16,
@@ -221,6 +221,7 @@ void hwInitTime(void) {
     timerInit.quadModeX4 = false,
     timerInit.oneShot    = false,
     timerInit.sync       = false,
+    timerInit.count2x    = false;
 
     /* Enable overflow interrupt */
     TIMER_IntEnable(TIMER0, TIMER_IF_OF);
