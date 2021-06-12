@@ -7,5 +7,7 @@ tmp
 *.a
 
 
-/Debug_STM32F407/
-/tutorials/00-empty-rodos-project/HelloWorld/Debug_STM32F407/
+/Debug_*/
+/tutorials/00-empty-rodos-project/HelloWorld/Debug_*/
+
+
