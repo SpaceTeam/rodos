@@ -1,4 +1,9 @@
-/Debug/
-/Debug_linux-x86/
-/Debug_STM32F407/
-/Debug_linux-x86_on_Win/
+build
+tst
+tmp
+*~
+*.o
+*.a
+
+/Debug_*/
+/tutorials/00-empty-rodos-project/HelloWorld/Debug_*/
