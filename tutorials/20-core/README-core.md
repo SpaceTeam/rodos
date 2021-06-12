@@ -236,7 +236,7 @@ Example how to use co-operative threads. It measure the time for thread switches
 |:------------------------------|:-------------------------------------|
 | `gets-async-minimal.cpp`      | Receives data from interrupt         |
 | `gets-async.cpp`              | Receives data                        |
-| `getsnowiat.cpp`              | Also receives data                   |
+| `getsnowait.cpp`              | Also receives data                   |
 | `helloworld-minimalistic.cpp` | Prints ‘Hello World!’                |
 | `preemption*`                 | Several examples about preemption    |
 | `resumefromevent.cpp`         | Thread gets resumed after short time |

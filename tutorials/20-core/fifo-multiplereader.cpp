@@ -32,9 +32,9 @@ public:
         while (1) {
             bool ok = fifo.get(cnt, myId);
             if (ok) {
-                PRINTF("(%d)reading %05d\n", myId, cnt);
+                PRINTF("(%d)reading %05d\n", (int)myId, cnt);
             } else {
-                PRINTF("(%d)Nothing! -> wait\n", myId);
+                PRINTF("(%d)Nothing! -> wait\n", (int)myId);
                 suspendCallerUntil(NOW() + 1 * SECONDS);
             }
         }
