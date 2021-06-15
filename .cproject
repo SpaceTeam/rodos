@@ -325,7 +325,7 @@
                             							
                             <builder buildPath="${workspace_loc:/rodos}/Debug_linux64" id="cdt.managedbuild.target.gnu.builder.cygwin.base.845894298" keepEnvironmentInBuildfile="false" name="Gnu Make Builder" parallelBuildOn="true" parallelizationNumber="optimal" superClass="cdt.managedbuild.target.gnu.builder.cygwin.base"/>
                             							
-                            <tool command="as" id="cdt.managedbuild.tool.gnu.assembler.cygwin.base.1224591370" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.cygwin.base">
+                            <tool command="i686-unknown-linux-gnu-as" id="cdt.managedbuild.tool.gnu.assembler.cygwin.base.1224591370" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.cygwin.base">
                                 								
                                 <option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="gnu.both.asm.option.include.paths.12140382" name="Include paths (-I)" superClass="gnu.both.asm.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
                                     									
@@ -361,13 +361,13 @@
                                 							
                             </tool>
                             							
-                            <tool command="ar" id="cdt.managedbuild.tool.gnu.archiver.cygwin.base.1403264341" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.cygwin.base">
+                            <tool command="i686-unknown-linux-gnu-ar" id="cdt.managedbuild.tool.gnu.archiver.cygwin.base.1403264341" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.cygwin.base">
                                 								
                                 <option id="gnu.both.lib.option.flags.1059408331" name="Archiver flags" superClass="gnu.both.lib.option.flags" useByScannerDiscovery="false" value="rc" valueType="string"/>
                                 							
                             </tool>
                             							
-                            <tool command="g++" id="cdt.managedbuild.tool.gnu.cpp.compiler.cygwin.base.540980135" name="Cygwin C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.cygwin.base">
+                            <tool command="i686-unknown-linux-gnu-g++" id="cdt.managedbuild.tool.gnu.cpp.compiler.cygwin.base.540980135" name="Cygwin C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.cygwin.base">
                                 								
                                 <option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="gnu.cpp.compiler.option.include.paths.1015219604" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
                                     									
@@ -413,7 +413,7 @@
                                 							
                             </tool>
                             							
-                            <tool command="gcc" id="cdt.managedbuild.tool.gnu.c.compiler.cygwin.base.2142668487" name="Cygwin C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.cygwin.base">
+                            <tool command="i686-unknown-linux-gnu-gcc" id="cdt.managedbuild.tool.gnu.c.compiler.cygwin.base.2142668487" name="Cygwin C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.cygwin.base">
                                 								
                                 <option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="gnu.c.compiler.option.include.paths.1744605393" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
                                     									
@@ -618,26 +618,6 @@
                                 <inputType id="cdt.managedbuild.tool.gnu.assembler.input.1172976849" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
                                 							
                             </tool>
-                            						
-                        </toolChain>
-                        					
-                    </folderInfo>
-                    					
-                    <folderInfo id="com.st.stm32cube.ide.mcu.gnu.managedbuild.config.lib.debug.2138448877.500399398.638705793.2041962406" name="/" resourcePath="tutorials/00-empty-rodos-project">
-                        						
-                        <toolChain id="cdt.managedbuild.toolchain.gnu.base.1543702026" name="Linux GCC" superClass="cdt.managedbuild.toolchain.gnu.base" unusedChildren="">
-                            							
-                            <tool id="cdt.managedbuild.tool.gnu.archiver.base.1710878074" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.base.1997315302"/>
-                            							
-                            <tool id="cdt.managedbuild.tool.gnu.cpp.compiler.base.1917335725" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.base.2018977489"/>
-                            							
-                            <tool id="cdt.managedbuild.tool.gnu.c.compiler.base.939277597" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.base.721516924"/>
-                            							
-                            <tool id="cdt.managedbuild.tool.gnu.c.linker.base.1070462809" name="GCC C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.base.1023617121"/>
-                            							
-                            <tool id="cdt.managedbuild.tool.gnu.cpp.linker.base.701625540" name="GCC C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.base.141201855"/>
-                            							
-                            <tool id="cdt.managedbuild.tool.gnu.assembler.base.1642344590" name="GCC Assembler" superClass="cdt.managedbuild.tool.gnu.assembler.base.1447449546"/>
                             						
                         </toolChain>
                         					
