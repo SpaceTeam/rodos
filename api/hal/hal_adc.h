@@ -48,39 +48,38 @@ enum ADC_IDX {          // STM32F4      AVR32       STM32F1 ...
  * index of ADC channel
  * - not every device offers all
  */
-enum ADC_CHANNEL {  // STM32F4      AVR32       STM32F1 ...
+enum ADC_CHANNEL {  // STM32F4      AVR32       STM32F1 ...     EFR32
                     // ADC1/2/3
-    ADC_CH_000,     // PA0/PA0/PA0     ?            ?
-    ADC_CH_001,     // PA1/PA1/PA1     ?            ?
-    ADC_CH_002,     // PA2/PA2/PA2     ?            ?
-    ADC_CH_003,     // PA3/PA3/PA3     ?            ?
-    ADC_CH_004,     // PA4/PA4/PF6     ?            ?
-    ADC_CH_005,     // PA5/PA5/PF7     ?            ?
-    ADC_CH_006,     // PA6/PA6/PF8     ?            ?
-    ADC_CH_007,     // PA7/PA7/PF9     ?            ?
-    ADC_CH_008,     // PB0/PB0/PF10    ?            ?
-    ADC_CH_009,     // PB1/PB1/PF3     ?            ?
-    ADC_CH_010,     // PC0/PC0/PC0     ?            ?
-    ADC_CH_011,     // PC1/PC1/PC1     ?            ?
-    ADC_CH_012,     // PC2/PC2/PC2     ?            ?
-    ADC_CH_013,     // PC3/PC3/PC3     ?            ?
-    ADC_CH_014,     // PC4/PC4/PF4     ?            ?
-    ADC_CH_015,     // PC5/PC5/PF5     ?            ?
-    ADC_CH_016,     // intern          ?            ?
-    ADC_CH_017,     // intern          ?            ?
-    ADC_CH_018,     // intern          ?            ?
-    ADC_CH_019,
-    ADC_CH_020,
-    ADC_CH_021,
-    ADC_CH_022,
-    ADC_CH_023,
-    ADC_CH_024,
-    ADC_CH_025,
-    ADC_CH_026,
-    ADC_CH_027,
+    ADC_CH_000,     // PA0/PA0/PA0     ?            ?           PA0
+    ADC_CH_001,     // PA1/PA1/PA1     ?            ?           PA1
+    ADC_CH_002,     // PA2/PA2/PA2     ?            ?           PA2
+    ADC_CH_003,     // PA3/PA3/PA3     ?            ?           PA3
+    ADC_CH_004,     // PA4/PA4/PF6     ?            ?           PA4
+    ADC_CH_005,     // PA5/PA5/PF7     ?            ?           PA5
+    ADC_CH_006,     // PA6/PA6/PF8     ?            ?           PB11
+    ADC_CH_007,     // PA7/PA7/PF9     ?            ?           PB12
+    ADC_CH_008,     // PB0/PB0/PF10    ?            ?           PB13
+    ADC_CH_009,     // PB1/PB1/PF3     ?            ?           PB14
+    ADC_CH_010,     // PC0/PC0/PC0     ?            ?           PB15
+    ADC_CH_011,     // PC1/PC1/PC1     ?            ?           PC6
+    ADC_CH_012,     // PC2/PC2/PC2     ?            ?           PC7
+    ADC_CH_013,     // PC3/PC3/PC3     ?            ?           PC8
+    ADC_CH_014,     // PC4/PC4/PF4     ?            ?           PC9
+    ADC_CH_015,     // PC5/PC5/PF5     ?            ?           PC10
+    ADC_CH_016,     // intern          ?            ?           PC11
+    ADC_CH_017,     // intern          ?            ?           PD13
+    ADC_CH_018,     // intern          ?            ?           PD14
+    ADC_CH_019,     //                                          PD15
+    ADC_CH_020,     //                                          PF0
+    ADC_CH_021,     //                                          PF1
+    ADC_CH_022,     //                                          PF2
+    ADC_CH_023,     //                                          PF3
+    ADC_CH_024,     //                                          PF4
+    ADC_CH_025,     //                                          PF5
+    ADC_CH_026,     //                                          PF6
+    ADC_CH_027,     //                                          PF7
     ADC_CH_028
 };
-
 
 enum ADC_PARAMETER_TYPE {
     ADC_PARAMETER_RESOLUTION,
