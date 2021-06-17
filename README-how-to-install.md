@@ -25,22 +25,6 @@ To Login:
    Pass: rodos2020
 
 
-Learning Rodos
----------------
-
-Please read all README* files in the root directory of RODOS.
-
-Watch the introduction movies of how to program on RODOS:  
-  - Directory structure, compiling, and threads:    https://youtu.be/URM8TGkISGs  
-  - Inter thread communication and synchronization: https://youtu.be/uII7Qn9oN7s  
-  - Communication Middleware:                       https://youtu.be/iqzKRB-XM6k  
-
-Please download the slides for these videos from:  
-    doc/rodos-slices-to-video-*pdf
-
-Now, please take a look and experiment with all tutorials.
-
-
 To work on an embedded system: Discovery Board/STM32f4
 ------------------------------------------------------
 
