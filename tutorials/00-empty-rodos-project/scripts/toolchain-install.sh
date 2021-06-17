@@ -14,7 +14,9 @@ chmod -R u+w /usr/local
 rm -r -f ./${TOOLCHAIN_NAME} | true
 rm -f /usr/local/.config | true
 
-rm bin/ar.exe bin/as.exe bin/gcc.exe bin/g++.exe
+# Remove tool chain archive
+# rm -r -f ${TOOLCHAIN_NAME}-${TOOLCHAIN_VERSION}.tar.gz | true
+
 
 ln -s /usr/local/i686-unknown-linux-gnu/bin/i686-unknown-linux-gnu-ar.exe /bin/i686-unknown-linux-gnu-ar.exe
 ln -s /usr/local/i686-unknown-linux-gnu/bin/i686-unknown-linux-gnu-as.exe /bin/i686-unknown-linux-gnu-as.exe
