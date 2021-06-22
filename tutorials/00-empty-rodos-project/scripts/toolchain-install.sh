@@ -1,4 +1,4 @@
-!/bin/bash
+#!/bin/bash
 
 # https://developer.moe/linux-cross-compile-toolchain-on-cygwin#files
 export TOOLCHAIN_NAME="i686-unknown-linux-gnu"
