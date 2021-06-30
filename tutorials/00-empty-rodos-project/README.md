@@ -142,7 +142,7 @@ Build the Project
 > 8.    Right klick on HelloWorld project
 > 9.    Build Projects
 
-You cannot run a Linux x86 binary file on Windows. But you can do it in the [WSL (Windows Subsystem for Linux) version 2 ](https://docs.microsoft.com/en-us/windows/wsl/about). How do I install wsl can be found [here](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
+You cannot run a Linux x86 binary file on Windows. But you can do it in the [WSL (Windows Subsystem for Linux) version 2 ](https://docs.microsoft.com/en-us/windows/wsl/about). How do you install wsl can be found [here](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
 
 NOTE: You need wsl version 2. Tested with WSL Ubuntu 20.04.
 
@@ -161,9 +161,10 @@ Run Linux x86 binary file on Windows:
 Open Ubunut 20.04 (WSL)
 ```
 $ cd /mnt/c/PATH/TO/STM32CUBDEIDE_WORKSPACE/rodos/tutorials/00-empty-rodos-project/HelloWorld/Debug_linux_x86_on_Win/
-$ ./ HelloWorld
+$ ./HelloWorld
 ```
 
 ## FAQs
-TIP: To create your own RODOS project, simply copy the HelloWorld project and paste it into the project explorer.
+How can I create my own new RODOS project?
+    - To create your own RODOS project, simply copy the HelloWorld project and paste it into the project explorer.
 
