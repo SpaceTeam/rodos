@@ -104,7 +104,7 @@ In Progress
 ## Start with linux-x86
 
 #### On Ubuntu
-Build and rub the Project
+Build and run the Project
 > 1.    Right klick on rodos project
 > 2.    Build Configurations -> Set Active -> Debug_linux_x86_on_linux
 > 3.    Right klick on rodos project
@@ -117,13 +117,13 @@ Build and rub the Project
 > 10.    Click on Run as (the green button)
 
 #### On Windows
-You need a cross compiler to compile Linux binary on Windows 10. To do this, first install [Cigwin](https://www.cygwin.com/). During the installation of Cygwin, install **make** (last version). After the installation add the path to the Cygwin64 root directory to the system environment variables. Download the toolchain from [here](https://mega.nz/file/G1hkiIZQ#NKup6JNL5xlC-G2K4aNizzniBbr0ToXjLIp8biyg3H8) and copy it to the Cigwin root directory. The toolchain signature:
+You need a cross compiler to compile Linux binary on Windows 10. To do this, first install [Cigwin](https://www.cygwin.com/). During the installation of Cygwin, install **make** (last version). After the installation add the path to the Cygwin64 root directory to the system environment variables. Download the toolchain from [here](https://mega.nz/file/G1hkiIZQ#NKup6JNL5xlC-G2K4aNizzniBbr0ToXjLIp8biyg3H8) and copy it to the Cygwin64 root directory. The toolchain signatures are 
 
 CRC32: A47ACD7F
 MD5: D04CE11D701BADC5473257376E9EC78E
 SHA-1: 8E95FF3A74A65F03D7ADD571B59ED2EADCEBC52E
 
-Also copy the script from RODOS Project Folder (/rodos/tutorials/00-empty-rodos-project/scripts/toolchain-install.sh) to the Cygwin root directory. Start Cygwin64 and install the toolchain.
+Also copy the script from RODOS Project Folder (/rodos/tutorials/00-empty-rodos-project/scripts/toolchain-install.sh) to the Cygwin64 root directory. Start Cygwin64 and install the toolchain.
 ```
 $ cd /
 $ chmod 774 toolchain-install.sh
