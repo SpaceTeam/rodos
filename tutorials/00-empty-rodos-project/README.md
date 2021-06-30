@@ -2,14 +2,14 @@
 - [Supported Architectures](#supported-architectures)
 - [STM32Cube IDE](#stm32cube-ide)
 - [IDE installation and RODOS configuration](#ide-installation-and-rodos-configuration)
-    - [On Ubuntu 20.04](#on-ubuntu-20.04)
+    - [On Ubuntu 20.04](#on-ubuntu-20-04)
     - [On Windows 10](#on-windows-10)
 - [Start with STM32F4 Discavery Boards](#start-with-stm32f4-discavery-boards)
     - [STM32F407VG](#stm32f407vg)
     - [STM32F411VE](#stm32f411ve)
 - [Start with linux-x86](#start-with-linux-x86)
     - [On Ubuntu](#on-ubuntu)
-    - [On Windows](on-windows)
+    - [On Windows](#on-windows)
 - [FAQs](#faqs)
 
 ## Unterstützte Architekturen
