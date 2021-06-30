@@ -166,5 +166,5 @@ $ ./HelloWorld
 
 ## FAQs
 How can I create my own new RODOS project?
-    - To create your own RODOS project, simply copy the HelloWorld project and paste it into the project explorer.
+>    To create your own RODOS project, simply copy the HelloWorld project and paste it into the project explorer.
 
