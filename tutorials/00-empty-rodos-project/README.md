@@ -2,14 +2,14 @@
 - [Supported Architectures](#supported-architectures)
 - [STM32Cube IDE](#stm32cube-ide)
 - [IDE installation and RODOS configuration](#ide-installation-and-rodos-configuration)
-    - [on Ubuntu](#on-ubuntu)
-    - [on Windows 10](#on-windows-10)
+    - [On Ubuntu 20.04](#on-ubuntu-20.04)
+    - [On Windows 10](#on-windows-10)
 - [Start with STM32F4 Discavery Boards](#start-with-stm32f4-discavery-boards)
     - [STM32F407VG](#stm32f407vg)
     - [STM32F411VE](#stm32f411ve)
 - [Start with linux-x86](#start-with-linux-x86)
     - [On Ubuntu](#on-ubuntu)
-    - [on Windows](on-windows)
+    - [On Windows](on-windows)
 - [FAQs](#faqs)
 
 ## Unterstützte Architekturen
@@ -29,7 +29,7 @@ Download the IDE for free  [here](https://www.st.com/en/development-tools/stm32c
 
 NOTE: For more, see these [installation instruction](https://www.st.com/resource/en/user_manual/dm00603964-stm32cubeide-installation-guide-stmicroelectronics.pdf).
 
-### on Ubuntu
+### On Ubuntu 20.04
 ```
 $ sudo apt update
 $ sudo apt upgrade -y
@@ -50,7 +50,7 @@ After the installation you will find the IDE in the _/opt/ST/_ directory. The st
 Extract the downloaded zip archive "__en.st-stm32cubeide_***_x86_64.exe.zip__" and run the EXE file "__st-stm32cubeide_***_x86_64.exe__.
 
 #### Install Git plugin
-After starting the IDE for the first time, check if **git** is installed. If not, install it from the Eclipse **Marketplace**.
+After starting the IDE for the first time, check **git** is installed. If not, install it from the Eclipse **Marketplace**.
 > 1.    Click Help -> Eclipse Marketplace...
 > 2.    Type "Egit" and and search for "EGit -Git Integration for Eclipse"
 > 3.    Click on Install button
