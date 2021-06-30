@@ -33,6 +33,8 @@ BBs interact by providing services to other BBs and using services from other BB
 
 To get started asap and try out RODOS on your laptop please look at [our fast intro](README-fast-intro.md).
 
+To use the Eclipse IDE to get started with RODOD, read [this](https://gitlab.com/rodos/rodos/-/tree/eclipse-project/tutorials/00-empty-rodos-project).
+
 For further tutorials take a look to the short introduction at  
 
 * [https://en.wikipedia.org/wiki/Rodos_(operating_system)](https://en.wikipedia.org/wiki/Rodos_%28operating_system%29) 
