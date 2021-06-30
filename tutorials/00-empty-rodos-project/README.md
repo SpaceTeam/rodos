@@ -117,7 +117,7 @@ Build and run the Project
 > 10.    Click on Run as (the green button)
 
 #### On Windows
-You need a cross compiler to compile Linux binary on Windows 10. To do this, first install [Cigwin](https://www.cygwin.com/). During the installation of Cygwin, install **make** (last version). After the installation add the path to the Cygwin64 root directory to the system environment variables. Download the toolchain from [here](https://mega.nz/file/G1hkiIZQ#NKup6JNL5xlC-G2K4aNizzniBbr0ToXjLIp8biyg3H8) and copy it to the Cygwin64 root directory. The toolchain signatures are 
+You need a cross compiler to compile Linux binary on Windows 10. To do this, first install [Cygwin](https://www.cygwin.com/). During the installation of Cygwin, install **make** (last version). After the installation add the path to the Cygwin64 root directory to the system environment variables. Download the toolchain from [here](https://mega.nz/file/G1hkiIZQ#NKup6JNL5xlC-G2K4aNizzniBbr0ToXjLIp8biyg3H8) and copy it to the Cygwin64 root directory. The toolchain signatures are 
 
 CRC32: A47ACD7F
 MD5: D04CE11D701BADC5473257376E9EC78E
