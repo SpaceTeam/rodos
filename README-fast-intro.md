@@ -55,7 +55,7 @@ Every time you start a new session or a new terminal
 set the environment variables directories and default compiler options by calling
 
 ```
-    cd <your rodos rood directory>
+    cd <your rodos root directory>
     source setenvs.sh 
 ```
 
