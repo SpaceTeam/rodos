@@ -52,6 +52,7 @@ SRCS[11]="${RODOS_SRC}/bare-metal/${ARCH}/common/src"
 SRCS[12]="${RODOS_SRC}/bare-metal/${ARCH}/common/bsp"
 SRCS[13]="${RODOS_SRC}/bare-metal/${ARCH}/common/drivers/used"
 SRCS[14]="${RODOS_SRC}/bare-metal/${ARCH}/rail-config/${SUB_ARCH}"
+SRCS[15]="${RODOS_SRC}/bare-metal/${ARCH}/emdrv/src"
 
 export INCLUDES=${INCLUDES}" -I ${RODOS_SRC}/bare-metal/${ARCH} \
 	-I${RODOS_SRC}/bare-metal/${ARCH}/${SUB_ARCH_DIR}/Include \
@@ -60,6 +61,7 @@ export INCLUDES=${INCLUDES}" -I ${RODOS_SRC}/bare-metal/${ARCH} \
 	-I${RODOS_SRC}/bare-metal/${ARCH}/common/bsp \
 	-I${RODOS_SRC}/bare-metal/${ARCH}/hal-config \
 	-I${RODOS_SRC}/bare-metal/${ARCH}/emlib/inc \
+	-I${RODOS_SRC}/bare-metal/${ARCH}/emdrv/inc \
 	-I${RODOS_SRC}/bare-metal/${ARCH}/common/drivers/used \
 	-I${RODOS_SRC}/bare-metal/${ARCH}/config \
 	-I${RODOS_SRC}/bare-metal/${ARCH}/rail-config \

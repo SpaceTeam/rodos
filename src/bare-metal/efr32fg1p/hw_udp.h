@@ -30,15 +30,15 @@ class UDPReceiver {
 private:
 
 public:
-    UDPReceiver([[gnu::unused]] const int port) { }
+    UDPReceiver( __attribute__((unused))const int port) { }
     ~UDPReceiver()              { }
 
-    void reopen([[gnu::unused]] const int port) { }
+    void reopen( __attribute__((unused))const int port) { }
  
-    void setAsync([[gnu::unused]] Topic<GenericMsgRef>* associatedTopic) { }
+    void setAsync( __attribute__((unused))Topic<GenericMsgRef>* associatedTopic) { }
 
-    long get([[gnu::unused]] void* userData, [[gnu::unused]]  const unsigned int maxLen=1300)    { return 0; }
-    long get([[gnu::unused]] void* userData, [[gnu::unused]] int maxLen, [[gnu::unused]] unsigned long *ipaddr) { return 0; }
+    long get( __attribute__((unused))void* userData,   __attribute__((unused))const unsigned int maxLen=1300)    { return 0; }
+    long get( __attribute__((unused))void* userData,  __attribute__((unused))int maxLen,  __attribute__((unused))unsigned long *ipaddr) { return 0; }
     bool readyToGet()                                           { return false;}
     bool isInitialised()                                        { return true; } 
 };
@@ -52,25 +52,25 @@ public:
     /** init udp communication, can be re-called at any time
      ** WARNING: Negative port number means broadcast **/
 
-    UDPTransmitter([[gnu::unused]] const int port, [[gnu::unused]]  const char *host = "localhost")         { }
-    UDPTransmitter([[gnu::unused]]const long _portNr, [[gnu::unused]] unsigned long _ipAddr)               { }
-    UDPTransmitter([[gnu::unused]] const long _portNr, [[gnu::unused]] int ip0, [[gnu::unused]] int ip1, [[gnu::unused]] int ip2, [[gnu::unused]] int ip3)  { }
+    UDPTransmitter( __attribute__((unused))const int port,   __attribute__((unused))const char *host = "localhost")         { }
+    UDPTransmitter(__attribute__((unused))const long _portNr,  __attribute__((unused))unsigned long _ipAddr)               { }
+    UDPTransmitter( __attribute__((unused))const long _portNr,  __attribute__((unused))int ip0,  __attribute__((unused))int ip1,  __attribute__((unused))int ip2,  __attribute__((unused))int ip3)  { }
     virtual ~UDPTransmitter()                                               { }
 
-    void openConnection([[gnu::unused]] const int port,[[gnu::unused]]  const char *host)                  { }
+    void openConnection( __attribute__((unused))const int port,  __attribute__((unused))const char *host)                  { }
 
     /** Send it as datagram containing "userdata", default length = all bytes
      * @param data pointer to datafield
      * @param length of data field
      */
-    virtual bool send([[gnu::unused]] const void*msg, [[gnu::unused]] const unsigned int len)               { return false; }
+    virtual bool send( __attribute__((unused))const void*msg,  __attribute__((unused))const unsigned int len)               { return false; }
 
     /** Send datagram to a specified host different to the address used during initialisation
      * @param data pointer to datafield
      * @param length of data field
      * @param ipAddr of receiving host
      */
-    bool sendTo([[gnu::unused]] const void* userData, [[gnu::unused]] const int maxLen, [[gnu::unused]] unsigned long ipAddr) { return false; }
+    bool sendTo( __attribute__((unused))const void* userData,  __attribute__((unused))const int maxLen,  __attribute__((unused))unsigned long ipAddr) { return false; }
     bool isInitialised()                                                      { return true; } 
 };
 

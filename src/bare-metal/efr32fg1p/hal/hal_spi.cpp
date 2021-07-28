@@ -1,20 +1,33 @@
+/**
+ * @file    hal_spi.h
+ *
+ * @date    01.07.2021
+ * @author  Michael Ruffer
+ *
+ * @brief   Simple API to configure and use SPI interfaces
+ */
+
 #include <new>
 #include "rodos.h"
 #include "hal/hal_spi.h"
 #include "hw_hal_gpio.h"
+#include "hw_hal_uart.h" // necessary for pin location table
 
 
 #include "em_device.h"
 #include "em_chip.h"
 #include "em_cmu.h"
 #include "em_gpio.h"
-#include "em_usart.h"
+//#include "em_usart.h"
+#include "spidrv.h"
 
 namespace RODOS {
 /** TODO:
- * - timeout for while loops
+ * - Konflikt LDMA_IRQHandler mit hal_uart auflösen
+ * - Semaphore für USART/SPI-Instanzen
+ * - bei DMA Transfer wird der Sendepuffer nicht kopiert
+ *   -> man muss sicherstellen, dass der Puffer bis zum Ende gültig ist!!!
  * - read/write not "busy-waiting" -> interrupts & suspend
- * - DMA
  * - slave-mode
  * - use of autoCS-pin
  */
@@ -24,7 +37,8 @@ namespace RODOS {
    * - TI mode not supported
    * - pin configuration with constructor
    * - baudrate and mode configuration with config()
-   *
+   * - default: blocking & DMA disabled
+   * - not supported yet: DMA disabled & non-blocking
    */
 
   /* default pin configurations
@@ -53,13 +67,30 @@ class HW_HAL_SPI {
     SPI_IDX idx;
     bool initialized;
     USART_TypeDef *SPIx;
+    HAL_SPI* halSpi;
+
     uint32_t baudrate;
-    USART_InitSync_TypeDef config;
+
+    SPIDRV_HandleData_t spidrv_handle_data;
+    SPIDRV_Handle_t spidrv_handle;
 
     GPIO_PIN GPIO_Pin_MISO;
     GPIO_PIN GPIO_Pin_MOSI;
     GPIO_PIN GPIO_Pin_SCK;
     GPIO_PIN GPIO_Pin_NSS;
+
+    int8_t misoPinLoc;
+    int8_t mosiPinLoc;
+    int8_t sckPinLoc;
+
+    bool flagTxComplete;
+    bool flagRxComplete;
+
+    uint8_t * remainingBuf;
+    uint32_t remainingSize;
+
+    bool dmaEnable;
+    bool blockingEnable;
 
   public:
     HW_HAL_SPI(SPI_IDX idx, GPIO_PIN sckPin, GPIO_PIN misoPin, GPIO_PIN mosiPin, GPIO_PIN nssPin);
@@ -76,10 +107,21 @@ class HW_HAL_SPI {
 
     int32_t setBaudrate(uint32_t baudrate);
     int32_t enableClocks();
-    int8_t getPinLoc(GPIO_PIN gpio, const uint8_t * lut); // return -1, if no "location" for "gpio" found, otherwise value between 0 ... 31
 
     void initMembers(SPI_IDX idx, GPIO_PIN sckPin, GPIO_PIN misoPin, GPIO_PIN mosiPin, GPIO_PIN nssPin = GPIO_INVALID);
+
+    int DMAinit();
+
+    static HW_HAL_SPI* getHW_HAL_SPI(struct SPIDRV_HandleData *handle);
+
+    /* writeRead() related functions */
+    static void startTransmitRemaining(struct SPIDRV_HandleData *handle, Ecode_t transferStatus, int itemsTransferred);
+    static void startReceiveRemaining(struct SPIDRV_HandleData *handle, Ecode_t transferStatus, int itemsTransferred);
+    static void txComplete(struct SPIDRV_HandleData *handle, Ecode_t transferStatus, int itemsTransferred);
+    static void rxComplete(struct SPIDRV_HandleData *handle, Ecode_t transferStatus, int itemsTransferred);
+    static void txRxComplete(struct SPIDRV_HandleData *handle, Ecode_t transferStatus, int itemsTransferred);
 };
+
 
 
 HW_HAL_SPI::HW_HAL_SPI(SPI_IDX idx, GPIO_PIN sckPin, GPIO_PIN misoPin, GPIO_PIN mosiPin, GPIO_PIN nssPin) { 
@@ -87,6 +129,7 @@ HW_HAL_SPI::HW_HAL_SPI(SPI_IDX idx, GPIO_PIN sckPin, GPIO_PIN misoPin, GPIO_PIN 
   RODOS_ASSERT(idx <= SPI_IDX_MAX); // SPI index out of range
   initMembers(idx, sckPin, misoPin, mosiPin, nssPin);
 }
+
 
 
 HW_HAL_SPI::HW_HAL_SPI(SPI_IDX idx) {
@@ -109,16 +152,24 @@ HW_HAL_SPI::HW_HAL_SPI(SPI_IDX idx) {
 	    break;
 
 	default:
-	  RODOS_ERROR("SPI index out of range");
+	  //RODOS_ERROR("SPI index out of range");  !!! RODOS_ERROR-call hangs constructor call !!!
+	  break;
 	}
 }
 
+
+
 void HW_HAL_SPI::initMembers(SPI_IDX idx, GPIO_PIN sckPin, GPIO_PIN misoPin, GPIO_PIN mosiPin, GPIO_PIN nssPin) {
 
+  this->flagTxComplete = true;
+  this->flagRxComplete = true;
   this->initialized = false;
 	this->idx = idx;
-  config.enable  = usartDisable;
+	this->dmaEnable = false;
+	this->blockingEnable = true;
+
   SPIx = NULL;
+  spidrv_handle = &spidrv_handle_data;
 
 	switch(idx){
 	  case SPI_IDX0:
@@ -138,7 +189,7 @@ void HW_HAL_SPI::initMembers(SPI_IDX idx, GPIO_PIN sckPin, GPIO_PIN misoPin, GPI
   		break;
 
 	  default:
-	    RODOS_ERROR("SPI index out of range");
+	    //RODOS_ERROR("SPI index out of range");  !!! RODOS_ERROR-call hangs constructor call !!!
 	    return;
 	}
 
@@ -146,18 +197,60 @@ void HW_HAL_SPI::initMembers(SPI_IDX idx, GPIO_PIN sckPin, GPIO_PIN misoPin, GPI
 	GPIO_Pin_MISO   = misoPin;
 	GPIO_Pin_NSS    = nssPin;
 	GPIO_Pin_MOSI   = mosiPin;
+
+  /* pin routing
+   * - to save memory only one LUT for rx-,tx- and clk-pin is used
+   *   -> this is possible because the 3 pin-location-tables are shifted by just one value
+   *   -> each pin-location-table has 32 items
+   *   -> we combined all 3 tables to one LUT with 34 items and use different starting points for each pin search
+   */
+  switch(idx){
+    case SPI_IDX0:
+      mosiPinLoc = HW_HAL_UART::getPinLoc(GPIO_Pin_MOSI, &usart0_1PinLoc_LUT[0]);
+      misoPinLoc = HW_HAL_UART::getPinLoc(GPIO_Pin_MISO, &usart0_1PinLoc_LUT[1]);
+      sckPinLoc  = HW_HAL_UART::getPinLoc(GPIO_Pin_SCK, &usart0_1PinLoc_LUT[2]);
+      break;
+
+    case SPI_IDX1:
+      mosiPinLoc = HW_HAL_UART::getPinLoc(GPIO_Pin_MOSI, &usart0_1PinLoc_LUT[0]);
+      misoPinLoc = HW_HAL_UART::getPinLoc(GPIO_Pin_MISO, &usart0_1PinLoc_LUT[1]);
+      sckPinLoc  = HW_HAL_UART::getPinLoc(GPIO_Pin_SCK, &usart0_1PinLoc_LUT[2]);
+      break;
+
+    case SPI_IDX2:
+      mosiPinLoc = HW_HAL_UART::getPinLoc(GPIO_Pin_MOSI, &usart2PinLoc_LUT[0]);
+      misoPinLoc = HW_HAL_UART::getPinLoc(GPIO_Pin_MISO, &usart2PinLoc_LUT[1]);
+      sckPinLoc  = HW_HAL_UART::getPinLoc(GPIO_Pin_SCK, &usart2PinLoc_LUT[2]);
+      break;
+
+    case SPI_IDX3:
+      mosiPinLoc = HW_HAL_UART::getPinLoc(GPIO_Pin_MOSI, &usart3PinLoc_LUT[0]);
+      misoPinLoc = HW_HAL_UART::getPinLoc(GPIO_Pin_MISO, &usart3PinLoc_LUT[1]);
+      sckPinLoc  = HW_HAL_UART::getPinLoc(GPIO_Pin_SCK, &usart3PinLoc_LUT[2]);
+      break;
+
+    default:
+      //RODOS_ERROR("SPI index out of range");  !!! RODOS_ERROR-call hangs constructor call !!!
+      return;
+  }
+
+  if (misoPinLoc <0 || mosiPinLoc <0 || sckPinLoc < 0){
+      //RODOS_ERROR("SPI pin invalid!!!");  !!! RODOS_ERROR-call hangs constructor call !!!
+  }
 }
+
+
 
 int32_t HW_HAL_SPI::setBaudrate(uint32_t baudrate){
 
     if (SPIx == NULL){return -1;}
 
-    USART_BaudrateSyncSet(SPIx, 0, baudrate);
-
-    this->baudrate = baudrate;
+    SPIDRV_SetBitrate(spidrv_handle, baudrate);
 
     return 0;
 }
+
+
 
 int32_t HW_HAL_SPI::enableClocks(){
 #if defined(_CMU_HFPERCLKEN0_MASK)
@@ -191,232 +284,322 @@ int32_t HW_HAL_SPI::enableClocks(){
     return 0;
 }
 
-/* pin location tables
- * - to save memory only one LUT for rx-,tx- and clk-pin is used
- *   -> this is possible because the 3 pin-location-tables are shifted by just one value
- *   -> each pin-location-table has 32 items
- *   -> we combined all 3 tables to one LUT with 34 items and use different starting points for each pin search
- */
-#define PIN_LOCATION_TABLE_SIZE   32
-
-const uint8_t usart0_1PinLoc_LUT[PIN_LOCATION_TABLE_SIZE+2] = {
-    GPIO_000, GPIO_001, GPIO_002, GPIO_003, GPIO_004, GPIO_005, // PA1 ... PA5
-    GPIO_027, GPIO_028, GPIO_029, GPIO_030, GPIO_031, // PB11 ... PB15
-    GPIO_038, GPIO_039, GPIO_040, GPIO_041, GPIO_042, GPIO_043, // PC06 ... PC11
-    GPIO_057, GPIO_058, GPIO_059, GPIO_060, GPIO_061, GPIO_062, GPIO_063, // PD09 ... PD15
-    GPIO_080, GPIO_081, GPIO_082, GPIO_083, GPIO_084, GPIO_085, GPIO_086, GPIO_087, // PF00 ... PF07
-    GPIO_000, GPIO_001 // PA00, PA01 -> repeat first two elements to use LUT for all three pins
-};
-
-const uint8_t usart2PinLoc_LUT[PIN_LOCATION_TABLE_SIZE+2] = {
-    GPIO_005, GPIO_006, GPIO_007, GPIO_008, GPIO_009, // PA5 ... PA9
-    GPIO_128, GPIO_129, GPIO_130, GPIO_131, // PI0 ... PI3
-    GPIO_022, GPIO_023, GPIO_024, GPIO_025, GPIO_026, // PB06 ... PB10
-    GPIO_080, GPIO_081, GPIO_083, GPIO_084, GPIO_085, GPIO_086, GPIO_087, // PF00 ... PF07 (except PF02!)
-    GPIO_088, GPIO_089, GPIO_090, GPIO_091, GPIO_092, GPIO_093, GPIO_094, GPIO_095, // PF08 ... PF15
-    GPIO_160, GPIO_161, GPIO_162, // PK00 ... PK02
-    GPIO_005, GPIO_006 // PA05 ... PA06 -> repeat first two elements to use LUT for all three pins
-};
-
-const uint8_t usart3PinLoc_LUT[PIN_LOCATION_TABLE_SIZE+2] = {
-    GPIO_056, GPIO_057, GPIO_058, GPIO_059, GPIO_060, GPIO_061, GPIO_062, GPIO_063, // PD08 ... PD15
-    GPIO_130, GPIO_131, // PI2 ... PI3
-    GPIO_022, GPIO_023, GPIO_024, GPIO_025, GPIO_026, GPIO_027, // PB06 ... PB11
-    GPIO_158, GPIO_159, // PJ14 ... PJ15
-    GPIO_032, GPIO_033, GPIO_034, GPIO_035, GPIO_036, GPIO_037, // PC00 ... PC05
-    GPIO_091, GPIO_092, GPIO_093, GPIO_094, GPIO_095, // PF11 ... PF15
-    GPIO_160, GPIO_161, GPIO_162, // PK00 ... PK02
-    GPIO_056, GPIO_057 // PD08 ... PD09 -> repeat first two elements to use LUT for all three pins
-};
 
 
-int8_t HW_HAL_SPI::getPinLoc(GPIO_PIN gpio, const uint8_t * lut){
-    int i = 0;
+static HW_HAL_SPI SPIcontextArray[SPI_IDX_MAX+1];
 
-    while(i < PIN_LOCATION_TABLE_SIZE){
-        if(gpio == lut[i]){
-            return i;
-        }
-        i++;
-    }
+HW_HAL_SPI* HW_HAL_SPI::getHW_HAL_SPI(struct SPIDRV_HandleData *handle){
+  HW_HAL_SPI* hwHalSpi = NULL;
 
-    return -1;
+  if (handle->peripheral.usartPort == USART0) {hwHalSpi = &SPIcontextArray[0];}
+  if (handle->peripheral.usartPort == USART1) {hwHalSpi = &SPIcontextArray[1];}
+  if (handle->peripheral.usartPort == USART2) {hwHalSpi = &SPIcontextArray[2];}
+  if (handle->peripheral.usartPort == USART3) {hwHalSpi = &SPIcontextArray[3];}
+
+  return hwHalSpi;
 }
 
-HW_HAL_SPI SPIcontextArray[SPI_IDX_MAX+1];
+
+
+void HW_HAL_SPI::startTransmitRemaining(struct SPIDRV_HandleData *handle, Ecode_t transferStatus, int itemsTransferred){
+    (void)&handle;
+    (void)itemsTransferred;
+    HW_HAL_SPI* spiContext = HW_HAL_SPI::getHW_HAL_SPI(handle);
+
+    if (transferStatus == ECODE_EMDRV_SPIDRV_OK) {
+        if (spiContext) {SPIDRV_MTransmit(handle, spiContext->remainingBuf, spiContext->remainingSize, HW_HAL_SPI::txRxComplete);}
+    }
+}
+
+
+
+void HW_HAL_SPI::startReceiveRemaining(struct SPIDRV_HandleData *handle, Ecode_t transferStatus, int itemsTransferred){
+    (void)&handle;
+    (void)itemsTransferred;
+    HW_HAL_SPI* spiContext = HW_HAL_SPI::getHW_HAL_SPI(handle);
+
+    if (transferStatus == ECODE_EMDRV_SPIDRV_OK) {
+        if (spiContext) {SPIDRV_MReceive(handle, spiContext->remainingBuf, spiContext->remainingSize, HW_HAL_SPI::txRxComplete);}
+    }
+}
+
+
+
+void HW_HAL_SPI::txComplete(struct SPIDRV_HandleData *handle,
+                      Ecode_t transferStatus,
+                      int itemsTransferred){
+    (void)&handle;
+    (void)itemsTransferred;
+    HW_HAL_SPI* spiContext = HW_HAL_SPI::getHW_HAL_SPI(handle);
+
+    if (transferStatus == ECODE_EMDRV_SPIDRV_OK) {
+        if (spiContext) spiContext->flagTxComplete = true;
+        spiContext->halSpi->upCallWriteFinished();
+    }
+}
+
+
+
+void HW_HAL_SPI::rxComplete(struct SPIDRV_HandleData *handle,
+                      Ecode_t transferStatus,
+                      int itemsTransferred){
+    (void)&handle;
+    (void)itemsTransferred;
+    HW_HAL_SPI* spiContext = HW_HAL_SPI::getHW_HAL_SPI(handle);
+
+    if (transferStatus == ECODE_EMDRV_SPIDRV_OK) {
+        if (spiContext) spiContext->flagRxComplete = true;
+        spiContext->halSpi->upCallWriteFinished();
+        spiContext->halSpi->upCallReadFinished();
+    }
+}
+
+
+
+void HW_HAL_SPI::txRxComplete(struct SPIDRV_HandleData *handle,
+                      Ecode_t transferStatus,
+                      int itemsTransferred){
+    (void)&handle;
+    (void)itemsTransferred;
+    HW_HAL_SPI* spiContext = HW_HAL_SPI::getHW_HAL_SPI(handle);
+
+    if (transferStatus == ECODE_EMDRV_SPIDRV_OK) {
+        if (spiContext) spiContext->flagTxComplete = true;
+        if (spiContext) spiContext->flagRxComplete = true;
+        spiContext->halSpi->upCallWriteFinished();
+        spiContext->halSpi->upCallReadFinished();
+    }
+}
+
+int HW_HAL_SPI::DMAinit(){
+    SPIDRV_Init_t initData;
+
+    initData.port              = SPIx;//SL_SPIDRV_EXP_PERIPHERAL;
+    initData.portLocationTx    = mosiPinLoc;//SL_SPIDRV_EXP_TX_LOC;
+    initData.portLocationRx    = misoPinLoc;//SL_SPIDRV_EXP_RX_LOC;
+    initData.portLocationClk   = sckPinLoc;//SL_SPIDRV_EXP_CLK_LOC;
+    initData.portLocationCs    = 0;//SL_SPIDRV_EXP_CS_LOC;
+    initData.bitRate           = baudrate;//SL_SPIDRV_EXP_BITRATE;
+    initData.frameLength       = 8;
+    initData.dummyTxValue      = 0;
+    initData.type              = spidrvMaster;//SL_SPIDRV_EXP_TYPE;
+    initData.bitOrder          = spidrvBitOrderMsbFirst;//SL_SPIDRV_EXP_BIT_ORDER;
+    initData.clockMode         = spidrvClockMode0;//SL_SPIDRV_EXP_CLOCK_MODE;
+    initData.csControl         = spidrvCsControlApplication;//SL_SPIDRV_EXP_CS_CONTROL;
+    initData.slaveStartMode    = spidrvSlaveStartImmediate;//SL_SPIDRV_EXP_SLAVE_START_MODE;
+
+    Ecode_t retVal = SPIDRV_Init(spidrv_handle, &initData);
+
+    if ( retVal == ECODE_OK){
+        initialized = true;
+        return 0;
+    }
+
+    return retVal;
+}
+/************************* end HW_HAL_SPI *************************************/
 
 
 
 
 
 
-
-
+/********************************  HAL_SPI ************************************/
 HAL_SPI::~HAL_SPI(){}
+
+
 
 HAL_SPI::HAL_SPI(SPI_IDX idx, GPIO_PIN sckPin, GPIO_PIN misoPin, GPIO_PIN mosiPin, GPIO_PIN nssPin) {
 	if (idx < SPI_IDX_MIN || idx > SPI_IDX_MAX) {
 		RODOS_ERROR("SPI index out of range");
 	} else {
 		context = new (&SPIcontextArray[idx]) HW_HAL_SPI(idx, sckPin, misoPin, mosiPin, nssPin);
+		context->halSpi = this;
 	}
 }
+
+
 
 HAL_SPI::HAL_SPI(SPI_IDX idx) {
 	if (idx < SPI_IDX_MIN || idx > SPI_IDX_MAX) {
 		RODOS_ERROR("SPI index out of range");
 	} else {
 		context = new (&SPIcontextArray[idx]) HW_HAL_SPI(idx);
+		context->halSpi = this;
 	}
 }
+
+
 
 /** init SPI interface
  * @param baudrate
  * @return 0 on success
  */
 int32_t HAL_SPI::init(uint32_t baudrate, bool slave, bool tiMode) {       
+    (void)tiMode;
+    (void)slave;
 
     context->enableClocks();
 
     context->baudrate = baudrate;
 
-  	context->config               = USART_INITSYNC_DEFAULT;
-  	context->config.baudrate      = baudrate;
-    context->config.master        = true;
-    context->config.autoCsEnable  = false;
-    context->config.clockMode     = usartClockMode0; // don't change this value -> use config()
-    context->config.msbf          = true;
-    context->config.enable        = usartEnable;
+    USART_InitSync_TypeDef initData = USART_INITSYNC_DEFAULT;
+    initData.baudrate      = baudrate;
+    initData.master        = true;
+    initData.autoCsEnable  = false;
+    initData.clockMode     = usartClockMode0; // don't change this value -> use config()
+    initData.msbf          = true;
+    initData.enable        = usartEnable;
     // USART_InitSync resets complete USART module
     // -> special register-settings (like "ROUTELOC") must
     //    be set afterwards!!!
-    USART_InitSync(context->SPIx, &(context->config));
+    USART_InitSync(context->SPIx, &initData);
 
-    int8_t rxPinLoc = 0;
-    int8_t txPinLoc = 0;
-    int8_t clkPinLoc = 0;
-
-    /* pin routing
-     * - to save memory only one LUT for rx-,tx- and clk-pin is used
-     *   -> this is possible because the 3 pin-location-tables are shifted by just one value
-     *   -> each pin-location-table has 32 items
-     *   -> we combined all 3 tables to one LUT with 34 items and use different starting points for each pin search
-     */
-  	switch(context->idx){
-  	  case SPI_IDX0:
-  	    txPinLoc = context->getPinLoc(context->GPIO_Pin_MOSI, &usart0_1PinLoc_LUT[0]);
-  	    rxPinLoc = context->getPinLoc(context->GPIO_Pin_MISO, &usart0_1PinLoc_LUT[1]);
-  	    clkPinLoc = context->getPinLoc(context->GPIO_Pin_SCK, &usart0_1PinLoc_LUT[2]);
-  	    break;
-
-      case SPI_IDX1:
-        txPinLoc = context->getPinLoc(context->GPIO_Pin_MOSI, &usart0_1PinLoc_LUT[0]);
-        rxPinLoc = context->getPinLoc(context->GPIO_Pin_MISO, &usart0_1PinLoc_LUT[1]);
-        clkPinLoc = context->getPinLoc(context->GPIO_Pin_SCK, &usart0_1PinLoc_LUT[2]);
-        break;
-
-      case SPI_IDX2:
-        txPinLoc = context->getPinLoc(context->GPIO_Pin_MOSI, &usart2PinLoc_LUT[0]);
-        rxPinLoc = context->getPinLoc(context->GPIO_Pin_MISO, &usart2PinLoc_LUT[1]);
-        clkPinLoc = context->getPinLoc(context->GPIO_Pin_SCK, &usart2PinLoc_LUT[2]);
-        break;
-
-      case SPI_IDX3:
-        txPinLoc = context->getPinLoc(context->GPIO_Pin_MOSI, &usart3PinLoc_LUT[0]);
-        rxPinLoc = context->getPinLoc(context->GPIO_Pin_MISO, &usart3PinLoc_LUT[1]);
-        clkPinLoc = context->getPinLoc(context->GPIO_Pin_SCK, &usart3PinLoc_LUT[2]);
-        break;
-
-      default:
-        RODOS_ERROR("SPI index out of range");
-        return -1;
-  	}
-
-    if (rxPinLoc <0 || txPinLoc <0 || clkPinLoc < 0){
-        RODOS_ERROR("SPI pin invalid");
-        USART_Reset(context->SPIx);
-        return -1;
-    }
-
-    context->SPIx->ROUTELOC0 =  (rxPinLoc << _USART_ROUTELOC0_RXLOC_SHIFT) |
-                                (txPinLoc << _USART_ROUTELOC0_TXLOC_SHIFT) |
-                                (clkPinLoc << _USART_ROUTELOC0_CLKLOC_SHIFT);
+    context->SPIx->ROUTELOC0 =  (context->misoPinLoc << _USART_ROUTELOC0_RXLOC_SHIFT) |
+                                (context->mosiPinLoc << _USART_ROUTELOC0_TXLOC_SHIFT) |
+                                (context->sckPinLoc << _USART_ROUTELOC0_CLKLOC_SHIFT);
 
   	context->SPIx->ROUTEPEN = USART_ROUTEPEN_CLKPEN | USART_ROUTEPEN_TXPEN | USART_ROUTEPEN_RXPEN;
 
-  	/* configure GPIOs */
-    GPIO_PinModeSet(HW_HAL_GPIO::getEFR32Port(context->GPIO_Pin_SCK), HW_HAL_GPIO::getEFR32Pin(context->GPIO_Pin_SCK), gpioModePushPull, 0);
-    GPIO_PinModeSet(HW_HAL_GPIO::getEFR32Port(context->GPIO_Pin_MOSI), HW_HAL_GPIO::getEFR32Pin(context->GPIO_Pin_MOSI), gpioModePushPull, 0);
-    GPIO_PinModeSet(HW_HAL_GPIO::getEFR32Port(context->GPIO_Pin_MISO), HW_HAL_GPIO::getEFR32Pin(context->GPIO_Pin_MISO), gpioModeInput, 0); // "out"-value sets filter on/off
+    /* configure GPIOs */
+  	GPIO_PinModeSet(HW_HAL_GPIO::getEFR32Port(context->GPIO_Pin_SCK), HW_HAL_GPIO::getEFR32Pin(context->GPIO_Pin_SCK), gpioModePushPull, 0);
+  	GPIO_PinModeSet(HW_HAL_GPIO::getEFR32Port(context->GPIO_Pin_MOSI), HW_HAL_GPIO::getEFR32Pin(context->GPIO_Pin_MOSI), gpioModePushPull, 0);
+  	GPIO_PinModeSet(HW_HAL_GPIO::getEFR32Port(context->GPIO_Pin_MISO), HW_HAL_GPIO::getEFR32Pin(context->GPIO_Pin_MISO), gpioModeInput, 0); // "out"-value sets filter on/off
 
-  	context->initialized = true;
-  	return 0;
+    context->initialized = true;
+    return 0;
 }
 
 
+
+/* writeRead() */
 int32_t HAL_SPI::writeRead(const void* sendBuf, size_t len, void* recBuf, size_t maxLen) {
-	if(!context->initialized) return -1;
+	  if(!context->initialized) return -1;
 	
-	uint8_t *pTx = (uint8_t*)sendBuf;
-	uint8_t *pRx = (uint8_t*)recBuf;
-	uint8_t rxVal = 0;
-	size_t rxCnt = maxLen;
+	  if (context->dmaEnable){
+	      Ecode_t retVal = ECODE_OK;
 
-	/* transmit tx buffer and receive at the same time */
-	unsigned int i = 0;
-	for(i = 0; i < len; i++){
-	    rxVal = USART_SpiTransfer(context->SPIx, *pTx);
-	    pTx++;
-	    if (rxCnt) {
-	        *pRx = rxVal;
-	        pRx++;
-	        rxCnt--;
-	    }
-	}
+	      if (len <= 0 || maxLen <= 0){
+	          return -1;
+	      }
 
-	/* generate SCLK by sending dummy bytes to complete read request */
-	while (rxCnt){
-	    *pRx = USART_SpiTransfer(context->SPIx, 0);
-	    pRx++;
-	    rxCnt--;
-	}
+	      context->flagRxComplete = false;
+	      context->flagTxComplete = false;
 
-	return static_cast<int32_t>(maxLen);
+	      if (len > maxLen){
+	          context->remainingBuf = &((uint8_t*)sendBuf)[maxLen];
+	          context->remainingSize = len - maxLen;
+	          retVal = SPIDRV_MTransfer(context->spidrv_handle, sendBuf, recBuf, maxLen, HW_HAL_SPI::startTransmitRemaining);
+	      }else if (len < maxLen){
+	          context->remainingBuf = &((uint8_t*)recBuf)[len];
+	          context->remainingSize = maxLen - len;
+	          retVal = SPIDRV_MTransfer(context->spidrv_handle, sendBuf, recBuf, len, HW_HAL_SPI::startReceiveRemaining);
+	      }else{ // len == maxLen
+	          retVal = SPIDRV_MTransfer(context->spidrv_handle, sendBuf, recBuf, len, HW_HAL_SPI::txRxComplete);
+	      }
+
+	      if(context->blockingEnable){
+	          suspendUntilWriteFinished(NOW()+100*MILLISECONDS);
+	      }
+
+	      return retVal;
+	  }else{
+        uint8_t *pTx = (uint8_t*)sendBuf;
+        uint8_t *pRx = (uint8_t*)recBuf;
+        uint8_t rxVal = 0;
+        size_t rxCnt = maxLen;
+
+        /* transmit tx buffer and receive at the same time */
+        unsigned int i = 0;
+        for(i = 0; i < len; i++){
+            rxVal = USART_SpiTransfer(context->SPIx, *pTx);
+            pTx++;
+            if (rxCnt) {
+                *pRx = rxVal;
+                pRx++;
+                rxCnt--;
+            }
+        }
+
+        /* generate SCLK by sending dummy bytes to complete read request */
+        while (rxCnt){
+            *pRx = USART_SpiTransfer(context->SPIx, 0);
+            pRx++;
+            rxCnt--;
+        }
+
+        context->flagRxComplete = true;
+        context->flagTxComplete = true;
+        upCallWriteFinished();
+        upCallReadFinished();
+
+        return maxLen;
+	  }
 }
+
 
 
 int32_t HAL_SPI::write(const void* sendBuf, size_t len) {
 
-	if(!context->initialized) return -1;
-	
-  uint8_t *pTx = (uint8_t*)sendBuf;
+    if(!context->initialized) return -1;
 
-  /* transmit tx buffer */
-  unsigned int i = 0;
-  for(i = 0; i < len; i++){
-      USART_SpiTransfer(context->SPIx, *pTx);
-      pTx++;
-  }
+    if (context->dmaEnable){
+        context->flagTxComplete = false;
+        SPIDRV_MTransmit(context->spidrv_handle, sendBuf, len, HW_HAL_SPI::txComplete);
 
-	return static_cast<int32_t>(len);
+        if(context->blockingEnable){
+            suspendUntilWriteFinished(NOW()+100*MILLISECONDS);
+            return len;
+        }
+        return 0;
+    }else{
+        uint8_t *pTx = (uint8_t*)sendBuf;
+
+        /* transmit tx buffer */
+        unsigned int i = 0;
+        for(i = 0; i < len; i++){
+            USART_SpiTransfer(context->SPIx, *pTx);
+            pTx++;
+        }
+
+        context->flagTxComplete = true;
+        upCallWriteFinished();
+
+        return len;
+    }
 }
 
 
 int32_t HAL_SPI::read(void* recBuf, size_t maxLen) {
 
-	if(!context->initialized) return -1;
+	  if(!context->initialized) return -1;
  
-  uint8_t *pRx = (uint8_t*)recBuf;
-  size_t rxCnt = maxLen;
+	  if (context->dmaEnable){
+	      context->flagRxComplete = false;
+	      SPIDRV_MReceive(context->spidrv_handle, recBuf, maxLen, HW_HAL_SPI::rxComplete);
 
-  /* generate SCLK by sending dummy bytes */
-  while (rxCnt){
-      *pRx = USART_SpiTransfer(context->SPIx, 0);
-      pRx++;
-      rxCnt--;
-  }
+	      if(context->blockingEnable){
+	          suspendUntilReadFinished(NOW()+100*MILLISECONDS);
+	          return maxLen;
+	      }
 
-	return static_cast<int32_t>(maxLen);
+	      return 0;
+	  }else{
+	      uint8_t *pRx = (uint8_t*)recBuf;
+	      size_t rxCnt = maxLen;
+
+	      /* generate SCLK by sending dummy bytes */
+	      while (rxCnt){
+	          *pRx = USART_SpiTransfer(context->SPIx, 0);
+	          pRx++;
+	          rxCnt--;
+	      }
+
+	      context->flagRxComplete = true;
+	      upCallReadFinished();
+
+	      return maxLen;
+	  }
 }
 
 
@@ -452,6 +635,24 @@ int32_t HAL_SPI::config(SPI_PARAMETER_TYPE type, int32_t value){
       }else{
           return -1;
       }
+
+    case SPI_PARAMETER_DMA:
+      if (value > 0){
+          context->DMAinit();
+          context->dmaEnable = true;
+      }else{
+          init();
+          context->dmaEnable = false;
+      }
+      return 0;
+
+    case SPI_PARAMETER_BLOCKING:
+      if (value > 0){
+          context->blockingEnable = true;
+      }else{
+          context->blockingEnable = false;
+      }
+      return 0;
 
     default:
         return -1;
@@ -505,11 +706,11 @@ int32_t HAL_SPI::status(SPI_STATUS_TYPE type) {
 }
 
 bool HAL_SPI::isWriteFinished(){
-	return true;
+	return context->flagTxComplete;
 }
 
 bool HAL_SPI::isReadFinished(){
-	return true;
+	return context->flagRxComplete;
 }
 
 }

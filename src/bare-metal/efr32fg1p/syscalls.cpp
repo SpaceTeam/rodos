@@ -25,7 +25,7 @@ void enterSleepMode()     { }
 extern HAL_UART uart_stdout;
 
 int getCurrentIRQ();
-void UART_putc_interrupt(HAL_UART* uart, uint8_t c);
+void UART_putchar(HAL_UART* uart, uint8_t c);
 
 extern "C" {
 
@@ -220,7 +220,7 @@ int putchar(int ic) {
 
 		}
 	}else{// in interrupt, write to UART register directly bypassing HAL_UART buffers
-		UART_putc_interrupt(&uart_stdout, c);
+		UART_putchar(&uart_stdout, c);
 	}
 
 	return c;
