@@ -25,8 +25,10 @@
 #include "vendor-headers.h"
 
 /* ToDo:
+ * timeout for read() when DMA is enabled -> e.g. thread -> see stm32
  * hwFlowCtrl testen
- * enable VCOM über config oder Makro!? -> sonst ist Treiber HW-abhängig
+ * enable VCOM somewhere else
+ *    -> it is only necessary for specific hardware board "BRD4001A"
  */
 
 #define UART_IDX_MIN        UART_IDX0
@@ -279,40 +281,21 @@ int32_t HAL_UART::config(UART_PARAMETER_TYPE type, int32_t paramVal) {
 
 			return 0;  // end case UART_PARAMETER_HW_FLOW_CONTROL
 
+		case UART_PARAMETER_DMA:
+      if (context->configRdDMA(paramVal) == 0){
+          return context->configWrDMA();
+      }else{
+          return -1;
+      }
+
 		case UART_PARAMETER_DMA_RD:
-		    DMADRV_Init();
-
-		    if (context->rdDMACh == 9999){
-		        if (DMADRV_AllocateChannel(&context->rdDMACh, NULL) != ECODE_EMDRV_DMADRV_OK) {
-		            context->rdDMACh = 9999;
-		            return -1;
-		        }
-		    }
-
-		    if((unsigned int)paramVal > UART_BUF_SIZE){
-		    	context->DMAMaxReceiveSize = UART_BUF_SIZE;
-	      }else{
-		      context->DMAMaxReceiveSize = static_cast<size_t>(paramVal);
-		    }
-		    context->dmaRdEnable = true;
-		    USART_IntDisable(context->UARTx, USART_IEN_RXDATAV);
-		    context->ReceiveIntoRxBufWithDMA();
-		    return 0;
+		    return context->configRdDMA(paramVal);
 
 		default: return -1;
 	}
 
     case UART_PARAMETER_DMA_WR:
-        DMADRV_Init();
-
-        if (context->wrDMACh == 9999){
-            if (DMADRV_AllocateChannel(&context->wrDMACh, NULL) != ECODE_EMDRV_DMADRV_OK) {
-                context->wrDMACh = 9999;
-                return -1;
-            }
-        }
-        context->dmaWrEnable = true;
-        return 0;
+        return context->configWrDMA();
 
 
 		case UART_PARAMETER_BLOCKING_WR:
@@ -606,23 +589,6 @@ void HW_HAL_UART::initMembers(HAL_UART* halUart, UART_IDX uartIdx, GPIO_PIN txPi
 
 
 /*************DMA**************/
-//
-//int HW_HAL_UART::DMAConfigure()
-//{
-//  // Initialize DMA.
-//    DMADRV_Init();
-//
-//    if (DMADRV_AllocateChannel(&txDMACh, NULL) != ECODE_EMDRV_DMADRV_OK) {
-//      return -1;
-//    }
-//
-//    if (DMADRV_AllocateChannel(&rxDMACh, NULL) != ECODE_EMDRV_DMADRV_OK) {
-//      return -1;
-//    }
-//
-//    return 0;
-//}
-
 void HW_HAL_UART::SendTxBufWithDMA() 
 {
 	size_t len;
@@ -847,6 +813,13 @@ int HW_HAL_UART::init(uint32_t baudrate) {
 
     CMU_ClockEnable(getUARTx_Clock(), true); // Enable oscillator to USART module
     
+#ifndef EFR32FG12P433F1024GM68
+    /* enable VCOM for Debug outputs (USART0 on BRD4001A): set PA5 high */
+    if (idx == UART_IDX0){
+        HW_HAL_GPIO::configurePin(GPIO_005, gpioModePushPull, 1);
+    }
+#endif
+
     // set pin modes for USART TX and RX pins and VCOM enable
     HW_HAL_GPIO::configurePin(this->rx, gpioModeInput, 0);
     HW_HAL_GPIO::configurePin(this->tx, gpioModePushPull, 1);
@@ -866,6 +839,41 @@ int HW_HAL_UART::init(uint32_t baudrate) {
   	NVIC_EnableIRQ(getUARTx_TX_IRQn());  
   	USART_IntEnable(UARTx, USART_IEN_RXDATAV);
     return 0;
+}
+
+
+int HW_HAL_UART::configRdDMA(size_t dmaRdSize){
+    DMADRV_Init();
+
+    if (rdDMACh == 9999){
+        if (DMADRV_AllocateChannel(&rdDMACh, NULL) != ECODE_EMDRV_DMADRV_OK) {
+            rdDMACh = 9999;
+            return -1;
+        }
+    }
+
+    if(dmaRdSize > UART_BUF_SIZE){
+        DMAMaxReceiveSize = UART_BUF_SIZE;
+    }else{
+        DMAMaxReceiveSize = dmaRdSize;
+    }
+    dmaRdEnable = true;
+    USART_IntDisable(UARTx, USART_IEN_RXDATAV);
+    ReceiveIntoRxBufWithDMA();
+    return 0;
+}
+
+int HW_HAL_UART::configWrDMA(){
+  DMADRV_Init();
+
+  if (wrDMACh == 9999){
+      if (DMADRV_AllocateChannel(&wrDMACh, NULL) != ECODE_EMDRV_DMADRV_OK) {
+          wrDMACh = 9999;
+          return -1;
+      }
+  }
+  dmaWrEnable = true;
+  return 0;
 }
 
 

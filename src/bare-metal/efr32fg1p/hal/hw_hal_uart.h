@@ -130,6 +130,9 @@ class HW_HAL_UART {
 	int init(uint32_t baudrate);
 	void initMembers(HAL_UART* halUart, UART_IDX uartIdx, GPIO_PIN txPin, GPIO_PIN rxPin, GPIO_PIN rtsPin, GPIO_PIN ctsPin);
 
+	int configRdDMA(size_t dmaRdSize);
+	int configWrDMA();
+
 	IRQn getUARTx_RX_IRQn();
 	IRQn getUARTx_TX_IRQn();
 	USART_TypeDef* getUARTx();

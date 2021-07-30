@@ -27,9 +27,9 @@ enum SPI_IDX{       //  STM32F4                     // EFR32FG12P
 
 enum SPI_PARAMETER_TYPE {
     SPI_PARAMETER_BAUDRATE,
-    SPI_PARAMETER_MODE,      // MODE:CPOL/CPHA  0:0/0   1:0/1   2:1/0   3:1/1
-    SPI_PARAMETER_BLOCKING,
-    SPI_PARAMETER_DMA
+    SPI_PARAMETER_MODE,     // MODE:CPOL/CPHA  0:0/0   1:0/1   2:1/0   3:1/1
+    SPI_PARAMETER_DMA,      // default disabled
+    SPI_PARAMETER_BLOCKING  // default enabled
 };
 
 enum SPI_STATUS_TYPE {
