@@ -25,7 +25,6 @@
 #include "vendor-headers.h"
 
 /* ToDo:
- * timeout for read() when DMA is enabled -> e.g. thread -> see stm32
  * hwFlowCtrl testen
  * enable VCOM somewhere else
  *    -> it is only necessary for specific hardware board "BRD4001A"
@@ -52,8 +51,22 @@ class HW_HAL_UART {
 
 namespace RODOS {
 
-HW_HAL_UART UART_contextArray[UART_IDX_MAX+1];
+#define DMA_RD_TIMEOUT    10*MILLISECONDS
 
+static volatile bool enableDMATriggerThread=false;
+
+class ReceiveTrigger : StaticThread<> {
+  public:
+    ReceiveTrigger():StaticThread<>("UARTRecvTrigger"){}
+  private:
+    void run();
+};
+
+static ReceiveTrigger triggerthread;
+
+
+
+HW_HAL_UART UART_contextArray[UART_IDX_MAX+1];
 
 HAL_UART::HAL_UART(UART_IDX uartIdx, GPIO_PIN txPin, GPIO_PIN rxPin, GPIO_PIN rtsPin, GPIO_PIN ctsPin) 
 {
@@ -281,20 +294,22 @@ int32_t HAL_UART::config(UART_PARAMETER_TYPE type, int32_t paramVal) {
 
 			return 0;  // end case UART_PARAMETER_HW_FLOW_CONTROL
 
-		case UART_PARAMETER_DMA:
+		case UART_PARAMETER_ENABLE_DMA:
       if (context->configRdDMA(paramVal) == 0){
+          enableDMATriggerThread = true;
           return context->configWrDMA();
       }else{
           return -1;
       }
 
-		case UART_PARAMETER_DMA_RD:
+		case UART_PARAMETER_ENABLE_DMA_RD:
+		    enableDMATriggerThread = true;
 		    return context->configRdDMA(paramVal);
 
 		default: return -1;
 	}
 
-    case UART_PARAMETER_DMA_WR:
+    case UART_PARAMETER_ENABLE_DMA_WR:
         return context->configWrDMA();
 
 
@@ -344,13 +359,6 @@ void HAL_UART::reset()
 }
 
 
-/* DMA enabled / blocking disabled:
- * - read() returns immediately
- * - the DMA is started with  HW_HAL_UART::DMAMaxReceiveSize which is set in config
- *   -> you will get data with read() as soon as all data (DMAMaxReceiveSize) is received by UART
- *   -> be aware of, if DMAMaxReceiveSize is not divider of UART_BUF_SIZE, the DMA is started only with
- *      available space at the end of uart-rx-buffer
- */
 size_t HAL_UART::read(void* buf, size_t size)
 {
     if (context == nullptr) {return 0;}
@@ -384,7 +392,7 @@ size_t HAL_UART::read(void* buf, size_t size)
             }
         }else{
             if(context->blockingRdEnable){
-                PRINTF("UART suspenduntildataready\n");
+                //PRINTF("UART suspenduntildataready\n");
                 this->suspendUntilDataReady();
             }
         }
@@ -454,15 +462,15 @@ int16_t HAL_UART::getcharNoWait()
 {
     if (context == nullptr) {return -1;}
 
-    if (context->dmaRdEnable)  {return -2;}
-
     uint8_t c = 0;
-    bool dataAvailable = context->receiveBuffer.get(c);
+    bool tmpBlockingFlag = context->blockingRdEnable;
 
-    //USART_IntEnable(context->UARTx, USART_IEN_RXDATAV);
+    context->blockingRdEnable = false;
+    size_t retVal = read(&c,1);
+    context->blockingRdEnable = tmpBlockingFlag;
 
-    if (dataAvailable){
-        return (int)c;
+    if(retVal == 1) {
+        return c;
     }
 
     return -1;
@@ -472,11 +480,14 @@ int16_t HAL_UART::getcharNoWait()
 int16_t HAL_UART::putcharNoWait(uint8_t c) {
   if (context == nullptr) {return -1;}
 
-  if (context->dmaWrEnable)  {return -2;}
+  bool tmpBlockingFlag = context->blockingWrEnable;
 
-	if(context->transmitBuffer.put(c)) {
-	    USART_IntEnable(context->UARTx, USART_IEN_TXBL);
-	    return c & 0xFF;
+  context->blockingWrEnable = false;
+  size_t retVal = write(&c,1);
+  context->blockingWrEnable = tmpBlockingFlag;
+
+	if(retVal == 1) {
+	    return c;
 	}
 
 	return -1;
@@ -589,6 +600,27 @@ void HW_HAL_UART::initMembers(HAL_UART* halUart, UART_IDX uartIdx, GPIO_PIN txPi
 
 
 /*************DMA**************/
+void ReceiveTrigger::run()
+{
+    while(!enableDMATriggerThread){
+        suspendCallerUntil(NOW()+ 10 * SECONDS);
+    }
+
+    HW_HAL_UART *hwHalUart = NULL;
+
+    TIME_LOOP(1*MILLISECONDS, DMA_RD_TIMEOUT) {
+        for(int i=UART_IDX_MIN; i<=UART_IDX_MAX; i++){
+            hwHalUart = &UART_contextArray[i];
+            if(hwHalUart->dmaRdEnable){
+                DMADRV_StopTransfer(hwHalUart->rdDMACh);
+                hwHalUart->DMAReceiveFinishedHandler(hwHalUart->rdDMACh);
+            }
+        }
+    }
+
+}
+
+
 void HW_HAL_UART::SendTxBufWithDMA() 
 {
 	size_t len;
@@ -602,9 +634,7 @@ void HW_HAL_UART::SendTxBufWithDMA()
 }
 
 void HW_HAL_UART::DMAStartTransmit(void* memoryBuffer, size_t len) {
-    void *txPort;
-
-    txPort = (void *)&(UARTx->TXDATA);
+    void *txPort = (void *)&(UARTx->TXDATA);
 
     // Start transmit DMA.
     DMADRV_MemoryPeripheral(wrDMACh,
@@ -652,10 +682,8 @@ void HW_HAL_UART::ReceiveIntoRxBufWithDMA() {
 
 
 void HW_HAL_UART::DMAStartReceive(void* memoryBuffer, size_t len) {
-  void *rxPort;
-
-  UARTx->CMD = USART_CMD_CLEARRX | USART_CMD_CLEARTX;
-  rxPort = (void *)&(UARTx->RXDATA);
+  //UARTx->CMD = USART_CMD_CLEARRX | USART_CMD_CLEARTX;
+  void *rxPort = (void *)&(UARTx->RXDATA);
 
   // Start receive DMA.
   DMADRV_PeripheralMemory(rdDMACh,

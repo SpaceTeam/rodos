@@ -18,9 +18,9 @@ constexpr size_t UART_BUF_SIZE = 256;
 enum UART_PARAMETER_TYPE {
 	UART_PARAMETER_BAUDRATE,        // default 115200
 	UART_PARAMETER_HW_FLOW_CONTROL, // default disabled
-	UART_PARAMETER_DMA,             // default disabled
-	UART_PARAMETER_DMA_WR,          // default disabled
-	UART_PARAMETER_DMA_RD,          // default disabled
+	UART_PARAMETER_ENABLE_DMA,      // default disabled
+	UART_PARAMETER_ENABLE_DMA_WR,   // default disabled
+	UART_PARAMETER_ENABLE_DMA_RD,   // default disabled
 	UART_PARAMETER_BLOCKING_WR,     // default disabled
 	UART_PARAMETER_BLOCKING_RD      // default disabled
 };
