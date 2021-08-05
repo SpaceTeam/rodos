@@ -1,4 +1,3 @@
-
 /**
  * @file hw_specific.cc
  * @date 2008/04/23 7:33
@@ -449,54 +448,165 @@ void enterSleepMode() {
 extern int64_t nanoTime;
 long long deepSleepWakeupTime = 0;
 
-void deepSleepUntil(long long until) {
-	if(until < NOW())
-		return;
+/**
+ *  Configure wake up timer for a given sleep time interval
+ *  For more about RTC refer ST document AN4759
+ */
+static bool setWakeUpTimer(long long);
 
-  SysTick->CTRL  &= ~SysTick_CTRL_TICKINT_Msk;        // systick IRQ off
+/**
+ *  This function enters the µC in deep sleep (STOP) + PWR Regulator LowPower Mode.
+ *  Supported deep sleep intervals from 126.070 µs (not 122.070 µs as it is in the data sheet) to 131072 s.
+ *  Deep sleep intervals only apply if RTCCLK = 32.768 kHz and ck_spre (synchronous prescaler output clock) = 1 Hz
+ *
+ *  How to use this function with minimal synchronization deviation of the RODOS system timer and a reference clock:
+ *
+ *  1. if until <= NOW() + 32 * SECONDS use
+ *     deepSleepUntil(until);
+ *
+ *     NOTE: If you use the short deep sleep intervals of a few milliseconds or less, use
+ *	         until = NOW() + x * 61035 * NANOSECONDS + 4000 * NANOSECONDS, with x >= 2
+ *
+ *  2. otherwise call the function 3 or 4 times
+ *     deepSleepUntil(NOW() + (1000 - rtcMilliseconds) * MILLISECONDS); // <= sleep until the RTC clock shows hh:mm:ss.000
+ *	   deepSleepUntil(NOW() + sleepTime / SECONDS * SECONDS - SECONDS); // <= here is the wake-up timer with exactly one second resolution
+ *	   deepSleepUntil(NOW() + rtcMilliseconds * MILLISECONDS);          // <= sleep until the RTC clock shows exactly N seconds since the first deepSleepUntil() call
+ *
+ *	   deepSleepUntil(NOW() + sleepTime % SECONDS);                     // <= only needed if you use sleepTime = xxxxxx.yyy sec. and yyy != 0
+ *
+ *	   with rtcMilliseconds = (int)( 1000 * ( (rtc_prer_s - rtc_ssr) / (rtc_prer_s + 1.0f) ) )
+ *	   and sleepTime = time to deep sleep = until - NOW()
+ *
+ *	   NOTE: In the 2nd case
+ *	         it is a prerequisite that you do not use any EXTIx interrupts (except EXTI22) to wake up the µC.
+ *	         Otherwise it has to be taken into account in the code.
+ *	         E.g. with a flag that is set in the EXTIx IRQ handler.
+ *	         WARNING: In this case, when the µC wakes up from EXTIx, the RODOS system timer will run forward.
+ *
+ *
+ *	NOTE: HSE/HSI will restart immediately upon waking up, so use a short delay (a few core instructions)
+ *	      before using UART or other SYSCLK Frequency dependent peripherals
+ *
+ *	For more about RTC refer ST document AN4759
+ */
+void deepSleepUntil(long long until) {
+	long long sleepTime;
+	bool status;
+
+	// After first RODOS boot RTC runs with LSI as source clock and wake up timer interrupt is enable.
+	// If you want to use LSE (not supported by default on the STM32F4 Discovery Board)
+	// as course clock for RTC, you have to reset the RTC (backup domain) before you initialize and restart it.
+	// After the LSE initialization and the RTC restart, the following flags must be set or reset
+	if ((RCC->BDCR & RCC_BDCR_RTCEN) != RCC_BDCR_RTCEN
+			|| (RTC->ISR & RTC_ISR_WUTF) == RTC_ISR_WUTF
+			|| (RTC->CR & RTC_CR_WUTIE) != RTC_CR_WUTIE) {
+
+		// Otherwise the wake-up interrupt may not be triggered
+		// and the µC may remain in deep sleep mode forever
+		return;
+	}
+
+	SysTick->CTRL  &= ~SysTick_CTRL_TICKINT_Msk; // systick IRQ off
 
 	uint32_t cr = RCC->CR;
 	uint32_t cfgr = RCC->CFGR;
 	uint32_t pllcfgr = RCC->PLLCFGR;
 
-  RCC->BDCR |= RCC_BDCR_LSEON;
-  RCC->BDCR |= RCC_BDCR_RTCEN;
-  EXTI->PR = (1 << 22);
+	EXTI_ClearITPendingBit(EXTI_Line22);
 
-  PWR_ClearFlag(PWR_FLAG_WU);
+	PWR_ClearFlag(PWR_FLAG_WU);
 
-	long long interval = static_cast<long long>((double)(until - NOW()) / 1000000.0 / 0.5);
-	RTC_SetWakeUpCounter(static_cast<uint32_t>(interval));
-	RTC_WakeUpCmd(ENABLE);
+	sleepTime = until - NOW(); // 3000-4000 ns elapse from the deepSleepUntil() call to this point
 
-	deepSleepWakeupTime = until;
+	status = setWakeUpTimer(sleepTime);
 
-	PWR_EnterSTOPMode(PWR_Regulator_LowPower, PWR_STOPEntry_WFI);
+	// Enter STOP mode only if the range of sleepTime are supported
+	// and all necessary flags are set
+	if (status == true) {
+		RTC_WakeUpCmd(ENABLE);
 
-	RTC_WakeUpCmd(DISABLE);
+		deepSleepWakeupTime = until; // +/- SYNCH_ERROR_CORRECTION_IN_MILLISECONDS // optional, HSE typical startup time: ~ 2 ms 
+		PWR_EnterSTOPMode(PWR_Regulator_LowPower, PWR_STOPEntry_WFI);
 
-	RCC->CR = cr;
-	RCC->CFGR = cfgr;
-	RCC->PLLCFGR = pllcfgr;
+		RCC->CR = cr;
+		RCC->CFGR = cfgr;
+		RCC->PLLCFGR = pllcfgr;
 
-  SysTick->CTRL  |= SysTick_CTRL_TICKINT_Msk;            // systick IRQ on
+		RTC_WakeUpCmd(DISABLE);
+	}
+
+	SysTick->CTRL  |= SysTick_CTRL_TICKINT_Msk; // systick IRQ on
+}
+
+static bool setWakeUpTimer(long long wakeupInNanoseconds) {
+	uint32_t wakeupClock = 0;
+	uint32_t wakeupCounter = 0;
+	bool status = true;
+
+	if (wakeupInNanoseconds < (122070) * NANOSECONDS) {
+		// out of range
+		status = false;
+	}
+	else if (wakeupInNanoseconds < 4 * SECONDS) {
+		// configuration 1, LSE/2
+		wakeupClock = RTC_WakeUpClock_RTCCLK_Div2;
+		wakeupCounter = wakeupInNanoseconds / (61035 * NANOSECONDS) - 1;
+	}
+	else if (wakeupInNanoseconds < 8 * SECONDS) {
+		// configuration 1, LSE/4
+		wakeupClock = RTC_WakeUpClock_RTCCLK_Div4;
+		wakeupCounter = wakeupInNanoseconds / (122070 * NANOSECONDS) - 1;
+	}
+	else if (wakeupInNanoseconds < 16 * SECONDS) {
+		// configuration 1, LSE/8
+		wakeupClock = RTC_WakeUpClock_RTCCLK_Div8;
+		wakeupCounter = wakeupInNanoseconds / (244140 * NANOSECONDS) - 1;
+	}
+	else if (wakeupInNanoseconds < 32 * SECONDS) {
+		// configuration 1, LSE/16
+		wakeupClock = RTC_WakeUpClock_RTCCLK_Div16;
+		wakeupCounter = wakeupInNanoseconds / (488280 * NANOSECONDS) - 1;
+	}
+	else if (wakeupInNanoseconds < 65536 * SECONDS) {
+		// configuration 2
+		wakeupClock = RTC_WakeUpClock_CK_SPRE_16bits;
+		wakeupCounter = wakeupInNanoseconds / SECONDS;
+	}
+	else if (wakeupInNanoseconds < 131072 * SECONDS) {
+		// configuration 3
+		// hardware add 0x10000 to the wake up counter
+		wakeupClock = RTC_WakeUpClock_CK_SPRE_17bits;
+		wakeupCounter = (wakeupInNanoseconds - 65536 * SECONDS) / SECONDS;
+	}
+	else {
+		// out of range
+		status = false;
+	}
+
+	if (status == true) {
+		status = (bool)RTC_WakeUpCmd(DISABLE);
+		RTC_WakeUpClockConfig(wakeupClock);
+		RTC_SetWakeUpCounter(wakeupCounter); // hardware add 1 to the wake up counter
+	}
+
+	return status;
 }
 
 extern "C"
 {
 
-void RTC_WKUP_IRQHandler()
-{
-  if(RTC_GetITStatus(RTC_IT_WUT) != RESET)
-  {
-		if(deepSleepWakeupTime > 0)
-    	nanoTime = deepSleepWakeupTime;
+void RTC_WKUP_IRQHandler() {
+	if(RTC_GetITStatus(RTC_IT_WUT) != RESET) {
+
+		if(deepSleepWakeupTime > 0) {
+			nanoTime = deepSleepWakeupTime;
+		}
 
 		deepSleepWakeupTime = 0;
 
-    RTC_ClearITPendingBit(RTC_IT_WUT);
-    EXTI_ClearITPendingBit(EXTI_Line22);
-  }
+		RTC_ClearITPendingBit(RTC_IT_WUT);
+		EXTI_ClearITPendingBit(EXTI_Line22);
+	}
 }
 
 }
