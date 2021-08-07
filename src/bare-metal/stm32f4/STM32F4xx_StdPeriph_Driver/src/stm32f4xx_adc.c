@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_adc.c
   * @author  MCD Application Team
-  * @version V1.2.1
-  * @date    19-September-2013
+  * @version V1.8.0
+  * @date    04-November-2016
   * @brief   This file provides firmware functions to manage the following 
   *          functionalities of the Analog to Digital Convertor (ADC) peripheral:
   *           + Initialization and Configuration (in addition to ADC multi mode 
@@ -85,7 +85,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT 2013 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT 2016 STMicroelectronics</center></h2>
   *
   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
   * You may not use this file except in compliance with the License.
@@ -99,7 +99,7 @@
   * See the License for the specific language governing permissions and
   * limitations under the License.
   *
-  ******************************************************************************  
+  ******************************************************************************
   */ 
 
 /* Includes ------------------------------------------------------------------*/
@@ -652,7 +652,7 @@ void ADC_VBATCmd(FunctionalState NewState)
          (++) Activate the continuous Mode  (*)
          (++) Activate the Discontinuous Mode 
          -@@- Please Note that the following features for regular channels 
-             are configurated using the ADC_Init() function : 
+             are configured using the ADC_Init() function : 
            (+@@) scan mode activation 
            (+@@) continuous mode activation (**) 
            (+@@) External trigger source  
@@ -943,7 +943,7 @@ void ADC_DiscModeChannelCountConfig(ADC_TypeDef* ADCx, uint8_t Number)
   tmpreg1 &= CR1_DISCNUM_RESET;
   
   /* Set the discontinuous mode channel count */
-  tmpreg2 = (uint32_t)(Number) - 1;
+  tmpreg2 = Number - 1;
   tmpreg1 |= tmpreg2 << 13;
   
   /* Store the new register value */
@@ -1232,11 +1232,11 @@ void ADC_InjectedChannelConfig(ADC_TypeDef* ADCx, uint8_t ADC_Channel, uint8_t R
   /* Get JL value: Number = JL+1 */
   tmpreg3 =  (tmpreg1 & JSQR_JL_SET)>> 20;
   /* Calculate the mask to clear: ((Rank-1)+(4-JL-1)) */
-  tmpreg2 = JSQR_JSQ_SET << (5 * (uint8_t)((Rank + 3u) - (tmpreg3 + 1u)));
+  tmpreg2 = JSQR_JSQ_SET << (5 * (uint8_t)((Rank + 3) - (tmpreg3 + 1)));
   /* Clear the old JSQx bits for the selected rank */
   tmpreg1 &= ~tmpreg2;
   /* Calculate the mask to set: ((Rank-1)+(4-JL-1)) */
-  tmpreg2 = (uint32_t)ADC_Channel << (5 * (uint8_t)((Rank + 3u) - (tmpreg3 + 1u)));
+  tmpreg2 = (uint32_t)ADC_Channel << (5 * (uint8_t)((Rank + 3) - (tmpreg3 + 1)));
   /* Set the JSQx bits for the selected rank */
   tmpreg1 |= tmpreg2;
   /* Store the new register value */
@@ -1265,7 +1265,7 @@ void ADC_InjectedSequencerLengthConfig(ADC_TypeDef* ADCx, uint8_t Length)
   tmpreg1 &= JSQR_JL_RESET;
   
   /* Set the injected sequence length JL bits */
-  tmpreg2 = (uint32_t)Length - 1; 
+  tmpreg2 = Length - 1; 
   tmpreg1 |= tmpreg2 << 20;
   
   /* Store the new register value */
@@ -1483,7 +1483,7 @@ uint16_t ADC_GetInjectedConversionValue(ADC_TypeDef* ADCx, uint8_t ADC_InjectedC
   assert_param(IS_ADC_INJECTED_CHANNEL(ADC_InjectedChannel));
 
   tmp = (uint32_t)ADCx;
-  tmp += (uint32_t)ADC_InjectedChannel + JDR_OFFSET;
+  tmp += ADC_InjectedChannel + JDR_OFFSET;
   
   /* Returns the selected injected channel conversion data value */
   return (uint16_t) (*(__IO uint32_t*)  tmp); 

@@ -6,7 +6,8 @@ extern "C" {
 #include "stm32f4xx_rcc.h"
 #include "stm32f4xx_gpio.h"
 #include "stm32f4xx_spi.h"
-#include "stm32f4xx_misc.h"
+//#include "stm32f4xx_misc.h"		// version V1.7.0
+#include "misc.h"					// version V1.8.0
 #include "stm32f4xx_dma.h"
 }
 
@@ -23,6 +24,8 @@ namespace RODOS {
 #define SPI_IDX_MIN SPI_IDX1
 #if defined (STM32F427_437xx) || defined (STM32F429_439xx)
 #define SPI_IDX_MAX SPI_IDX6
+#elif defined (STM32F411xE)
+#define SPI_IDX_MAX SPI_IDX5
 #else
 #define SPI_IDX_MAX SPI_IDX3
 #endif
@@ -95,7 +98,7 @@ HW_HAL_SPI::HW_HAL_SPI(SPI_IDX idx) {
     //SCK = PC10, MISO = PC11, MOSI = PC12
     initMembers(idx, GPIO_042, GPIO_043, GPIO_044);
 		break;
-#if defined (STM32F427_437xx) || defined (STM32F429_439xx)
+#if defined (STM32F427_437xx) || defined (STM32F429_439xx)  || defined (STM32F411xE)
 	case SPI_IDX4:
     //SCK = PE12, MISO = PE13, MOSI = PE14
     initMembers(idx, GPIO_076, GPIO_077, GPIO_078);
@@ -104,11 +107,13 @@ HW_HAL_SPI::HW_HAL_SPI(SPI_IDX idx) {
     //SCK = PF7, MISO = PF8, MOSI = PF9
     initMembers(idx, GPIO_087, GPIO_088, GPIO_089);
 		break;
+#endif /* defined (STM32F427_437xx) || defined (STM32F429_439xx)  || defined (STM32F411xE) */
+#if defined (STM32F427_437xx) || defined (STM32F429_439xx)
 	case SPI_IDX6:
     //SCK = PG13, MISO = PG12, MOSI = PG14
     initMembers(idx, GPIO_109, GPIO_108, GPIO_110);
 		break;
-#endif
+#endif /* defined (STM32F427_437xx) || defined (STM32F429_439xx) */
 	default:
             RODOS_ERROR("SPI index out of range");
 	}
@@ -173,7 +178,7 @@ void HW_HAL_SPI::initMembers(SPI_IDX idx, GPIO_PIN sckPin, GPIO_PIN misoPin, GPI
 		DMA_Channel_TX = DMA_Channel_0;
 		GPIO_AF = GPIO_AF_SPI3;
 		break;
-#if defined (STM32F427_437xx) || defined (STM32F429_439xx)
+#if defined (STM32F427_437xx) || defined (STM32F429_439xx)  || defined (STM32F411xE)
 	case SPI_IDX4:
 		SPIx = SPI4;
 		DMA_Stream_RX = DMA2_Stream0; // or DMA2_Stream3
@@ -194,6 +199,8 @@ void HW_HAL_SPI::initMembers(SPI_IDX idx, GPIO_PIN sckPin, GPIO_PIN misoPin, GPI
 		DMA_Channel_TX = DMA_Channel_2;
 		GPIO_AF = GPIO_AF_SPI5;
 		break;
+#endif /* defined (STM32F427_437xx) || defined (STM32F429_439xx)  || defined (STM32F411xE) */
+#if defined (STM32F427_437xx) || defined (STM32F429_439xx)
 	case SPI_IDX6:
 		SPIx = SPI6;
 		DMA_Stream_RX = DMA2_Stream6;
@@ -204,7 +211,7 @@ void HW_HAL_SPI::initMembers(SPI_IDX idx, GPIO_PIN sckPin, GPIO_PIN misoPin, GPI
 		DMA_Channel_TX = DMA_Channel_1;
 		GPIO_AF = GPIO_AF_SPI6;
 		break;
-#endif
+#endif /* defined (STM32F427_437xx) || defined (STM32F429_439xx) */
 	default:
 		RODOS_ERROR("SPI index out of range");
 	}
@@ -240,11 +247,13 @@ int32_t HW_HAL_SPI::setBaudrate(uint32_t baudrate){
     case SPI_IDX1: pclk = sysClks.PCLK2_Frequency; break;
     case SPI_IDX2: pclk = sysClks.PCLK1_Frequency; break;
     case SPI_IDX3: pclk = sysClks.PCLK1_Frequency; break;
-#if defined (STM32F427_437xx) || defined (STM32F429_439xx)
+#if defined (STM32F427_437xx) || defined (STM32F429_439xx) || defined (STM32F411xE)
     case SPI_IDX4: pclk = sysClks.PCLK2_Frequency; break;
     case SPI_IDX5: pclk = sysClks.PCLK2_Frequency; break;
+#endif /* defined (STM32F427_437xx) || defined (STM32F429_439xx) || defined (STM32F411xE) */
+#if defined (STM32F427_437xx) || defined (STM32F429_439xx)
     case SPI_IDX6: pclk = sysClks.PCLK2_Frequency; break;
-#endif
+#endif /* defined (STM32F427_437xx) || defined (STM32F429_439xx) */
     default: RODOS_ERROR("SPI index out of range"); return -1;
     }
 
@@ -315,7 +324,7 @@ int32_t HAL_SPI::init(uint32_t baudrate, bool slave, bool tiMode) {
 		RCC_APB1PeriphClockCmd(RCC_APB1Periph_SPI3, ENABLE);
 		RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_DMA1, ENABLE); // used by SPI2/3
 		break;
-#if defined (STM32F427_437xx) || defined (STM32F429_439xx)
+#if defined (STM32F427_437xx) || defined (STM32F429_439xx) || defined (STM32F411xE)
   case SPI_IDX4:
 		RCC_APB2PeriphClockCmd(RCC_APB2Periph_SPI4, ENABLE);
 		RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_DMA2, ENABLE);
@@ -324,11 +333,13 @@ int32_t HAL_SPI::init(uint32_t baudrate, bool slave, bool tiMode) {
 		RCC_APB2PeriphClockCmd(RCC_APB2Periph_SPI5, ENABLE);
 		RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_DMA2, ENABLE);
 		break;
+#endif
+#if defined (STM32F427_437xx) || defined (STM32F429_439xx)
   case SPI_IDX6:
 		RCC_APB2PeriphClockCmd(RCC_APB2Periph_SPI6, ENABLE);
 		RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_DMA2, ENABLE);
 		break;
-#endif
+#endif /* defined (STM32F427_437xx) || defined (STM32F429_439xx) */
 	default: RODOS_ERROR("SPI index out of range"); return -1;
 	}
 
@@ -363,6 +374,7 @@ int32_t HAL_SPI::init(uint32_t baudrate, bool slave, bool tiMode) {
 			|| (context->GPIO_Port_NSS == GPIOE)){
 		RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOE, ENABLE);
 	}
+#if !defined (STM32F411xE)
 	if ((context->GPIO_Port_SCK == GPIOF)
 			|| (context->GPIO_Port_MISO == GPIOF)
 			|| (context->GPIO_Port_MOSI == GPIOF)
@@ -375,6 +387,7 @@ int32_t HAL_SPI::init(uint32_t baudrate, bool slave, bool tiMode) {
 			|| (context->GPIO_Port_NSS == GPIOG)){
 		RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOG, ENABLE);
 	}
+#endif /* !defined (STM32F411xE) */
 
 	/* set GPIO parameter which are always the same */
     GPIO_InitTypeDef GPIO_InitStruct;
@@ -454,11 +467,13 @@ void HAL_SPI::reset() {
     case SPI_IDX1: RCC_APB2PeriphClockCmd(RCC_APB2Periph_SPI1, DISABLE); break;
     case SPI_IDX2: RCC_APB1PeriphClockCmd(RCC_APB1Periph_SPI2, DISABLE); break;
     case SPI_IDX3: RCC_APB1PeriphClockCmd(RCC_APB1Periph_SPI3, DISABLE); break;
-#if defined (STM32F427_437xx) || defined (STM32F429_439xx)
+#if defined (STM32F427_437xx) || defined (STM32F429_439xx) || defined (STM32F411xE)
     case SPI_IDX4: RCC_APB2PeriphClockCmd(RCC_APB2Periph_SPI4, DISABLE); break;
     case SPI_IDX5: RCC_APB2PeriphClockCmd(RCC_APB2Periph_SPI5, DISABLE); break;
+#endif /* defined (STM32F427_437xx) || defined (STM32F429_439xx) || defined (STM32F411xE) */
+#if defined (STM32F427_437xx) || defined (STM32F429_439xx)
     case SPI_IDX6: RCC_APB2PeriphClockCmd(RCC_APB2Periph_SPI6, DISABLE); break;
-#endif
+#endif /* defined (STM32F427_437xx) || defined (STM32F429_439xx) */
     default: RODOS_ERROR("SPI index out of range"); return;
     }
 

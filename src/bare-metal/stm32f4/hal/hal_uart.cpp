@@ -32,6 +32,8 @@
 
    UART8 - Rx:  PE0                     Tx: PE1
            // no hardware flow control
+
+*  NOTE: STM32F411xE has only UART1, UART2 and UART6
 */
 
 #include "rodos.h"
@@ -47,6 +49,8 @@
 #define UART_IDX_MIN        UART_IDX1
 #if defined (STM32F427_437xx) || defined (STM32F429_439xx)
 #define UART_IDX_MAX        UART_IDX8
+#elif defined (STM32F411xE)
+#define UART_IDX_MAX        UART_IDX6
 #else
 #define UART_IDX_MAX        UART_IDX6
 #endif
@@ -269,7 +273,7 @@ void USART2_IRQHandler() {
 	NVIC_ClearPendingIRQ(USART2_IRQn);
 }
 
-#ifndef STM32F401xx
+#if !defined (STM32F401xx) && !defined (STM32F411xE)
 void USART3_IRQHandler() {
 	UART_contextArray[UART_IDX3].UARTIRQHandler();
 	NVIC_ClearPendingIRQ(USART3_IRQn);
@@ -288,7 +292,7 @@ void UART5_IRQHandler() {
 }
 
 #else
-	#warning no USART3, UART4, UART5 supported by MCU STM32F401
+	#warning "no USART3, UART4, UART5 supported by MCU STM32F401 and STM32F411xE"
 #endif
 void USART6_IRQHandler() {
     UART_contextArray[UART_IDX6].UARTIRQHandler();
@@ -958,10 +962,13 @@ IRQn HW_HAL_UART::getUARTx_IRQn() {
     switch(idx){
     case UART_IDX1: return USART1_IRQn;
     case UART_IDX2: return USART2_IRQn;
-#ifndef STM32F401xx
+#if !defined (STM32F401xx) && !defined (STM32F411xE)
     case UART_IDX3: return USART3_IRQn;
     case UART_IDX4: return UART4_IRQn;
     case UART_IDX5: return UART5_IRQn;
+    case UART_IDX6: return USART6_IRQn;
+#endif
+#if defined(STM32F411xE)
     case UART_IDX6: return USART6_IRQn;
 #endif
 #if defined (STM32F427_437xx) || defined (STM32F429_439xx)

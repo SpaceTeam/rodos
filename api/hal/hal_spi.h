@@ -19,9 +19,9 @@ enum SPI_IDX{   //  STM32F4
 	SPI_IDX0,   //  not available
 	SPI_IDX1,   //  SPI1
 	SPI_IDX2,   //  SPI2
-	SPI_IDX3,    //   SPI3
-	SPI_IDX4,   //  SPI4 (STM32F429 only)
-	SPI_IDX5,   //  SPI5 (STM32F429 only)
+	SPI_IDX3,   //  SPI3
+	SPI_IDX4,   //  SPI4 (STM32F429 and STM32F411xE only)
+	SPI_IDX5,   //  SPI5 (STM32F429 and STM32F411xE only)
 	SPI_IDX6    //  SPI6 (STM32F429 only)
 };
 
