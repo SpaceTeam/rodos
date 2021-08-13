@@ -35,6 +35,7 @@ set(sources_to_add
     ${RODOS_DIR}/src/bare-metal/efr32fg1p/rail_lib/hal/*.c
     ${RODOS_DIR}/src/bare-metal/efr32fg1p/rail_lib/hal/efr32/*.c
     ${RODOS_DIR}/src/bare-metal/efr32fg1p/rail-config/*.c
+    ${RODOS_DIR}/src/bare-metal/efr32fg1p/emdrv/src/*.c
     )
 
 set(directories_to_include
@@ -53,4 +54,5 @@ set(directories_to_include
     ${RODOS_DIR}/src/bare-metal/efr32fg1p/rail_lib/hal/efr32
     ${RODOS_DIR}/src/bare-metal/efr32fg1p/sleeptimer/config
     ${RODOS_DIR}/src/bare-metal/efr32fg1p/sleeptimer/inc
+    ${RODOS_DIR}/src/bare-metal/efr32fg1p/emdrv/inc
     )
