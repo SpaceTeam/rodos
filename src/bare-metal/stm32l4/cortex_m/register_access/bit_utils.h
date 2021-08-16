@@ -2,7 +2,7 @@
 
 namespace RODOS {
 
-inline uint8_t trailing_zeros(uint32_t word){
+inline uint8_t trailingZeros(uint32_t word){
     return static_cast<uint8_t>(__builtin_ctzl(word));
 }
 

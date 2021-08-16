@@ -31,7 +31,7 @@ struct SubValue {
 
     const value_t shiftedValue;
 
-    constexpr SubValue(value_t value) : shiftedValue(static_cast<value_t>(value << offset)){};
+    constexpr SubValue(value_t value) : shiftedValue(static_cast<value_t>(value << offset) & bitMask){};
     constexpr SubValue(std::byte value) : SubValue { std::to_integer<value_t>(value) }{};
 
     template<value_t otherOffset, uint8_t otherLength>

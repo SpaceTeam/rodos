@@ -26,8 +26,8 @@ namespace GPIO {
 
     void PinGroup::setOutput(uint16_t val)
     {
-        uint16_t pinMaskSet = static_cast<uint16_t>((val << (trailing_zeros(pinMask))) & pinMask);
-        uint16_t pinMaskReset = static_cast<uint16_t>((((uint16_t) ~val) << (trailing_zeros(pinMask))) & pinMask);
+        uint16_t pinMaskSet = static_cast<uint16_t>((val << (trailingZeros(pinMask))) & pinMask);
+        uint16_t pinMaskReset = static_cast<uint16_t>((((uint16_t) ~val) << (trailingZeros(pinMask))) & pinMask);
 
         //direct register write to both set and reset the pins at once
         uint32_t registerValue = ((uint32_t)pinMaskSet) | (((uint32_t)pinMaskReset) << 16);
@@ -42,7 +42,7 @@ namespace GPIO {
         } else {
             portData = (uint16_t) port.gpio->IDR.read();
         }
-        return static_cast<uint16_t>((portData & this->pinMask) >> trailing_zeros(pinMask));
+        return static_cast<uint16_t>((portData & this->pinMask) >> trailingZeros(pinMask));
     }
 
     void PinGroup::setAlternateFunction(ALTERNATEFUNCTION af)

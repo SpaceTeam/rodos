@@ -5,10 +5,11 @@ if [ -z $TARGET_LIB ]; then
   ****************
   *** Do not use this architecture directly, please use
   *** one of its derivates:
+  ***    nucleo_l432kc
   ***    nucleo_l496zg
   *********************
 EOT1
-exit 
+exit
 fi
 
 export ARCH=stm32l4         #used to select compile directories

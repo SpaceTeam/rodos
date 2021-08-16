@@ -7,8 +7,7 @@
 * @brief UDP communication via sockets (Linux)
 */
 
-#ifndef __HW_UDP_H__
-#define __HW_UDP_H__
+#pragma once
 
 #include <sys/types.h>
 //#include <netinet/in.h>
@@ -35,7 +34,7 @@ private:
 public:
     /** Constructor
      * Warning: negativ port number menans more than one can receive on the same
-     * @param portNr port number on localhost used for reception , negativ for boradcast
+     * @param portNr port number on localhost used for reception , negativ for broadcast
      */
     UDPReceiver(const int32_t port);
     /** Destructor */
@@ -92,7 +91,7 @@ public:
      */
     virtual bool send(const void* msg, const size_t len);
 
-    /** Send datagram to a specified host different to the address used during intialization
+    /** Send datagram to a specified host different to the address used during intialisation
      * @param data pointer to datafield
      * @param length of data field
      * @param ipAddr of receiving host
@@ -108,6 +107,4 @@ private:
 bool setMyIP(int ip0, int ip1, int ip2, int ip3); // eg. setMyIP(192,168,20,10);
 bool setMyIPMask(int ip0, int ip1, int ip2, int ip3); // eg. setMyIPMask(255,255,0,0);
 
-}
-
-#endif /* __HW_UDP_H__ */
+} // namespace

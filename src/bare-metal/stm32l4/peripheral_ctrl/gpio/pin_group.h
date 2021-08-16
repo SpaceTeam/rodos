@@ -55,12 +55,12 @@ namespace GPIO {
 
         inline bool isSinglePin()
         {
-            return (pinMask>>trailing_zeros(pinMask))==1;;
+            return (pinMask>>trailingZeros(pinMask))==1;;
         }
 
         inline uint8_t getPinPos()
         {
-            return trailing_zeros(pinMask);
+            return trailingZeros(pinMask);
         }
 
         inline bool isValid()
@@ -70,7 +70,7 @@ namespace GPIO {
 
         inline bool setNumPins(uint32_t numPins)
         {
-            return calcPinMask(trailing_zeros(pinMask), numPins);
+            return calcPinMask(trailingZeros(pinMask), numPins);
         }
 
         inline GPIO_PIN asRODOSPin()
