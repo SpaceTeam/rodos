@@ -87,6 +87,31 @@ Converts cartesian coordinates to ellipsoidal.
 */
 Polar    ecefToGeodetic(const Vector3D& other);     ///< Warning! Eart-center (meter, meter, meter) -> Earth-surface (meter, rad, rad)
 
+
+/* findRotationsAngleAxis
+ *  When we use only one vector to rotate a body, we get an ambiguous rotation
+ *  which has one degree of freedom open.
+ *  To get an unambiguous rotation we have to use two not co-linear vectors of the
+ *  body. This functions finds the unit rotation which satisfied the rotation
+ *  of these both vectors.
+ *  But! The body may not be formatted. The geometric relationship of the
+ *  two vectors has to be the same before and after the rotation.
+ *   compare to "cosine direction matrix"
+ *
+ */
+Result<AngleAxis>  findRotationsAngleAxis(Vector3D fromA, Vector3D toA, Vector3D fromB, Vector3D toB);
+
+/* cos_direction_matrix_from_vectors
+ *  when we use only one vector to rotate a body, we get an ambiguous rotation
+ *  which has one degree of freedom open.
+ *  To get an unambiguous rotation we have to use two not co-linear vectors of the
+ *  body. This functions finds the unit rotation which satisfied the rotation
+ *  of these both vectors.
+ *  But! The body may not be formatted. The geometric relationship of the
+ *  two vectors has to be the same before and after the rotation.
+ */
+Matrix3D direction_cos_matrix_from_vectors(Vector3D fromA, Vector3D toA, Vector3D fromB, Vector3D toB);
+
 #ifndef NO_RODOS_NAMESPACE
 }
 #endif

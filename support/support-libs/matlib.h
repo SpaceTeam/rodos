@@ -5,6 +5,8 @@
 #include "math.h" // for sin, sqrt, etc
 #include "stdint.h"
 
+#include "rodos-result.h"
+
 #include "matlib/api/math_support.h"
 #include "matlib/api/typedefs.h"
 #include "matlib/api/matrix.h"

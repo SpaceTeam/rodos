@@ -349,6 +349,136 @@ Polar ecefToGeodetic(const Vector3D& other) {
     return llh;
 }
 
+
+//____________________________________________________________________
+
+/* findRotationsAngleAxis
+ *  When we use only one vector to rate a body, we get an ambiguous rotation
+ *  which has one degree of freedom open.
+ *  To get an unambiguous rotation we have to use two not co-linear vectors of the
+ *  body. This functions finds the unit rotation which satisfied the rotation
+ *  of these both vectors.
+ *  But! The body may not be formatted. The geometric relationship of the
+ *  two vectors has to be the same before and after the rotation.
+ *   compare to "cosinus direction matrix"
+ */
+
+Result<AngleAxis> findRotationsAngleAxis(Vector3D fromA, Vector3D toA, Vector3D fromB, Vector3D toB) {
+
+    fromA = fromA.normalize();
+    toA   = toA.normalize();
+    fromB = fromB.normalize();
+    toB   = toB.normalize();
+
+    //_______________________________________________ Find rotation axis
+    // one axis for both transformations, A and B
+
+    Vector3D rotA = toA - fromA;
+    Vector3D rotB = toB - fromB;
+    Vector3D rotAxis = crossProduct(rotA, rotB);
+    rotAxis = rotAxis.normalize();;
+
+    //______________________________________________________ find rotation angle
+    // find angle, first find projection on rotation surface
+    // we find the projection of both vectors to a surface orthogonal to
+    // the rotation axis. Then we see there the angle of rotation.
+
+    Vector3D projectionFromA = fromA - (dotProduct(fromA, rotAxis) * rotAxis);
+    Vector3D projectionToA   = toA   - (dotProduct(toA  , rotAxis) * rotAxis);
+    Vector3D projectionFromB = fromB - (dotProduct(fromB, rotAxis) * rotAxis);
+    Vector3D projectionToB   = toB   - (dotProduct(toB  , rotAxis) * rotAxis);
+
+    projectionFromA = projectionFromA.normalize();
+    projectionToA   = projectionToA.normalize();
+    projectionFromB = projectionFromB.normalize();
+    projectionToB   = projectionToB.normalize();
+
+
+    double cosAngleA = dotProduct(projectionFromA, projectionToA);
+    double cosAngleB = dotProduct(projectionFromB, projectionToB);
+    if(!isAlmost0(cosAngleA - cosAngleB)) return ErrorCode::VECTOR_LEN;
+
+    AngleAxis rotor(acos(cosAngleA), rotAxis);
+
+    /** BUT!!! Some times (50%) the rotation axis is inverted. Check and correct ***/
+    Vector3D newA = fromA.aRotate(rotor);
+    if(!newA.equals(toA))  rotor.u = (-1.0)*rotor.u; // TODO: DEPRECATED warning! -> AngleAxis(acos(cosAngleA), rotAxis*(-1.0));
+    newA = fromA.aRotate(rotor);
+    if(!newA.equals(toA))  return { ErrorCode::COLINEAR_VECTORS, rotor } ;
+
+    return rotor;
+}
+
+
+// Intern function, DO NOT use directly, use only  direction_cos_matrix_from_vectors(...)
+Matrix3D _DCM_generator(Vector3D fromA, Vector3D toA, Vector3D fromB, Vector3D toB) {
+
+    fromA = fromA.normalize();
+    toA   = toA.normalize();
+    fromB = fromB.normalize();
+    toB   = toB.normalize();
+
+    //Help vector to define a Cartesian coordinates system
+    Vector3D fromX = fromA;
+    Vector3D fromZ = fromA.cross(fromB);
+    Vector3D fromY = fromZ.cross(fromX);
+
+    Vector3D toX = toA;
+    Vector3D toZ = toA.cross(toB);
+    Vector3D toY = toZ.cross(toX);
+
+    // normalize
+    fromX = fromX.normalize();
+    fromY = fromY.normalize();
+    fromZ = fromZ.normalize();
+
+    toX = toX.normalize();
+    toY = toY.normalize();
+    toZ = toZ.normalize();
+
+    Matrix3D result = Matrix3D();
+
+    result.r[0][0] = fromX.dot(toX);
+    result.r[0][1] = fromX.dot(toY);
+    result.r[0][2] = fromX.dot(toZ);
+
+    result.r[1][0] = fromY.dot(toX);
+    result.r[1][1] = fromY.dot(toY);
+    result.r[1][2] = fromY.dot(toZ);
+
+    result.r[2][0] = fromZ.dot(toX);
+    result.r[2][1] = fromZ.dot(toY);
+    result.r[2][2] = fromZ.dot(toZ);
+
+    return result;
+}
+
+/* cos_direction_matrix_from_vectors
+ *  when we use only one vector to rate a body, we get an ambiguous rotation
+ *  which has one degree of freedom open.
+ *  To get an unambiguous rotation we have to use two not co-linear vectors of the
+ *  body. This functions finds the unit rotation which satisfied the rotation
+ *  of these both vectors.
+ *  But! The body may not be formatted. The geometric relationship of the
+ *  two vectors has to be the same before and after the rotation.
+ */
+
+
+// WARNING!!! First we have to rotate to (1,0,0) and (0,1,0) and then continue else it does not work, WHY?!?!?!
+Matrix3D direction_cos_matrix_from_vectors(Vector3D fromA, Vector3D toA, Vector3D fromB, Vector3D toB) {
+    Vector3D x(1,0,0);
+    Vector3D y(0,1,0);
+
+    // first rotate to unit vectors x and y and then to final vector.
+    // Else it does not work and we do not know why :(
+
+    Matrix3D m1 = _DCM_generator(fromA, x, fromB, y);
+    Matrix3D m2 = _DCM_generator(x, toA, y, toB);
+
+    return m2*m1;
+}
+
+
 #ifndef NO_RODOS_NAMESPACE
 }
 #endif
