@@ -1,0 +1,7 @@
+add_subdirectory(10-alice-bob-charly)
+add_subdirectory(20-middleware)
+# add_subdirectory(30-middleware-collector)
+# add_subdirectory(40-middleware-distributed)
+# add_subdirectory(50-middleware-miscs)
+# add_subdirectory(60-middleware-ping)
+# add_subdirectory(80-gateway)
