@@ -38,7 +38,9 @@ target_include_directories(rodos SYSTEM PUBLIC
     src/${port_dir}/include
     support/support-libs)
 
-target_compile_options(rodos PRIVATE -g -O0)
+# TODO: Try removing that and using different BUILD_TYPEs, or at least -Og
+# target_compile_options(rodos PRIVATE -g -O0)
+target_compile_options(rodos PRIVATE -Og)
 target_compile_options(rodos PUBLIC -fno-exceptions)
 target_compile_features(rodos PUBLIC cxx_std_14)
 
@@ -94,3 +96,5 @@ if (COVERAGE)
 endif ()
 enable_testing()
 add_subdirectory(test-suite)
+
+# TODO: automagically create the find_config cmake file or something

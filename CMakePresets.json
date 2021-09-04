@@ -38,6 +38,27 @@
       }
     },
     {
+      "name": "nucleo_l432kc",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/cmake/port/nucleo_l432kc.cmake"
+      }
+    },
+    {
+      "name": "nucleo_l496zg",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/cmake/port/nucleo_l496zg.cmake"
+      }
+    },
+    {
+      "name": "discovery",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/cmake/port/discovery.cmake"
+      }
+    },
+    {
       "name": "tutorials",
       "hidden": true,
       "cacheVariables": {
