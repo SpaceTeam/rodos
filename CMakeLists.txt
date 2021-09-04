@@ -81,6 +81,9 @@ if (EXECUTABLE)
   add_subdirectory(tutorials)
 endif ()
 
+if(FLYOUT)
+  add_subdirectory(flyout)
+endif()
 
 if (COVERAGE)
   setup_lcov_coverage(

@@ -19,7 +19,8 @@
       "hidden": true,
       "cacheVariables": {
         "CMAKE_C_COMPILER": "arm-none-eabi-gcc",
-        "CMAKE_CXX_COMPILER": "arm-none-eabi-g++"
+        "CMAKE_CXX_COMPILER": "arm-none-eabi-g++",
+        "CMAKE_OBJCOPY": "arm-none-eabi-objcopy"
       }
     },
     {
@@ -71,6 +72,13 @@
       "hidden": true,
       "cacheVariables": {
         "EXECUTABLE": "ON"
+      }
+    },
+    {
+      "name": "flyout",
+      "hidden": true,
+      "cacheVariables": {
+        "FLYOUT": "ON"
       }
     },
     {
