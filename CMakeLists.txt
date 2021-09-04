@@ -31,7 +31,7 @@ file(GLOB port_sources
     src/${port_dir}/*.S)
 target_sources(rodos PRIVATE ${port_sources})
 
-target_include_directories(rodos PUBLIC
+target_include_directories(rodos SYSTEM PUBLIC
     api
     api/hal
     src/${port_dir}
@@ -52,7 +52,7 @@ endif ()
 if (is_port_baremetal)
   file(GLOB baremetal_generic_sources src/bare-metal-generic/*.cpp)
   target_sources(rodos PRIVATE ${baremetal_generic_sources})
-  target_include_directories(rodos PUBLIC
+  target_include_directories(rodos SYSTEM PUBLIC
       src/bare-metal-generic
       src/bare-metal-generic/ip/lwip/include)
 endif ()
@@ -67,7 +67,7 @@ if (sources_to_add)
 endif ()
 
 if (directories_to_include)
-  target_include_directories(rodos PUBLIC ${directories_to_include})
+  target_include_directories(rodos SYSTEM PUBLIC ${directories_to_include})
 endif ()
 
 if (libraries_to_link)
