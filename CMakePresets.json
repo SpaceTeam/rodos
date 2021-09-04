@@ -71,6 +71,17 @@
       "cacheVariables": {
         "COVERAGE": "ON"
       }
+    },
+    {
+      "name": "default",
+      "description": "Default preset using GCC to build for linux-x86.",
+      "inherits": [
+        "gcc",
+        "flags",
+        "linux-x86"
+      ],
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "generator": "Unix Makefiles"
     }
   ]
 }
