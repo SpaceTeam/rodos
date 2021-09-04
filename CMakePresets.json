@@ -15,6 +15,14 @@
       }
     },
     {
+      "name": "arm-gcc",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "arm-none-eabi-gcc",
+        "CMAKE_CXX_COMPILER": "arm-none-eabi-g++"
+      }
+    },
+    {
       "name": "clang",
       "hidden": true,
       "cacheVariables": {
