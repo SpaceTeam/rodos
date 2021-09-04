@@ -1,0 +1,55 @@
+{
+  "version": 3,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 21,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "gcc",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "gcc",
+        "CMAKE_CXX_COMPILER": "g++"
+      }
+    },
+    {
+      "name": "clang",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "clang",
+        "CMAKE_CXX_COMPILER": "clang++"
+      }
+    },
+    {
+      "name": "flags",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_CXX_FLAGS": "-Wall -Wextra -Wpedantic -Wno-long-long -Wno-cpp -Wconversion -Wsign-conversion -Wdouble-promotion -Wcast-qual -Wnull-dereference",
+        "CMAKE_CXX_EXTENSIONS": "OFF"
+      }
+    },
+    {
+      "name": "linux-x86",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/cmake/port/linux-x86.cmake"
+      }
+    },
+    {
+      "name": "tutorials",
+      "hidden": true,
+      "cacheVariables": {
+        "EXECUTABLE": "ON"
+      }
+    },
+    {
+      "name": "coverage",
+      "hidden": true,
+      "cacheVariables": {
+        "COVERAGE": "ON"
+      }
+    }
+  ]
+}
