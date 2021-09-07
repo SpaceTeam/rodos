@@ -186,7 +186,9 @@ public:
 		this->pitch = other.pitch;
 		this->roll  = other.roll;
 		return *this;
-	};
+	}
+
+    YPR_<TYPE>& operator=(const YPR_<TYPE> &other) = default;
 
 };
 

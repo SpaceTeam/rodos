@@ -149,7 +149,9 @@ public:
 		this->u.z = other.u.z;
 		this->phi = other.phi;
 		return *this;
-	};
+	}
+
+    AngleAxis_<TYPE>& operator=(const AngleAxis_<TYPE> &other) = default;
 
     void print() const {
         PRINTF("[%3.3lf*PI \t %3.3lf \t %3.3f \t %3.3lf]\n",(double) phi/M_PI, (double) u.x, (double) u.y, (double) u.z);

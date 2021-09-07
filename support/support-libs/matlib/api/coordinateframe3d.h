@@ -137,7 +137,7 @@ public:
 		this->origin.y = other.origin.y;
 		this->origin.z = other.origin.z;
 		return *this;
-	};
+	}
 
 };
 

@@ -121,13 +121,13 @@ public:
 	}
 
 	TYPE getAngle() const {
-	    float angle;
+	    TYPE angle;
 	    angle = acos(0.5*(this->r[0][0]+this->r[1][1]+this->r[2][2]-1));
 	    return angle;
 	}
 
 	Vector3D_<TYPE> getVec() const {
-	    float x,y,z,angle;
+	    TYPE x,y,z,angle;
 	    angle = this->getAngle();
 	    x = 1.0/(2*sin(angle)) * (this->r[2][1]-this->r[1][2]);
 	    y = 1.0/(2*sin(angle)) * (this->r[0][2]-this->r[2][0]);
@@ -240,6 +240,8 @@ public:
 	    AngleAxis_<TYPE> u_phi(phi, u.normalize());
 	    return u_phi;
 	}
+
+	Matrix3D_<TYPE>& operator=(const Matrix3D_<TYPE>& other) = default;
 
 };
 
