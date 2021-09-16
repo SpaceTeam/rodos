@@ -32,6 +32,19 @@ int64_t getNumberOfReceivedMsgsFromNetwork();
  */
 extern void* xmalloc(size_t len);
 
+extern void* xmallocAndTrapOnFailure(size_t len);
+
+template<typename T>
+inline T* xmalloc(){
+	return (T*) xmalloc(sizeof(T));
+}
+
+template<typename T>
+inline T* xmallocAndTrapOnFailure(){
+	return (T*) xmallocAndTrapOnFailure(sizeof(T));
+	
+}
+
 extern void hwResetAndReboot();        ///<  End of Program -> reboot Hw dependent
 extern void hwInitWatchdog(int32_t intervalMilliseconds);
 extern void hwTriggerWatchdog();        ///<  for CPUS which provide a hardware watchdog

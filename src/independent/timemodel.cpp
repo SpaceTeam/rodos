@@ -24,7 +24,7 @@ TimeModel::TimeModel() {
     utcDeltaTime = 0LL;
     tSync = 0LL;
     drift = 0.0;
-    leapSeconds = 17; // updated 20.10.2015
+    leapSeconds = 18; // updated 2021-06-03
 }
 
 /* current time in localTime units (eg. nanoseconds) */

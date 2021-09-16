@@ -55,7 +55,7 @@ Every time you start a new session or a new terminal
 set the environment variables directories and default compiler options by calling
 
 ```
-    cd <your rodos rood directory>
+    cd <your rodos root directory>
     source setenvs.sh 
 ```
 
@@ -100,10 +100,20 @@ target architectures
 
 To begin, learning rodos
 
+Watch the introduction movies of how to program on RODOS:  
+  - Directory structure, compiling, and threads:    https://youtu.be/URM8TGkISGs  
+  - Inter thread communication and synchronization: https://youtu.be/uII7Qn9oN7s  
+  - Communication Middleware:                       https://youtu.be/iqzKRB-XM6k  
+
+Now, please take a look and experiment with all tutorials.
+
+
 ```
     cdrodos 
     cd tutorials/10-first-steps
 ```
+Please read all README* files in the root directory of RODOS.
+
 1. read the `*README*` files  
 2. read the `execute-example*.sh` scripts
 3. read the corresponding source code

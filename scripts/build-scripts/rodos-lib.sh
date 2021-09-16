@@ -31,6 +31,11 @@ do
   source generic-compile-directory.sh ${SRC_X}
 done
 
+for SRC_FILE in "${SRC_FILES[@]}"
+do
+  source generic-compile-file.sh ${SRC_FILE}
+done
+
 
 #_________________________________ Support libs
 echo "  --------- Support-libs/matlib -------"
