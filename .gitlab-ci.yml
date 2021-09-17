@@ -65,6 +65,16 @@ discovery:
   variables:
     TARGET: discovery
 
+discovery_f411:
+  extends: .compile_tmpl
+  variables:
+    TARGET: discovery_f411
+
+discovery_f429:
+  extends: .compile_tmpl
+  variables:
+    TARGET: discovery_f429
+
 skith:
   extends: .compile_tmpl
   variables:
