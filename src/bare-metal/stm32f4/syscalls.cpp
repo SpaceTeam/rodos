@@ -111,7 +111,7 @@ extern char _estack;			// see stm32_flash.ld
 extern char _Min_Stack_Size;	// see stm32_flash.ld
 caddr_t _sbrk(int incr);
 caddr_t _sbrk(int incr) {
-	extern char __heap_start__ asm ("__heap_start__"); /* Defined by the linker.  */
+	extern char __heap_start__ asm ("_end"); /* Defined by the linker.  */
 	static char * heap_end;
 	char * prev_heap_end;
 
