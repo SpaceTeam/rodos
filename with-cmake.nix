@@ -43,6 +43,7 @@ in
   linux-makecontext = cov_test "linux-makecontext" pkgsi686Linux.stdenv;
   posix = cov_test "posix" pkgsi686Linux.stdenv;
   discovery = compile_only "discovery" pkgsCross.arm-embedded.stdenv;
+  discovery_f411 = compile_only "discovery_f411" pkgsCross.arm-embedded.stdenv;
   discovery_f429 = compile_only "discovery_f429" pkgsCross.arm-embedded.stdenv;
   skith = compile_only "skith" pkgsCross.arm-embedded.stdenv;
   raspberrypi3 = compile_only "raspberrypi3" pkgsCross.arm-embedded.stdenv;
