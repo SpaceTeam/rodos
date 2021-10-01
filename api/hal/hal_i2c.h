@@ -15,6 +15,7 @@ namespace RODOS {
 };*/
 
 enum I2C_IDX {
+	I2C_IDX0 = 0,
 	I2C_IDX1 = 1,
 	I2C_IDX2,
 	I2C_IDX3
