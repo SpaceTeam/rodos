@@ -61,7 +61,9 @@ extern "C" [[noreturn, gnu::used]] void Reset_Handler(){
     memoryBarrier();
     ClockInitializer::init(globalClockSetup);
     memoryBarrier();
+
     main(0, nullptr);
+
     while(1);
 }
 

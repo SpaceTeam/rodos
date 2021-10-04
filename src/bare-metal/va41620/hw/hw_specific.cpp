@@ -49,7 +49,7 @@ void enterSleepMode()
     asm volatile("wfi");
 }
 
-void hwInitWatchdog(int32_t interval) { }
+void hwInitWatchdog([[maybe_unused]] int32_t interval) { }
 void hwTriggerWatchdog() { }
 
 }

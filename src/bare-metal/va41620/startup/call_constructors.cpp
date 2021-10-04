@@ -22,7 +22,7 @@ int __cxa_guard_acquire(unsigned char *g);
 void __cxa_guard_release(unsigned char *g);
 
 }
-int __cxa_atexit(void(*f)(void *), void *p, void *d) {
+int __cxa_atexit([[maybe_unused]] void(*f)(void *), [[maybe_unused]] void *p, [[maybe_unused]] void *d) {
     return 0;
 }
 

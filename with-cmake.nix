@@ -48,4 +48,5 @@ in
   raspberrypi3 = compile_only "raspberrypi3" pkgsCross.arm-embedded.stdenv;
   sf2 = compile_only "sf2" pkgsCross.arm-embedded.stdenv;
   nucleo_l496zg = compile_only "nucleo_l496zg" pkgsCross.arm-embedded.stdenv;
+  va41620 = compile_only "va41620" pkgsCross.arm-embedded.stdenv;
 }

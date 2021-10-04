@@ -77,6 +77,14 @@ nucleo_l496zg:
   variables:
     TARGET: nucleo_l496zg
 
+va41620:
+  extends: .compile_tmpl
+  before_script:
+    - nix-channel --add https://nixos.org/channels/nixpkgs-unstable nixpkgs
+    - nix-channel --update
+  variables:
+    TARGET: va41620
+
 
 
 # Job collecting coverage results from coverage generating jobs from
