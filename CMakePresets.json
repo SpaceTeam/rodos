@@ -68,6 +68,13 @@
       }
     },
     {
+      "name": "discovery_f429",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/cmake/port/discovery_f429.cmake"
+      }
+    },
+    {
       "name": "tutorials",
       "hidden": true,
       "cacheVariables": {
