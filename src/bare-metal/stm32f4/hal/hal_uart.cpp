@@ -193,8 +193,12 @@ void ReceiveTrigger::run()
 static ReceiveTrigger triggerthread;
 
 HAL_UART::HAL_UART(UART_IDX uartIdx, GPIO_PIN txPin, GPIO_PIN rxPin, GPIO_PIN rtsPin, GPIO_PIN ctsPin) {
-
-    if ((uartIdx < UART_IDX_MIN) || (uartIdx > UART_IDX_MAX)) {
+#if defined (STM32F427_437xx) || defined (STM32F429_439xx)
+    if ((uartIdx < UART_IDX_MIN) || (uartIdx > UART_IDX_MAX))
+#else /* STM32F401 or STM32F411xE */
+    if ((uartIdx != UART_IDX1) && (uartIdx != UART_IDX2) && (uartIdx != UART_IDX6))
+#endif
+    {
         context = &UART_contextArray[UART_IDX0]; // UART_IDX0 is not used in this implementation
                                                  // -> so we can use this contextArray to save wrong idx
                                                  // -> with this saved idx all HAL_UART-methods will return correctly with -1
@@ -208,8 +212,12 @@ HAL_UART::HAL_UART(UART_IDX uartIdx, GPIO_PIN txPin, GPIO_PIN rxPin, GPIO_PIN rt
 
 
 HAL_UART::HAL_UART(UART_IDX uartIdx){
-
-    if ((uartIdx < UART_IDX_MIN) || (uartIdx > UART_IDX_MAX)) {
+#if defined (STM32F427_437xx) || defined (STM32F429_439xx)
+    if ((uartIdx < UART_IDX_MIN) || (uartIdx > UART_IDX_MAX))
+#else /* STM32F401 or STM32F411xE */
+    if ((uartIdx != UART_IDX1) && (uartIdx != UART_IDX2) && (uartIdx != UART_IDX6))
+#endif
+    {
         context = &UART_contextArray[UART_IDX0]; // UART_IDX0 is not used in this implementation
                                                  // -> so we can use this contextArray to save wrong idx
                                                  // -> with this saved idx all HAL_UART-methods will return correctly with -1
@@ -398,19 +406,25 @@ void DMA1_Stream1_IRQHandler(){
  * - all USART will be initialized in 8N1 mode
  */
 int32_t HAL_UART::init(uint32_t iBaudrate) {
-
-	if ((context->idx < UART_IDX_MIN) || (context->idx > UART_IDX_MAX)) {return -1;}
-
+#if defined (STM32F427_437xx) || defined (STM32F429_439xx)
+    if ((context->idx < UART_IDX_MIN) || (context->idx > UART_IDX_MAX))
+#else /* STM32F401 or STM32F411xE */
+    if ((context->idx != UART_IDX1) && (context->idx != UART_IDX2) && (context->idx != UART_IDX6))
+#endif
+	{ return -1; }
 	return context->init(iBaudrate);
 }
 
 
 int32_t HAL_UART::config(UART_PARAMETER_TYPE type, int32_t paramVal) {
+#if defined (STM32F427_437xx) || defined (STM32F429_439xx)
+    if ((context->idx < UART_IDX_MIN) || (context->idx > UART_IDX_MAX))
+#else /* STM32F401 or STM32F411xE */
+    if ((context->idx != UART_IDX1) && (context->idx != UART_IDX2) && (context->idx != UART_IDX6))
+#endif
+    { return -1; }
 
-	UART_IDX idx = context->idx;
-
-	if ((idx < UART_IDX_MIN) || (idx > UART_IDX_MAX)) {return -1;}
-
+    UART_IDX idx = context->idx;
 	USART_TypeDef* usart = context->UARTx;
 	USART_InitTypeDef Uis;
 	GPIO_InitTypeDef gpioRTS;
@@ -479,7 +493,12 @@ int32_t HAL_UART::config(UART_PARAMETER_TYPE type, int32_t paramVal) {
 
 
 void HAL_UART::reset(){
-	if ((context->idx < UART_IDX_MIN) || (context->idx > UART_IDX_MAX)) {return;}
+#if defined (STM32F427_437xx) || defined (STM32F429_439xx)
+    if ((context->idx < UART_IDX_MIN) || (context->idx > UART_IDX_MAX))
+#else /* STM32F401 or STM32F411xE */
+    if ((context->idx != UART_IDX1) && (context->idx != UART_IDX2) && (context->idx != UART_IDX6))
+#endif
+    { return; }
 
 	USART_TypeDef *usart = context->UARTx;
 
@@ -505,10 +524,13 @@ void HAL_UART::reset(){
 
 
 size_t HAL_UART::read(void* recBuf, size_t size) {
+#if defined (STM32F427_437xx) || defined (STM32F429_439xx)
+    if ((context->idx < UART_IDX_MIN) || (context->idx > UART_IDX_MAX))
+#else /* STM32F401 or STM32F411xE */
+    if ((context->idx != UART_IDX1) && (context->idx != UART_IDX2) && (context->idx != UART_IDX6))
+#endif
+    { return 0; }
 
-    if ((context->idx < UART_IDX_MIN) || (context->idx > UART_IDX_MAX)){
-		return 0;
-	}
     if(size <=0) return 0;
 
     uint8_t* buf = reinterpret_cast<uint8_t*>(recBuf);
@@ -538,10 +560,13 @@ size_t HAL_UART::read(void* recBuf, size_t size) {
 
 
 size_t HAL_UART::write(const void* sendBuf, size_t size) {
+#if defined (STM32F427_437xx) || defined (STM32F429_439xx)
+    if ((context->idx < UART_IDX_MIN) || (context->idx > UART_IDX_MAX))
+#else /* STM32F401 or STM32F411xE */
+    if ((context->idx != UART_IDX1) && (context->idx != UART_IDX2) && (context->idx != UART_IDX6))
+#endif
+    { return -1; }
 
-    if ((context->idx < UART_IDX_MIN) || (context->idx > UART_IDX_MAX)) {
-        return 0;
-    }
     if(size <=0) return 0;
 
     const uint8_t* buf = reinterpret_cast<const uint8_t*>(sendBuf);
@@ -578,7 +603,12 @@ size_t HAL_UART::write(const void* sendBuf, size_t size) {
 
 
 int16_t HAL_UART::getcharNoWait() {
-    if ((context->idx < UART_IDX_MIN) || (context->idx > UART_IDX_MAX)) {return -1;}
+#if defined (STM32F427_437xx) || defined (STM32F429_439xx)
+    if ((context->idx < UART_IDX_MIN) || (context->idx > UART_IDX_MAX))
+#else /* STM32F401 or STM32F411xE */
+    if ((context->idx != UART_IDX1) && (context->idx != UART_IDX2) && (context->idx != UART_IDX6))
+#endif
+	{ return -1; }
 
 	uint8_t c = 0;
 	bool dataAvailible = context->receiveBuffer.get(c);
@@ -597,7 +627,12 @@ int16_t HAL_UART::getcharNoWait() {
 
 
 int16_t HAL_UART::putcharNoWait(uint8_t c) {
-    if ((context->idx < UART_IDX_MIN) || (context->idx > UART_IDX_MAX)) {return -1;}
+#if defined (STM32F427_437xx) || defined (STM32F429_439xx)
+    if ((context->idx < UART_IDX_MIN) || (context->idx > UART_IDX_MAX))
+#else /* STM32F401 or STM32F411xE */
+    if ((context->idx != UART_IDX1) && (context->idx != UART_IDX2) && (context->idx != UART_IDX6))
+#endif
+	{ return -1; }
 
 	if(context->transmittBuffer.put(c)){
 
@@ -618,7 +653,12 @@ int16_t HAL_UART::putcharNoWait(uint8_t c) {
 
 
 int32_t HAL_UART::status(UART_STATUS_TYPE type) {
-    if ((context->idx < UART_IDX_MIN) || (context->idx > UART_IDX_MAX)) {return -1;}
+#if defined (STM32F427_437xx) || defined (STM32F429_439xx)
+    if ((context->idx < UART_IDX_MIN) || (context->idx > UART_IDX_MAX))
+#else /* STM32F401 or STM32F411xE */
+    if ((context->idx != UART_IDX1) && (context->idx != UART_IDX2) && (context->idx != UART_IDX6))
+#endif
+	{ return -1; }
 
 	switch (type)
 	{
@@ -641,13 +681,23 @@ int32_t HAL_UART::status(UART_STATUS_TYPE type) {
 
 
 bool HAL_UART::isWriteFinished() {
-    if ((context->idx < UART_IDX_MIN) || (context->idx > UART_IDX_MAX)) {return true;} // false would create an infinite loop
+#if defined (STM32F427_437xx) || defined (STM32F429_439xx)
+    if ((context->idx < UART_IDX_MIN) || (context->idx > UART_IDX_MAX))
+#else /* STM32F401 or STM32F411xE */
+    if ((context->idx != UART_IDX1) && (context->idx != UART_IDX2) && (context->idx != UART_IDX6))
+#endif
+    { return true; } // false would create an infinite loop
     return context->transmittBuffer.isEmpty() && (USART_GetFlagStatus(context->UARTx,USART_FLAG_TC) == SET);
 }
 
 
 bool HAL_UART::isDataReady() {
-    if ((context->idx < UART_IDX_MIN) || (context->idx > UART_IDX_MAX)) {return false;}
+#if defined (STM32F427_437xx) || defined (STM32F429_439xx)
+    if ((context->idx < UART_IDX_MIN) || (context->idx > UART_IDX_MAX))
+#else /* STM32F401 or STM32F411xE */
+    if ((context->idx != UART_IDX1) && (context->idx != UART_IDX2) && (context->idx != UART_IDX6))
+#endif
+	{ return false; }
     return !context->receiveBuffer.isEmpty();
 }
 
@@ -996,8 +1046,12 @@ USART_TypeDef* HW_HAL_UART::getUARTx() {
 }
 
 int HW_HAL_UART::init(uint32_t baudrate) {
-
-    if ((idx < UART_IDX_MIN) || (idx > UART_IDX_MAX)) {return -1;}
+#if defined (STM32F427_437xx) || defined (STM32F429_439xx)
+    if ((this->idx < UART_IDX_MIN) || (this->idx > UART_IDX_MAX))
+#else /* STM32F401 or STM32F411xE */
+    if ((this->idx != UART_IDX1) && (this->idx != UART_IDX2) && (this->idx != UART_IDX6))
+#endif
+    { return -1; }
 
     this->baudrate = baudrate;
 
@@ -1049,4 +1103,4 @@ void UART_putc_interrupt(HAL_UART* uart, uint8_t c){
 }
 
 
-}
+} /* namespace RODOS */
