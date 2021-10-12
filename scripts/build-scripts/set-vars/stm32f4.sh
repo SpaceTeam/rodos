@@ -107,22 +107,22 @@ if [ ${SUB_ARCH} = stm32f40x ]; then
         -DSTM32F40_41xxx \
         -DUSE_STM32_DISCOVERY"
 elif [ ${SUB_ARCH} = stm32f429 ]; then
-    export HWCFLAGS="${COMMON_HWCFLAGS} -mfloat-abi=hard"
+    export HWCFLAGS="${COMMON_HWCFLAGS} -mfloat-abi=softfp"
     export CFLAGS=${CFLAGS}" ${COMMON_CFLAGS} ${HWCFLAGS} \
         -DSTM32F429_439xx \
         -DUSE_STM32F429I_DISCO"
 elif [ ${SUB_ARCH} = stm32f427 ]; then
-    export HWCFLAGS="${COMMON_HWCFLAGS} -mfloat-abi=hard"
+    export HWCFLAGS="${COMMON_HWCFLAGS} -mfloat-abi=softfp"
     export CFLAGS=${CFLAGS}" ${COMMON_CFLAGS} ${HWCFLAGS} \
         -DSTM32F427_437xx"
 elif [ ${SUB_ARCH} = stm32f411 ]; then
-    export HWCFLAGS="${COMMON_HWCFLAGS} -mfloat-abi=hard"
+    export HWCFLAGS="${COMMON_HWCFLAGS} -mfloat-abi=softfp"
     export CFLAGS=${CFLAGS}" ${COMMON_CFLAGS} ${HWCFLAGS} \
         -DSTM32F411xE \
         -DUSE_STM32_DISCOVERY \
         -DHSE_STARTUP_TIMEOUT=10000000"
 elif [ ${SUB_ARCH} = stm32f401 ]; then
-    export HWCFLAGS="${COMMON_HWCFLAGS} -mfloat-abi=hard"
+    export HWCFLAGS="${COMMON_HWCFLAGS} -mfloat-abi=softfp"
     export CFLAGS=${CFLAGS}" ${COMMON_CFLAGS} ${HWCFLAGS} \
         -DSTM32F401xx"
 fi
