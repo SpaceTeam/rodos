@@ -166,7 +166,7 @@
 #define PORTIO_PTI_DOUT_PORT                  (gpioPortB)
 #define PORTIO_PTI_DOUT_LOC                   (6U)
 
-#define HAL_PTI_ENABLE                        (1)
+//#define HAL_PTI_ENABLE                        (1)
 
 #define BSP_PTI_DFRAME_PIN                    (13U)
 #define BSP_PTI_DFRAME_PORT                   (gpioPortB)
