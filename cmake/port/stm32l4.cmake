@@ -1,5 +1,5 @@
 if(NOT board)
-  message(FATAL_ERROR "Do not use stm32l4 directly; instead, use a board port file.")
+    message(FATAL_ERROR "Do not use stm32l4 directly; instead, use a board port file.")
 endif()
 
 set(port_dir "bare-metal/stm32l4")
