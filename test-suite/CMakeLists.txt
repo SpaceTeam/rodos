@@ -34,7 +34,7 @@ foreach(test_file ${test_files})
     add_executable("${test_name}-bin" EXCLUDE_FROM_ALL ${test_file})
     target_include_directories("${test_name}-bin"
         PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
-    target_link_libraries("${test_name}-bin" PUBLIC rodos)
+    target_link_libraries("${test_name}-bin" PUBLIC rodos::rodos)
 
     # Command to run rodos test application, generating output files
     # including diff; this also generates coverage information if

@@ -2,7 +2,10 @@ cmake_minimum_required(VERSION 3.10)
 
 set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
 
-project(rodos C CXX ASM)
+project(
+    rodos
+    LANGUAGES C CXX ASM
+)
 
 if (COVERAGE)
     if (NOT CMAKE_BUILD_TYPE)
@@ -22,38 +25,40 @@ file(GLOB_RECURSE independent_sources
     src/independent/*.cpp
     support/support-libs/*.cpp)
 
-add_library(rodos STATIC ${independent_sources})
+add_library(rodos_rodos STATIC ${independent_sources})
+add_library(rodos::rodos ALIAS rodos_rodos)
 
 file(GLOB port_sources
     src/${port_dir}/*.cpp
     src/${port_dir}/*.c
     src/${port_dir}/hal/*.cpp
     src/${port_dir}/*.S)
-target_sources(rodos PRIVATE ${port_sources})
+target_sources(rodos_rodos PRIVATE ${port_sources})
 
-target_include_directories(rodos PUBLIC
+target_include_directories(rodos_rodos PUBLIC
     api
     api/hal
     src/${port_dir}
     src/${port_dir}/include
-    support/support-libs)
+    support/support-libs
+)
 
-target_compile_options(rodos PUBLIC -fno-exceptions -g -Wall -Wpedantic -Wextra -Wcast-qual -Wconversion
+target_compile_options(rodos_rodos PUBLIC -fno-exceptions -g -Wall -Wpedantic -Wextra -Wcast-qual -Wconversion
     -Wsign-conversion -Wfloat-conversion -Wdouble-promotion -Wnull-dereference -Wstrict-aliasing -Wno-long-long
     -Wno-cpp -O0)
-target_compile_options(rodos PUBLIC $<$<COMPILE_LANGUAGE:CXX>:-std=c++14>)
+target_compile_options(rodos_rodos PUBLIC $<$<COMPILE_LANGUAGE:CXX>:-std=c++14>)
 
 option(ENABLE_RODOS_RTTI "Build RODOS with run-time type information" OFF)
 if (NOT ENABLE_RODOS_RTTI)
-    target_compile_options(rodos PUBLIC $<$<COMPILE_LANGUAGE:CXX>:-fno-rtti>)
+    target_compile_options(rodos_rodos PUBLIC $<$<COMPILE_LANGUAGE:CXX>:-fno-rtti>)
 endif ()
 
 
 #___________________________________________________________________
 if (is_port_baremetal)
     file(GLOB baremetal_generic_sources src/bare-metal-generic/*.cpp)
-    target_sources(rodos PRIVATE ${baremetal_generic_sources})
-    target_include_directories(rodos PUBLIC
+    target_sources(rodos_rodos PRIVATE ${baremetal_generic_sources})
+    target_include_directories(rodos_rodos PUBLIC
         src/bare-metal-generic
         src/bare-metal-generic/ip/lwip/include)
 endif ()
@@ -64,15 +69,15 @@ endif ()
 #___________________________________________________________________
 if (sources_to_add)
     file(GLOB files ${sources_to_add})
-    target_sources(rodos PRIVATE ${files})
+    target_sources(rodos_rodos PRIVATE ${files})
 endif ()
 
 if (directories_to_include)
-    target_include_directories(rodos PUBLIC ${directories_to_include})
+    target_include_directories(rodos_rodos PUBLIC ${directories_to_include})
 endif ()
 
 if (libraries_to_link)
-    target_link_libraries(rodos PUBLIC ${libraries_to_link})
+    target_link_libraries(rodos_rodos PUBLIC ${libraries_to_link})
 endif ()
 
 if (EXECUTABLE)
