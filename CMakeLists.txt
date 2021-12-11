@@ -36,11 +36,11 @@ file(GLOB port_sources
 target_sources(rodos_rodos PRIVATE ${port_sources})
 
 target_include_directories(rodos_rodos PUBLIC
-    api
-    api/hal
-    src/${port_dir}
-    src/${port_dir}/include
-    support/support-libs
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/api>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/api/hal>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/${port_dir}>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/${port_dir}/include>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/support/support-libs>
 )
 
 target_compile_options(rodos_rodos PUBLIC -fno-exceptions -g -Wall -Wpedantic -Wextra -Wcast-qual -Wconversion
@@ -59,8 +59,8 @@ if (is_port_baremetal)
     file(GLOB baremetal_generic_sources src/bare-metal-generic/*.cpp)
     target_sources(rodos_rodos PRIVATE ${baremetal_generic_sources})
     target_include_directories(rodos_rodos PUBLIC
-        src/bare-metal-generic
-        src/bare-metal-generic/ip/lwip/include)
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/bare-metal-generic>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/bare-metal-generic/ip/lwip/include>)
 endif ()
 
 
@@ -73,7 +73,9 @@ if (sources_to_add)
 endif ()
 
 if (directories_to_include)
-    target_include_directories(rodos_rodos PUBLIC ${directories_to_include})
+    foreach(dir ${directories_to_include})
+        target_include_directories(rodos_rodos PUBLIC $<BUILD_INTERFACE:${dir}>)
+    endforeach()
 endif ()
 
 if (libraries_to_link)
