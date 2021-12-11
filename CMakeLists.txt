@@ -4,6 +4,7 @@ set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
 
 project(
     rodos
+    VERSION 0.0.1
     LANGUAGES C CXX ASM
 )
 
@@ -27,6 +28,11 @@ file(GLOB_RECURSE independent_sources
 
 add_library(rodos_rodos STATIC ${independent_sources})
 add_library(rodos::rodos ALIAS rodos_rodos)
+
+set_target_properties(rodos_rodos PROPERTIES
+    EXPORT_NAME rodos
+    OUTPUT_NAME rodos
+)
 
 file(GLOB port_sources
     src/${port_dir}/*.cpp
@@ -86,6 +92,10 @@ if (EXECUTABLE)
     include(cmake/executable.cmake)
     add_subdirectory(tutorials)
 endif ()
+
+
+# Install rules
+include(cmake/install-rules.cmake)
 
 
 if (COVERAGE)
