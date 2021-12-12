@@ -56,10 +56,10 @@ set(sources_to_add
 )
 
 set(directories_to_include
-    ${RODOS_DIR}/src/bare-metal/stm32l4
-    ${RODOS_DIR}/src/bare-metal/stm32l4/api_includes
-    ${RODOS_DIR}/src/bare-metal/stm32l4/peripheral_ctrl/mcu_specific/${mcu}
-    ${RODOS_DIR}/src/bare-metal/stm32l4/subtargets/boards/${board}
+    src/bare-metal/stm32l4
+    src/bare-metal/stm32l4/api_includes
+    src/bare-metal/stm32l4/peripheral_ctrl/mcu_specific/${mcu}
+    src/bare-metal/stm32l4/subtargets/boards/${board}
 )
 
 set(libraries_to_link

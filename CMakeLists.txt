@@ -80,7 +80,7 @@ endif ()
 
 if (directories_to_include)
     foreach(dir ${directories_to_include})
-        target_include_directories(rodos_rodos PUBLIC $<BUILD_INTERFACE:${dir}>)
+        target_include_directories(rodos_rodos PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${dir}>)
     endforeach()
 endif ()
 
