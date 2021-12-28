@@ -29,9 +29,13 @@ file(GLOB_RECURSE independent_sources
 add_library(rodos_rodos STATIC ${independent_sources})
 add_library(rodos::rodos ALIAS rodos_rodos)
 
+if (NOT DEFINED port_name)
+    cmake_path(GET port_dir FILENAME port_name)
+endif ()
+
 set_target_properties(rodos_rodos PROPERTIES
     EXPORT_NAME rodos
-    OUTPUT_NAME rodos
+    OUTPUT_NAME rodos_${port_name}
 )
 
 file(GLOB port_sources

@@ -2,7 +2,7 @@ include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
 
 # Name of the package to use when calling find_package(<package>) in consumer code
-set(package rodos)
+set(package rodos_${port_name})
 
 # Copy all necessary header files to the install include directory
 set(rodos_INSTALL_INCLUDEDIR ${CMAKE_INSTALL_INCLUDEDIR}/rodos)
