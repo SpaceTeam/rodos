@@ -30,7 +30,7 @@ add_library(rodos_rodos STATIC ${independent_sources})
 add_library(rodos::rodos ALIAS rodos_rodos)
 
 if (NOT DEFINED port_name)
-    cmake_path(GET port_dir FILENAME port_name)
+    cmake_path(GET CMAKE_TOOLCHAIN_FILE STEM port_name)
 endif ()
 
 set_target_properties(rodos_rodos PROPERTIES

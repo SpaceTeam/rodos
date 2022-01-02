@@ -35,9 +35,14 @@ if (directories_to_include)
     endforeach()
 endif ()
 
+set(rodos_INSTALL_LIBDIR ${CMAKE_INSTALL_LIBDIR}/${package})
+
 # Define how to install which targets and create an export. If possible define the include
 # directories for the exported targets here.
-install(TARGETS rodos_rodos EXPORT rodosTargets
+install(
+    TARGETS rodos_rodos EXPORT rodosTargets
+    ARCHIVE
+        DESTINATION ${rodos_INSTALL_LIBDIR}
     INCLUDES
         DESTINATION
             ${rodos_INSTALL_INCLUDEDIR}/api
@@ -53,11 +58,7 @@ write_basic_package_version_file("${package}ConfigVersion.cmake"
     COMPATIBILITY SameMajorVersion
 )
 
-set(
-    rodos_INSTALL_CMAKEDIR "${CMAKE_INSTALL_LIBDIR}/cmake/${package}"
-    CACHE PATH "CMake package config location relative to the install prefix"
-)
-mark_as_advanced(rodos_INSTALL_CMAKEDIR)
+set(rodos_INSTALL_CMAKEDIR ${rodos_INSTALL_LIBDIR}/cmake)
 
 install(FILES cmake/install-config.cmake
     DESTINATION ${rodos_INSTALL_CMAKEDIR}
