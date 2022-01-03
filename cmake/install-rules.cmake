@@ -1,8 +1,17 @@
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
 
-# Name of the package to use when calling find_package(<package>) in consumer code
-set(package rodos_${port_name})
+option(USE_PORT_SUFFIX "Add a port specific suffix to the package name of Rodos" OFF)
+if (USE_PORT_SUFFIX)
+    if (NOT DEFINED port_name)
+        cmake_path(GET CMAKE_TOOLCHAIN_FILE STEM port_name)
+    endif ()
+    set(package rodos_${port_name})
+else ()
+    set(package rodos)
+endif ()
+# Print name of the package to use when calling find_package(<package>) in consumer code
+message("Rodos package name = ${package}")
 
 # Copy all necessary header files to the install include directory
 set(rodos_INSTALL_INCLUDEDIR ${CMAKE_INSTALL_INCLUDEDIR}/rodos)
@@ -25,15 +34,12 @@ if (is_port_baremetal)
     )
 endif ()
 
-
 # Some of the directories_to_include must also be included in the INSTALL_INTERFACE. For simplicity
 # I add all of them and use this foreach loop cause I don't know how to do this the install(TARGET
 # ... INCLUDES DESTINATION ...) way.
-if (directories_to_include)
-    foreach(dir ${directories_to_include})
-        target_include_directories(rodos_rodos PUBLIC $<INSTALL_INTERFACE:${rodos_INSTALL_INCLUDEDIR}/${dir}>)
-    endforeach()
-endif ()
+foreach(dir ${directories_to_include})
+    target_include_directories(rodos_rodos PUBLIC $<INSTALL_INTERFACE:${rodos_INSTALL_INCLUDEDIR}/${dir}>)
+endforeach()
 
 set(rodos_INSTALL_LIBDIR ${CMAKE_INSTALL_LIBDIR}/${package})
 
