@@ -98,3 +98,30 @@ install(EXPORT rodosTargets
     NAMESPACE rodos::
     DESTINATION ${rodos_INSTALL_CMAKEDIR}
 )
+
+# Target for removing all installed files
+if (NOT TARGET uninstall)
+    configure_file(
+        "${CMAKE_CURRENT_SOURCE_DIR}/cmake/cmake_uninstall.cmake.in"
+        "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake"
+        IMMEDIATE @ONLY
+    )
+    add_custom_target(
+        uninstall
+        COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake
+    )
+endif ()
+
+# Target for removing all installed files and directories
+if (NOT TARGET uninstall-all)
+    configure_file(
+        "${CMAKE_CURRENT_SOURCE_DIR}/cmake/cmake_uninstall-all.cmake.in"
+        "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall-all.cmake"
+        IMMEDIATE @ONLY
+    )
+    add_custom_target(
+        uninstall-all
+        COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall-all.cmake
+    )
+endif ()
+
