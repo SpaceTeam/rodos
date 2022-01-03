@@ -4,7 +4,7 @@ set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
 
 project(
     rodos
-    VERSION 0.0.1
+    VERSION 0.1.0
     LANGUAGES C CXX ASM
 )
 
