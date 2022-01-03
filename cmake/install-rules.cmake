@@ -13,17 +13,35 @@ endif ()
 # Print name of the package to use when calling find_package(<package>) in consumer code
 message("Rodos package name = ${package}")
 
+# Copy toolchain files to the install src directory
+set(rodos_INSTALL_SRCDIR src/rodos)
+install(
+    DIRECTORY ${CMAKE_SOURCE_DIR}/cmake/port/
+    DESTINATION ${rodos_INSTALL_SRCDIR}/cmake/port
+)
+
+# Copy linker script to install src directory if necessary
+if (DEFINED linker_script)
+    string(LENGTH "${CMAKE_SOURCE_DIR}/" path_prefix_length)
+    string(SUBSTRING "${linker_script}" "${path_prefix_length}" -1 relative_linker_script)
+    cmake_path(REMOVE_FILENAME relative_linker_script OUTPUT_VARIABLE relative_linker_script_directory)
+    install(
+        FILES ${linker_script}
+        DESTINATION ${rodos_INSTALL_SRCDIR}/${relative_linker_script_directory}
+    )
+endif ()
+
 # Copy all necessary header files to the install include directory
 set(rodos_INSTALL_INCLUDEDIR ${CMAKE_INSTALL_INCLUDEDIR}/rodos)
-INSTALL(DIRECTORY ${CMAKE_SOURCE_DIR}/api/
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/api/
     DESTINATION ${rodos_INSTALL_INCLUDEDIR}/api
     FILES_MATCHING PATTERN "*.h"
 )
-INSTALL(DIRECTORY ${CMAKE_SOURCE_DIR}/src/${port_dir}/
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/src/${port_dir}/
     DESTINATION ${rodos_INSTALL_INCLUDEDIR}/src/${port_dir}
     FILES_MATCHING PATTERN "*.h"
 )
-INSTALL(DIRECTORY ${CMAKE_SOURCE_DIR}/support/support-libs/
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/support/support-libs/
     DESTINATION ${rodos_INSTALL_INCLUDEDIR}/support/support-libs
     FILES_MATCHING PATTERN "*.h"
 )
