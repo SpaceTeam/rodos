@@ -25,7 +25,7 @@
  * - for more information see system_stm32f4xx.c
  */
 // MINI-M4, STM32F4Discovery
-#define CPU_CLK                         168   // 24,32,42,48,56,84,96,120,144,168 MHz
+#define CPU_CLK                         96   // 24,32,42,48,56,84,96,120,144,168 MHz
 
 /** uart for printf **/
 #define UART_DEBUG                      UART_IDX2, GPIO_053, GPIO_054 // PD5 and PD6

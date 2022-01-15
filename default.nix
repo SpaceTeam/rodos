@@ -56,6 +56,7 @@ in
   ["on-posix" pkgsi686Linux.stdenv]
   ["on-posix64" stdenv]
   ["discovery" pkgsCross.arm-embedded.stdenv]
+  ["discovery_f411" pkgsCross.arm-embedded.stdenv]
   ["discovery_f429" pkgsCross.arm-embedded.stdenv]
   ["skith" pkgsCross.arm-embedded.stdenv]
   ["raspberrypi3" pkgsCross.arm-embedded.stdenv]

@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_hash_md5.c
   * @author  MCD Application Team
-  * @version V1.2.1
-  * @date    19-September-2013
+  * @version V1.8.0
+  * @date    04-November-2016
   * @brief   This file provides high level functions to compute the HASH MD5 and
   *          HMAC MD5 Digest of an input message.
   *          It uses the stm32f4xx_hash.c/.h drivers to access the STM32F4xx HASH
@@ -26,7 +26,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT 2013 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT 2016 STMicroelectronics</center></h2>
   *
   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
   * You may not use this file except in compliance with the License.
@@ -45,8 +45,6 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_hash.h"
-
-#define ERROR STM32_ERROR
 
 /** @addtogroup STM32F4xx_StdPeriph_Driver
   * @{
@@ -106,7 +104,7 @@ ErrorStatus HASH_MD5(uint8_t *Input, uint32_t Ilen, uint8_t Output[16])
 
 
   /* Number of valid bits in last word of the Input data */
-  nbvalidbitsdata = (uint16_t)(8 * (Ilen % 4));
+  nbvalidbitsdata = 8 * (Ilen % 4);
 
   /* HASH peripheral initialization */
   HASH_DeInit();
@@ -183,10 +181,10 @@ ErrorStatus HMAC_MD5(uint8_t *Key, uint32_t Keylen, uint8_t *Input,
   uint32_t outputaddr = (uint32_t)Output;
 
   /* Number of valid bits in last word of the Input data */
-  nbvalidbitsdata = (uint16_t)(8 * (Ilen % 4));
+  nbvalidbitsdata = 8 * (Ilen % 4);
 
   /* Number of valid bits in last word of the Key */
-  nbvalidbitskey = (uint16_t)(8 * (Keylen % 4));
+  nbvalidbitskey = 8 * (Keylen % 4);
    
   /* HASH peripheral initialization */
   HASH_DeInit();

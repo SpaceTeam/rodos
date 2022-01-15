@@ -16,7 +16,7 @@
 
 namespace RODOS {
 
-#ifndef STM32F401xx
+#if !defined (STM32F401xx) && !defined (STM32F411xE)
 
 #define MAX_FILTERS 20
 
@@ -724,7 +724,7 @@ extern "C" {
     }
 }
 #else
-#warning no HAL CAN supported by MCU STM32F401
-#endif // end STM32F401xx
+	#warning "no HAL CAN supported by MCU STM32F401 and STM32F411xE"
+#endif // !defined (STM32F401xx) && !defined (STM32F411xE)
 
 }

@@ -2,14 +2,12 @@
 
 # Author Sergio Montenegro (uni Wuerzburg), Sept 2019
 
-export TARGET_LIB=discovery  # used as name for the generated lib
+# used as name for the generated lib
+export TARGET_LIB=discovery
 
-export INCLUDES=${INCLUDES}" -I ${RODOS_SRC}/bare-metal/stm32f4/platform-parameter/discovery "  # only for platform-parameter.h
+# only for platform-parameter.h
+export INCLUDES=${INCLUDES}" -I ${RODOS_SRC}/bare-metal/stm32f4/platform-parameter/discovery "
+
 export OSC_CLK=8000000     # STM32F4Discovery, STM32F429Discovery
-export MCU_FLAG=STM32F40_41xxx
-
-export LINKER_SCRIPT="${RODOS_SRC}/bare-metal/stm32f4/scripts/stm32_flash.ld"
-
+export SUB_ARCH=stm32f40x
 source $RODOS_VARS_DIR/stm32f4.sh
-
-

@@ -14,6 +14,8 @@
  * HAL_ADC STM32F4
  * - there are 3 ADCs
  * - each ADC has 19 channels:
+ * NOTE: STM32F411xE µC only has ADC 1 with 16 channels.
+ *       But ADC1's pins match the channels in the table
  * -> 3 channels for internal use (temperature, battery voltage)
  * -> 16 general purpose channels, BUT the channels share same pins!!!
  * -> so there are a maximum of 24 analog inputs (instead of 3x16)
@@ -52,10 +54,18 @@ namespace RODOS {
 #endif
 
 #define STM32F4_MIN_ADC_IDX     ADC_IDX1
+#if defined (STM32F411xE)
+#define STM32F4_MAX_ADC_IDX     ADC_IDX1
+#else
 #define STM32F4_MAX_ADC_IDX     ADC_IDX3
+#endif /* defined (STM32F411xE) */
 
 #define STM32F4_MIN_ADC_CHAN    ADC_CH_000
+#if defined (STM32F411xE)
+#define STM32F4_MAX_ADC_CHAN    ADC_CH_016
+#else
 #define STM32F4_MAX_ADC_CHAN    ADC_CH_018
+#endif /* defined (STM32F411xE) */
 
 
 
@@ -92,6 +102,7 @@ public:
             adc = ADC1;
             RCC_APB2Periph_ADCx = RCC_APB2Periph_ADC1;
             break;
+#if !defined(STM32F411xE)
         case ADC_IDX2:
             adc = ADC2;
             RCC_APB2Periph_ADCx = RCC_APB2Periph_ADC2;
@@ -100,6 +111,7 @@ public:
             adc = ADC3;
             RCC_APB2Periph_ADCx = RCC_APB2Periph_ADC3;
             break;
+#endif /* !defined(STM32F411xE) */
         default:
             break;
         }
@@ -293,7 +305,7 @@ ADCChannelProps HW_HAL_ADC::getChannelProperties(ADC_CHANNEL channel){
         default: break;
         }
     }
-
+#if !defined(STM32F411xE)
     if(idx == ADC_IDX3){
         switch(channel){
         case ADC_CH_000: props.port = GPIOA; props.pin = GPIO_Pin_0;  props.RCC_AHB1Periph_GPIOx = RCC_AHB1Periph_GPIOA; break;
@@ -315,6 +327,7 @@ ADCChannelProps HW_HAL_ADC::getChannelProperties(ADC_CHANNEL channel){
         default: break;
         }
     }
+#endif /* !defined(STM32F411xE) */
 
     return props;
 }

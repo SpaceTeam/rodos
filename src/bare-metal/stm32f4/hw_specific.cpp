@@ -23,7 +23,8 @@
 
 // watchdog related includes
 #include "stm32f4xx_iwdg.h"
-#include "stm32f4xx_misc.h"
+//#include "stm32f4xx_misc.h"		// version V1.7.0
+#include "misc.h"					// version V1.8.0
 #include "stm32f4xx_dbgmcu.h"
 #include "stm32f4xx_pwr.h"
 #include "stm32f4xx_rtc.h"

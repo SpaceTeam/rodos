@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_cryp_aes.c
   * @author  MCD Application Team
-  * @version V1.2.1
-  * @date    19-September-2013
+  * @version V1.8.0
+  * @date    04-November-2016
   * @brief   This file provides high level functions to encrypt and decrypt an 
   *          input message using AES in ECB/CBC/CTR/GCM/CCM modes.
   *          It uses the stm32f4xx_cryp.c/.h drivers to access the STM32F4xx CRYP
@@ -34,7 +34,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT 2013 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT 2016 STMicroelectronics</center></h2>
   *
   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
   * You may not use this file except in compliance with the License.
@@ -53,8 +53,6 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_cryp.h"
-
-#define ERROR STM32_ERROR
 
 /** @addtogroup STM32F4xx_StdPeriph_Driver
   * @{
@@ -226,7 +224,7 @@ ErrorStatus CRYP_AES_ECB(uint8_t Mode, uint8_t* Key, uint16_t Keysize,
 
   if(CRYP_GetCmdStatus() == DISABLE)
   {
-    /* The CRYP peripheral clock is not enabled or the device doesn't embedd 
+    /* The CRYP peripheral clock is not enabled or the device doesn't embed 
        the CRYP peripheral (please check the device sales type. */
     return(ERROR);
   }
@@ -429,7 +427,7 @@ ErrorStatus CRYP_AES_CBC(uint8_t Mode, uint8_t InitVectors[16], uint8_t *Key,
 
   if(CRYP_GetCmdStatus() == DISABLE)
   {
-    /* The CRYP peripheral clock is not enabled or the device doesn't embedd 
+    /* The CRYP peripheral clock is not enabled or the device doesn't embed 
        the CRYP peripheral (please check the device sales type. */
     return(ERROR);
   }
@@ -600,7 +598,7 @@ ErrorStatus CRYP_AES_CTR(uint8_t Mode, uint8_t InitVectors[16], uint8_t *Key,
 
   if(CRYP_GetCmdStatus() == DISABLE)
   {
-    /* The CRYP peripheral clock is not enabled or the device doesn't embedd 
+    /* The CRYP peripheral clock is not enabled or the device doesn't embed 
        the CRYP peripheral (please check the device sales type. */
     return(ERROR);
   }
@@ -792,7 +790,7 @@ ErrorStatus CRYP_AES_GCM(uint8_t Mode, uint8_t InitVectors[16],
       
       if(CRYP_GetCmdStatus() == DISABLE)
       {
-         /* The CRYP peripheral clock is not enabled or the device doesn't embedd 
+         /* The CRYP peripheral clock is not enabled or the device doesn't embed 
             the CRYP peripheral (please check the device sales type. */
          return(ERROR);
       }
@@ -840,7 +838,7 @@ ErrorStatus CRYP_AES_GCM(uint8_t Mode, uint8_t InitVectors[16],
       
       if(CRYP_GetCmdStatus() == DISABLE)
       {
-        /* The CRYP peripheral clock is not enabled or the device doesn't embedd 
+        /* The CRYP peripheral clock is not enabled or the device doesn't embed 
            the CRYP peripheral (please check the device sales type. */
         return(ERROR);
       }
@@ -902,16 +900,16 @@ ErrorStatus CRYP_AES_GCM(uint8_t Mode, uint8_t InitVectors[16],
     
     if(CRYP_GetCmdStatus() == DISABLE)
     {
-      /* The CRYP peripheral clock is not enabled or the device doesn't embedd 
+      /* The CRYP peripheral clock is not enabled or the device doesn't embed 
          the CRYP peripheral (please check the device sales type. */
       return(ERROR);
     }
     
     /* Write number of bits concatenated with header in the IN FIFO */
-    CRYP_DataIn(__REV((uint32_t)(headerlength>>32)));
-    CRYP_DataIn(__REV((uint32_t)(headerlength)));
-    CRYP_DataIn(__REV((uint32_t)(inputlength>>32)));
-    CRYP_DataIn(__REV((uint32_t)(inputlength)));
+    CRYP_DataIn(__REV(headerlength>>32));
+    CRYP_DataIn(__REV(headerlength));
+    CRYP_DataIn(__REV(inputlength>>32));
+    CRYP_DataIn(__REV(inputlength));
     /* Wait until the OFNE flag is reset */
     while(CRYP_GetFlagStatus(CRYP_FLAG_OFNE) == RESET)
     {
@@ -969,7 +967,7 @@ ErrorStatus CRYP_AES_GCM(uint8_t Mode, uint8_t InitVectors[16],
       
       if(CRYP_GetCmdStatus() == DISABLE)
       {
-        /* The CRYP peripheral clock is not enabled or the device doesn't embedd 
+        /* The CRYP peripheral clock is not enabled or the device doesn't embed 
            the CRYP peripheral (please check the device sales type. */
         return(ERROR);
       }
@@ -1017,7 +1015,7 @@ ErrorStatus CRYP_AES_GCM(uint8_t Mode, uint8_t InitVectors[16],
       
       if(CRYP_GetCmdStatus() == DISABLE)
       {
-        /* The CRYP peripheral clock is not enabled or the device doesn't embedd 
+        /* The CRYP peripheral clock is not enabled or the device doesn't embed 
            the CRYP peripheral (please check the device sales type. */
         return(ERROR);
       }
@@ -1079,16 +1077,16 @@ ErrorStatus CRYP_AES_GCM(uint8_t Mode, uint8_t InitVectors[16],
     
     if(CRYP_GetCmdStatus() == DISABLE)
     {
-      /* The CRYP peripheral clock is not enabled or the device doesn't embedd 
+      /* The CRYP peripheral clock is not enabled or the device doesn't embed 
          the CRYP peripheral (please check the device sales type. */
       return(ERROR);
     }
     
     /* Write number of bits concatenated with header in the IN FIFO */
-    CRYP_DataIn(__REV((uint32_t)(headerlength>>32)));
-    CRYP_DataIn(__REV((uint32_t)(headerlength)));
-    CRYP_DataIn(__REV((uint32_t)(inputlength>>32)));
-    CRYP_DataIn(__REV((uint32_t)(inputlength)));
+    CRYP_DataIn(__REV(headerlength>>32));
+    CRYP_DataIn(__REV(headerlength));
+    CRYP_DataIn(__REV(inputlength>>32));
+    CRYP_DataIn(__REV(inputlength));
     /* Wait until the OFNE flag is reset */
     while(CRYP_GetFlagStatus(CRYP_FLAG_OFNE) == RESET)
     {
@@ -1118,7 +1116,7 @@ ErrorStatus CRYP_AES_GCM(uint8_t Mode, uint8_t InitVectors[16],
   *          This parameter can be one of the following values:
   *            @arg MODE_ENCRYPT: Encryption
   *            @arg MODE_DECRYPT: Decryption
-  * @param  Nonce: the nounce used for AES algorithm. It shall be unique for each processing.
+  * @param  Nonce: the nonce used for AES algorithm. It shall be unique for each processing.
   * @param  Key: Key used for AES algorithm.
   * @param  Keysize: length of the Key, must be a 128, 192 or 256.
   * @param  Input: pointer to the Input buffer.
@@ -1177,10 +1175,10 @@ ErrorStatus CRYP_AES_CCM(uint8_t Mode,
       /* header is encoded as 0xff || 0xfe || [headersize]32, i.e., six octets */
       HBuffer[bufferidx++] = 0xFF;
       HBuffer[bufferidx++] = 0xFE;
-      HBuffer[bufferidx++] = (uint8_t)(headersize & 0xff000000); //potential bug and always zero!
-      HBuffer[bufferidx++] = (uint8_t)(headersize & 0x00ff0000); //potential bug and always zero!
-      HBuffer[bufferidx++] = (uint8_t)(headersize & 0x0000ff00); //potential bug and always zero!
-      HBuffer[bufferidx++] = (uint8_t)(headersize & 0x000000ff);
+      HBuffer[bufferidx++] = headersize & 0xff000000;
+      HBuffer[bufferidx++] = headersize & 0x00ff0000;
+      HBuffer[bufferidx++] = headersize & 0x0000ff00;
+      HBuffer[bufferidx++] = headersize & 0x000000ff;
       headersize += 6;
     }
     /* Copy the header buffer in internal buffer "HBuffer" */
@@ -1208,7 +1206,7 @@ ErrorStatus CRYP_AES_CCM(uint8_t Mode,
     blockb0[0] = 0x40;
   }
   /* Flags byte */
-  blockb0[0] = (uint8_t)(blockb0[0] | 0u | (((( (uint8_t) TAGSize - 2u) / 2u) & 0x07u ) << 3u ) | ( ( (uint8_t) (15u - NonceSize) - 1u) & 0x07u));
+  blockb0[0] |= 0u | (((( (uint8_t) TAGSize - 2) / 2) & 0x07 ) << 3 ) | ( ( (uint8_t) (15 - NonceSize) - 1) & 0x07);
   
   for (loopcounter = 0; loopcounter < NonceSize; loopcounter++)
   {
@@ -1348,7 +1346,7 @@ ErrorStatus CRYP_AES_CCM(uint8_t Mode,
       
       if(CRYP_GetCmdStatus() == DISABLE)
       {
-         /* The CRYP peripheral clock is not enabled or the device doesn't embedd 
+         /* The CRYP peripheral clock is not enabled or the device doesn't embed 
             the CRYP peripheral (please check the device sales type. */
          return(ERROR);
       }
@@ -1396,7 +1394,7 @@ ErrorStatus CRYP_AES_CCM(uint8_t Mode,
       
       if(CRYP_GetCmdStatus() == DISABLE)
       {
-        /* The CRYP peripheral clock is not enabled or the device doesn't embedd 
+        /* The CRYP peripheral clock is not enabled or the device doesn't embed 
            the CRYP peripheral (please check the device sales type. */
         return(ERROR);
       }
@@ -1459,7 +1457,7 @@ ErrorStatus CRYP_AES_CCM(uint8_t Mode,
     
     if(CRYP_GetCmdStatus() == DISABLE)
     {
-      /* The CRYP peripheral clock is not enabled or the device doesn't embedd 
+      /* The CRYP peripheral clock is not enabled or the device doesn't embed 
          the CRYP peripheral (please check the device sales type. */
       return(ERROR);
     }
@@ -1537,7 +1535,7 @@ ErrorStatus CRYP_AES_CCM(uint8_t Mode,
       
       if(CRYP_GetCmdStatus() == DISABLE)
       {
-        /* The CRYP peripheral clock is not enabled or the device doesn't embedd 
+        /* The CRYP peripheral clock is not enabled or the device doesn't embed 
            the CRYP peripheral (please check the device sales type. */
         return(ERROR);
       }
@@ -1585,7 +1583,7 @@ ErrorStatus CRYP_AES_CCM(uint8_t Mode,
       
       if(CRYP_GetCmdStatus() == DISABLE)
       {
-        /* The CRYP peripheral clock is not enabled or the device doesn't embedd 
+        /* The CRYP peripheral clock is not enabled or the device doesn't embed 
            the CRYP peripheral (please check the device sales type. */
         return(ERROR);
       }
@@ -1648,7 +1646,7 @@ ErrorStatus CRYP_AES_CCM(uint8_t Mode,
     
     if(CRYP_GetCmdStatus() == DISABLE)
     {
-      /* The CRYP peripheral clock is not enabled or the device doesn't embedd 
+      /* The CRYP peripheral clock is not enabled or the device doesn't embed 
          the CRYP peripheral (please check the device sales type. */
       return(ERROR);
     }
@@ -1669,7 +1667,7 @@ ErrorStatus CRYP_AES_CCM(uint8_t Mode,
     {
     }
     
-    /* Read the Authentaication TAG (MAC) in the IN FIFO */
+    /* Read the Authentification TAG (MAC) in the IN FIFO */
     temptag[0] = CRYP_DataOut();
     temptag[1] = CRYP_DataOut();
     temptag[2] = CRYP_DataOut();

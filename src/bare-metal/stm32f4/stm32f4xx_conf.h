@@ -53,8 +53,8 @@
 #include "stm32f4xx_tim.h"
 #include "stm32f4xx_usart.h"
 //#include "stm32f4xx_wwdg.h"
-#include "stm32f4xx_misc.h" /* High level functions for NVIC and SysTick (add-on to CMSIS functions) */
-//#include "misc.h" /* High level functions for NVIC and SysTick (add-on to CMSIS functions) */
+//#include "stm32f4xx_misc.h" /* High level functions for NVIC and SysTick (add-on to CMSIS functions) */	// version V1.7.0
+#include "misc.h" /* High level functions for NVIC and SysTick (add-on to CMSIS functions) */				// version V1.8.0
 
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/

@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_i2c.c
   * @author  MCD Application Team
-  * @version V1.2.1
-  * @date    19-September-2013
+  * @version V1.8.0
+  * @date    04-November-2016
   * @brief   This file provides firmware functions to manage the following 
   *          functionalities of the Inter-integrated circuit (I2C)
   *           + Initialization and Configuration
@@ -71,7 +71,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT 2013 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT 2016 STMicroelectronics</center></h2>
   *
   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
   * You may not use this file except in compliance with the License.
@@ -91,8 +91,6 @@
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_i2c.h"
 #include "stm32f4xx_rcc.h"
-
-#define ERROR STM32_ERROR
 
 /** @addtogroup STM32F4xx_StdPeriph_Driver
   * @{
@@ -229,7 +227,7 @@ void I2C_Init(I2C_TypeDef* I2Cx, I2C_InitTypeDef* I2C_InitStruct)
     /* Set speed value for standard mode */
     tmpreg |= result;	  
     /* Set Maximum Rise Time for standard mode */
-    I2Cx->TRISE = (uint16_t)(freqrange + 1); 
+    I2Cx->TRISE = freqrange + 1; 
   }
   /* Configure speed in fast mode */
   /* To use the I2C at 400 KHz (in fast mode), the PCLK1 frequency (I2C peripheral
@@ -332,7 +330,7 @@ void I2C_Cmd(I2C_TypeDef* I2Cx, FunctionalState NewState)
 /**
   * @brief  Enables or disables the Analog filter of I2C peripheral.
   * 
-  * @note   This function can be used only for STM32F42xxx/STM3243xxx and STM32F401xx devices.
+  * @note   This function can be used only for STM32F42xxx/STM3243xxx, STM32F401xx, STM32F410xx and STM32F411xE devices.
   *        
   * @param  I2Cx: where x can be 1, 2 or 3 to select the I2C peripheral.
   * @param  NewState: new state of the Analog filter. 
@@ -361,7 +359,7 @@ void I2C_AnalogFilterCmd(I2C_TypeDef* I2Cx, FunctionalState NewState)
 /**
   * @brief  Configures the Digital noise filter of I2C peripheral.
   * 
-  * @note   This function can be used only for STM32F42xxx/STM3243xxx and STM32F401xx devices.
+  * @note   This function can be used only for STM32F42xxx/STM3243xxx, STM32F401xx, STM32F410xx and STM32F411xE devices.
   *       
   * @param  I2Cx: where x can be 1, 2 or 3 to select the I2C peripheral.
   * @param  I2C_DigitalFilter: Coefficient of digital noise filter. 
@@ -385,7 +383,7 @@ void I2C_DigitalFilterConfig(I2C_TypeDef* I2Cx, uint16_t I2C_DigitalFilter)
   tmpreg &= (uint16_t)~((uint16_t)I2C_FLTR_DNF);
   
   /* Set I2Cx DNF coefficient */
-  tmpreg = (uint16_t)(tmpreg | ((uint16_t)I2C_DigitalFilter & I2C_FLTR_DNF));
+  tmpreg |= (uint16_t)((uint16_t)I2C_DigitalFilter & I2C_FLTR_DNF);
   
   /* Store the new register value */
   I2Cx->FLTR = tmpreg;
@@ -514,7 +512,7 @@ void I2C_OwnAddress2Config(I2C_TypeDef* I2Cx, uint8_t Address)
   tmpreg &= (uint16_t)~((uint16_t)I2C_OAR2_ADD2);
 
   /* Set I2Cx Own address2 */
-  tmpreg = (uint16_t)(tmpreg | ((uint16_t)Address & (uint16_t)0x00FE));
+  tmpreg |= (uint16_t)((uint16_t)Address & (uint16_t)0x00FE);
 
   /* Store the new register value */
   I2Cx->OAR2 = tmpreg;
@@ -558,12 +556,12 @@ void I2C_GeneralCallCmd(I2C_TypeDef* I2Cx, FunctionalState NewState)
   assert_param(IS_FUNCTIONAL_STATE(NewState));
   if (NewState != DISABLE)
   {
-    /* Enable generall call */
+    /* Enable general call */
     I2Cx->CR1 |= I2C_CR1_ENGC;
   }
   else
   {
-    /* Disable generall call */
+    /* Disable general call */
     I2Cx->CR1 &= (uint16_t)~((uint16_t)I2C_CR1_ENGC);
   }
 }
@@ -881,7 +879,7 @@ uint8_t I2C_GetPEC(I2C_TypeDef* I2Cx)
   /* Check the parameters */
   assert_param(IS_I2C_ALL_PERIPH(I2Cx));
   /* Return the selected I2C PEC value */
-  return (uint8_t)((I2Cx->SR2) >> 8);
+  return ((I2Cx->SR2) >> 8);
 }
 
 /**
