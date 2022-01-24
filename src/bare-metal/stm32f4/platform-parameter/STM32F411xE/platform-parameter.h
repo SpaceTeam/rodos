@@ -26,7 +26,7 @@
 
 /** uart for printf **/													//	Tx      Rx
 //#define UART_DEBUG                      UART_IDX1, GPIO_009, GPIO_010 // PA9 and PA10
-#define UART_DEBUG                      UART_IDX2, GPIO_053, GPIO_054 // PD5 and PD6
+#define UART_DEBUG                      UART_IDX2, GPIO_002, GPIO_003   // PA02 and PA03
 //#define UART_DEBUG                      UART_IDX6, GPIO_038, GPIO_039 // PC6 and PC7
 
 
