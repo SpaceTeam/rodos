@@ -339,7 +339,9 @@ public:
 		this->q.z = other.q.z;
 		this->q0 = other.q0;
 		return *this;
-	};
+	}
+
+    Quaternion_<TYPE>& operator=(const Quaternion_<TYPE> &other) = default;
 };
 
 #ifndef NO_RODOS_NAMESPACE

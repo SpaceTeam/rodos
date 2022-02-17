@@ -89,7 +89,7 @@ public:
 		this->Re = other.Re;
 		this->Im = other.Im;
 		return *this;
-	};
+	}
 
     inline friend Complex_<TYPE> operator+ (const Complex_<TYPE> &left, const Complex_<TYPE> &right) { return left.cAdd(right); }
     inline friend Complex_<TYPE> operator- (const Complex_<TYPE> &left, const Complex_<TYPE> &right) { return left.cSub(right); }

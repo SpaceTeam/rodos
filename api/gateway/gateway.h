@@ -140,8 +140,7 @@ public:
 
 };
 
-void prepareNetworkMessage(NetworkMessage& netMsg, const uint32_t topicId,const void* data, size_t len);
-
+void prepareNetworkMessage(NetworkMessage& netMsg, const uint32_t topicId,const void* data, size_t len, const NetMsgInfo& netMsgInfo);
 
 } // namespace
 

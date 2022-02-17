@@ -40,7 +40,7 @@ public:
 				r[i][j] = 0;
 			}
 		}
-	};
+	}
 
 	Matrix_(const Matrix_<ROW, COL, TYPE>& other, const char* label = "matrix"){
 		static_assert((ROW > 0 && COL > 0), "Matrix_ dimensions must be 1x1 at least");
@@ -50,7 +50,7 @@ public:
 				r[i][j] = other.r[i][j];
 			}
 		}
-	};
+	}
 
 	Matrix_(const Vector_<ROW, TYPE>& other, const char* label = "matrix"){
 		static_assert((ROW > 0), "Matrix_ dimensions must be 1x1 at least");
@@ -61,7 +61,7 @@ public:
 			else
 				r[i][0] = other.r[i][0];
 		}
-	};
+	}
 
 	Matrix_(const TYPE* arr, const char* label = "matrix"){
 		static_assert((ROW > 0 && COL > 0), "Matrix_ dimensions must be 1x1 at least");
@@ -73,7 +73,7 @@ public:
 				k++;
 			}
 		}
-	};
+	}
 
 	static Matrix_<ROW, COL, TYPE> eye(TYPE val = 1){
 		Matrix_<ROW,COL, TYPE> ret;
@@ -102,7 +102,7 @@ public:
 		} else {
 			PRINTF("Invalid use of Matrix_ constructor -- Vector3D_\n");
 		}
-	};
+	}
 
 	explicit Matrix_(const Vector6D_<TYPE> &other, const char* label = "matrix"){
 		if(ROW == 6 && COL == 1){
@@ -113,7 +113,7 @@ public:
 		} else {
 			PRINTF("Invalid use of Matrix_ constructor -- Vector6D_\n");
 		}
-	};
+	}
 
 	Matrix_<ROW, 1, TYPE> diag() const {
 		static_assert((ROW == COL), "Matrix_ must be NxN in diag()");
@@ -122,7 +122,7 @@ public:
 			dia.r[i][0] = r[i][i];
 		}
 		return dia;
-	};
+	}
 
 	TYPE trace() const {
 		static_assert((ROW == COL), "Matrix_ must be NxN in trace()");
@@ -131,7 +131,7 @@ public:
 			trace += r[i][i];
 		}
 		return trace;
-	};
+	}
 
 	TYPE determinant() const {
 		static_assert((ROW == COL), "Matrix_ must be NxN in determinant()");
@@ -150,7 +150,7 @@ public:
 			det += pow(-1.0, j1 + 2.0) * r[0][j1] * rek.determinant();
 		}
 		return det;
-	};
+	}
 
 	bool isOrthogonal() const {
 		static_assert((ROW == COL), "Matrix_ must be NxN in orthognal()");
@@ -159,7 +159,7 @@ public:
 	        return true;
 	    }
 	    return false;
-	};
+	}
 
 	template<size_t ROW2, size_t COL2>
 	Matrix_<ROW2, COL2, TYPE> getSub(int start_row, int end_row, int start_col, int end_col) const {
@@ -170,10 +170,10 @@ public:
 			}
 		}
 		return res;
-	};
+	}
 
 	Matrix_<ROW, 1, TYPE> getColumn(const int &j) const {
-		if(j < 0 && j >= COL) {
+		if(j < 0 || j >= COL) {
 			PRINTF("Column %d does not exist\n", j);
 			return Matrix_<ROW, 1, TYPE>();
 		} else {
@@ -183,10 +183,10 @@ public:
 			}
 			return Matrix_<ROW, 1, TYPE>(arr);
 		}
-	};
+	}
 
 	Matrix_<1, COL, TYPE> getRow(const unsigned int &i) const {
-		if(i < 0 && i >= ROW) {
+		if(i >= ROW) {
 			PRINTF("Row %d does not exist\n", i);
 			Matrix_<1, COL, TYPE> ret;
 			return ret;
@@ -197,7 +197,7 @@ public:
 			}
 			return Matrix_<1, COL, TYPE>(arr);
 		}
-	};
+	}
 
 	template<size_t ROW2, size_t COL2>
 	void setAt(unsigned int row, unsigned int col, Matrix_<ROW2, COL2, TYPE> sub){
@@ -211,32 +211,32 @@ public:
 	}
 
 	void setColumn(const unsigned int &j, const Matrix_<ROW,1, TYPE>& column) {
-		if(j < 0 && j >= COL) {
+		if(j >= COL) {
 			PRINTF("Column %d does not exist\n", j);
 		} else {
 			for(unsigned int i = 0; i < ROW; ++i){
 				r[i][j] =  column.r[i][0];
 			}
 		}
-	};
+	}
 
 	void setRow(const int &i, const Matrix_<1,COL, TYPE>& row) {
-		if(i < 0 && i >= ROW) {
+		if(i < 0 || i >= ROW) {
 			PRINTF("Row does not exist\n");
 		} else {
 			for(int j = 0; j < COL; ++j){
 				r[i][j] = row.r[0][j];
 			}
 		}
-	};
+	}
 
 	bool equals(const Matrix_<ROW, COL, TYPE>& other) const {
-		for(int i = 0; i < ROW; ++i)
-			for(int j = 0; j < COL; ++j)
+		for(size_t i = 0; i < ROW; ++i)
+			for(size_t j = 0; j < COL; ++j)
 				if(r[i][j] != other.r[i][j])
 					return false;
 		return true;
-	};
+	}
 
 
 
@@ -271,14 +271,14 @@ public:
 			}
 		}
 		return cofac;
-	};
+	}
 
 	Matrix_<ROW, COL, TYPE> adjoint() const{
 		static_assert((ROW == COL), "Matrix_ must be NxN in adjoint()");
 		Matrix_<ROW, COL, TYPE> cofac;
 		cofac = this->cofac();
 		return cofac.transpose();
-	};
+	}
 
 	Matrix_<COL, ROW, TYPE> transpose() const {
 		Matrix_<COL, ROW, TYPE> trans;
@@ -286,7 +286,7 @@ public:
 			for(unsigned int j = 0; j < COL; ++j)
 				trans.r[j][i] = r[i][j];
 		return trans;
-	};
+	}
 
 	Matrix_<ROW, COL, TYPE> invert() const {
 		static_assert((ROW == COL), "Matrix_ must be NxN in invert()");
@@ -300,7 +300,7 @@ public:
 			inv = inv.scale(1/det);
 			return inv;
 		}
-	};
+	}
 
 	Matrix_<ROW, COL, TYPE> scale(const TYPE &factor) const{
 		Matrix_<ROW,COL, TYPE> scaled;
@@ -309,7 +309,7 @@ public:
 				scaled.r[i][j] = r[i][j] * factor;
 			}
 		return scaled;
-	};
+	}
 
 	Matrix_<ROW, COL, TYPE> mAdd(const Matrix_<ROW, COL, TYPE>& other) const {
 		Matrix_<ROW, COL, TYPE> sum;
@@ -317,7 +317,7 @@ public:
 			for(unsigned int j = 0; j < COL; ++j)
 				sum.r[i][j] = r[i][j] + other.r[i][j];
 		return sum;
-	};
+	}
 
 	Matrix_<ROW, COL, TYPE> mSub(const Matrix_<ROW, COL, TYPE>& other) const {
 		Matrix_<ROW, COL, TYPE> diff;
@@ -325,7 +325,7 @@ public:
 			for(unsigned int j = 0; j < COL; ++j)
 				diff.r[i][j] = r[i][j] - other.r[i][j];
 		return diff;
-	};
+	}
 
 	template <size_t COL2>
 	Matrix_<ROW, COL2, TYPE> mMult(const Matrix_<COL, COL2, TYPE>& other) const {
@@ -344,14 +344,14 @@ public:
 	    inverse = other.invert();
 	    divide  = this->mMult(inverse);
 	    return divide;
-	};
+	}
 
 	void print() const {
 		size_t i,j;
 		if(label != NULL)
 			xprintf("\n%s = \n[", label);
 		else
-			xprintf("\nMatrix<%d,%d> = \n[", ROW,COL);
+			xprintf("\nMatrix<%d,%d> = \n[", static_cast<int>(ROW),static_cast<int>(COL));
 		for (i = 0; i < ROW; ++i) {
 			for (j = 0; j < COL; ++j) {
 				if(j!=0||i!=0)
@@ -385,7 +385,7 @@ public:
 				xprintf("\n");
 		}
 		xprintf("]\n");
-	};
+	}
 
 	inline int rows(){return ROW;};
 	inline int cols(){return COL;};
@@ -397,8 +397,8 @@ public:
 	inline friend Matrix_<ROW,COL2,TYPE> operator*(const Matrix_<ROW,COL,TYPE> &left, const Matrix_<COL,COL2,TYPE> &right) { return left.mMult(right); }
 	inline friend Matrix_<ROW,COL,TYPE> operator==(const Matrix_<ROW,COL,TYPE> &left, const Matrix_<ROW,COL,TYPE> &right) { return left.equals(right); }
 
-	inline Matrix_<3,1,TYPE> operator= (const Vector3D_<TYPE> &other) {*this = (Matrix_<3,1,TYPE>)other; return *this; };
-	inline Matrix_<6,1,TYPE> operator= (const Vector6D_<TYPE> &other) {*this = (Matrix_<6,1,TYPE>)other; return *this; };
+	inline Matrix_<3,1,TYPE> operator= (const Vector3D_<TYPE> &other) {*this = (Matrix_<3,1,TYPE>)other; return *this; }
+	inline Matrix_<6,1,TYPE> operator= (const Vector6D_<TYPE> &other) {*this = (Matrix_<6,1,TYPE>)other; return *this; }
 
 	template <typename TYPE2>
 	Matrix_<ROW, COL, TYPE> operator=(const Matrix_<ROW, COL, TYPE2> &other) {
@@ -409,7 +409,7 @@ public:
 			}
 		}
 		return *this;
-	};
+	}
 
 	inline friend Matrix_<ROW,COL,TYPE> operator*(const TYPE   &left, const Matrix_<ROW,COL,TYPE> &right) { return right.scale(left); }
 	inline friend Matrix_<ROW,COL,TYPE> operator*(const Matrix_<ROW,COL,TYPE> &left, const TYPE   &right) { return left.scale(right); }
@@ -451,20 +451,20 @@ template<> float Matrix_<3,3,float>::determinant() const;
 template<size_t ROW, typename TYPE>
 class Vector_ : public Matrix_<ROW, 1, TYPE> {
 public:
-	Vector_(const char* label = "vector") : Matrix_<ROW,1,TYPE>(label) {this->r[0][0] = 0;};              			///< generates (0,0,0)
-	Vector_(const Matrix_<ROW,1,TYPE>& other, const char* label = "vector") : Matrix_<ROW,1,TYPE>(other, label){};
-	Vector_(const Vector_<ROW, TYPE>& other, const char* label = "vector") : Matrix_<ROW,1,TYPE>(other, label){};				///< copy from vector
-	Vector_(TYPE* arr, const char* label = "vector") : Matrix_<ROW,1,TYPE>(arr, label){};        				///< like Vector3D_ (arr[0],arr[1],arr[2])
+	Vector_(const char* label = "vector") : Matrix_<ROW,1,TYPE>(label) {this->r[0][0] = 0;}             			///< generates (0,0,0)
+	Vector_(const Matrix_<ROW,1,TYPE>& other, const char* label = "vector") : Matrix_<ROW,1,TYPE>(other, label){}
+	Vector_(const Vector_<ROW, TYPE>& other, const char* label = "vector") : Matrix_<ROW,1,TYPE>(other, label){}				///< copy from vector
+	Vector_(TYPE* arr, const char* label = "vector") : Matrix_<ROW,1,TYPE>(arr, label){}        				///< like Vector3D_ (arr[0],arr[1],arr[2])
 
 	Vector_(const Vector3D_<TYPE>& other, const char* label = "Vector3D_") : Matrix_<3,1,TYPE>(label){
 		this->r[0][0] = other.x;
 		this->r[1][0] = other.y;
 		this->r[2][0] = other.z;
-	};
-	Vector_(const Vector6D_<TYPE>& other, const char* label = "Vector6D_") : Matrix_<6,1,TYPE>(other.v, label){};
+	}
+	Vector_(const Vector6D_<TYPE>& other, const char* label = "Vector6D_") : Matrix_<6,1,TYPE>(other.v, label){}
 
-	inline Vector_<ROW, TYPE> vecAdd(const Vector_<ROW, TYPE>& other) const {return this->mAdd(other);};
-	inline Vector_<ROW, TYPE> vecSub(const Vector_<ROW, TYPE>& other) const {return this->mSub(other);};
+	inline Vector_<ROW, TYPE> vecAdd(const Vector_<ROW, TYPE>& other) const {return this->mAdd(other);}
+	inline Vector_<ROW, TYPE> vecSub(const Vector_<ROW, TYPE>& other) const {return this->mSub(other);}
 
 	TYPE getAngle(const Vector_<ROW, TYPE>& other) const {
 	    TYPE angle,product,len;

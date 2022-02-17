@@ -65,7 +65,7 @@ public:
 		this->phi = other.phi;
 		this->theta = other.theta;
 		return *this;
-	};
+	}
 
 };
 

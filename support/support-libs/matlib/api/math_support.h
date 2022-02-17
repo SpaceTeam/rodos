@@ -37,6 +37,13 @@ inline TYPE mod( const TYPE &dividend, const TYPE &divisor ) { return (isAlmost0
 int64_t faculty(const int &x);
 double FMod2p( const double &x); ///< doubleing point rest, after division with 2Pi
 
+template<typename TYPE>
+TYPE fabs(const TYPE &value) {
+	TYPE dval = value;
+    if (dval < 0) dval = -dval;
+    return dval;
+}
+
 #ifndef NO_RODOS_NAMESPACE
 }
 #endif

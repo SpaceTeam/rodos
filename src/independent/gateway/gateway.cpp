@@ -118,7 +118,7 @@ bool Gateway::messageSeen(NetworkMessage& msg) {
 
 /** Forward the message to the interface **/
 
-uint32_t Gateway::put(const uint32_t topicId, const size_t len, void* data, const NetMsgInfo&) {
+uint32_t Gateway::put(const uint32_t topicId, const size_t len, void* data, const NetMsgInfo& netMsgInfo) {
     if(!isEnabled) return 0;
     // if(topicId == 0) return 0;
 
@@ -128,7 +128,7 @@ uint32_t Gateway::put(const uint32_t topicId, const size_t len, void* data, cons
 
     networkOutProtector.enter();
     {
-        prepareNetworkMessage(networkOutMessage,topicId,data,len);
+        prepareNetworkMessage(networkOutMessage,topicId,data,len, netMsgInfo);
         sendNetworkMessage(networkOutMessage);
     }
     networkOutProtector.leave();
@@ -280,13 +280,12 @@ void Gateway::run() {
 
 
 
-void prepareNetworkMessage(NetworkMessage& netMsg, const uint32_t topicId,const void* data, size_t len) {
-    netMsg.put_senderNode(myNodeNr); // Set node ID of sending node
+void prepareNetworkMessage(NetworkMessage& netMsg, const uint32_t topicId,const void* data, size_t len, const NetMsgInfo& netMsgInfo) {
+    netMsg.put_senderNode(netMsgInfo.senderNode); // Set node ID of sending node
     netMsg.put_topicId(topicId);     // ID of calling topic
-    netMsg.put_sentTime(NOW());      // Timestamp
+    netMsg.put_sentTime(netMsgInfo.sentTime);      // Timestamp
     netMsg.put_maxStepsToForward(10);
-    intptr_t ptr=reinterpret_cast<intptr_t>(Thread::getCurrentThread());
-    netMsg.put_senderThreadId(static_cast<uint32_t>(ptr));
+    netMsg.put_senderThreadId(netMsgInfo.senderThreadId);
     RODOS_ASSERT(len <= UINT16_MAX);
     if(len > UINT16_MAX) len = UINT16_MAX;
     netMsg.setUserData(data, static_cast<uint16_t>(len));

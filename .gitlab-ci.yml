@@ -1,9 +1,8 @@
-image: nixos/nix:2.3.6
+image: nixos/nix:2.3.16
 
 stages:
  - build_test
  - results
- - deploy
 
 
 
@@ -125,15 +124,15 @@ coverage:
 
 
 # Job uploading merged coverage report to codecov.io
-codecov.io:
-  stage: deploy
-  variables:
-    GIT_STRATEGY: none
-  script:
-    - nix-env -i curl
-    - nix-env -i bash
-    - curl https://codecov.io/bash -o codecov
-    - bash codecov -f coverage.info
-  needs:
-    - job: coverage
-      artifacts: true
+#codecov.io:
+#  stage: deploy
+#  variables:
+#    GIT_STRATEGY: none
+#  script:
+#    - nix-env -i curl
+#    - nix-env -i bash
+#    - curl https://codecov.io/bash -o codecov
+#    - bash codecov -f coverage.info
+#  needs:
+#    - job: coverage
+#      artifacts: true

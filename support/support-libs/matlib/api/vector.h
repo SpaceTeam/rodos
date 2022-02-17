@@ -274,7 +274,9 @@ public:
 		this->y = other.y;
 		this->z = other.z;
 		return *this;
-	};
+	}
+
+	Vector3D_<TYPE>& operator=(const Vector3D_<TYPE> &other) = default;
 
 };
 
@@ -405,7 +407,7 @@ public:
 		this->v[4] = other.v[4];
 		this->v[5] = other.v[5];
 		return *this;
-	};
+	}
 
 };
 
