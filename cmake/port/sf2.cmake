@@ -30,5 +30,5 @@ set(sources_to_add
     ${RODOS_DIR}/src/bare-metal/sf2/hal/CortexM3/*.c)
 
 set(directories_to_include
-    ${RODOS_DIR}/src/bare-metal/sf2/rodos
-    ${RODOS_DIR}/src/bare-metal/sf2/CMSIS)
+    src/bare-metal/sf2/rodos
+    src/bare-metal/sf2/CMSIS)

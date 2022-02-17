@@ -1,9 +1,14 @@
+.idea/
+.vs/
+.vscode/
+.cache/
+build/
+CMakeLists.txt.user
+CMakeUserPresets.json
+compile_commands.json
 
-build
 tst
 tmp
 *~
 *.o
 *.a
-
-
