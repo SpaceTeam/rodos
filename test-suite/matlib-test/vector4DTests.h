@@ -11,8 +11,8 @@ int vector4DTests() {
     int failed = 0;
     
     double elements[16];    
-    Matrix4D m4d;
-    Vector4D v4d, res, res2;
+    HTransform m4d;
+    HCoord v4d, res, res2;
     
     //Identity matrix
     for (int i = 0; i < 16; i++) {
@@ -22,23 +22,19 @@ int vector4DTests() {
             elements[i] = 0;
         }
     }
-    m4d = Matrix4D(elements);
+    m4d = HTransform(elements);
     
     for (int i = 0; i < NUMBER_OF_TESTS; i++) {
-        v4d.x = drand(RANGE);
-        v4d.y = drand(RANGE);
-        v4d.z = drand(RANGE);
+        v4d = HCoord(drand(RANGE), drand(RANGE), drand(RANGE));
         
-        res = v4d.matVecMult(m4d);
-        
-        if (!(isAlmost0(v4d.x - res.x) && isAlmost0(v4d.y - res.y) && isAlmost0(v4d.z - res.z))) FAIL;
+        res = m4d * v4d;	
+
+        if (!v4d.equals(res)) FAIL;
     }
     
     //Arbitrary matrix
     for (int i = 0; i < NUMBER_OF_TESTS; i++) {
-        v4d.x = drand(RANGE);
-        v4d.y = drand(RANGE);
-        v4d.z = drand(RANGE);
+        v4d = HCoord(drand(RANGE), drand(RANGE), drand(RANGE));
         
         for (int i = 0; i < 12; i++) {
             elements[i] = drand(RANGE);
@@ -47,15 +43,16 @@ int vector4DTests() {
         elements[13] = 0;
         elements[14] = 0;
         elements[15] = 1;
-        m4d = Matrix4D(elements);
+        m4d = HTransform(elements);
         
-        res = v4d.matVecMult(m4d);
+        res = m4d * v4d;	
+
+        res2.r[0][0] = elements[0]*v4d.r[0][0] + elements[1]*v4d.r[1][0] + elements[2]*v4d.r[2][0] + elements[3]*v4d.r[3][0];
+        res2.r[1][0] = elements[4]*v4d.r[0][0] + elements[5]*v4d.r[1][0] + elements[6]*v4d.r[2][0] + elements[7]*v4d.r[3][0];
+        res2.r[2][0] = elements[8]*v4d.r[0][0] + elements[9]*v4d.r[1][0] + elements[10]*v4d.r[2][0] + elements[11]*v4d.r[3][0];
+        res2.r[3][0] = elements[12]*v4d.r[0][0] + elements[13]*v4d.r[1][0] + elements[14]*v4d.r[2][0] + elements[15]*v4d.r[3][0];
         
-        res2.x = elements[0]*v4d.x + elements[1]*v4d.y + elements[2]*v4d.z + elements[3]*1;
-        res2.y = elements[4]*v4d.x + elements[5]*v4d.y + elements[6]*v4d.z + elements[7]*1;
-        res2.z = elements[8]*v4d.x + elements[9]*v4d.y + elements[10]*v4d.z + elements[11]*1;
-        
-        if (!(isAlmost0(res2.x - res.x) && isAlmost0(res2.y - res.y) && isAlmost0(res2.z - res.z))) FAIL;
+        if (!res2.equals(res)) FAIL;
     }
     
     return failed;

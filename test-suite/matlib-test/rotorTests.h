@@ -7,7 +7,7 @@
 int rotorTests() {
     int failed = 0;
     
-    Rotor rot;
+    AngleAxis rot;
     Vector3D start, end;
     
     for (int i = 0; i < NUMBER_OF_TESTS; i++) {
@@ -18,47 +18,48 @@ int rotorTests() {
         AngleAxis aRot(abs(drand() * 2 * M_PI), Vector3D(drand(RANGE), drand(RANGE), drand(RANGE)));
         end = start.aRotate(aRot);
         
-        rot = Rotor(start, end);
+        rot = AngleAxis::rotor(start, end);
         if (!end.equals(start.qRotate(Quaternion(rot)))) FAIL;
     }
     
     //isNoRotation
-    rot.axis.x = 1;
-    rot.axis.y = 2;
-    rot.axis.z = 3;
-    rot.cosAngle = 1;
+    rot.u.x = 1;
+    rot.u.y = 2;
+    rot.u.z = 3;
+    rot.phi = 1;
     if (!rot.isNoRotation()) FAIL;
     
-    rot.cosAngle = 0.5;
+    rot.phi = 0.5;
     if (rot.isNoRotation()) FAIL;
     
-    rot.cosAngle = 1.5;
+    rot.phi = 1.5;
     if (!rot.isNoRotation()) FAIL;
-    rot.cosAngle = -1.5;
+
+    rot.phi = -1.5;
     if (!rot.isNoRotation()) FAIL;
     
-    rot.axis.x = 0;
-    rot.axis.y = 0;
-    rot.axis.z = 0;
-    rot.cosAngle = 0.5;
+    rot.u.x = 0;
+    rot.u.y = 0;
+    rot.u.z = 0;
+    rot.phi = 0.5;
     if (!rot.isNoRotation()) FAIL;
     
     //ifNaN
-    rot.axis.x = 1;
-    rot.axis.y = 2;
-    rot.axis.z = 3;
-    rot.cosAngle = 1;
+    rot.u.x = 1;
+    rot.u.y = 2;
+    rot.u.z = 3;
+    rot.phi = 1;
     if (rot.resetIfNAN()) FAIL;
     
-    rot.axis.x = static_cast<double>(NAN);
+    rot.u.x = static_cast<double>(NAN);
     if (!rot.resetIfNAN()) FAIL;
-    if (!rot.axis.equals(Vector3D(1, 1, 1))) FAIL;
+    if (rot.phi != 0) FAIL;
     
-    rot.axis.y = static_cast<double>(NAN);
+    rot.u.y = static_cast<double>(NAN);
     if (!rot.resetIfNAN()) FAIL;
-    rot.axis.z = static_cast<double>(NAN);
+    rot.u.z = static_cast<double>(NAN);
     if (!rot.resetIfNAN()) FAIL;
-    rot.cosAngle = static_cast<double>(NAN);
+    rot.phi = static_cast<double>(NAN);
     if (!rot.resetIfNAN()) FAIL;
     
     return failed;

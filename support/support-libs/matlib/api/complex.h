@@ -30,11 +30,6 @@ public:
 	    this->Im = Im;
 	}
 
-	Complex_(const Complex_& other) {
-	    this->Re = other.Re;
-	    this->Im = other.Im;
-	}
-
 	Complex_<TYPE> cAdd(const Complex_<TYPE>& other) const {
 		Complex_<TYPE> z;
 	    z.Re = other.Re + this->Re;
@@ -92,10 +87,13 @@ public:
 	}
 
     inline friend Complex_<TYPE> operator+ (const Complex_<TYPE> &left, const Complex_<TYPE> &right) { return left.cAdd(right); }
-    inline friend Complex_<TYPE> operator- (const Complex_<TYPE> &left, const Complex_<TYPE> &right) { return left.cSub(right); }
+    inline friend Complex_<TYPE> operator- (const Complex_<TYPE> &left, const Complex_<TYPE> &right) { return right.cSub(left); }
     inline friend Complex_<TYPE> operator* (const TYPE  &left, const Complex_<TYPE> &right) { return right.cScale(left); }
     inline friend Complex_<TYPE> operator* (const Complex_<TYPE> &left, const TYPE  &right) { return left.cScale(right); }
+    inline friend Complex_<TYPE> operator* (const Complex_<TYPE> &left, const Complex_<TYPE> &right) { return left.cMult(right); }
     inline friend Complex_<TYPE> operator/ (const Complex_<TYPE> &left, const TYPE  &right) { return left.cScale(1.0/right); }
+    inline friend bool operator==   (const Complex_<TYPE> &left, const Complex_<TYPE> &right) { return (isAlmost0(left.Re - right.Re) && isAlmost0(left.Im - right.Im));}
+    inline friend bool operator!=   (const Complex_<TYPE> &left, const Complex_<TYPE> &right) { return !(left == right);}
 
 };
 

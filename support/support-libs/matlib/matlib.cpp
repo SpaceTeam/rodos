@@ -38,7 +38,7 @@ Matrix_<3,3,double> Matrix_<3,3,double>::invert() const{
 	arr[1] = {(c*h-b*i) / det};
 	arr[2] = {(b*f-c*e) / det};
 	arr[3] = {(f*g-d*i) / det};
-	arr[4] = {(a*i-c*c) / det};
+	arr[4] = {(a*i-c*g) / det};
 	arr[5] = {(c*d-a*f) / det};
 	arr[6] = {(d*h-e*g) / det};
 	arr[7] = {(b*g-a*h) / det};
@@ -104,7 +104,7 @@ Matrix_<3,3,float> Matrix_<3,3,float>::invert() const{
 	arr[1] = {(c*h-b*i) / det};
 	arr[2] = {(b*f-c*e) / det};
 	arr[3] = {(f*g-d*i) / det};
-	arr[4] = {(a*i-c*c) / det};
+	arr[4] = {(a*i-c*g) / det};
 	arr[5] = {(c*d-a*f) / det};
 	arr[6] = {(d*h-e*g) / det};
 	arr[7] = {(b*g-a*h) / det};

@@ -7,10 +7,10 @@
 #include "rotationTests.h"
 #include "rotorTests.h"
 #include "RPYTests.h"
-#include "vector4DTests.h"
+#include "vector4DTests.h"			// Homogeneous coordinate
 #include "quaternionTests.h"
 #include "matrix3DTests.h"
-#include "matrix4DTests.h"
+#include "matrix4DTests.h"			// Homogeneous transform
 #include "complexTests.h"
 #include "coordinateFrameTests.h"
 #include "vector6DTests.h"

@@ -9,7 +9,7 @@
 int matrix4DTests() {
     int failed = 0;
     
-    Matrix4D m1, m2, m3, m4;
+    HTransform m1, m2, m3, m4;
     double aux;
     
     for (int i = 0; i < NUMBER_OF_TESTS; i++) {
@@ -18,9 +18,9 @@ int matrix4DTests() {
         for (int j = 0; j < 16; j++) {
             rnd[j] = drand(RANGE);
         }
-        m1 = Matrix4D(rnd);
+        m1 = HTransform(rnd);
         rnd[0] += 1;
-        m2 = Matrix4D(rnd);         //Can't be equal to m1
+        m2 = HTransform(rnd);         //Can't be equal to m1
         if (!m1.equals(m1)) FAIL;
         if (m1.equals(m2)) FAIL;
         
@@ -28,7 +28,7 @@ int matrix4DTests() {
         for (int j = 0; j < 16; j++) {
             rnd[j] = drand(RANGE);
         }
-        m1 = Matrix4D(rnd);
+        m1 = HTransform(rnd);
         
         aux = drand(RANGE);
         m3 = m1.scale(aux);
@@ -43,7 +43,7 @@ int matrix4DTests() {
         for (int j = 0; j < 16; j++) {
             rnd[j] = drand(RANGE);
         }
-        m2 = Matrix4D(rnd);
+        m2 = HTransform(rnd);
         
         m3 = m1.mMult(m2);
         
@@ -68,10 +68,10 @@ int matrix4DTests() {
         m3d2.rotationY(drand(2*M_PI));
         m3d3.rotationZ(drand(2*M_PI));
         
-        m1 = Matrix4D(m3d1*m3d2*m3d3, Vector3D(drand(RANGE), drand(RANGE), drand(RANGE)));
+        m1 = HTransform(m3d1*m3d2*m3d3, Vector3D(drand(RANGE), drand(RANGE), drand(RANGE)));
         
         m2 = m1.invert();
-        m4 = Matrix4D();
+        m4 = HTransform::eye(1);
         m3 = m1.mMult(m2);
         if (!m3.equals(m4)) FAIL;
     

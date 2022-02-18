@@ -113,9 +113,9 @@ int vector3DTests() {
         c.z = a.z / scale;
         if (!b.equals(c)) FAIL;
         
-        //Vector 4D
-        Vector4D v4d = a.to4D();
-        if (!(isAlmost0(v4d.x - a.x) && isAlmost0(v4d.y - a.y) && isAlmost0(v4d.z - a.z))) FAIL;
+        // HCoord
+        HCoord v4d = a.toHCoord();
+        if (!(isAlmost0(v4d.r[0][0] - a.x) && isAlmost0(v4d.r[1][0] - a.y) && isAlmost0(v4d.r[2][0] - a.z))) FAIL;
     }
     
     //Angle and orthogonality

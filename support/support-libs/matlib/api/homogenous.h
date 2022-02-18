@@ -18,16 +18,13 @@ namespace RODOS {
 template <typename TYPE = double>
 class HTransform_ : public Matrix_<4,4,TYPE> {
 public:
-	HTransform_() : Matrix_<4,4,TYPE>(){
+	HTransform_() : Matrix_<4,4,TYPE>("Htransform"){
 	}
 
 	HTransform_(const Matrix_<4,4,TYPE>& other) : Matrix_<4,4,TYPE>(other){
 	}
 
-	HTransform_(const HTransform_<TYPE>& other) : Matrix_<4,4,TYPE>(other){
-	}
-
-	HTransform_(const Matrix3D_<TYPE>& rot, const Vector3D_<TYPE>& trans) : Matrix_<4,4,TYPE>(){
+	HTransform_(const Matrix3D_<TYPE>& rot, const Vector3D_<TYPE>& trans) : Matrix_<4,4,TYPE>("Htransform"){
 	    for(int i = 0 ; i<3; ++i) {
 	        for(int j = 0; j<3; ++j) {
 	            this->r[i][j]=rot.r[i][j];
@@ -44,7 +41,7 @@ public:
 	    this->r[3][2]=0.0;
 	}
 
-	HTransform_(TYPE* arr) : Matrix_<4,4,TYPE>(arr){ 				///< arr[16], left to right, top  to bottom
+	HTransform_(TYPE* arr) : Matrix_<4,4,TYPE>(arr, "Htransform"){ 				///< arr[16], left to right, top  to bottom
 	}
 
 	Matrix3D_<TYPE> getRotation() const {
@@ -71,10 +68,11 @@ public:
 
 	    return inverse;
 	}
+	
 };
 
 template <typename TYPE>
-class HCoord_ : Vector_<4,TYPE>{
+class HCoord_ : public Vector_<4,TYPE>{
 public:
 
 
@@ -82,14 +80,18 @@ public:
 	}
 
 
-	HCoord_ (const TYPE &x, const TYPE &y, const TYPE &z, const TYPE &scale)  : Vector_<4,TYPE>("HCoord") {
+	HCoord_ (const TYPE &x, const TYPE &y, const TYPE &z, const TYPE &scale = 1)  : Vector_<4,TYPE>("HCoord") {
 		this->r[0][0] = x;
 		this->r[1][0] = y;
 		this->r[2][0] = z;
 		this->r[3][0] = scale;
 	}
 
+	
 	HCoord_(const Vector_<4,TYPE>& other) : Vector_<4,TYPE>(other, "HCoord"){
+	}
+	
+	HCoord_(const Matrix_<4,1,TYPE>& other) : Vector_<4,TYPE>(other, "HCoord"){
 	}
 
 	HCoord_ (TYPE arr[4]) : Vector_<4,TYPE>(arr, "HCoord"){
@@ -98,6 +100,14 @@ public:
 	Vector3D_<TYPE>to3D() const {
 		Vector3D_<TYPE> v(this->r[0][0]/ this->r[3][0], this->r[1][0]/ this->r[3][0], this->r[2][0]/ this->r[3][0]);
 		return v;
+	}
+	
+	HCoord_<TYPE>& operator=(const Matrix_<4,1,TYPE>& other){
+		this->r[0][0] = other.r[0][0];
+		this->r[1][0] = other.r[1][0];
+		this->r[2][0] = other.r[2][0];
+		this->r[3][0] = other.r[3][0];
+		return *this;
 	}
 };
 

@@ -23,11 +23,11 @@ int basicMathTests() {
     
     //frac, mod and faculty
     if (!isAlmost0(0.5 - frac(3.5))) FAIL;
-    if (!isAlmost0(0.5 - frac(-3.5))) FAIL;
+    if (!isAlmost0(-0.5 - frac(-3.5))) FAIL;
     
     if (!isAlmost0(2 - mod(5, 3))) FAIL;
     if (!isAlmost0(2.5 - mod(5.5, 3))) FAIL;
-    if (!isAlmost0(4 - mod(-8, 6))) FAIL;
+    if (!isAlmost0(-2 - mod(-8, 6))) FAIL;
     
     if (1 != faculty(0)) FAIL;
     if (1 != faculty(1)) FAIL;
