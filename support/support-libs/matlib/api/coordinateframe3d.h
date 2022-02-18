@@ -58,13 +58,6 @@ public:
 	    this->origin = origin;
 	}
 
-	CoordinateFrame3D_(const CoordinateFrame3D_<TYPE>& other) {
-	    this->x=other.x;
-	    this->y=other.y;
-	    this->z =other.z;
-	    this->origin=other.origin;
-	}
-
 	HTransform_<TYPE> mapTo(const CoordinateFrame3D_<TYPE>& rotated) const { // derives rotation matrix A : [v]r = A[v]f [v]f given
 	    Matrix3D_<TYPE> R;
 	    //column1

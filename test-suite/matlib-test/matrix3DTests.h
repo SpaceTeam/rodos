@@ -10,7 +10,7 @@ int matrix3DTests() {
     int failed = 0;
     
     Matrix3D m1, m2, m3, m4, ident;
-    ident = Matrix3D();
+    ident = Matrix3D::eye(1);
     
     for (int i = 0; i < NUMBER_OF_TESTS; i++) {
         //getAngle and getVec

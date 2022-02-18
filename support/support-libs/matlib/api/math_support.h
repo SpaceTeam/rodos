@@ -19,10 +19,17 @@ const double EPSILON = 0.0000001;
 #define M_PI 3.14159265358979323846
 #endif
 
+template <typename Type>
+inline int sgn(Type val) {
+    return (Type(0) < val) - (val < Type(0));
+}
+
 template <typename TYPE>
-inline bool   isAlmost0(const TYPE &a)   { return fabs((double) a) < EPSILON; }
+inline bool   isAlmost0(const TYPE &a)   { return (a * sgn(a)) < EPSILON; }
+
 template <typename TYPE>
 inline double grad2Rad(const TYPE &grad) {return grad * M_PI / 180.0; }
+
 template <typename TYPE>
 inline double rad2Grad(const TYPE &rad)  {return rad * 180.0 / M_PI; }
 
@@ -30,19 +37,24 @@ template <typename TYPE>
 inline TYPE square( const TYPE &x )    { return x*x; }
 
 template <typename TYPE>
-inline TYPE frac( const TYPE &x )      { return x - floor((double) x); }
+inline TYPE frac( const TYPE &x )      {
+	if(x >= 0) {
+		return (TYPE) (x - floor(x));
+	} else {
+		return (TYPE) (x - ceil(x));
+	}
+}
 
-template <typename TYPE>
-inline TYPE mod( const TYPE &dividend, const TYPE &divisor ) { return (isAlmost0(divisor) ? 0.0 : divisor * frac( dividend/divisor )); }
+template <typename TYPE, typename TYPE2>
+inline TYPE mod( const TYPE &dividend, const TYPE2 &divisor ) {
+	if(isAlmost0(divisor)){
+		return 0;
+	} else {
+		return dividend - (divisor * int(dividend/divisor));
+	}
+}
 int64_t faculty(const int &x);
 double FMod2p( const double &x); ///< doubleing point rest, after division with 2Pi
-
-template<typename TYPE>
-TYPE fabs(const TYPE &value) {
-	TYPE dval = value;
-    if (dval < 0) dval = -dval;
-    return dval;
-}
 
 #ifndef NO_RODOS_NAMESPACE
 }

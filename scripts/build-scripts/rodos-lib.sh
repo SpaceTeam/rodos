@@ -41,6 +41,7 @@ done
 echo "  --------- Support-libs/matlib -------"
 source generic-compile-directory.sh ${RODOS_SUPPORT_LIBS}
 source generic-compile-directory.sh ${RODOS_SUPPORT_LIBS}/ccsds
+source generic-compile-directory.sh ${RODOS_SUPPORT_LIBS}/matlib
 
 #__________________________________ .o files to lib and clear
 

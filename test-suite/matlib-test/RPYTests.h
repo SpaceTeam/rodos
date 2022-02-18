@@ -9,25 +9,25 @@ int RPYTests() {
     int failed = 0;
 
     for (int i = 0; i < NUMBER_OF_TESTS; i++) {
-        RPY r1, r2, rtot;
+        YPR r1, r2, rtot;
         Vector3D start, end;
         
         start.x = drand(RANGE);
         start.y = drand(RANGE);
         start.z = drand(RANGE);
         
-        r1.x = abs(drand() * 2 * M_PI);
-        r1.y = abs(drand() * 2 * M_PI);
-        r1.z = abs(drand() * 2 * M_PI);
+        r1.yaw   = abs(drand() * 2 * M_PI);
+        r1.pitch = abs(drand() * 2 * M_PI);
+        r1.roll  = abs(drand() * 2 * M_PI);
         
-        r2.x = abs(drand() * 2 * M_PI);
-        r2.y = abs(drand() * 2 * M_PI);
-        r2.z = abs(drand() * 2 * M_PI);
+        r2.yaw   = abs(drand() * 2 * M_PI);
+        r2.pitch = abs(drand() * 2 * M_PI);
+        r2.roll  = abs(drand() * 2 * M_PI);
         
         rtot = r1.accumulateRotation(r2);
-        end = start.rpyRotate(r2).rpyRotate(r1);
+        end = start.yprRotate(r2).yprRotate(r1);
         
-        if (!end.equals(start.rpyRotate(rtot))) FAIL;
+        if (!end.equals(start.yprRotate(rtot))) FAIL;
         
     }
     
