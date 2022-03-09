@@ -54,6 +54,9 @@ int32_t HW_HAL_I2C::read(const uint8_t address, uint8_t* rxBuffer, uint32_t rxSi
     using namespace I2C_CMD;
     using namespace I2C_FIFO_CLR;
 
+    if(rxBuffer==nullptr){
+        return -1;
+    }
     if(rxSize>MAX_TRANSFER_SIZE){
         RODOS_ERROR("I2C transfers are limited to 0x7FE bytes on the VA41620");
         return -1;
@@ -100,6 +103,9 @@ int32_t HW_HAL_I2C::write(const uint8_t address, const uint8_t* txBuffer, uint32
     using namespace I2C_CMD;
     using namespace I2C_FIFO_CLR;
 
+    if(txBuffer==nullptr){
+        return -1;
+    }
     if(txSize>MAX_TRANSFER_SIZE){
         RODOS_ERROR("I2C transfers are limited to 0x7FE bytes on the VA41620");
         return -1;

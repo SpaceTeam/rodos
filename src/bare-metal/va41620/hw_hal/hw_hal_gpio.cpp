@@ -61,7 +61,7 @@ void HW_HAL_GPIO::enableInterrupts(){
     RODOS_ERROR("enableInterrupts not implemented");
 }
 
-void disableInterrupts(){
+void HW_HAL_GPIO::disableInterrupts(){
     RODOS_ERROR("DisableInterrupts not implemented");
 }
 

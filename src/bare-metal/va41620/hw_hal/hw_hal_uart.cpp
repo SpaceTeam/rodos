@@ -194,9 +194,16 @@ void HW_HAL_UART::resetPeriph(){
     sysconfigPeripheralBitband->UART_RESET[m_idx].write(uint32_t(1));
 }
 
+void HW_HAL_UART::resetHwCtrlPins(){
+    resetPin(m_rts);
+    resetPin(m_cts);
+}
 
 size_t HW_HAL_UART::read(void* buf, size_t size) {
     if(size <= 0){
+        return 0;
+    }
+    if(buf==nullptr){
         return 0;
     }
 
@@ -227,6 +234,9 @@ int16_t HW_HAL_UART::getcharNoWait() {
 
 size_t HW_HAL_UART::write(const void* buf, size_t size) {
     if(size <= 0){
+        return 0;
+    }
+    if(buf==nullptr){
         return 0;
     }
 

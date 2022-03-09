@@ -29,8 +29,8 @@ public:
     void enableInterrupts();
     void disableInterrupts();
 
-    bool m_interruptEventOccurred;
-    GPIO_IRQ_SENSITIVITY m_irqSensitivity;
+    bool m_interruptEventOccurred { false };
+    GPIO_IRQ_SENSITIVITY m_irqSensitivity { GPIO_IRQ_SENS_RISING };
 private:
     pin_config::VA41620_PIN m_idx;
     HAL_GPIO& m_owner;

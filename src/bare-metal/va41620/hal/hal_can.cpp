@@ -19,7 +19,7 @@ int32_t HAL_CAN::init(uint32_t baudrate){
 bool HAL_CAN::isWriteFinished(){
     return context->isWriteFinished();
 }
-    
+
 bool HAL_CAN::isDataReady(){
     return context->isDataReady();
 }

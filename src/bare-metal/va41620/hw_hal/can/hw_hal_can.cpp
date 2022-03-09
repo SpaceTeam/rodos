@@ -23,6 +23,10 @@ void HW_HAL_CAN::init(uint32_t baudrate) {
 }
 
 bool HW_HAL_CAN::write(const uint8_t* sendBuf, uint8_t len, uint32_t canId, bool ide){
+    if(len > sizeof(CanMessage::data)){
+        RODOS_ERROR("HW_HAL_CAN::write len exceeds CAN payload limit");
+        return false;
+    }
     CanMessage message {
         .data = {},
         .metadata = {canId, ide, false},

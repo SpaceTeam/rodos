@@ -16,7 +16,7 @@ public:
 private:
     VA41620CanFrameMetadata m_mask;
     VA41620CanFrameMetadata m_value;
-    HW_HAL_CAN* m_owner;
+    HW_HAL_CAN* m_owner { nullptr };
 };
 
 }
