@@ -2,6 +2,7 @@
 
 #include "macros_bits_bytes.h"
 
+#include <cstddef>
 #include <cstdint>
 
 /** Bytesex Convertions
