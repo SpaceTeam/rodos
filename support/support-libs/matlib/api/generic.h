@@ -177,7 +177,7 @@ public:
 
 	Matrix_<1, COL, TYPE> getRow(const size_t &i) const {
 		if(i >= ROW) {
-			PRINTF("Row %d does not exist\n", i);
+			PRINTF("Row %d does not exist\n", (int)i);
 			Matrix_<1, COL, TYPE> ret;
 			return ret;
 		} else {
@@ -202,7 +202,7 @@ public:
 
 	void setColumn(const size_t &j, const Matrix_<ROW,1, TYPE>& column) {
 		if(j >= COL) {
-			PRINTF("Column %d does not exist\n", j);
+			PRINTF("Column %d does not exist\n", (int)j);
 		} else {
 			for(size_t i = 0; i < ROW; ++i){
 				r[i][j] =  column.r[i][0];

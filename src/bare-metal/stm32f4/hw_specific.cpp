@@ -550,33 +550,33 @@ static bool setWakeUpTimer(long long wakeupInNanoseconds) {
 	else if (wakeupInNanoseconds < 4 * SECONDS) {
 		// configuration 1, LSE/2
 		wakeupClock = RTC_WakeUpClock_RTCCLK_Div2;
-		wakeupCounter = wakeupInNanoseconds / (61035 * NANOSECONDS) - 1;
+		wakeupCounter = (uint32_t)(wakeupInNanoseconds / (61035 * NANOSECONDS) - 1);
 	}
 	else if (wakeupInNanoseconds < 8 * SECONDS) {
 		// configuration 1, LSE/4
 		wakeupClock = RTC_WakeUpClock_RTCCLK_Div4;
-		wakeupCounter = wakeupInNanoseconds / (122070 * NANOSECONDS) - 1;
+		wakeupCounter = (uint32_t)(wakeupInNanoseconds / (122070 * NANOSECONDS) - 1);
 	}
 	else if (wakeupInNanoseconds < 16 * SECONDS) {
 		// configuration 1, LSE/8
 		wakeupClock = RTC_WakeUpClock_RTCCLK_Div8;
-		wakeupCounter = wakeupInNanoseconds / (244140 * NANOSECONDS) - 1;
+		wakeupCounter = (uint32_t)(wakeupInNanoseconds / (244140 * NANOSECONDS) - 1);
 	}
 	else if (wakeupInNanoseconds < 32 * SECONDS) {
 		// configuration 1, LSE/16
 		wakeupClock = RTC_WakeUpClock_RTCCLK_Div16;
-		wakeupCounter = wakeupInNanoseconds / (488280 * NANOSECONDS) - 1;
+		wakeupCounter = (uint32_t)(wakeupInNanoseconds / (488280 * NANOSECONDS) - 1);
 	}
 	else if (wakeupInNanoseconds < 65536 * SECONDS) {
 		// configuration 2
 		wakeupClock = RTC_WakeUpClock_CK_SPRE_16bits;
-		wakeupCounter = wakeupInNanoseconds / SECONDS;
+		wakeupCounter = (uint32_t)(wakeupInNanoseconds / SECONDS);
 	}
 	else if (wakeupInNanoseconds < 131072 * SECONDS) {
 		// configuration 3
 		// hardware add 0x10000 to the wake up counter
 		wakeupClock = RTC_WakeUpClock_CK_SPRE_17bits;
-		wakeupCounter = (wakeupInNanoseconds - 65536 * SECONDS) / SECONDS;
+		wakeupCounter = (uint32_t)((wakeupInNanoseconds - 65536 * SECONDS) / SECONDS);
 	}
 	else {
 		// out of range
