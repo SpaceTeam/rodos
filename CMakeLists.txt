@@ -28,6 +28,7 @@ file(GLOB_RECURSE independent_sources
 
 add_library(rodos_rodos STATIC ${independent_sources})
 add_library(rodos::rodos ALIAS rodos_rodos)
+add_library(rodos ALIAS rodos_rodos)
 set_target_properties(rodos_rodos PROPERTIES
     EXPORT_NAME rodos
     OUTPUT_NAME rodos
