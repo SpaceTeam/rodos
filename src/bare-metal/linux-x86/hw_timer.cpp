@@ -28,11 +28,12 @@
 volatile long __interruptedInstructionPointer__ = 0;
 
 namespace RODOS {
+    
 
 /**
-* Size of stack required by signal handler.
+ * Size of stack required by signal handler.
 */
-#define SIGNAL_HANDLER_STACK_SIZE SIGSTKSZ
+#define SIGNAL_HANDLER_STACK_SIZE DEFAULT_STACKSIZE
 
 /** the timer interval */
 long long Timer::microsecondsInterval = 0;
