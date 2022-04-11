@@ -61,6 +61,10 @@
 #undef MAX_NETWORK_MESSAGE_LENGTH
 #define MAX_NETWORK_MESSAGE_LENGTH 1536
 
+/** We can onlx buffer a few UDP packets on the gecko */
+#undef UDP_INCOMMIG_BUF_LEN          
+#define UDP_INCOMMIG_BUF_LEN         25 //number of "NetworkMessage (1300 Bytes each)" in FIFO
+
 //______________________________________________________________________________________________
 
 /***************************** Radio communicatio  parameter ************************************/
