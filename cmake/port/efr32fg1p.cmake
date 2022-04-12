@@ -23,6 +23,9 @@ set(libraries_to_link ${RAIL_LIB})
 set(directories_to_link ${RODOS_DIR}/src/bare-metal/efr32fg1p/)
 set(linker_script ${RODOS_DIR}/src/bare-metal/efr32fg1p/scripts/${SUB_ARCH}.ld)
 
+set(sources_to_add_public
+    ${RODOS_DIR}/src/bare-metal/efr32fg1p/emlib/src/em_system.c
+    )
 
 set(sources_to_add
     ${RODOS_DIR}/src/bare-metal/efr32fg1p/emlib/src/*.c
@@ -34,7 +37,7 @@ set(sources_to_add
     ${RODOS_DIR}/src/bare-metal/efr32fg1p/common/drivers/used/*.c
     ${RODOS_DIR}/src/bare-metal/efr32fg1p/rail_lib/hal/*.c
     ${RODOS_DIR}/src/bare-metal/efr32fg1p/rail_lib/hal/efr32/*.c
-    ${RODOS_DIR}/src/bare-metal/efr32fg1p/rail-config/*.c
+    ${RODOS_DIR}/src/bare-metal/efr32fg1p/rail-config/efr32fg12p/*.c
     ${RODOS_DIR}/src/bare-metal/efr32fg1p/emdrv/src/*.c
     )
 

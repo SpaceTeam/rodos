@@ -97,6 +97,11 @@ if (sources_to_add)
     target_sources(rodos_rodos PRIVATE ${files})
 endif ()
 
+if(sources_to_add_public)
+  file(GLOB files ${sources_to_add_public})
+  target_sources(rodos PUBLIC ${files})
+endif ()
+
 if (directories_to_include)
     foreach(dir ${directories_to_include})
         target_include_directories(rodos_rodos PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${dir}>)
