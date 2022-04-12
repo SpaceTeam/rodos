@@ -30,8 +30,8 @@ namespace RODOS {
 
 //================================================================================
 //Mapping of UART IDs to linux device names
-#define MAX_NUM_UARTS 6
-const char *uartDeviceNames[6] = {"/dev/ttyUSB0","/dev/ttyUSB1","/dev/rfcomm0","/dev/rfcomm1","/dev/ttyS0","/dev/ttyS1"};
+#define MAX_NUM_UARTS 7
+const char *uartDeviceNames[MAX_NUM_UARTS] = {"/dev/ttyUSB0","/dev/ttyUSB1","/dev/rfcomm0","/dev/rfcomm1","/dev/ttyS0","/dev/ttyS1", "/dev/ttyACM0"};
 //================================================================================
 
 
@@ -217,7 +217,9 @@ int HAL_UART::status(UART_STATUS_TYPE type) {
 
 	UART_IDX idx = context->idx;
 
-	if ((idx < 1) || (idx > 5)) {return -1;}
+// replaced magic number 5, which was set for 6 uarts:
+// if ((idx < 1) || (idx > 5)) {return -1;}
+	if ((idx < 1) || (idx >= MAX_NUM_UARTS)) {return -1;}
 
 	switch (type)
 	{
