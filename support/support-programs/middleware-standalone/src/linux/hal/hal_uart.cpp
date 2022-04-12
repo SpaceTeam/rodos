@@ -122,7 +122,7 @@ int HAL_UART::init(unsigned int iBaudrate) {
 
 	init_sigio_handler();
 
-    //xprintf("UART: %s initialized with: %d\n",devname,iBaudrate);
+    xprintf("UART: %s initialized with: %d\n",devname,iBaudrate);
 
 	return 0;
 }
@@ -217,8 +217,6 @@ int HAL_UART::status(UART_STATUS_TYPE type) {
 
 	UART_IDX idx = context->idx;
 
-// replaced magic number 5, which was set for 6 uarts:
-// if ((idx < 1) || (idx > 5)) {return -1;}
 	if ((idx < 1) || (idx >= MAX_NUM_UARTS)) {return -1;}
 
 	switch (type)
@@ -235,7 +233,7 @@ int HAL_UART::status(UART_STATUS_TYPE type) {
 
 
 bool HAL_UART::isWriteFinished() {
-	//return true;
+
 	fd_set fdset;
 		FD_ZERO(&fdset);
 		FD_SET(context->fd,&fdset);
@@ -249,7 +247,6 @@ bool HAL_UART::isWriteFinished() {
 			return true;
 		else
 			return false;
-
 }
 
 
