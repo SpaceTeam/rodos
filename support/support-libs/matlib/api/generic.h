@@ -35,9 +35,17 @@ public:
 		this->label = label;
 		for(size_t i = 0; i < ROW; ++i){
 			for(size_t j = 0; j < COL; ++j){
-//				if(i == j)
-//					r[i][j] = 1;
 				r[i][j] = 0;
+			}
+		}
+	}
+
+	Matrix_(const Matrix_<ROW, COL, TYPE>& other, const char* label = "matrix"){
+		static_assert((ROW > 0 && COL > 0), "Matrix_ dimensions must be 1x1 at least");
+		this->label = label;
+		for(unsigned int i = 0; i < ROW; ++i){
+			for(unsigned int j = 0; j < COL; ++j){
+				r[i][j] = other.r[i][j];
 			}
 		}
 	}
@@ -391,6 +399,16 @@ public:
 	inline Matrix_<3,1,TYPE> operator= (const Vector3D_<TYPE> &other) {*this = (Matrix_<3,1,TYPE>)other; return *this; }
 	inline Matrix_<6,1,TYPE> operator= (const Vector6D_<TYPE> &other) {*this = (Matrix_<6,1,TYPE>)other; return *this; }
 
+	Matrix_<ROW, COL, TYPE> operator=(const Matrix_<ROW, COL, TYPE> &other) {
+		size_t i, j;
+		for (i = 0; i < ROW; ++i) {
+			for (j = 0; j < COL; ++j) {
+				this->r[i][j] = other.r[i][j];
+			}
+		}
+		return *this;
+	}
+
 	template <typename TYPE2>
 	Matrix_<ROW, COL, TYPE> operator=(const Matrix_<ROW, COL, TYPE2> &other) {
 		size_t i, j;
@@ -442,7 +460,7 @@ template<> float Matrix_<3,3,float>::determinant() const;
 template<size_t ROW, typename TYPE>
 class Vector_ : public Matrix_<ROW, 1, TYPE> {
 public:
-	Vector_(const char* label = "vector") : Matrix_<ROW,1,TYPE>(label) {this->r[0][0] = 0;}             			///< generates (0,0,0)
+	Vector_(const char* label = "vector") : Matrix_<ROW,1,TYPE>(label) {}             						///< generates (0,0,0)
 	Vector_(const Matrix_<ROW,1,TYPE>& other, const char* label = "vector") : Matrix_<ROW,1,TYPE>(other, label){}
 
 	Vector_(TYPE* arr, const char* label = "vector") : Matrix_<ROW,1,TYPE>(arr, label){}        				///< like Vector3D_ (arr[0],arr[1],arr[2])
