@@ -15,16 +15,12 @@
 #include "listelement.h"
 #include "rodos-debug.h"
 #include "gateway/networkmessage.h"
-#include "misc-rodos-funcs.h"
+#include "netmsginfo.h"
 #include <stdint.h>
 
 namespace RODOS {
 
-class NetMsgInfo;
 class TopicFilter;
-
-constexpr uint32_t RODOS_LOCAL_BROADCAST = 0; // TODO: Both the same? one local and the other to network, but maybe correct!
-constexpr uint32_t TOPIC_ID_FOR_TOPIC_REPORT = 0;
 
 /**
  *  @class TopicInterface
