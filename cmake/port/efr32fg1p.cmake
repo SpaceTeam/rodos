@@ -19,7 +19,7 @@ set(compile_and_link_options -mcpu=cortex-m4 -mfloat-abi=softfp -mfpu=fpv4-sp-d1
 set(compile_options ${compile_and_link_options} -nostdlib -gdwarf-2 -mthumb)
 set(link_options ${compile_and_link_options} -nostartfiles -nostdlib -Xlinker
     --gc-sections -fno-unwind-tables -fno-asynchronous-unwind-tables -lm)
-set(libraries_to_link ${RAIL_LIB})
+set(libraries_to_link ${RAIL_LIB} -lm)
 set(directories_to_link ${RODOS_DIR}/src/bare-metal/efr32fg1p/)
 set(linker_script ${RODOS_DIR}/src/bare-metal/efr32fg1p/scripts/${SUB_ARCH}.ld)
 
