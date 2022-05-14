@@ -41,6 +41,7 @@
 #include "putter.h"
 #include "fifo.h"
 #include "commbuffer.h"
+#include "barrier.h"
 
 #include "rodos-semaphore.h"
 #include "timeevent.h"
