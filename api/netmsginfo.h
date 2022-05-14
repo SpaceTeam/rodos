@@ -25,9 +25,10 @@ enum class NetMsgType  : uint16_t { // set but not used until now
     PUB_SUB_MSG    = 0,
     P2P_UNRELIABLE = 1,
     P2P_RELIABLE   = 2,  // not used until now
+    P2P_REGISTER_RECEIVER = 3,
     // P2P_ACK,  // not used until now
-    // REQUEST,  // not used until now
-    // RESPONSE,  // not used until now
+    REQUEST,
+    RESPONSE,
     // TIME_SYNC, // not used until now
     // TOPIC_LIST, // not used until now but shall be the next
     // BROADCAST,  // not used until now
@@ -56,6 +57,8 @@ class NetMsgInfo {
     int32_t    receiverNode;   ///< Used only for network which do not support broadcast, and do not know about topics. -1 for broadcast
     uint32_t   linkId;         ///< The ID of the Linkinterface from which the message was received. Set by Linkinterface
     NetMsgType messageType;    ///< The type of the message, set by sender
+
+    NetMsgInfo (NetMsgType type = NetMsgType::PUB_SUB_MSG) { init(type); }
     
     void init(NetMsgType type = NetMsgType::PUB_SUB_MSG) {
          linkId         = RODOS_LOCAL_BROADCAST;
