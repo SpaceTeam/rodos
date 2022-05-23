@@ -72,7 +72,8 @@ public:
     *   @param[in] id The id to search for.
     *   @return pointer to application with given id or null if not found.
     */
-    static Application* findApplication(const int32_t id);
+    static Application* findApplication(const int32_t id); // by ID
+    static Application* findApplication(const char* const name); // by name
 
     /// to signal activate / deactivate applications
     bool isActivated;

@@ -23,10 +23,10 @@ namespace RODOS {
 
 enum class NetMsgType  : uint16_t { // set but not used until now
     PUB_SUB_MSG    = 0,
-    P2P_UNRELIABLE = 1,
+    P2P_UNRELIABLE = 1,  // not used until now
     P2P_RELIABLE   = 2,  // not used until now
-    P2P_REGISTER_RECEIVER = 3,
-    // P2P_ACK,  // not used until now
+    P2P_REGISTER_RECEIVER = 3, // not used until now
+    P2P_ACK,
     REQUEST,
     RESPONSE,
     // TIME_SYNC, // not used until now
