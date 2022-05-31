@@ -30,7 +30,13 @@
 
 MEMORY
 {
-  FLASH (rx) : ORIGIN = 0x00000000, LENGTH = 1048576
+  /* FLASH (rx) : ORIGIN = 0x00000000, LENGTH = 1048576		/* 1024 kB def */
+  FLASH (rx) : ORIGIN = 0x0000F200, LENGTH = 327680 - 512	/* 320 kB Image1 */
+  /* FLASH (rx) : ORIGIN = 0x0005F200, LENGTH = 327680 - 512	/* 320 kB Image2 */
+  /* FLASH (rx) : ORIGIN = 0x000AF800, LENGTH = 327680 - 512	/* 320 kB Image3 */
+  LIST1 (r) : ORIGIN = 0x0000C800, LENGTH = 2048			/* 2 kB */
+  LIST2 (r) : ORIGIN = 0x0000D000, LENGTH = 2048			/* 2 kB */
+  LIST3 (r) : ORIGIN = 0x0000D800, LENGTH = 2048			/* 2 kB */
   RAM (rwx)  : ORIGIN = 0x20000000, LENGTH = 262144
 }
 
@@ -193,7 +199,7 @@ SECTIONS
     __data_end__ = .;
 
   } > RAM
-
+  
   .bss :
   {
     . = ALIGN(4);
@@ -222,6 +228,21 @@ SECTIONS
     KEEP(*(.stack*))
   } > RAM
 
+  .bootlist1 : 
+  {
+    __bootlist1__ = .;   
+  } >LIST1  
+  
+  .bootlist2 : 
+  {
+    __bootlist2__ = .;   
+  } >LIST2  
+  
+  .bootlist3 : 
+  {
+    __bootlist3__ = .;   
+  } >LIST3
+
   /* Set stack top to end of RAM, and stack limit move down by
    * size of stack_dummy section */
   __StackTop = ORIGIN(RAM) + LENGTH(RAM);
@@ -232,7 +253,7 @@ SECTIONS
   ASSERT(__StackLimit >= __HeapLimit, "region RAM overflowed with stack")
 
   /* Check if FLASH usage exceeds FLASH size */
-  ASSERT( LENGTH(FLASH) >= (__etext + SIZEOF(.data)), "FLASH memory overflowed !")
+  /* ASSERT( LENGTH(FLASH) >= (__etext + SIZEOF(.data)), "FLASH memory overflowed !")
   
      /* Remove information from the standard libraries */
   /DISCARD/ :
