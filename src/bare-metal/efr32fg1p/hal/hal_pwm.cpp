@@ -86,7 +86,6 @@ int32_t HAL_PWM::init(uint32_t frequency, uint32_t increments) {
                 TIMER_InitCC(context->timer, 0, &timerCCInit);
                 // Route Timer CC to location and enable CC route pin
                 context->timer->ROUTELOC0 |=  TIMER_ROUTELOC0_CC0LOC_LOC0;
-                context->timer->ROUTEPEN |= TIMER_ROUTEPEN_CC0PEN;
                 break;
             case TIM_CHAN1:
                 // Configure as output
@@ -95,7 +94,6 @@ int32_t HAL_PWM::init(uint32_t frequency, uint32_t increments) {
                 TIMER_InitCC(context->timer, 1, &timerCCInit);
                 // Route Timer CC to location and enable CC route pin
                 context->timer->ROUTELOC0 |=  TIMER_ROUTELOC0_CC1LOC_LOC0;
-                context->timer->ROUTEPEN |= TIMER_ROUTEPEN_CC1PEN;
                 break;
             case TIM_CHAN2:
                 // Configure as output
@@ -104,7 +102,6 @@ int32_t HAL_PWM::init(uint32_t frequency, uint32_t increments) {
                 TIMER_InitCC(context->timer, 2, &timerCCInit);
                 // Route Timer CC to location and enable CC route pin
                 context->timer->ROUTELOC0 |=  TIMER_ROUTELOC0_CC2LOC_LOC0;
-                context->timer->ROUTEPEN |= TIMER_ROUTEPEN_CC2PEN;
                 break;
             case TIM_CHAN3:
                 // Configure as output
@@ -113,7 +110,6 @@ int32_t HAL_PWM::init(uint32_t frequency, uint32_t increments) {
                 TIMER_InitCC(context->timer, 3, &timerCCInit);
                 // Route Timer CC to location and enable CC route pin
                 context->timer->ROUTELOC0 |=  TIMER_ROUTELOC0_CC3LOC_LOC0;
-                context->timer->ROUTEPEN |= TIMER_ROUTEPEN_CC3PEN;
                 break;
         }
         timerIdx = 1;
@@ -126,7 +122,6 @@ int32_t HAL_PWM::init(uint32_t frequency, uint32_t increments) {
                 TIMER_InitCC(context->timer, 0, &timerCCInit);
                 // Route Timer CC to location and enable CC route pin
                 context->timer->ROUTELOC0 |=  WTIMER_ROUTELOC0_CC0LOC_LOC4;
-                context->timer->ROUTEPEN |= WTIMER_ROUTEPEN_CC0PEN;
                 break;
             case TIM_CHAN1:
                 // Configure as output
@@ -135,7 +130,6 @@ int32_t HAL_PWM::init(uint32_t frequency, uint32_t increments) {
                 TIMER_InitCC(context->timer, 1, &timerCCInit);
                 // Route Timer CC to location and enable CC route pin
                 context->timer->ROUTELOC0 |=  WTIMER_ROUTELOC0_CC1LOC_LOC3;
-                context->timer->ROUTEPEN |= WTIMER_ROUTEPEN_CC1PEN;
                 break;
             case TIM_CHAN2:
                 // Configure as output
@@ -144,7 +138,6 @@ int32_t HAL_PWM::init(uint32_t frequency, uint32_t increments) {
                 TIMER_InitCC(context->timer, 2, &timerCCInit);
                 // Route Timer CC to location and enable CC route pin
                 context->timer->ROUTELOC0 |=  WTIMER_ROUTELOC0_CC2LOC_LOC2;
-                context->timer->ROUTEPEN |= WTIMER_ROUTEPEN_CC2PEN;
                 break;
             case TIM_CHAN3:
                 // no chan3 on wtimer
@@ -213,7 +206,20 @@ int32_t HAL_PWM::write(uint32_t pulseWidthInIncs) {
     pulseWidthInIncs = min(context->increments, pulseWidthInIncs);
 
 	if (pulseWidthInIncs <= 0){ // set output = 0
-        GPIO_PinModeSet(context->GPIO_Port, context->GPIO_Pin, gpioModePushPull, 0);
+        switch (context->channel) {
+            case TIM_CHAN0:
+                context->timer->ROUTEPEN &= ~(WTIMER_ROUTEPEN_CC0PEN);
+                break;
+            case TIM_CHAN1:
+                context->timer->ROUTEPEN &= ~(WTIMER_ROUTEPEN_CC1PEN);
+                break;
+            case TIM_CHAN2:
+                context->timer->ROUTEPEN &= ~(WTIMER_ROUTEPEN_CC2PEN);
+                break;
+            case TIM_CHAN3:
+                if(context->timer != WTIMER0) context->timer->ROUTEPEN &= ~(WTIMER_ROUTEPEN_CC3PEN);
+                break;
+        }
         return 0;
 	}
 
@@ -223,23 +229,24 @@ int32_t HAL_PWM::write(uint32_t pulseWidthInIncs) {
 
     switch (context->channel) {
     case TIM_CHAN0:
+        context->timer->ROUTEPEN |= WTIMER_ROUTEPEN_CC0PEN;
         TIMER_CompareBufSet(context->timer, 0, timer_compare_value);
         break;
     case TIM_CHAN1:
+        context->timer->ROUTEPEN |= WTIMER_ROUTEPEN_CC1PEN;
         TIMER_CompareBufSet(context->timer, 1, timer_compare_value);
         break;
     case TIM_CHAN2:
+        context->timer->ROUTEPEN |= WTIMER_ROUTEPEN_CC2PEN;
         TIMER_CompareBufSet(context->timer, 2, timer_compare_value);
         break;
     case TIM_CHAN3:
-        if(context->timer != WTIMER0) TIMER_CompareBufSet(context->timer, 3, timer_compare_value);
+        if(context->timer != WTIMER0){
+            context->timer->ROUTEPEN |= WTIMER_ROUTEPEN_CC3PEN;
+            TIMER_CompareBufSet(context->timer, 3, timer_compare_value);
+        }
         break;
     }
-
-
-	if (pulseWidthInIncs > 0){ // activate output pin
-        GPIO_PinModeSet(context->GPIO_Port, context->GPIO_Pin, gpioModePushPull, 0);
-	}
 
 	upCallWriteFinished();
 
