@@ -205,7 +205,7 @@ public:
 
 void IdleThread::run() {
     while(1) {
-        idleCnt++;
+        idleCnt = idleCnt + 1;
         setPriority(0); // Due to wrong usage of PRIORITY_CLING in events, once I got highest prio for Idle.
         sp_partition_yield(); // allow other linux processes or ARIC-653 paritions to run
         yield();

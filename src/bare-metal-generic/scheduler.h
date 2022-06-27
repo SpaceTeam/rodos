@@ -22,7 +22,7 @@ extern "C" {
   * This is a wrapper function with C linkage.
   * It stores the context and calls the scheduler.
   */
-  void schedulerWrapper(long* ctx);
+  void schedulerWrapper(long* ctx) __attribute__((used));
 }
 
 /**
