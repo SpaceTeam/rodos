@@ -34,7 +34,7 @@ class S3pCode {
 
     static inline uint8_t  msb(const uint16_t c) { return (uint8_t)(c >> 8); }   // Most Significant Byte.  Bigendian: MSB First
     static inline uint8_t  lsb(const uint16_t c) { return (uint8_t)(c & 0xff); } // Least Significant Byte. Bigendian: MSB First
-    static inline uint16_t compose(const uint8_t msb, const uint8_t lsb) { return (uint16_t)((uint16_t)msb << 8) | (uint16_t)lsb; }
+    static inline uint16_t compose(const uint8_t msb, const uint8_t lsb) { return (uint16_t)((uint16_t)((uint16_t)msb << 8) | (uint16_t)lsb); }
 
     virtual void executeCommand([[gnu::unused]] uint16_t command) {}   // override execute commands other than BOM, EOM and STUFF
 };
