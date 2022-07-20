@@ -32,7 +32,8 @@ namespace RODOS {
 #ifdef EFR32FG12P433F1024GM68
 //HAL_UART uart_stdout(UART_IDX0,GPIO_030,GPIO_031);
 //HAL_UART uart_stdout(UART_IDX0,GPIO_028,GPIO_029); // For ADCS Board
-HAL_UART uart_stdout(UART_IDX1,GPIO_057,GPIO_059); // For ADCS Board
+//HAL_UART uart_stdout(UART_IDX1,GPIO_057,GPIO_059); // For ADCS Board
+HAL_UART uart_stdout(UART_IDX2,GPIO_088,GPIO_089);
 #else
 HAL_UART uart_stdout(UART_IDX0,GPIO_000,GPIO_001);
 #endif
