@@ -25,6 +25,7 @@
 #include "em_opamp.h"
 #include "em_msc.h"
 #include "em_gpcrc.h"
+#include "em_leuart.h"
 
 
 #pragma GCC diagnostic pop

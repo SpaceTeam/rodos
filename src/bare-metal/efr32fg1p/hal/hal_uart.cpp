@@ -12,17 +12,11 @@
  * USART1   PB11  PB12  PB13  PB14
  * USART2   PA5   PA6   PA7   PA8
  * USART3   PB6   PB7   PB8   PB9
+ * USART4   PB11  PB23  --    --      LEUART Baud fixed to 115200
  */
 
-   USART1 -  		Tx:  PB11 (LOC6)	Rx:  PB12 (LOC6)
-            		CTS: PB13 (LOC4)	RTS: PB14 (LOC4)          
-*/
 
-#include "rodos.h"
-#include "hal/hal_uart.h"
-#include "hw_hal_gpio.h"
 
-#include "vendor-headers.h"
 
 /* ToDo:
  * hwFlowCtrl testen
@@ -30,24 +24,13 @@
  *    -> it is only necessary for specific hardware board "BRD4001A"
  */
 
-#define UART_IDX_MIN        UART_IDX0
-#define UART_IDX_MAX        UART_IDX1
 
 #include "hw_hal_uart.h"
-
-extern "C"
-{
-	void USART0_RX_IRQHandler();
-	void USART0_TX_IRQHandler();
-	void USART1_RX_IRQHandler();
-	void USART1_TX_IRQHandler();
-
 #include "vendor-headers.h"
 
-class HW_HAL_UART {
 
 #define UART_IDX_MIN        UART_IDX0
-#define UART_IDX_MAX        UART_IDX3
+#define UART_IDX_MAX        UART_IDX4
 
 namespace RODOS {
 
@@ -68,13 +51,17 @@ static ReceiveTrigger triggerthread;
 
 HW_HAL_UART UART_contextArray[UART_IDX_MAX+1];
 
-HAL_UART::HAL_UART(UART_IDX uartIdx, GPIO_PIN txPin, GPIO_PIN rxPin, GPIO_PIN rtsPin, GPIO_PIN ctsPin) 
+HAL_UART::HAL_UART(UART_IDX uartIdx, GPIO_PIN txPin, GPIO_PIN rxPin, GPIO_PIN rtsPin, GPIO_PIN ctsPin)
 {
     if ((uartIdx < UART_IDX_MIN) || (uartIdx > UART_IDX_MAX)) {
         context = nullptr;
         return;
     }
-
+    // LEUART Pins are hardcoded and can not be set custom! Use HAL_UART(UART_IDX4) instead
+    if(uartIdx == UART_IDX4){
+        context = nullptr;
+        return;
+    }
 	context = &UART_contextArray[uartIdx];
 	context->initMembers(this, uartIdx, txPin, rxPin, rtsPin, ctsPin);
 }
@@ -105,7 +92,9 @@ HAL_UART::HAL_UART(UART_IDX uartIdx)
 	case UART_IDX3: //                      tx-PB6    rx-PB7    rts-PB9   cts-PB8
 	    context->initMembers(this, uartIdx, GPIO_022, GPIO_023, GPIO_025, GPIO_024);
 	    break;
-
+    case UART_IDX4:
+        context->initMembers(this, uartIdx, GPIO_028, GPIO_029, GPIO_000, GPIO_000); // Hardcoded to PB12 PB13
+        break;
 	default:
 	    break;
 	}
@@ -116,13 +105,29 @@ HAL_UART::HAL_UART(UART_IDX uartIdx)
 extern "C"
 {
 
-void USART0_RX_IRQHandler() 
+void LEUART0_IRQHandler(){
+    uint32_t flags = LEUART_IntGet(LEUART0);
+    // RX portion of the interrupt handler
+    if (flags & LEUART_IF_RXDATAV) {
+        //RX stuff
+        UART_contextArray[UART_IDX4].LEUART_RX_IRQHandler();
+    }
+
+    // TX portion of the interrupt handler
+    if ((flags & LEUART_IF_TXC) || (flags & LEUART_IF_TXBL)) {
+        //TX Stuff
+        UART_contextArray[UART_IDX4].LEUART_TX_IRQHandler();
+    }
+    NVIC_ClearPendingIRQ(LEUART0_IRQn);
+}
+
+void USART0_RX_IRQHandler()
 {
 	UART_contextArray[UART_IDX0].UART_RX_IRQHandler();
 	NVIC_ClearPendingIRQ(USART0_RX_IRQn);
 }
 
-void USART1_RX_IRQHandler() 
+void USART1_RX_IRQHandler()
 {
 	UART_contextArray[UART_IDX1].UART_RX_IRQHandler();
 	NVIC_ClearPendingIRQ(USART1_RX_IRQn);
@@ -142,13 +147,13 @@ void USART3_RX_IRQHandler()
 
 
 
-void USART0_TX_IRQHandler() 
+void USART0_TX_IRQHandler()
 {
 	UART_contextArray[UART_IDX0].UART_TX_IRQHandler();
 	NVIC_ClearPendingIRQ(USART0_TX_IRQn);
 }
 
-void USART1_TX_IRQHandler() 
+void USART1_TX_IRQHandler()
 {
 	UART_contextArray[UART_IDX1].UART_TX_IRQHandler();
 	NVIC_ClearPendingIRQ(USART1_TX_IRQn);
@@ -240,10 +245,7 @@ int32_t HAL_UART::config(UART_PARAMETER_TYPE type, int32_t paramVal) {
 
 	if (context == nullptr) {return -1;}
 
-	USART_TypeDef* usart = context->UARTx;
-	USART_InitAsync_TypeDef Uis = USART_INITASYNC_DEFAULT;
-
-	Uis.baudrate = context->baudrate;
+    if(context->idx == UART_IDX4) return -1; // Not implemented for idx4 (leuart)
 
 	switch (type) {
 		case UART_PARAMETER_BAUDRATE:
@@ -290,7 +292,6 @@ int32_t HAL_UART::config(UART_PARAMETER_TYPE type, int32_t paramVal) {
 			}else{
 			    return -1;
 			}
-			break;  // end case UART_PARAMETER_HW_FLOW_CONTROL
 
 			return 0;  // end case UART_PARAMETER_HW_FLOW_CONTROL
 
@@ -306,8 +307,6 @@ int32_t HAL_UART::config(UART_PARAMETER_TYPE type, int32_t paramVal) {
 		    enableDMATriggerThread = true;
 		    return context->configRdDMA(paramVal);
 
-		default: return -1;
-	}
 
     case UART_PARAMETER_ENABLE_DMA_WR:
         return context->configWrDMA();
@@ -340,22 +339,30 @@ void HAL_UART::reset()
 {
 	if (context == nullptr) {return;}
 
-	USART_TypeDef *usart = context->UARTx;
+    if(context->idx == UART_IDX4){
+        LEUART_TypeDef *leuart = context->LEUARTx;
+        NVIC_DisableIRQ(LEUART0_IRQn);
+        LEUART_Reset(leuart);
+        HW_HAL_GPIO::resetPin(context->rx);
+        HW_HAL_GPIO::resetPin(context->tx);
+    }else{
+        USART_TypeDef *usart = context->UARTx;
 
-	// Interrupt UART disable
-	NVIC_DisableIRQ(context->getUARTx_RX_IRQn());
-	NVIC_DisableIRQ(context->getUARTx_TX_IRQn());
+        // Interrupt UART disable
+        NVIC_DisableIRQ(context->getUARTx_RX_IRQn());
+        NVIC_DisableIRQ(context->getUARTx_TX_IRQn());
 
-	// reset interface
-	USART_Reset(usart);
+        // reset interface
+        USART_Reset(usart);
 
-	HW_HAL_GPIO::resetPin(context->rx);
-	HW_HAL_GPIO::resetPin(context->tx);
+        HW_HAL_GPIO::resetPin(context->rx);
+        HW_HAL_GPIO::resetPin(context->tx);
 
-	if (context->hwFlowCtrl){
-	    if (context->rts != GPIO_INVALID) { HW_HAL_GPIO::resetPin(context->rts); }
-	    if (context->cts != GPIO_INVALID) { HW_HAL_GPIO::resetPin(context->cts); }
-	}
+        if (context->hwFlowCtrl){
+            if (context->rts != GPIO_INVALID) { HW_HAL_GPIO::resetPin(context->rts); }
+            if (context->cts != GPIO_INVALID) { HW_HAL_GPIO::resetPin(context->cts); }
+        }
+    }
 }
 
 
@@ -396,7 +403,6 @@ size_t HAL_UART::read(void* buf, size_t size)
                 this->suspendUntilDataReady();
             }
         }
-        context->receiveBuffer.readConcluded(readCnt);
 
         if(!context->blockingRdEnable){
             break;
@@ -432,14 +438,22 @@ size_t HAL_UART::write(const void* buf, size_t size)
             }
 
             context->transmitBuffer.writeConcluded(spaceInBuffer);
-            USART_IntDisable(context->UARTx, USART_IEN_TXC);
+            if(context->idx == UART_IDX4){
+                LEUART_IntDisable(context->LEUARTx, LEUART_IEN_TXC);
+            }else{
+                USART_IntDisable(context->UARTx, USART_IEN_TXC);
+            }
 
             if(context->dmaWrEnable) {
                 if(!context->DMATransmitRunning){
                     context->SendTxBufWithDMA();
                 }
             } else {
-                USART_IntEnable(context->UARTx, USART_IEN_TXBL);
+                if(context->idx == UART_IDX4){
+                    LEUART_IntEnable(context->LEUARTx, LEUART_IEN_TXBL);
+                }else{
+                    USART_IntEnable(context->UARTx, USART_IEN_TXBL);
+                }
             }
         }else{
             if(context->blockingWrEnable){
@@ -451,7 +465,6 @@ size_t HAL_UART::write(const void* buf, size_t size)
         if(!context->blockingWrEnable){
             break;
         }
-        return size;
     }
 
     return writeCnt;
@@ -517,14 +530,18 @@ int32_t HAL_UART::status(UART_STATUS_TYPE type)
 }
 
 
-bool HAL_UART::isWriteFinished() 
+bool HAL_UART::isWriteFinished()
 {
     if (context == nullptr) {return true;} // false would create an infinite loop
-    return context->transmitBuffer.isEmpty() && (USART_StatusGet(context->UARTx) & USART_STATUS_TXC);
+    if(context->idx == UART_IDX4){
+        return context->transmitBuffer.isEmpty() && (LEUART_StatusGet(context->LEUARTx) & LEUART_STATUS_TXC);
+    }else{
+        return context->transmitBuffer.isEmpty() && (USART_StatusGet(context->UARTx) & USART_STATUS_TXC);
+    }
 }
 
 
-bool HAL_UART::isDataReady() 
+bool HAL_UART::isDataReady()
 {
     if (context == nullptr) {return false;}
     return !context->receiveBuffer.isEmpty();
@@ -537,7 +554,7 @@ bool HAL_UART::isDataReady()
 /****************** HW_HAL_UART *******************/
 
 void HW_HAL_UART::initMembers(HAL_UART* halUart, UART_IDX uartIdx, GPIO_PIN txPin, GPIO_PIN rxPin, GPIO_PIN rtsPin, GPIO_PIN ctsPin){
- 	  idx = uartIdx;
+    idx = uartIdx;
     baudrate = 115200;
     hal_uart = halUart;
     dmaRdEnable = false;
@@ -548,14 +565,18 @@ void HW_HAL_UART::initMembers(HAL_UART* halUart, UART_IDX uartIdx, GPIO_PIN txPi
     blockingRdEnable = false;
     DMATransmitRunning = false;
     DMAReceiveRunning = false;
-    UARTx = getUARTx();
-    hwFlowCtrl = UARTx->ROUTEPEN; //contains rts and cts bits
+    if(idx == UART_IDX4){
+        LEUARTx = LEUART0;
+    }else {
+        hwFlowCtrl = UARTx->ROUTEPEN; //contains rts and cts bits
+        UARTx = getUARTx();
+    }
+
 
     tx = txPin;
     rx = rxPin;
     rts = rtsPin;
     cts = ctsPin;
-}
 
     /* pin routing
      */
@@ -588,6 +609,12 @@ void HW_HAL_UART::initMembers(HAL_UART* halUart, UART_IDX uartIdx, GPIO_PIN txPi
         rtsPinLoc = HW_HAL_UART::getPinLoc(rts, &usart3PinLoc_LUT[5]);
         break;
 
+      case UART_IDX4:
+          txPinLoc = 0; //Hardcoded PB12 in init, routing is static
+          rxPinLoc = 0; // Hardcoded PB13 in init, routing is static
+          ctsPinLoc = 0; //LEUART No cts pin
+          rtsPinLoc = 0; // LEUART No rts pin
+          break;
       default:
         //RODOS_ERROR("UART index out of range"); !!! RODOS_ERROR-call hangs constructor call !!!
         return;
@@ -621,7 +648,7 @@ void ReceiveTrigger::run()
 }
 
 
-void HW_HAL_UART::SendTxBufWithDMA() 
+void HW_HAL_UART::SendTxBufWithDMA()
 {
 	size_t len;
 	uint8_t*  p = transmitBuffer.getBufferToRead(len);
@@ -710,12 +737,46 @@ void HW_HAL_UART::DMAReceiveFinishedHandler(int channel){
 }
 
 
+void HW_HAL_UART::LEUART_RX_IRQHandler() {
+    uint8_t c;
+
+    if(LEUART_IntGet(LEUARTx) & LEUART_IF_RXDATAV){
+        LEUART_IntClear(LEUARTx, LEUART_IF_RXDATAV);
+        c = LEUART_RxDataGet(LEUARTx) & 0xFF;
+        if(!receiveBuffer.put(c)){
+            uartRxError++; //FIFO OVerflow
+        }
+
+        hal_uart->upCallDataReady();
+    }
+}
+
+void HW_HAL_UART::LEUART_TX_IRQHandler() {
+    uint8_t c;
+
+    if(LEUART_IntGet(LEUARTx) & LEUART_IF_TXC) {				// Transmission is complete (shift register is empty)
+        LEUART_IntDisable(LEUARTx, LEUART_IEN_TXC);
+        LEUART_IntClear(LEUARTx, LEUART_IF_TXC);   // Clear flag
+
+        hal_uart->upCallWriteFinished();
+    }	else if (LEUART_IntGet(LEUARTx) & LEUART_IF_TXBL) {		// Ready to send (Empty TX buffer)
+        if(transmitBuffer.get(c))	{
+            LEUART_Tx(LEUARTx,c);
+        }	else {
+            // no more data, disable TXBL(transmitter idle/empty) and enable TXC(transmission complete)
+            LEUART_IntDisable(LEUARTx, LEUART_IEN_TXBL);
+            LEUART_IntClear(LEUARTx, LEUART_IF_TXBL);   // Clear flag
+            LEUART_IntEnable(LEUARTx, LEUART_IEN_TXC);
+            //hal_uart->upCallWriteFinished();
+        }
+    }
+}
 
 void HW_HAL_UART::UART_RX_IRQHandler()
 {
 	uint8_t c;
 
-	//test overrun error and when DMA is enabled frame error, noise error and overrun error 
+	//test overrun error and when DMA is enabled frame error, noise error and overrun error
 /*	if (USART_GetFlagStatus(UARTx,USART_FLAG_ORE) ||
     	(isDMAEnabeld && (USART_GetITStatus(UARTx,USART_IT_FE) || USART_GetITStatus(UARTx,USART_IT_NE) || USART_GetITStatus(UARTx,USART_IT_ORE_ER))))
     {
@@ -762,7 +823,7 @@ void HW_HAL_UART::UART_TX_IRQHandler()
 	  }
 }
 
-IRQn HW_HAL_UART::getUARTx_RX_IRQn() 
+IRQn HW_HAL_UART::getUARTx_RX_IRQn()
 {
     switch(idx){
    	case UART_IDX0: return USART0_RX_IRQn;
@@ -773,7 +834,7 @@ IRQn HW_HAL_UART::getUARTx_RX_IRQn()
     }
 }
 
-IRQn HW_HAL_UART::getUARTx_TX_IRQn() 
+IRQn HW_HAL_UART::getUARTx_TX_IRQn()
 {
     switch(idx){
    	case UART_IDX0: return USART0_TX_IRQn;
@@ -784,7 +845,7 @@ IRQn HW_HAL_UART::getUARTx_TX_IRQn()
     }
 }
 
-USART_TypeDef* HW_HAL_UART::getUARTx() 
+USART_TypeDef* HW_HAL_UART::getUARTx()
 {
     switch(idx){
     case UART_IDX0: return USART0;
@@ -835,37 +896,69 @@ DMADRV_PeripheralSignal_t HW_HAL_UART::getUARTx_RX_dmaSignal()
 int HW_HAL_UART::init(uint32_t baudrate) {
     if ((idx < UART_IDX_MIN) || (idx > UART_IDX_MAX)) {return -1;}
 
-    this->baudrate = baudrate;
-
-    USART_InitAsync_TypeDef Uis = USART_INITASYNC_DEFAULT;	
-
-    CMU_ClockEnable(getUARTx_Clock(), true); // Enable oscillator to USART module
-    
-#ifndef EFR32FG12P433F1024GM68
-    /* enable VCOM for Debug outputs (USART0 on BRD4001A): set PA5 high */
-    if (idx == UART_IDX0){
-        HW_HAL_GPIO::configurePin(GPIO_005, gpioModePushPull, 1);
+    if(idx == UART_IDX4){
+        this->baudrate = 115200;
+    }else{
+        this->baudrate = baudrate;
     }
+
+    if(idx == UART_IDX4){
+       // Enable LEUART
+       // Setting CMU_CTRL Wait State for HFLE Interface to allow freq higher 32 MHz (ref. p328)
+       CMU->CTRL = (CMU->CTRL &~_CMU_CTRL_WSHFLE_MASK) | CMU_CTRL_WSHFLE;
+       //Enable LE (low energy) clocks
+       CMU_ClockEnable(cmuClock_HFLE, true); // Necessary for accessing LE modules
+       CMU_ClockSelectSet(cmuClock_LFB, cmuSelect_HFCLKLE); // Set a reference clock
+
+       // Enable clocks for LEUART0
+       CMU_ClockEnable(cmuClock_LEUART0, true);
+
+       // set pin modes for USART TX and RX pins and VCOM enable
+       HW_HAL_GPIO::configurePin(this->rx, gpioModeInput, 0);
+       HW_HAL_GPIO::configurePin(this->tx, gpioModePushPull, 1);
+
+       // Initialize the LEUART0 module
+       LEUART_Init_TypeDef init = LEUART_INIT_DEFAULT;
+       init.baudrate = 115200;
+       LEUART_Init(LEUART0, &init);
+
+       // Enable LEUART0 RX/TX pins on PB[13:12]
+       LEUART0->ROUTELOC0 = LEUART_ROUTELOC0_RXLOC_LOC7 | LEUART_ROUTELOC0_TXLOC_LOC7; // Hardcoded to PB12 PB13
+       LEUART0->ROUTEPEN  = LEUART_ROUTEPEN_RXPEN | LEUART_ROUTEPEN_TXPEN;
+
+       // Enable USART Interrupts
+       LEUART_IntEnable(LEUARTx, LEUART_IEN_RXDATAV);
+       NVIC_EnableIRQ(LEUART0_IRQn);
+    }else{
+        CMU_ClockEnable(getUARTx_Clock(), true); // Enable oscillator to USART module
+
+#ifndef EFR32FG12P433F1024GM68
+        /* enable VCOM for Debug outputs (USART0 on BRD4001A): set PA5 high */
+        if (idx == UART_IDX0){
+            HW_HAL_GPIO::configurePin(GPIO_005, gpioModePushPull, 1);
+        }
 #endif
 
-    // set pin modes for USART TX and RX pins and VCOM enable
-    HW_HAL_GPIO::configurePin(this->rx, gpioModeInput, 0);
-    HW_HAL_GPIO::configurePin(this->tx, gpioModePushPull, 1);
+        // set pin modes for USART TX and RX pins and VCOM enable
+        HW_HAL_GPIO::configurePin(this->rx, gpioModeInput, 0);
+        HW_HAL_GPIO::configurePin(this->tx, gpioModePushPull, 1);
 
-    USART_InitAsync_TypeDef Uis = USART_INITASYNC_DEFAULT;
-    Uis.baudrate = baudrate;  			// set baudrate
-    USART_InitAsync(UARTx, &Uis);		// init USART
-	
-    // Route pins
-    UARTx->ROUTELOC0 =  (rxPinLoc << _USART_ROUTELOC0_RXLOC_SHIFT) |
-	                      (txPinLoc << _USART_ROUTELOC0_TXLOC_SHIFT);
+        USART_InitAsync_TypeDef Uis = USART_INITASYNC_DEFAULT;
+        Uis.baudrate = baudrate;  			// set baudrate
+        USART_InitAsync(UARTx, &Uis);		// init USART
 
-    UARTx->ROUTEPEN |= USART_ROUTEPEN_TXPEN | USART_ROUTEPEN_RXPEN;
+        // Route pins
+        UARTx->ROUTELOC0 =  (rxPinLoc << _USART_ROUTELOC0_RXLOC_SHIFT) |
+                           (txPinLoc << _USART_ROUTELOC0_TXLOC_SHIFT);
 
-  	// Enable USART Interrupts
-  	NVIC_EnableIRQ(getUARTx_RX_IRQn());
-  	NVIC_EnableIRQ(getUARTx_TX_IRQn());  
-  	USART_IntEnable(UARTx, USART_IEN_RXDATAV);
+        UARTx->ROUTEPEN |= USART_ROUTEPEN_TXPEN | USART_ROUTEPEN_RXPEN;
+
+        // Enable USART Interrupts
+        NVIC_EnableIRQ(getUARTx_RX_IRQn());
+        NVIC_EnableIRQ(getUARTx_TX_IRQn());
+        USART_IntEnable(UARTx, USART_IEN_RXDATAV);
+    }
+
     return 0;
 }
 
@@ -907,8 +1000,14 @@ int HW_HAL_UART::configWrDMA(){
 
 void HW_HAL_UART::putchar(uint8_t c)
 {
-	while(!(USART_StatusGet(UARTx) & USART_STATUS_TXC)) {}
-	USART_Tx(UARTx,c);
+    if(idx == UART_IDX4){
+        while(!(LEUART_StatusGet(LEUARTx) & LEUART_STATUS_TXC)) {}
+        LEUART_Tx(LEUARTx, c);
+    }else{
+        while(!(USART_StatusGet(UARTx) & USART_STATUS_TXC)) {}
+        USART_Tx(UARTx,c);
+    }
+
 }
 
 

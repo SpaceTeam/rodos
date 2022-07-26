@@ -31,9 +31,13 @@ namespace RODOS {
 
 #ifdef EFR32FG12P433F1024GM68
 //HAL_UART uart_stdout(UART_IDX0,GPIO_030,GPIO_031);
-HAL_UART uart_stdout(UART_IDX0,GPIO_028,GPIO_029); // For ADCS Board
+//HAL_UART uart_stdout(UART_IDX1,GPIO_028,GPIO_029); // Just so we dont block the uart_egse
+//HAL_UART uart_stdout(UART_IDX0,GPIO_028,GPIO_029); // For ADCS Board
+//HAL_UART uart_stdout(UART_IDX2, GPIO_085,GPIO_084); // Sun Sensor External UART Pins
+HAL_UART uart_stdout(UART_IDX4); // For ADCS Board LEUART
 #else
-HAL_UART uart_stdout(UART_IDX0,GPIO_000,GPIO_001);
+//HAL_UART uart_stdout(UART_IDX0,GPIO_000,GPIO_001);
+HAL_UART uart_stdout(UART_IDX1,GPIO_028,GPIO_029); // Just so we dont block the uart_egse
 #endif
 
 extern long myNodeNr;
