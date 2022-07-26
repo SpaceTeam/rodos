@@ -2,8 +2,8 @@
  * @brief RAIL Configuration
  * @details
  *   WARNING: Auto-Generated Radio Config  -  DO NOT EDIT
- *   Radio Configurator Version: 5.0.1
- *   RAIL Adapter Version: 2.4.10
+ *   Radio Configurator Version: 5.6.0
+ *   RAIL Adapter Version: 2.4.13
  *   RAIL Compatibility: 2.x
  *******************************************************************************
  * # License
@@ -31,7 +31,7 @@
  * 3. This notice may not be removed or altered from any source distribution.
  *
  ******************************************************************************/
-#include "em_common.h"
+#include "em_device.h"
 #include "rail_config.h"
 
 uint32_t RAILCb_CalcSymbolRate(RAIL_Handle_t railHandle)
@@ -62,7 +62,7 @@ static RAIL_ChannelConfigEntryAttr_t channelConfigEntryAttr = {
 };
 
 static const uint32_t phyInfo[] = {
-  5UL,
+  7UL,
   0x00C30C30UL, // 195.04761904761907
   (uint32_t) NULL,
   (uint32_t) irCalConfig,
@@ -73,10 +73,12 @@ static const uint32_t phyInfo[] = {
 #endif
   0x00000000UL,
   9000000UL,
-  21000000UL,
+  42000000UL,
   1000000UL,
   (1UL << 8) | 1UL,
   0x02006147UL,
+  (uint32_t) NULL,
+  (uint32_t) NULL,
 };
 
 const uint32_t Protocol_Configuration_modemConfigBase[] = {
@@ -89,9 +91,9 @@ const uint32_t Protocol_Configuration_modemConfigBase[] = {
   0x00020018UL, 0x00000000UL,
   /*    001C */ 0x00000000UL,
   0x00070028UL, 0x00000000UL,
-  /*    002C */ 0x00000000UL,
-  /*    0030 */ 0x00000000UL,
-  /*    0034 */ 0x00000000UL,
+  /*    002C */ 0x00000108UL,
+  /*    0030 */ 0x00000815UL,
+  /*    0034 */ 0x00000001UL,
   /*    0038 */ 0x00000000UL,
   /*    003C */ 0x00000000UL,
   /*    0040 */ 0x000007A4UL,
@@ -99,9 +101,9 @@ const uint32_t Protocol_Configuration_modemConfigBase[] = {
   0x00020054UL, 0x00000000UL,
   /*    0058 */ 0x00000000UL,
   0x000400A0UL, 0x00004001UL,
-  /*    00A4 */ 0x00004CFFUL,
+  /*    00A4 */ 0x00000CFFUL,
   /*    00A8 */ 0x00004101UL,
-  /*    00AC */ 0x00004DFFUL,
+  /*    00AC */ 0x00000DFFUL,
   0x00012000UL, 0x000007C4UL,
   0x00012010UL, 0x00000000UL,
   0x00012018UL, 0x0000A001UL,
@@ -138,7 +140,7 @@ const uint32_t Protocol_Configuration_modemConfigBase[] = {
   /*    607C */ 0x00000000UL,
   /*    6080 */ 0x003C0011UL,
   /*    6084 */ 0x0195907BUL,
-  /*    6088 */ 0x00000E60UL,
+  /*    6088 */ 0x00000E17UL,
   /*    608C */ 0x22140A04UL,
   /*    6090 */ 0x4F4A4132UL,
   /*    6094 */ 0x00000000UL,
@@ -176,13 +178,16 @@ const uint32_t Protocol_Configuration_modemConfigBase[] = {
 const RAIL_ChannelConfigEntry_t Protocol_Configuration_channels[] = {
   {
     .phyConfigDeltaAdd = NULL,
-    .baseFrequency = 2450000000,
+    .baseFrequency = 2402000000,
     .channelSpacing = 2000000,
     .physicalChannelOffset = 0,
     .channelNumberStart = 0,
-    .channelNumberEnd = 10,
+    .channelNumberEnd = 40,
     .maxPower = RAIL_TX_POWER_MAX,
-    .attr = &channelConfigEntryAttr
+    .attr = &channelConfigEntryAttr,
+#ifdef RADIO_CONFIG_ENABLE_CONC_PHY
+    .entryType = 0
+#endif
   },
 };
 
