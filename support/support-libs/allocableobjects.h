@@ -128,6 +128,14 @@ public:
   bool isValid() const {
     return objectsPool != nullptr && objectPointer != nullptr;
   }
+
+  /**
+   * Retrieves the raw pointer to the referenced object.
+   * @return the raw pointer to the referenced object.
+   */
+  Type *getRawPointer() const {
+    return objectPointer;
+  }
 };
 
 /**
@@ -177,6 +185,28 @@ public:
     return ErrorCode::MEMORY;
   }
 
+
+  /**
+   * Returns the index of the referenced item.
+   * @param item The raw pointer to the item.
+   * @return The index of the item within the memory pool, ErrorCode::BAD_POINTER otherwise.
+   */
+  Result<uint32_t> indexOf(Type *const item) {
+    const uint32_t index = static_cast<uint32_t>(item - buffer);
+    if (index > LENGTH)
+      return ErrorCode::BAD_POINTER;
+    return index;
+  }
+
+  /**
+   * Returns the index of the referenced item.
+   * @param item The shared pointer to the item.
+   * @return The index of the item within the memory pool, ErrorCode::BAD_POINTER otherwise.
+   */
+  Result<uint32_t> indexOf(const SharedPtr<Type> &item) {
+    return indexOf(item.getRawPointer());
+  }
+
 protected:
   bool free(Type *item) override {
     Result<uint32_t> index = indexOf(item);
@@ -188,13 +218,6 @@ protected:
     if (referenceCnt[index.val] == 0)
       freeCnt++;
     return true;
-  }
-
-  Result<uint32_t> indexOf(Type *item) {
-    uint32_t index = (uint32_t) (item - buffer);
-    if (index > LENGTH)
-      return ErrorCode::BAD_POINTER;
-    return index;
   }
 
   // Returns pointer to the same item, or 0 if invalid
