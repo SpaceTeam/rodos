@@ -31,11 +31,13 @@ namespace RODOS {
 
 #ifdef EFR32FG12P433F1024GM68
 //HAL_UART uart_stdout(UART_IDX0,GPIO_030,GPIO_031);
+//HAL_UART uart_stdout(UART_IDX1,GPIO_028,GPIO_029); // Just so we dont block the uart_egse
 //HAL_UART uart_stdout(UART_IDX0,GPIO_028,GPIO_029); // For ADCS Board
-HAL_UART uart_stdout(UART_IDX1,GPIO_057,GPIO_059); // For ADCS Board
-//HAL_UART uart_stdout(UART_IDX2,GPIO_088,GPIO_089);
+//HAL_UART uart_stdout(UART_IDX2, GPIO_085,GPIO_084); // Sun Sensor External UART Pins
+HAL_UART uart_stdout(UART_IDX4); // For ADCS Board LEUART
 #else
-HAL_UART uart_stdout(UART_IDX0,GPIO_000,GPIO_001);
+//HAL_UART uart_stdout(UART_IDX0,GPIO_000,GPIO_001);
+HAL_UART uart_stdout(UART_IDX1,GPIO_028,GPIO_029); // Just so we dont block the uart_egse
 #endif
 
 extern long myNodeNr;
@@ -49,7 +51,6 @@ void hwInit (void)
     schedulerRunning = false;
 
 	/* Make PendSV, SysTick and Timer0 (set in TIMER0_init) the same priroity */
-    // TODO 255 does not make sense?
 	NVIC_SetPriority(PendSV_IRQn, 255);
 	NVIC_SetPriority(SysTick_IRQn, 255);
 	/* Update SystemCoreClock (global variable that contains the system frequency) */
