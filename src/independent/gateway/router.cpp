@@ -36,10 +36,10 @@ uint32_t Router::put([[gnu::unused]] const uint32_t topicId, [[gnu::unused]] con
 }
 
 bool Router::putGeneric(const uint32_t topicId, const size_t len,
-                        const void* msg, const NetMsgInfo&) {
+                        const void* msg, const NetMsgInfo& netMsgInfo) {
 
     protector.enter();
-    prepareNetworkMessage(localMessage,topicId,msg,len);
+    prepareNetworkMessage(localMessage,topicId,msg,len, netMsgInfo);
     routeMsg(localMessage,RODOS_LOCAL_BROADCAST);
     protector.leave();
 

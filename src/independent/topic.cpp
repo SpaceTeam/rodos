@@ -78,11 +78,7 @@ uint32_t TopicInterface::publishMsgPart(void* data, size_t lenToSend, bool shall
     NetMsgInfo localmsgInfo;
 
     if(!netMsgInfo) {
-        localmsgInfo.linkId=RODOS_LOCAL_BROADCAST;
-        localmsgInfo.sentTime     = NOW();
-        localmsgInfo.senderNode   = getNodeNumber();
-        intptr_t ptr=reinterpret_cast<intptr_t>(Thread::getCurrentThread());
-        localmsgInfo.senderThreadId=static_cast<uint32_t>(ptr);
+        localmsgInfo.init();
         netMsgInfo= & localmsgInfo;
     }
 

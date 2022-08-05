@@ -25,7 +25,7 @@ int rotationTests() {
     a2.u = -1 * a1.u;
     if (!a1.equals(a2)) FAIL;
     
-    Matrix3D m;
+    Matrix3D m = Matrix3D::eye(1);
     Vector3D a, b, c;
     a.x = -2;
     a.y = 3;
@@ -67,7 +67,7 @@ int rotationTests() {
         AngleAxis convertedBack;
         
         //Conversion to other methods and back may not change the original Rotation
-        convertedBack = random_rot.toRPY().toAngleAxis();
+        convertedBack = random_rot.toYPR().toAngleAxis();
         if (!random_rot.equals(convertedBack)) FAIL;
         
         convertedBack = random_rot.toQuaternion().toAngleAxis();
@@ -76,13 +76,13 @@ int rotationTests() {
         convertedBack = random_rot.toMatrix3D().toAngleAxis();
         if (!random_rot.equals(convertedBack)) FAIL;
         
-        convertedBack = random_rot.toRPY().toMatrix3D().toAngleAxis();
+        convertedBack = random_rot.toYPR().toMatrix3D().toAngleAxis();
         if (!random_rot.equals(convertedBack)) FAIL;
         
-        convertedBack = random_rot.toRPY().toQuaternion().toAngleAxis();
+        convertedBack = random_rot.toYPR().toQuaternion().toAngleAxis();
         if (!random_rot.equals(convertedBack)) FAIL;
         
-        convertedBack = random_rot.toQuaternion().toRPY().toAngleAxis();
+        convertedBack = random_rot.toQuaternion().toYPR().toAngleAxis();
         if (!random_rot.equals(convertedBack)) FAIL;
         
         convertedBack = random_rot.toQuaternion().toMatrix3D().toAngleAxis();
@@ -91,16 +91,16 @@ int rotationTests() {
         convertedBack = random_rot.toMatrix3D().toQuaternion().toAngleAxis();
         if (!random_rot.equals(convertedBack)) FAIL;
         
-        convertedBack = random_rot.toMatrix3D().toRPY().toAngleAxis();
+        convertedBack = random_rot.toMatrix3D().toYPR().toAngleAxis();
         if (!random_rot.equals(convertedBack)) FAIL;
         
         Quaternion qrot = random_rot.toQuaternion();
         Matrix3D mrot = random_rot.toMatrix3D();
-        RPY rpyrot = random_rot.toRPY();
+        YPR yprrot = random_rot.toYPR();
         aEnd = a.aRotate(random_rot);
         qEnd = a.qRotate(qrot);
         mEnd = a.mRotate(mrot);
-        rEnd = a.rpyRotate(rpyrot);
+        rEnd = a.yprRotate(yprrot);
         
         if (!(aEnd.equals(qEnd) && aEnd.equals(mEnd) && aEnd.equals(rEnd))) FAIL;
         

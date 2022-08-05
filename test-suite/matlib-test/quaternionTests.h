@@ -27,11 +27,13 @@ int quaternionTests() {
         q1.q.x = drand(RANGE);
         q1.q.y = drand(RANGE);
         q1.q.z = drand(RANGE);
+        q1 = q1.normalize();
         
         q2.q0 = drand(RANGE);
         q2.q.x = drand(RANGE);
         q2.q.y = drand(RANGE);
         q2.q.z = drand(RANGE);
+        q2 = q1.normalize();
         
         //Add
         q3 = q1 + q2;
@@ -93,10 +95,10 @@ int quaternionTests() {
         for (int i = 0; i < 16; i++) {
             elements[i] = drand(RANGE);
         }
-        Matrix4D m4d = Matrix4D(elements);
+        Matrix<4,4> m4d = Matrix<4,4>(elements);
         q2 = m4d * q1;
         
-        q3.q0 = m4d.r[0][0] * q1.q0 + m4d.r[0][1] * q1.q.x + m4d.r[0][2] * q1.q.y + m4d.r[0][3] * q1.q.z;
+        q3.q0  = m4d.r[0][0] * q1.q0 + m4d.r[0][1] * q1.q.x + m4d.r[0][2] * q1.q.y + m4d.r[0][3] * q1.q.z;
         q3.q.x = m4d.r[1][0] * q1.q0 + m4d.r[1][1] * q1.q.x + m4d.r[1][2] * q1.q.y + m4d.r[1][3] * q1.q.z;
         q3.q.y = m4d.r[2][0] * q1.q0 + m4d.r[2][1] * q1.q.x + m4d.r[2][2] * q1.q.y + m4d.r[2][3] * q1.q.z;
         q3.q.z = m4d.r[3][0] * q1.q0 + m4d.r[3][1] * q1.q.x + m4d.r[3][2] * q1.q.y + m4d.r[3][3] * q1.q.z;

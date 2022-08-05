@@ -47,17 +47,17 @@ int coordinateFrameTests() {
         v3.y = drand(RANGE);
         v3.z = drand(RANGE);
         c2 = CoordinateFrame3D(v1, v2, v3);
-        Matrix4D m4d = stdFrame.mapTo(c1);//Maps from c1 to stdFrame
+        HTransform m4d = stdFrame.mapTo(c1);//Maps from c1 to stdFrame
         
         v4.x = 0;
         v4.y = 0;
         v4.z = 0;
-        if (!v4.equals(c1.origin.to4D().matVecMult(m4d.invert()).to3D())) FAIL;
+        if (!v4.toHCoord().equals(m4d.invert() * c1.origin.toHCoord())) FAIL;
         
         //Invert
-        Matrix4D m4du = Matrix4D();  //Unity matrix
+        HTransform m4du = HTransform::eye(1);  //Unity matrix
         
-        Matrix4D m4dh = m4d.mMult(m4d.invert());
+        HTransform m4dh = m4d.mMult(m4d.invert());
         if (!m4du.equals(m4dh)) FAIL;
         
         m4dh = m4d.invert().mMult(m4d);

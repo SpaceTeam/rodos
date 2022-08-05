@@ -5,7 +5,7 @@ let
 cov_test = (target: env: env.mkDerivation {
   name = "rodos-${target}";
   src = ./.;
-  buildInputs = [cmake lcov];
+  buildInputs = [ cmake lcov ninja ];
   cmakeFlags = [
     "-DCMAKE_TOOLCHAIN_FILE=../cmake/port/${target}.cmake"
     "-DEXECUTABLE=ON"
@@ -13,7 +13,7 @@ cov_test = (target: env: env.mkDerivation {
   ];
   installPhase =
     ''
-      make coverage_collect test-report
+      ninja coverage_collect test-report
       mkdir $out
       mv coverage $out/
       mv coverage.info $out/
@@ -24,7 +24,7 @@ cov_test = (target: env: env.mkDerivation {
 compile_only = (target: env: env.mkDerivation {
   name = "rodos-${target}";
   src = ./.;
-  nativeBuildInputs = [cmake];
+  nativeBuildInputs = [ cmake ninja ];
   cmakeFlags = [
     "-DCMAKE_TOOLCHAIN_FILE=../cmake/port/${target}.cmake"
     "-DEXECUTABLE=ON"
@@ -49,4 +49,5 @@ in
   raspberrypi3 = compile_only "raspberrypi3" pkgsCross.arm-embedded.stdenv;
   sf2 = compile_only "sf2" pkgsCross.arm-embedded.stdenv;
   nucleo_l496zg = compile_only "nucleo_l496zg" pkgsCross.arm-embedded.stdenv;
+  va41620 = compile_only "va41620" pkgsCross.arm-embedded.stdenv;
 }

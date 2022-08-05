@@ -47,9 +47,9 @@ public:
 	}
 
 	Vector3D_<TYPE> toCartesian() const {
-	    float x = this->r*sin(this->theta)*cos(this->phi);
-	    float y = this->r*sin(this->theta)*sin(this->phi);
-	    float z = this->r*sin(this->theta);
+		TYPE x = this->r*sin(this->theta)*cos(this->phi);
+		TYPE y = this->r*sin(this->theta)*sin(this->phi);
+		TYPE z = this->r*cos(this->theta);
 	    Vector3D_<TYPE> cartesian(x,y,z);
 
 	    return cartesian;
@@ -65,7 +65,7 @@ public:
 		this->phi = other.phi;
 		this->theta = other.theta;
 		return *this;
-	};
+	}
 
 };
 

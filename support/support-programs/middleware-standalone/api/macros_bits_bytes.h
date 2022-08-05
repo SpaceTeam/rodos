@@ -10,6 +10,7 @@
 *
 */
 
+#include <cstdint>
 
 /* WARNING:
  * This file is not included in rodos.h or rodos.h

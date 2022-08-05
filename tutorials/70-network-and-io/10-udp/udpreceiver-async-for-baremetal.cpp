@@ -42,7 +42,7 @@ public:
     	StaticThread<>("udpReceiver- StaticThread<>)"),
     	Subscriber(udpMessages, "udpReceiver") { }
 
-    void putFromInterrupt(const long topicId, const void* data, int len) {
+    void putFromInterrupt(const uint32_t topicId, const void* data, size_t len) {
         GenericMsgRef* msg = (GenericMsgRef*)data;
         msg->msgPtr[msg->msgLen] = 0;
         xprintf("\nAsync: len: %d message:\n%s\n", msg->msgLen, msg->msgPtr); // no PRINTF in interrupts (Sempahore)

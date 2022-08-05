@@ -108,6 +108,13 @@ public:
         return scale;
     }
 
+    YPR_<TYPE> accumulateRotation(YPR_<TYPE>& increment) {
+        Quaternion_<TYPE> orig(*this);
+        Quaternion_<TYPE> inc(increment);
+        orig = orig * inc;
+        return orig.toYPR();
+    }
+
     Matrix3D_<TYPE> toMatrix3D() const {
         Matrix3D_<TYPE> M;
         TYPE cy = cos(yaw);
@@ -186,7 +193,9 @@ public:
 		this->pitch = other.pitch;
 		this->roll  = other.roll;
 		return *this;
-	};
+	}
+
+    YPR_<TYPE>& operator=(const YPR_<TYPE> &other) = default;
 
 };
 

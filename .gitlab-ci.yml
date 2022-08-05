@@ -1,9 +1,8 @@
-image: nixos/nix:2.3.6
+image: nixos/nix:2.3.16
 
 stages:
  - build_test
  - results
- - deploy
 
 
 
@@ -88,6 +87,14 @@ nucleo_l496zg:
   variables:
     TARGET: nucleo_l496zg
 
+va41620:
+  extends: .compile_tmpl
+  before_script:
+    - nix-channel --add https://nixos.org/channels/nixpkgs-unstable nixpkgs
+    - nix-channel --update
+  variables:
+    TARGET: va41620
+
 
 
 # Job collecting coverage results from coverage generating jobs from
@@ -135,15 +142,15 @@ coverage:
 
 
 # Job uploading merged coverage report to codecov.io
-codecov.io:
-  stage: deploy
-  variables:
-    GIT_STRATEGY: none
-  script:
-    - nix-env -i curl
-    - nix-env -i bash
-    - curl https://codecov.io/bash -o codecov
-    - bash codecov -f coverage.info
-  needs:
-    - job: coverage
-      artifacts: true
+#codecov.io:
+#  stage: deploy
+#  variables:
+#    GIT_STRATEGY: none
+#  script:
+#    - nix-env -i curl
+#    - nix-env -i bash
+#    - curl https://codecov.io/bash -o codecov
+#    - bash codecov -f coverage.info
+#  needs:
+#    - job: coverage
+#      artifacts: true

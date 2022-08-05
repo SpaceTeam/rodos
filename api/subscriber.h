@@ -16,24 +16,12 @@
 #include "rodos-debug.h"
 #include "rodos-semaphore.h"
 #include "topic.h"
+#include "netmsginfo.h"
 
 
 namespace RODOS {
 
 class Putter;
-
-/**
- * Data structure containing information about topic messages sent via network (gateway).
- */
-class NetMsgInfo {
-  public:
-    int32_t  senderNode;     ///< Node ID of sending instance of RODOS
-    int64_t  sentTime;       ///< Time in localTime units
-    uint32_t senderThreadId; ///< The ID of the sending thread
-    uint32_t linkId;         ///< The ID of the %Linkinterface from which the message was received.
-};
-
-
 
 /**
 * @class Subscriber

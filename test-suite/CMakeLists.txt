@@ -46,6 +46,7 @@ foreach(test_file ${test_files})
         "${test_name}-bin.expected_trimmed"
         "${test_name}-bin.diff"
         COMMAND
+        bash
         ${CMAKE_CURRENT_SOURCE_DIR}/test-runner.sh
         $<TARGET_FILE:${test_name}-bin>
         ${CMAKE_CURRENT_SOURCE_DIR}/expected-outputs/${filename}.txt
@@ -81,10 +82,10 @@ add_custom_target(generate-diffs DEPENDS "${diff_files}")
 
 add_custom_command(
     OUTPUT test-report.txt
-    COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/test-collector.sh "${diff_files}"
+    COMMAND bash ${CMAKE_CURRENT_SOURCE_DIR}/test-collector.sh "${diff_files}"
     DEPENDS generate-diffs test-collector.sh
     VERBATIM)
 add_custom_target(test-report
-    COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/test-collector.sh "${diff_files}"
+    COMMAND bash ${CMAKE_CURRENT_SOURCE_DIR}/test-collector.sh "${diff_files}"
     VERBATIM
-    DEPENDS generate-diffs test-collector.sh)
+    DEPENDS generate-diffs ${CMAKE_CURRENT_SOURCE_DIR}/test-collector.sh)

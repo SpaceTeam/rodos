@@ -47,12 +47,12 @@ public:
 	Matrix3D_(const Vector3D_<TYPE>& init) : Matrix_<3,3,TYPE>(init) {}   	///< diagonalmatrix of vector
 
 	Matrix3D_(const YPR_<TYPE>& ypr) : Matrix_<3,3,TYPE>() {			  	///< rotation matrix from Euler
-	    float cy = cos(ypr.yaw);
-	    float cp = cos(ypr.pitch);
-	    float cr = cos(ypr.roll);
-	    float sy = sin(ypr.yaw);
-	    float sp = sin(ypr.pitch);
-	    float sr = sin(ypr.roll);
+		TYPE cy = cos(ypr.yaw);
+		TYPE cp = cos(ypr.pitch);
+		TYPE cr = cos(ypr.roll);
+		TYPE sy = sin(ypr.yaw);
+	    TYPE sp = sin(ypr.pitch);
+	    TYPE sr = sin(ypr.roll);
 
 	    this->r[0][0]= cy*cp;
 	    this->r[0][1]= cy*sp*sr - sy*cr;
@@ -69,9 +69,9 @@ public:
 
 	Matrix3D_(const AngleAxis_<TYPE>& other) : Matrix_<3,3,TYPE>() { 		///< corresponding rotation matrix
 		Vector3D_<TYPE> u = other.u;
-		float phi = other.phi;
-		float cp  = cos(phi);
-		float sp  = sin(phi);
+		TYPE phi = other.phi;
+		TYPE cp  = cos(phi);
+		TYPE sp  = sin(phi);
 
 		// 1 Spalte
 		this->r[0][0]= u.x *u.x *(1-cp) + cp;
@@ -121,13 +121,13 @@ public:
 	}
 
 	TYPE getAngle() const {
-	    float angle;
+	    TYPE angle;
 	    angle = acos(0.5*(this->r[0][0]+this->r[1][1]+this->r[2][2]-1));
 	    return angle;
 	}
 
 	Vector3D_<TYPE> getVec() const {
-	    float x,y,z,angle;
+	    TYPE x,y,z,angle;
 	    angle = this->getAngle();
 	    x = 1.0/(2*sin(angle)) * (this->r[2][1]-this->r[1][2]);
 	    y = 1.0/(2*sin(angle)) * (this->r[0][2]-this->r[2][0]);
@@ -241,6 +241,8 @@ public:
 	    return u_phi;
 	}
 
+	Matrix3D_<TYPE>& operator=(const Matrix3D_<TYPE>& other) = default;
+
 };
 
 template <typename TYPE>
@@ -248,10 +250,6 @@ class Matrix6D_ : public Matrix_<6,6,TYPE>{
 public:
 	Matrix6D_() :
 			Matrix_<6,6,TYPE>(){
-	}
-
-	Matrix6D_(const Matrix6D_& other) :
-			Matrix_<6,6,TYPE>(other){
 	}
 
 	Matrix6D_(const Matrix_<6,6,TYPE>& other) :
@@ -317,6 +315,7 @@ public:
 	    }
 	    return S;
 	}
+
 };
 
 

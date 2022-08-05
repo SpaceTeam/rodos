@@ -12,6 +12,8 @@
 
 #pragma once
 
+#include <atomic>
+
 #include "putter.h"
 #include "rodos-debug.h"
 #include "thread.h"
@@ -42,7 +44,7 @@ protected:
     /** advance index to next position
     * with overflow to 0 to implement a ring
     */
-    size_t advanceIndex(size_t index) {
+    size_t advanceIndex(size_t index) const {
         return ((index < (len-1)) ? (index+1) : 0);
     }
 
@@ -126,16 +128,16 @@ public:
      * @warning This method is not thread safe.
      * @return true if the fifo is full, false otherwise.
      */
-    bool isFull()  { return advanceIndex(writeX)==readX; }
+    bool isFull() const { return advanceIndex(writeX)==readX; }
 
     /**
      * Determines whether the fifo is empty.
      * @warning This method is not thread safe.
      * @return true if the fifo is empty, false otherwise.
      */
-    bool isEmpty() { return readX == writeX;}
+    bool isEmpty() const { return readX == writeX;}
 
-    void clear()   { readX = writeX = 0; }                 ///< erases all content
+    void clear()   { readX = 0; writeX = 0; }                 ///< erases all content
 };
 
 /**********************************************************************/
@@ -261,7 +263,7 @@ public:
 
     volatile size_t   writeX;
     volatile size_t   readX[numOfreaders];
-    volatile uint32_t overflowCnt[numOfreaders];
+    std::atomic<uint32_t> overflowCnt[numOfreaders];
     uint32_t readerCnt; ///< used only to generate readerId, if user wishes!
 
     /** advance index to next position

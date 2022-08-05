@@ -243,7 +243,7 @@ public:
     }
 
     bool equals(const Quaternion_<TYPE>& other) const {
-        return(q0 == other.q0 && q.equals(other.q));
+        return(isAlmost0(q0 - other.q0) && q.equals(other.q));
     }
 
     AngleAxis_<TYPE> toAngleAxis() const {
@@ -322,7 +322,15 @@ public:
     inline friend Quaternion_<TYPE> operator-(const Quaternion_<TYPE> &left, const Quaternion_<TYPE> &right)  { return left.qSub(right); }
     inline friend Quaternion_<TYPE> operator*(const Quaternion_<TYPE> &left, const Quaternion_<TYPE> &right)  { return left.qMult(right); }
     inline friend Quaternion_<TYPE> operator*(const TYPE     		 &left, const Quaternion_<TYPE> &right)  { return right.scale(left); }
-    inline friend Quaternion_<TYPE> operator*(const Quaternion_<TYPE> &left, const TYPE     &right)  		{ return left.scale(right); }
+    inline friend Quaternion_<TYPE> operator*(const Quaternion_<TYPE> &left, const TYPE     &right)  		 { return left.scale(right); }
+    inline friend Quaternion_<TYPE> operator*(const Matrix_<4,4,TYPE>  &mat, const Quaternion_<TYPE> &q)   {
+    	Quaternion_<TYPE> res;
+    	res.q0  = mat.r[0][0] * q.q0 + mat.r[0][1] * q.q.x + mat.r[0][2] * q.q.y + mat.r[0][3] * q.q.z;
+    	res.q.x = mat.r[1][0] * q.q0 + mat.r[1][1] * q.q.x + mat.r[1][2] * q.q.y + mat.r[1][3] * q.q.z;
+    	res.q.y = mat.r[2][0] * q.q0 + mat.r[2][1] * q.q.x + mat.r[2][2] * q.q.y + mat.r[2][3] * q.q.z;
+    	res.q.z = mat.r[3][0] * q.q0 + mat.r[3][1] * q.q.x + mat.r[3][2] * q.q.y + mat.r[3][3] * q.q.z;
+    	return res;
+    }
     inline friend Vector3D_<TYPE>   operator*(const Quaternion_<TYPE> &left, const Vector3D_<TYPE>  &right)   { return right.qRotate(left); }
     inline friend Quaternion_<TYPE> operator/(const Quaternion_<TYPE> &left, const TYPE     &right)  		{ return left.scale(1.0/right); }
     inline friend Quaternion_<TYPE> operator-(const Quaternion_<TYPE> &right)                   				{ return right.conjugate(); }
@@ -339,7 +347,9 @@ public:
 		this->q.z = other.q.z;
 		this->q0 = other.q0;
 		return *this;
-	};
+	}
+
+    Quaternion_<TYPE>& operator=(const Quaternion_<TYPE> &other) = default;
 };
 
 #ifndef NO_RODOS_NAMESPACE

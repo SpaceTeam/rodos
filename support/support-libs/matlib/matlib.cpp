@@ -38,7 +38,7 @@ Matrix_<3,3,double> Matrix_<3,3,double>::invert() const{
 	arr[1] = {(c*h-b*i) / det};
 	arr[2] = {(b*f-c*e) / det};
 	arr[3] = {(f*g-d*i) / det};
-	arr[4] = {(a*i-c*c) / det};
+	arr[4] = {(a*i-c*g) / det};
 	arr[5] = {(c*d-a*f) / det};
 	arr[6] = {(d*h-e*g) / det};
 	arr[7] = {(b*g-a*h) / det};
@@ -104,7 +104,7 @@ Matrix_<3,3,float> Matrix_<3,3,float>::invert() const{
 	arr[1] = {(c*h-b*i) / det};
 	arr[2] = {(b*f-c*e) / det};
 	arr[3] = {(f*g-d*i) / det};
-	arr[4] = {(a*i-c*c) / det};
+	arr[4] = {(a*i-c*g) / det};
 	arr[5] = {(c*d-a*f) / det};
 	arr[6] = {(d*h-e*g) / det};
 	arr[7] = {(b*g-a*h) / det};
@@ -139,7 +139,7 @@ float Matrix_<3,3,float>::determinant() const{
 //=====================================================Implementierung Globale Methoden============================================
 
 int64_t faculty(const int &x) {
-    uint64_t faculty = 1;
+    int64_t faculty = 1;
     for (int i = 2; i <= x; ++i)
         faculty *= i;
     return faculty;
@@ -151,13 +151,6 @@ double FMod2p( const double &x) {
     double rval = fmod(x, 2*M_PI);
     if(rval < 0.0) rval+= 2*M_PI;
     return rval;
-}
-
-template<typename TYPE>
-TYPE fabs(const TYPE &value) {
-	TYPE dval = value;
-    if (dval < 0) dval = -dval;
-    return dval;
 }
 
 //===Rn nach WGS84

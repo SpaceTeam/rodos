@@ -71,23 +71,17 @@ public:
     	TYPE p = ypr.pitch;
     	TYPE r = ypr.roll;
 
-	// Old version
-    	//TYPE phi = acos(0.5*(-1 + cos(p)*cos(y) + cos(r)*cos(y) + sin(r)*sin(p)*sin(y) + cos(r)*cos(p) ));
-    	//TYPE u_x = 1/(2*sin(phi))* (sin(r)*cos(p) -cos(r)*sin(p)*sin(y) +sin(r)*cos(y));
-    	//TYPE u_y = 1/(2*sin(phi))* (sin(r)*sin(y) +cos(r)*sin(p)*cos(y) +sin(p));
-    	//TYPE u_z = 1/(2*sin(phi))* (cos(p)*sin(y) -sin(r)*sin(p)*cos(y) + cos(r)*sin(y));
-
-	// Faster version 26.09.2019
-	TYPE c1 = cos(y / 2); 
-	TYPE c2 = cos(p / 2);
-	TYPE c3 = cos(r / 2); 
-	TYPE s1 = sin(y / 2); 
-	TYPE s2 = sin(p / 2); 
-	TYPE s3 = sin(r / 2); 
-	TYPE phi = 2 * acos(c1*c2*c3 + s1*s2*s3);
-	TYPE u_x =c1*c2*s3 - s1*s2*c3;
-	TYPE u_y =c1*s2*c3 + s1*c2*s3;
-	TYPE u_z =s1*c2*c3 - c1*s2*s3;
+		// Fast version
+		TYPE c1 = cos(y / 2);
+		TYPE c2 = cos(p / 2);
+		TYPE c3 = cos(r / 2);
+		TYPE s1 = sin(y / 2);
+		TYPE s2 = sin(p / 2);
+		TYPE s3 = sin(r / 2);
+		TYPE phi = 2 * acos(c1*c2*c3 + s1*s2*s3);
+		TYPE u_x =c1*c2*s3 - s1*s2*c3;
+		TYPE u_y =c1*s2*c3 + s1*c2*s3;
+		TYPE u_z =s1*c2*c3 - c1*s2*s3;
         Vector3D_<TYPE> u(u_x,u_y,u_z);
 
         this->phi = phi;
@@ -95,14 +89,22 @@ public:
 
     }
 
+	bool equals(const AngleAxis_<TYPE>& other) const {
+	    if (isAlmost0(FMod2p(this->phi - other.phi + M_PI) - M_PI) && this->u.equals(other.u)) return true;
+
+	    if (isAlmost0(FMod2p(this->phi + other.phi + M_PI) - M_PI) && this->u.equals(-1 * other.u)) return true;
+
+	    return false;
+	}
+
     Quaternion_<TYPE> toQuaternion() const {
-        float q0  = cos(this->phi/2);
+    	TYPE q0  = cos(this->phi/2);
         Vector3D_<TYPE> q = this->u.scale(sin(this->phi/2));
         Quaternion_<TYPE> quat(q0,q);
         return quat;
     }
 
-    Matrix3D_<TYPE> toMatrix3D() const { // allgemeine Rotataionsmatrix
+    Matrix3D_<TYPE> toMatrix3D() const { // allgemeine Rotationsmatrix
         Matrix3D_<TYPE> R;
         Vector3D_<TYPE> u = this->u;
         TYPE phi = this->phi;
@@ -149,12 +151,39 @@ public:
 		this->u.z = other.u.z;
 		this->phi = other.phi;
 		return *this;
-	};
+	}
+
+    AngleAxis_<TYPE>& operator=(const AngleAxis_<TYPE> &other) = default;
 
     void print() const {
         PRINTF("[%3.3lf*PI \t %3.3lf \t %3.3f \t %3.3lf]\n",(double) phi/M_PI, (double) u.x, (double) u.y, (double) u.z);
     }
+
+    static AngleAxis_<TYPE> rotor(const Vector3D_<TYPE>& fromVector, const Vector3D_<TYPE>& toVector) {
+    	Vector3D_<TYPE> from = fromVector.normalize();
+    	Vector3D_<TYPE> to   = toVector.normalize();
+        TYPE cosAngle = dotProduct  (from, to);
+        Vector3D_<TYPE> axis = crossProduct(from, to);
+        if(isAlmost0(axis.getLen())) { cosAngle = axis.x = axis.y = axis.z = 1.0; }
+        axis = axis.normalize();
+        return AngleAxis_<TYPE>(acos(cosAngle), axis);
+    }
+
+    bool resetIfNAN() {
+        bool error = !isfinite(phi) || !isfinite(u.x) || !isfinite(u.y) || !isfinite(u.z);
+        if(error) {
+        	u.x = u.y = u.z = 1.0;
+        	phi = 0;
+        }
+        return error;
+    }
+
+    bool isNoRotation() { return isAlmost0(1 - phi)  || isAlmost0(u.getLen()) || (fabs(phi) > 1); }
+
 };
+
+
+
 
 #ifndef NO_RODOS_NAMESPACE
 }

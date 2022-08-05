@@ -14,6 +14,7 @@
 #include "listelement.h"
 #include "rodos-debug.h"
 #include "misc-rodos-funcs.h"
+#include "string_pico.h"
 
 namespace RODOS {
 
@@ -63,6 +64,15 @@ void Application::printApplications() {
 Application* Application::findApplication(const int32_t id) {
   ITERATE_LIST(Application, applicationList) {
     if (iter->applicationId == id) {
+      return iter;
+    }
+  }
+  return 0;
+}
+
+Application* Application::findApplication(const char* const name) {
+  ITERATE_LIST(Application, applicationList) {
+    if (RODOS::strcmp(iter->name, name) == 0) {
       return iter;
     }
   }
