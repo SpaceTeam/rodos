@@ -22,6 +22,8 @@ namespace RODOS {
 template<typename Type>
 class AllocableObjectsBase {
 public:
+  virtual ~AllocableObjectsBase() {}
+
   virtual Type *copyReference(Type *item) = 0;
   virtual bool free(Type *item) = 0;
 };
