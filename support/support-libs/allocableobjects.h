@@ -159,7 +159,7 @@ public:
 template<typename Type, uint32_t LENGTH>
 class AllocableObjects : public AllocableObjectsBase<Type> {
 
-  Type buffer[LENGTH]{};
+  Type buffer[LENGTH];
   uint32_t referenceCnt[LENGTH]{};
   uint32_t freeCnt = LENGTH;
 
