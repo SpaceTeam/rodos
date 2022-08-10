@@ -439,9 +439,9 @@ size_t HAL_UART::write(const void* buf, size_t size)
 
             context->transmitBuffer.writeConcluded(spaceInBuffer);
             if(context->idx == UART_IDX4){
-                LEUART_IntDisable(context->LEUARTx, LEUART_IEN_TXC);
+                //LEUART_IntDisable(context->LEUARTx, LEUART_IEN_TXC);
             }else{
-                USART_IntDisable(context->UARTx, USART_IEN_TXC);
+                //USART_IntDisable(context->UARTx, USART_IEN_TXC);
             }
 
             if(context->dmaWrEnable) {
