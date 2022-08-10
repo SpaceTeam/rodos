@@ -112,3 +112,7 @@ if (COVERAGE)
 endif ()
 enable_testing()
 add_subdirectory(test-suite)
+
+if (UNIT_TESTS)
+  add_subdirectory(support/test)
+endif()
