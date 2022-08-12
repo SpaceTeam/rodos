@@ -37,7 +37,7 @@ Messages msgToReceive;
 
 
 //__________________________________________________________________________  This is your interface to the Applications
-class SendingApplicationInterface : public S3pSenderAsyncrhonous {
+class SendingApplicationInterface : public S3pSenderAsynchronous {
     //____________________ for Node B: Simulate Application which provides data to send
     int msgIndex  = 0;
     int byteIndex = -1;
@@ -65,7 +65,7 @@ uint16_t SendingApplicationInterface::getDualByte() {
 }      
 
 //__________________________________________________________________________  This is your interface to the Applications
-class ReceivingApplicationInterface : public S3pReceiverAsyncrhonous {
+class ReceivingApplicationInterface : public S3pReceiverAsynchronous {
 
     //_________________________ Simulate an Application which receives data in one node
     void endOfMessage(int32_t len) { 

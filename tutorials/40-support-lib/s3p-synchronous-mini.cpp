@@ -20,12 +20,12 @@ Fifo<uint8_t, 1000> commChannel; // to simulate a communication  link from Node 
  */
 
 //__________________________________________________________________________  This is yout interface to the UART/RadioLink
-class SendingUart : public S3pSenderSyncrhonous, public S3pReceiverSyncrhonous {
+class SendingUart : public S3pSenderSynchronous, public S3pReceiverSynchronous {
     void    putByte(uint8_t c) { commChannel.put(c); }                       // Write to UART/RadioLink
 } seningUart;
 
 //__________________________________________________________________________  This is yout interface to the UART/RadioLink
-class ReceivingUart : public S3pSenderSyncrhonous, public S3pReceiverSyncrhonous {
+class ReceivingUart : public S3pSenderSynchronous, public S3pReceiverSynchronous {
     uint8_t getByte() { uint8_t c; while(!commChannel.get(c)) {} return c; } // Warning loop! get byte for byte from the UART/RadioLink
 } receivingUart;
 

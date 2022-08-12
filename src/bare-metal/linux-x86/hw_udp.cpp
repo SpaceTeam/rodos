@@ -44,7 +44,7 @@ namespace RODOS {
  ** to say which udp port/soket generated the interrupt...
  **
  ** the only solution I was able to provide:
- **   store in an array all asyncrhonous upd port descriptor and
+ **   store in an array all asynchronous upd port descriptor and
  **   for each signal from udp, search all descriptor...
  **************************************************************/
 
