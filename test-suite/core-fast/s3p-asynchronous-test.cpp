@@ -39,7 +39,7 @@ Messages msgToReceive;
 
 
 //__________________________________________________________________________  This is your interface to the Applications
-class ApplicationInterface : public S3pReceiverAsyncrhonous, public S3pMsgSenderAsyncrhonous {
+class ApplicationInterface : public S3pReceiverAsynchronous, public S3pMsgSenderAsynchronous {
 
     //_________________________ Simulate an Application which receives data in one node
     void endOfMessage(int32_t len) { 

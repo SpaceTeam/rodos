@@ -13,7 +13,7 @@ namespace RODOS {
  * @author Sergio Montenegro, uni Würzburg
  *
  * Link Interface to broadcast networks simulated using UDP messages.
- * incomming messages will be distributed asyncrhonously using the middleware.
+ * incomming messages will be distributed asynchronously using the middleware.
  *
  */
 
@@ -34,7 +34,7 @@ void LinkinterfaceUDP::init() {
     // WARNING: here we shall get a unique node number, we can not now
     // we just take the defaoult from hwInt
     threadToResume= Thread::getCurrentThread();
-    udpFromNetwork->setAsync(&udpAsyncTopic); // Distribute incomming messages asyncromous to topic defaultga....
+    udpFromNetwork->setAsync(&udpAsyncTopic); // Distribute incomming messages asynchronous to topic defaultga....
 }
 
 /************* Connection to the network, network and protocol dependent ***/

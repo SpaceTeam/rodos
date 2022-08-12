@@ -28,7 +28,7 @@ namespace RODOS {
  * Triggered from UART. Data flow from application to UART (UART requests : get)   
  */
 
-class S3pSenderAsyncrhonous : public S3pCode {
+class S3pSenderAsynchronous : public S3pCode {
 
     // __________________________ UPCALL _________________ You shall override this method (your single interface)
     // ___________________________________________________ Die UART calls getByteOrNODATA which calls getDualByte
@@ -71,7 +71,7 @@ class S3pSenderAsyncrhonous : public S3pCode {
  */
 
 //_______________________________________________________
-class S3pMsgSenderAsyncrhonous : public S3pSenderAsyncrhonous {
+class S3pMsgSenderAsynchronous : public S3pSenderAsynchronous {
 
   private:
     // __________________________ UPCALL _________________ Application shall override this method 
@@ -81,7 +81,7 @@ class S3pMsgSenderAsyncrhonous : public S3pSenderAsyncrhonous {
     int32_t   len  = 0;
     uint8_t*  msg  = 0;
 
-    // internal function called from the S3pSenderAsyncrhonous, which is called from UART
+    // internal function called from the S3pSenderAsynchronous, which is called from UART
     uint16_t getDualByte() {                  // called from the UART/Radiolink  -> getByteOrNODATA -> getDualByte
         if(msg == 0) {
             msg = requestBufferToRead(len); 
@@ -107,7 +107,7 @@ class S3pMsgSenderAsyncrhonous : public S3pSenderAsyncrhonous {
  * Triggered from UART. Data flow from UART to application (UART calls  put)
  */
 
-class S3pReceiverAsyncrhonous : S3pCode {
+class S3pReceiverAsynchronous : S3pCode {
   private:
     // _________________________ UPCALL _________________ You shall override this method to read messages from the UART/Radiolink
     // __________________________________________________ all upcalls are called from putByte() when it finds:

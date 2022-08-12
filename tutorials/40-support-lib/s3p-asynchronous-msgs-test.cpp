@@ -36,7 +36,7 @@ Messages msgToSend[4] = {
 Messages msgToReceive;
 
 //__________________________________________________________________________  This is your interface to the Applications
-class SendingApplicationInterface : public S3pMsgSenderAsyncrhonous {
+class SendingApplicationInterface : public S3pMsgSenderAsynchronous {
 
     //____________________ for Node B: Simulate Application which provides data to send
     int msgCnt = 0;
@@ -56,7 +56,7 @@ class SendingApplicationInterface : public S3pMsgSenderAsyncrhonous {
 
 
 //__________________________________________________________________________  This is your interface to the Applications
-class ReceivingApplicationInterface : public S3pReceiverAsyncrhonous {
+class ReceivingApplicationInterface : public S3pReceiverAsynchronous {
 
     //_________________________ Simulate an Application which receives data in one node
     void endOfMessage(int32_t len) { 

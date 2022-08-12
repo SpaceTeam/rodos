@@ -26,7 +26,7 @@ namespace RODOS {
 
 
 // TODO: Return and propagate Error codes
-class S3pSenderSyncrhonous : public S3pCode {
+class S3pSenderSynchronous : public S3pCode {
 
   private:
     // _________________________ UPCALL _________________ You shall override this method to write to the UART/Radiolink
@@ -62,7 +62,7 @@ class S3pSenderSyncrhonous : public S3pCode {
  * Triggered from Application, Data Flow from UART/RadioLink to Application (get)
  */
 
-class S3pReceiverSyncrhonous : S3pCode {
+class S3pReceiverSynchronous : S3pCode {
   private:
     // _________________________ UPCALL _________________ You shall override this method to read messages from the UART/Radiolink
     virtual uint8_t getByte() { return 0; } // override to read from UART/Radiolink encoded messages. (busy waiting) Wait until data is ready

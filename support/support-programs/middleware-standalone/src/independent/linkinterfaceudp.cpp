@@ -1,7 +1,4 @@
 
-
-
-
 #include"gateway/linkinterfaceudp.h"
 
 #include "gateway/gateway.h"
@@ -17,7 +14,7 @@ namespace RODOS {
  * @author Sergio Montenegro, uni Würzburg
  *
  * Link Interface to broadcast networks simulated using UDP messages.
- * incomming messages will be distributed asyncrhonously using the middleware.
+ * incomming messages will be distributed asynchronously using the middleware.
  *
  */
 
@@ -37,7 +34,7 @@ void LinkinterfaceUDP::init() {
     Linkinterface::init();
     // WARNING: here we shall get a unique node number, we can not now
     // we just take the defaoult from hwInt
-    udpFromNetwork->setAsync(this); // Distribute incomming messages asyncromous to topic defaultga....
+    udpFromNetwork->setAsync(this); // Distribute incomming messages asynchronous to topic defaultga....
 }
 
 /************* Connection to the network, network and protocol dependent ***/
