@@ -72,6 +72,7 @@ void hwInit (void)
 	CMU_OscillatorEnable(cmuOsc_HFRCO, false, false);
 */
 	uart_stdout.init(115200);
+        PRINTF_CONDITIONAL(-1,"\033[H\033[J");
 	//uart_stdout.config(UART_PARAMETER_ENABLE_DMA, 1);	// use UART with DMA
 
 	return;
