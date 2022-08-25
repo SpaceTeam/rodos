@@ -226,6 +226,7 @@ void hwInitTime(void) {
     /* Enable overflow interrupt */
     TIMER_IntEnable(TIMER0, TIMER_IF_OF);
     nanoTime = 0;
+    NVIC_SetPriority(TIMER0_IRQn, 0);
     NVIC_EnableIRQ(TIMER0_IRQn);
     TIMER_TopSet(TIMER0, 0xFFFF);
     TIMER_Init(TIMER0, &timerInit);

@@ -116,7 +116,7 @@ class TimeModel {
     void correctUTCDelta(const int64_t deltaDelta);
 
     /** Converts the given local time to the corresponding UTC time. */
-    int64_t localTime2UTC(const int64_t loaclTime);
+    int64_t localTime2UTC(const int64_t localTime);
 
     /** Converts the given UTC time to the corresponding local time. */
     int64_t UTC2LocalTime(const int64_t utc);
