@@ -13,8 +13,7 @@ public:
 
     bool writeRead(const std::byte* txBuffer, size_t txLen, std::byte* rxBuffer, size_t rxLen);
 
-    static constexpr bool ENABLE_ROM_SPI { false }; ///< enables SPI_IDX3, which can be used for accessing the FRAM. Use with care.
-    static constexpr SPI_IDX MAX_SPI_IDX { ENABLE_ROM_SPI ? SPI_IDX3 : SPI_IDX2 };
+    static constexpr SPI_IDX MAX_SPI_IDX { SPI_IDX3 };
 private:
     const SPI_IDX m_idx;
     SPIStruct& m_spi;
