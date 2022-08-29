@@ -10,6 +10,7 @@
 #include "register_maps/sysconfig_peripheral_bitband.h"
 #include "register_maps/uart_registers.h"
 #include "register_maps/adc_registers.h"
+#include "register_maps/watchdog_registers.h"
 #include "register_maps/tim_registers.h"
 #include "cortex_m/hw_periph_bitband.h"
 
@@ -28,6 +29,7 @@ inline TIMStruct* const tim16to23 = reinterpret_cast<TIMStruct*>(0x4002'8000);
 inline CLKGENStruct* const clkgen = reinterpret_cast<CLKGENStruct*>(0x4000'6000);
 inline SYSCONFIGStruct* const sysconfig = reinterpret_cast<SYSCONFIGStruct*>(0x4001'0000);
 inline GPIOStruct* const gpioStructs = reinterpret_cast<GPIOStruct*>(0x4001'2000);
+inline WatchdogStruct* const watchdog = reinterpret_cast<WatchdogStruct*>(0x4002'1000);
 inline SYSCONFIGPeripheralBitbandStruct* const sysconfigPeripheralBitband = HWPeriphBitBand<0x4001'0050, 0, SYSCONFIGPeripheralBitbandStruct>::asObject;
 
 }

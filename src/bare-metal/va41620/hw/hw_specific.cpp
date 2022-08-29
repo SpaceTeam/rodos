@@ -5,6 +5,7 @@
 #include "peripheral_ctrl/pin_config/pin_config.h"
 #include "peripheral_ctrl/peripheral_defs.h"
 #include "hw_uart_dbg.h"
+#include "hw_hal/hw_hal_watchdog.h"
 #include "clkgen_config.h"
 
 
@@ -49,7 +50,12 @@ void enterSleepMode()
     asm volatile("wfi");
 }
 
-void hwInitWatchdog([[maybe_unused]] int32_t interval) { }
-void hwTriggerWatchdog() { }
+void hwInitWatchdog(int32_t interval) {
+    HW_HAL_WATCHDOG::hwInitWatchdog(interval);
+}
+
+void hwTriggerWatchdog() {
+    HW_HAL_WATCHDOG::hwTriggerWatchdog();
+}
 
 }
