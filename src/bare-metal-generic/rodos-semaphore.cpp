@@ -66,9 +66,12 @@ void Semaphore::leave() {
     return;
   }
 
+  int32_t currentOwnerPriority;
   {
     PRIORITY_CEILER_IN_SCOPE();
     owner = 0;
+    currentOwnerPriority = ownerPriority;
+    ownerPriority = 0;
     waiter = Thread::findNextWaitingFor(this);
 
     if (waiter != 0) {
@@ -80,8 +83,8 @@ void Semaphore::leave() {
   //   priority of current thread might have been increased in enter() due to a semaphore access
   //   of another thread with higher priority
   //   If so, restore the original priority
-  Thread::setPrioCurrentRunner(ownerPriority);
-  ownerPriority = 0;
+  Thread::setPrioCurrentRunner(currentOwnerPriority);
+
 
   /* 
    * In case resume performs no yield:

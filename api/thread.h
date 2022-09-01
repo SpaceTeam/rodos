@@ -57,7 +57,7 @@ private:
   volatile int64_t suspendedUntil = 0;
 
   /** if waiting for reactivation from someone, eg semaphore */
-  void* waitingFor = nullptr;
+  void* volatile waitingFor = nullptr;
 
   int64_t nextBeat = END_OF_TIME;  ///<  the next time to awake (used in wait)
   int64_t period = 0;    ///<  To repeat every period localTime units
@@ -70,7 +70,7 @@ private:
   void initializeStack();
 
   static void initializeThreads(); ///< call the init method of all threads
-  static Thread* currentThread; ///< pointer to currently running thread
+  static Thread* volatile currentThread; ///< pointer to currently running thread
 
 public:
 
