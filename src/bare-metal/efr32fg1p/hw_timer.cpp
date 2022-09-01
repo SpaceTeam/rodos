@@ -55,10 +55,10 @@ void SysTick_Handler() {
         return;
     }
 
-    long long timeNow = NOW();     // comment this out to improve performance, but: no time events any more
+    long long timeNow = NOW();
     TimeEvent::propagate(timeNow); // comment this out to improve performance, but: no time events any more
 
-    if(NOW() < timeToTryAgainToSchedule) {
+    if(timeNow < timeToTryAgainToSchedule) {
         return;
     }
 
@@ -118,16 +118,15 @@ long long Timer::microsecondsInterval = PARAM_TIMER_INTERVAL;
 
 void Timer::init() {
     Timer::microsecondsInterval = PARAM_TIMER_INTERVAL;
-    timerClock                  = SystemCoreClock;
-    SysTick_Config_New(
-            (uint32_t )(((int64_t)timerClock * Timer::microsecondsInterval) / 1000000)); // initialization of systick timer, reload value: 190000-1 -> generates an irq every 10ms with 19MHz sys clock
-    SysTick_Enable();
+    timerClock                  = CMU_ClockFreqGet(cmuClock_HF);
+    SysTick_Config_New((uint32_t )(((int64_t)timerClock * Timer::microsecondsInterval) / 1000000)); // initialization of systick timer, reload value: 190000-1 -> generates an irq every 10ms with 19MHz sys clock
 }
 
 /**
  * start timer
  */
 void Timer::start() {
+    SysTick_Config_New((uint32_t )(((int64_t)timerClock * Timer::microsecondsInterval) / 1000000)); // initialization of systick timer, reload value: 190000-1 -> generates an irq every 10ms with 19MHz sys clock
     SysTick_Enable();
 }
 
@@ -164,7 +163,8 @@ void Timer::setInterval(const long long microsecondsInterval) {
  * -> this can happen when they don't have the same priority !!!
  */
 
-int64_t NANOS_PER_TIMERTICK;
+int64_t TICK_SCALING;
+uint8_t TICK_SCALING_BITS = 6;
 
 int64_t hwGetNanoseconds(void) {
 
@@ -201,18 +201,17 @@ int64_t hwGetNanoseconds(void) {
 	 * - takes 4 times longer than low precision
 	 */
     //int64_t nanos = ((int64_t)count * 1000000) / (timerClock / 1000);
-     int64_t nanos = ((returnTime << 16) | static_cast<int64_t>(count)) * NANOS_PER_TIMERTICK;
+     int64_t nanos =  (((returnTime << 16) | static_cast<int64_t>(count)) * TICK_SCALING) >> TICK_SCALING_BITS;
 
     return nanos;
 }
 
 void hwInitTime(void) {
-    NANOS_PER_TIMERTICK = 16*SECONDS / static_cast<int64_t>(CMU_ClockFreqGet(cmuClock_TIMER0));
     CMU_ClockEnable(cmuClock_TIMER0, true);
     TIMER_Init_TypeDef timerInit = TIMER_INIT_DEFAULT;
     timerInit.enable     = true,
     timerInit.debugRun   = true,
-    timerInit.prescale   = timerPrescale16,
+    timerInit.prescale   = timerPrescale8,
     timerInit.clkSel     = timerClkSelHFPerClk,
     timerInit.fallAction = timerInputActionNone,
     timerInit.riseAction = timerInputActionNone,
@@ -226,11 +225,12 @@ void hwInitTime(void) {
     /* Enable overflow interrupt */
     TIMER_IntEnable(TIMER0, TIMER_IF_OF);
     nanoTime = 0;
-    NVIC_SetPriority(TIMER0_IRQn, 0);
+    NVIC_SetPriority(TIMER0_IRQn, TIMER_IRQ_PRIO);
     NVIC_EnableIRQ(TIMER0_IRQn);
     TIMER_TopSet(TIMER0, 0xFFFF);
     TIMER_Init(TIMER0, &timerInit);
 
+    TICK_SCALING = (((1 << timerInit.prescale) * SECONDS) << TICK_SCALING_BITS) / CMU_ClockFreqGet(cmuClock_TIMER0);
 
     TIMER_Enable(TIMER0,true);
 }
@@ -241,11 +241,14 @@ int64_t hwGetAbsoluteNanoseconds(void) {
 
 extern "C" {
 void TIMER0_IRQHandler(void) {
-    /* Clear flag for TIMER0 overflow interrupt */
-    TIMER_IntClear(TIMER0, TIMER_IF_OF);
-    NVIC_ClearPendingIRQ(TIMER0_IRQn);
-
-    nanoTime++;
+    if(TIMER_IntGet(TIMER0) == TIMER_IF_OF){
+       /* Clear flag for TIMER0 overflow interrupt */
+       TIMER_IntClear(TIMER0, TIMER_IF_OF);
+       nanoTime++;
+    } else {
+       /* Something different happened -> ToDo proper error handling */
+       TIMER_IntClear(TIMER0, 0xFF);
+    }
 }
 
 }

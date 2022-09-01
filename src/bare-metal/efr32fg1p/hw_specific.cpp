@@ -29,51 +29,40 @@ volatile long *contextT;
 namespace RODOS {
 #endif
 
-#ifdef EFR32FG12P433F1024GM68
-//HAL_UART uart_stdout(UART_IDX0,GPIO_030,GPIO_031);
-HAL_UART uart_stdout(UART_IDX1,GPIO_028,GPIO_029); // Just so we dont block the uart_egse
-//HAL_UART uart_stdout(UART_IDX0,GPIO_028,GPIO_029); // For ADCS Board
-//HAL_UART uart_stdout(UART_IDX2, GPIO_085,GPIO_084); // Sun Sensor External UART Pins
-//HAL_UART uart_stdout(UART_IDX4); // For ADCS Board LEUART
-#else
-//HAL_UART uart_stdout(UART_IDX0,GPIO_000,GPIO_001);
-HAL_UART uart_stdout(UART_IDX1,GPIO_028,GPIO_029); // Just so we dont block the uart_egse
-#endif
-
+HAL_UART uart_stdout(UART_DEBUG);
 extern long myNodeNr;
 
 /** Responsible for hardware initialization */
 void hwInit (void)
 {
-	//CMU_HFXOInit_TypeDef hfxoInit = CMU_HFXOINIT_DEFAULT;
-	//hfxoInit.ctuneSteadyState = 355;
+    //CMU_HFXOInit_TypeDef hfxoInit = CMU_HFXOINIT_DEFAULT;
+    //hfxoInit.ctuneSteadyState = 355;
 
     schedulerRunning = false;
 
-	/* Make PendSV, SysTick and Timer0 (set in TIMER0_init) the same priroity */
-	NVIC_SetPriority(PendSV_IRQn, 255);
-	NVIC_SetPriority(SysTick_IRQn, 255);
-	/* Update SystemCoreClock (global variable that contains the system frequency) */
-	SystemCoreClockUpdate();
-	/* Initialize the chip */
-	CHIP_Init();
-	halInit();
+    /* Make PendSV, SysTick and Timer0 (set in TIMER0_init) the same priroity */
+    NVIC_SetPriority(PendSV_IRQn, PENDSV_IRQ_PRIO);
+    NVIC_SetPriority(SysTick_IRQn, SYSTICK_IRQ_PRIO);
+    /* Update SystemCoreClock (global variable that contains the system frequency) */
+    SystemCoreClockUpdate();
+    /* Initialize the chip */
+    halInit();
 
-	// Determine the Node Number from the first bytes of the chips UID
-	// Note: the chip unique ID is 64bits. By truncating the number, it may no longer be unique.
-	myNodeNr = static_cast<int32_t>(SYSTEM_GetUnique() & 0xFFFFFFFF);
+    // Determine the Node Number from the first bytes of the chips UID
+    // Note: the chip unique ID is 64bits. By truncating the number, it may no longer be unique.
+    myNodeNr = static_cast<int32_t>(SYSTEM_GetUnique() & 0xFFFFFFFF);
 
-	/* Initialize Timer for system time */
-	/*
-	CMU_HFXOInit(&hfxoInit);
-	SystemHFXOClockSet(38400000UL);
-	CMU_OscillatorEnable(cmuOsc_HFXO, true, true);
-	CMU_ClockSelectSet(cmuClock_HF, cmuSelect_HFXO);
-	CMU_OscillatorEnable(cmuOsc_HFRCO, false, false);
-*/
-	uart_stdout.init(115200);
-        PRINTF_CONDITIONAL(-1,"\033[H\033[J");
-	//uart_stdout.config(UART_PARAMETER_ENABLE_DMA, 1);	// use UART with DMA
+    /* Initialize Timer for system time */
+    /*
+    CMU_HFXOInit(&hfxoInit);
+    SystemHFXOClockSet(38400000UL);
+    CMU_OscillatorEnable(cmuOsc_HFXO, true, true);
+    CMU_ClockSelectSet(cmuClock_HF, cmuSelect_HFXO);
+    CMU_OscillatorEnable(cmuOsc_HFRCO, false, false);
+    */
+    uart_stdout.init(115200);
+    PRINTF_CONDITIONAL(-1,"\033[H\033[J");
+    //uart_stdout.config(UART_PARAMETER_ENABLE_DMA, 1);	// use UART with DMA
 
 	return;
 }

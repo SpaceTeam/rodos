@@ -67,6 +67,18 @@
 
 //______________________________________________________________________________________________
 
+
+#ifdef EFR32FG12P433F1024GM68
+#define UART_DEBUG                              UART_IDX1,GPIO_028,GPIO_029
+#else
+#define UART_DEBUG                              UART_IDX0,GPIO_000,GPIO_001
+#endif
+
+#define TIMER_IRQ_PRIO                          0
+#define RAIL_LIB_IRQ_PRIO                       1
+#define SYSTICK_IRQ_PRIO                        7
+#define PENDSV_IRQ_PRIO                         7
+
 /***************************** Radio communicatio  parameter ************************************/
 
 // WARNING!! All time intervals for RAIL  (GECKO lib) are in Microseconds !!!!

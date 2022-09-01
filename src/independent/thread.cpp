@@ -26,7 +26,7 @@ void Thread::setPeriodicBeat(const int64_t begin,
 
 void Thread::suspendUntilNextBeat() {
     while (period == 0) {
-        RODOS_ERROR("Thead with Period 0 waiting for next beat");
+        RODOS_ERROR("Thread with Period 0 waiting for next beat");
         suspendCallerUntil(); // WRONG! Period shall not be 0 for beats
     }
 
