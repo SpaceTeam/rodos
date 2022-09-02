@@ -276,11 +276,6 @@
 // [USART1]$
 
 // $[VCOM]
-#define HAL_VCOM_ENABLE                       (1)
-
-#define BSP_VCOM_ENABLE_PIN                   (5U)
-#define BSP_VCOM_ENABLE_PORT                  (gpioPortA)
-
 // [VCOM]$
 
 // $[VUART]
