@@ -32,7 +32,7 @@ int64_t timeAtStartup = 0LL;
 /****************** src global variables **************/
 
 
-Thread* Thread::currentThread   = 0;
+Thread* volatile Thread::currentThread   = 0;
 
 List Thread::threadList         = 0;
 List TimeEvent::timeEventList   = 0;
