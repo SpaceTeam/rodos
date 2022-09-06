@@ -37,6 +37,7 @@ class S3pCode {
     static inline uint16_t compose(const uint8_t msb, const uint8_t lsb) { return (uint16_t)((uint16_t)((uint16_t)msb << 8) | (uint16_t)lsb); }
 
     virtual void executeCommand([[gnu::unused]] uint16_t command) {}   // override execute commands other than BOM, EOM and STUFF
+    virtual ~S3pCode() = default;
 };
 
 } // namespace
