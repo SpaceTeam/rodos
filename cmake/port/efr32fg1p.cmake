@@ -21,7 +21,6 @@ set(link_options ${compile_and_link_options} -nostartfiles -nostdlib -Xlinker
     --gc-sections -fno-unwind-tables -fno-asynchronous-unwind-tables -lm)
 set(libraries_to_link ${RAIL_LIB} -lm)
 set(directories_to_link ${RODOS_DIR}/src/bare-metal/efr32fg1p/)
-set(linker_script ${RODOS_DIR}/src/bare-metal/efr32fg1p/scripts/${SUB_ARCH}.ld)
 
 set(sources_to_add_public
     ${RODOS_DIR}/src/bare-metal/efr32fg1p/emlib/src/em_system.c
