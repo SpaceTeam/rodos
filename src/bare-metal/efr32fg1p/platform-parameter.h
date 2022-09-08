@@ -34,9 +34,6 @@
 #undef PARAM_TIMER_INTERVAL
 #define PARAM_TIMER_INTERVAL 1000
 
-/** Time interval between context switches under priority conflict */
-#undef TIME_SLICE_FOR_SAME_PRIORITY
-#define TIME_SLICE_FOR_SAME_PRIORITY 2000
 
 /** Default priority for newly created threads */
 #undef DEFAULT_THREAD_PRIORITY

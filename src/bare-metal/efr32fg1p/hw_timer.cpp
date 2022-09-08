@@ -49,7 +49,6 @@ volatile int64_t nanoTime = 0;
  */
 void SysTick_Handler();
 void SysTick_Handler() {
-    //nanoTime += PARAM_TIMER_INTERVAL * 1000; // 10M ns for each 10ms-tick
 
     if(!isSchedulingEnabled) {
         return;
@@ -247,7 +246,7 @@ void TIMER0_IRQHandler(void) {
        nanoTime++;
     } else {
        /* Something different happened -> ToDo proper error handling */
-       TIMER_IntClear(TIMER0, 0xFF);
+       TIMER_IntClear(TIMER0, 0xFFFFFFFF & ~TIMER_IF_OF);
     }
 }
 
