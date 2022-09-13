@@ -286,18 +286,15 @@ public:
 
     YPR_<TYPE> toYPR() const { // DEPRECATED
         YPR_<TYPE> ypr;
-//        TYPE m21 = 2*this->q.x * this->q.y  + 2*this->q0 *this->q.z;
-//        TYPE m11 = 2*this->q0  * this->q0-1 + 2*this->q.x*this->q.x;
-//        TYPE m31 = 2*this->q.x * this->q.z  - 2*this->q0 *this->q.y;
-//        TYPE m32 = 2*this->q.y * this->q.z  + 2*this->q0 *this->q.x;
-//        TYPE m33 = 2*this->q0  * this->q0-1 + 2*this->q.z*this->q.z;
-//
-//        ypr.roll  = atan2(m32, m33);
-//        ypr.pitch = atan2(-m31, sqrt(m11*m11 + m21*m21));
-//        ypr.yaw   = atan2(m21, m11);
 
         ypr.roll = atan2(2*(q0*q.x+q.y*q.z), 1-2*(q.x*q.x+q.y*q.y));
-        ypr.pitch = asin(2*(q0*q.y-q.z*q.x));
+
+        // Limit the sin of pitch between [-1,1]
+        TYPE sinPitch = 2*(q0*q.y-q.z*q.x);
+        if(sinPitch > 1) sinPitch = 1;
+        if(sinPitch < -1) sinPitch = -1;
+        ypr.pitch = asin(sinPitch);
+
         ypr.yaw = atan2(2*(q0*q.z+q.x*q.y), 1-2*(q.y*q.y+q.z*q.z));
 
         return ypr;
