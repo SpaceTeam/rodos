@@ -3,8 +3,8 @@
 /**
  * @file topic.h
  * @date 2008/09/01 7:07
- * @author Sergio Montenegro
- *
+ * @author Sergio Montenegro (SM)
+ *    modified SM, 2022/03/08
  *
  * @brief topic for middleware
  *
@@ -21,6 +21,12 @@
 namespace RODOS {
 
 class TopicFilter;
+
+
+/** Predifined topic ids ***/
+constexpr uint32_t TOPIC_ID_FOR_TOPIC_REPORT           =  0; // redundant with 2? yes, this is DEPRECATED!
+constexpr uint32_t TOPIC_ID_FOR_TOPICLIST_DISTRIBUTION =  1; // see receiverNode+receiverNodesBitMap.txt
+constexpr uint32_t ALL_TOPICS_BELOW_THIS_ARE_BROADCAST = 10;
 
 /**
  *  @class TopicInterface
@@ -46,7 +52,6 @@ class TopicInterface : public ListElement {
 	friend void initSystem();
 	friend class Gateway;
 	friend class Subscriber;
-	friend class TopicReporter;
 
 public:
 
@@ -57,11 +62,10 @@ public:
         TopicFilter* topicFilter; ///< a filter may modify the content of the message befor the subscriber get it.
         
 	uint32_t topicId;   ///< Topic ID used for identification by network tramsmitions
-	size_t msgLen;    ///< Size of message transferred via this topic
-	bool onlyLocal; ///< if true, never call the gateways for this topic, even if publish says ditritribute to network
-
-
-
+	size_t   msgLen;    ///< Size of message transferred via this topic
+	bool     onlyLocal; ///< if true, never call the gateways for this topic, even if publish says ditritribute to network
+        uint32_t receiverNodesBitMap; ///< see receiverNode+receiverNodesBitMap.txt (Please do it!!)
+        // int32_t receiverNode;      ///< Better than store, the topic computes it from receiverNodesBitMap
 public:
 
     TopicInterface(int64_t id, size_t len, const char* name, bool _onlyLocal = false);
@@ -104,6 +108,9 @@ public:
      static TopicInterface* findTopicId(uint32_t wantedTopicId);
 
      void setTopicFilter(TopicFilter* filter);
+
+     // The value for receiverNode :  See receiverNode+receiverNodesBitMap.txt
+     int32_t receiverNodesBitMap2Index();
 
 };
 
@@ -165,6 +172,10 @@ public:
         return TopicInterface::publish(&msg, shallSendToNetwork);
     }
 
+    inline uint32_t publish(Type &msg, bool shallSendToNetwork, NetMsgInfo* netMsgInfo) {
+        return TopicInterface::publish(&msg, shallSendToNetwork, netMsgInfo);
+    }
+
     inline uint32_t publish(Type &&msg, bool shallSendToNetwork = true) {
         return TopicInterface::publish(&msg, shallSendToNetwork);
     }
@@ -197,8 +208,8 @@ public:
 };
 
 /***
- ** very often we need a generiv type for topics which contains just
- ** a pointer and a len.
+ ** very often we need a generic type for topics which contains just
+ ** a pointer and a len. (it can be used only local in same node)
  ** to avoid 100x declarations fo this struct, we define one here
  **/
 
@@ -222,6 +233,13 @@ extern Topic<void*> interruptUart;
 extern Topic<void*> interruptSigterm;
 extern Topic<GenericMsgRef> charInput; ///< used instead of getcharNoWait()
 
+/** To include the application DistributedTopicRegister 
+ * (to known which nodes have subscribers to which topics, see TopicInterface::receiverNodesBitMap)
+ * just create an object of this struct and do nothing with it.
+ */
+struct DistributedTopicRegisterDecoy {
+    DistributedTopicRegisterDecoy() ;
+};
 
 }  // namespace
 

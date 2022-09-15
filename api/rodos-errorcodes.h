@@ -15,7 +15,13 @@ enum class ErrorCode : uint32_t {
     NO_ERROR = 0,
 
     //_______Generic and undefined  errors
-    UNKNOWN = 1,
+    UNKNOWN    = 1,
+    NOT_FOUND  = 2,
+    DUPLICATED = 3,
+    OVERFLOW   = 4,
+    FULL       = 6,
+    EMPTY      = 7,
+
     // .... to be extended  (by RODOS Developers)
 
     //_______Memory errors

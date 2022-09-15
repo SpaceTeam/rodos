@@ -2,12 +2,15 @@
 /**
  * @file router.cpp
  * @date 2013/03/27 17:46
- * @author Erik Dilger, Uni W�rzburg
- *
+ * @author Erik Dilger, Uni Wuerzburg
+ *    updates SM 2022-sept
  *
  * @brief gateway for middleware
  *
  */
+
+
+//****************** DEPRECATED ******
 
 #include "gateway/router.h"
 #include "rodos-debug.h"
@@ -40,7 +43,7 @@ bool Router::putGeneric(const uint32_t topicId, const size_t len,
 
     protector.enter();
     prepareNetworkMessage(localMessage,topicId,msg,len, netMsgInfo);
-    routeMsg(localMessage,RODOS_LOCAL_BROADCAST);
+    routeMsg(localMessage,LINK_ID_RODOS_LOCAL_BROADCAST);
     protector.leave();
 
     return true;
