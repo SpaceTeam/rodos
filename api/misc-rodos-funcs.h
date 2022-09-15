@@ -22,6 +22,7 @@ extern bool isShuttingDown; // set by hwResetAndReboot(), read by destructors
  * if a network and a gateway are present, my node number
  */
 int32_t getNodeNumber();
+void    setNodeNumber(int32_t);
 
 int64_t getNumberOfReceivedMsgsFromNetwork();
 

@@ -27,6 +27,7 @@ bool isShuttingDown = false; // set by hwResetAndReboot(), read by destructors
 
 int32_t myNodeNr = -1 ;
 int32_t getNodeNumber() { return myNodeNr; }
+void    setNodeNumber(int32_t newNodeNr) { myNodeNr = newNodeNr; }
 
 /**
  * In case there is a getways: number of arrived messages

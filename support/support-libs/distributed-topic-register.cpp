@@ -1,6 +1,6 @@
 /*
  * @file: Distributed-Topic-Register
- * @date: Jun 10, 2022, Agusut 2022
+ * @date: Jun 10, 2022, August 2022
  * @author: S. Büttner, T. Hegel, E. Zischka, Sergio Montenegro
  */
 
@@ -55,15 +55,15 @@ void DistributedTopicRegister::run() {
     //_____________ preparations: which are my local topics with subscribers?
     NetMsgInfo netMsgInfo; //(NetMsgType::TOPIC_LIST);
 
-    topicListFromMyNode.nodeNr    = (uint32_t)getNodeNumber();
-    topicListFromMyNode.nodeIndex = topicListFromMyNode.nodeNr % MAX_NUM_OF_NODES;
-
     ITERATE_LIST(TopicInterface, TopicInterface::topicList) {
         if(iter->mySubscribers != 0) topicListFromMyNode.topicListReport.add(iter->topicId);
     }
 
     //_______________________________________________________
     TIME_LOOP(1117 * MILLISECONDS, 3 * SECONDS) {
+        topicListFromMyNode.nodeNr    = (uint32_t)getNodeNumber();
+        topicListFromMyNode.nodeIndex = topicListFromMyNode.nodeNr % MAX_NUM_OF_NODES;
+
         netMsgInfo.init(NetMsgType::TOPIC_LIST);
         topicListDistribution.publish(topicListFromMyNode, true, &netMsgInfo); // always the same, but important for new nodes
 
