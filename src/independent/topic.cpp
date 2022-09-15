@@ -31,7 +31,7 @@ TopicInterface::TopicInterface(int64_t id, size_t len, const char* name, bool _o
     msgLen        = len;
     onlyLocal     = _onlyLocal;
     topicFilter   = 0;
-
+    receiverNodesBitMap = 0; // see receiverNode+receiverNodesBitMap.txt
     if(id == -1) {
         topicId = hash(name) ;
         if(topicId < FIRST_USER_TOPIC_ID) { // reserved topic ids
@@ -40,6 +40,7 @@ TopicInterface::TopicInterface(int64_t id, size_t len, const char* name, bool _o
     } else {
         topicId       = static_cast<uint32_t>(id & 0xFFFFFFFF);
     }
+    if(topicId < ALL_TOPICS_BELOW_THIS_ARE_BROADCAST) receiverNodesBitMap = ~0u;
 
     /** Check for replications - except for udp async topic**/
     static const uint32_t udpAsyncTopicID = 22582; 
@@ -63,6 +64,25 @@ TopicInterface*  TopicInterface::findTopicId(uint32_t wantedTopicId) {
         if(iter->topicId == wantedTopicId)  return iter;
     }
     return 0;
+}
+
+// The value for receiverNode :  See receiverNode+receiverNodesBitMap.txt
+int32_t TopicInterface::receiverNodesBitMap2Index() {
+
+    if(topicId < ALL_TOPICS_BELOW_THIS_ARE_BROADCAST) { //!! Warnung! Side effect
+        receiverNodesBitMap = ~0u; // all bits -> all channels -> all nodes. Redundant with constructor! Shall be!
+        return -1;
+    }
+    uint32_t bitmap = receiverNodesBitMap;
+    int32_t  indexFound = -2; // -2 -> no receiver found
+    for(int index = 0; bitmap != 0; index++) {
+        if(bitmap & 0x01) {
+              if(indexFound != -2) return -1; // more than one -> broadcast
+              indexFound = index;
+        }
+        bitmap >>= 1; 
+    }
+    return indexFound; // -2 if not found, else index of single 1
 }
 
 
@@ -100,7 +120,10 @@ uint32_t TopicInterface::publishMsgPart(void* data, size_t lenToSend, bool shall
    if(onlyLocal)           { return cnt; }
    if(!shallSendToNetwork) { return cnt; }
 
-    /** Now distribute message to all gateways **/
+    //______________________________________________ Now distribute message to all gateways
+    netMsgInfo->receiverNode        = receiverNodesBitMap2Index(); // first this due to side-effect
+    netMsgInfo->receiverNodesBitMap = this->receiverNodesBitMap;
+    
     ITERATE_LIST(Subscriber, defaultGatewayTopic.mySubscribers) {
         cnt += iter->put(topicId, lenToSend, data, *netMsgInfo);
     }

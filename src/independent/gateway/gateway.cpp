@@ -2,7 +2,7 @@
  * @file gatewayGeneric.cc
  * @date 2012/05/01 7:07
  * @author Sergio Montenegro, Uni Würzburg
- *
+ *         update 2022/08/03: SM : Support for router networks
  *
  * @brief gateway for middleware
  *
@@ -122,6 +122,7 @@ uint32_t Gateway::put(const uint32_t topicId, const size_t len, void* data, cons
     if(!isEnabled) return 0;
     // if(topicId == 0) return 0;
 
+    // Deprecated but still in use
     if(!forwardAll) {
         if(topicId !=0 && !externalsubscribers.find(topicId)) { return 0; }
     }
@@ -222,6 +223,7 @@ void Gateway::AnalyseAndDistributeMessagesFromNetwork() {
         msgInfo.senderNode     = networkInMessage.get_senderNode();
         msgInfo.senderThreadId = networkInMessage.get_senderThreadId();
         msgInfo.receiverNode   = networkInMessage.get_receiverNode();
+        msgInfo.receiverNodesBitMap = networkInMessage.get_receiverNodesBitMap();
         msgInfo.messageType    = (NetMsgType)networkInMessage.get_type();
 
         ITERATE_LIST(TopicInterface, TopicInterface::topicList) {
@@ -283,12 +285,14 @@ void Gateway::run() {
 
 
 void prepareNetworkMessage(NetworkMessage& netMsg, const uint32_t topicId,const void* data, size_t len, const NetMsgInfo& netMsgInfo) {
+    netMsg.put_receiverNode(netMsgInfo.receiverNode);
+    netMsg.put_receiverNodesBitMap(netMsgInfo.receiverNodesBitMap);
+    netMsg.put_maxStepsToForward(10);
+
     netMsg.put_senderNode(netMsgInfo.senderNode);
     netMsg.put_topicId(topicId);
     netMsg.put_sentTime(netMsgInfo.sentTime);
     netMsg.put_type((uint16_t)netMsgInfo.messageType);
-    netMsg.put_receiverNode(netMsgInfo.receiverNode);
-    netMsg.put_maxStepsToForward(10);
     netMsg.put_senderThreadId(netMsgInfo.senderThreadId);
     RODOS_ASSERT(len <= UINT16_MAX);
     if(len > UINT16_MAX) len = UINT16_MAX;

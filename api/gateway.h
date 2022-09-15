@@ -10,7 +10,6 @@
 
 #include "gateway/gateway.h"
 #include "gateway/router.h"
-#include "gateway/topicreporter.h"
 #include "gateway/linkinterface.h"
 #include "gateway/linkinterfaceuart.h"
 #include "gateway/linkinterfaceudp.h"
