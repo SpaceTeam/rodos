@@ -72,13 +72,15 @@ void Thread::yield() {
     if(!isSchedulingEnabled) return; // I really do not like This! but required
 
     /** Optimisation: Avoid unnecesary context swtichs: see Scheduler::schedule()  ***/
+    globalAtomarLock();
     long long timeNow = NOW(); 
     Thread* preselection = findNextToRun(timeNow); 
-    if(preselection == getCurrentThread()) return;
+    if(preselection == getCurrentThread()) { globalAtomarUnlock(); return; }
 
     // schedule is required, The scheduler shall not repeate my computations: 
     Scheduler::preSelectedNextToRun = preselection; 
     Scheduler::preSelectedTime = timeNow;
+    globalAtomarUnlock();
 
     /* reschedule next timer interrupt to avoid interruptions of while switching */
     Timer::stop();
