@@ -67,6 +67,11 @@ if (is_port_baremetal)
     target_include_directories(rodos_rodos PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/bare-metal-generic>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/bare-metal-generic/ip/lwip/include>)
+
+    option(SLEEP_WHEN_IDLE_ENABLED "Go into sleep mode when idling" OFF)
+    if(SLEEP_WHEN_IDLE_ENABLED)
+        add_compile_definitions(SLEEP_WHEN_IDLE_ENABLED)
+    endif()
 endif ()
 
 

@@ -20,10 +20,12 @@ namespace RODOS {
 
 constexpr uint32_t EMPTY_MEMORY_MARKER = 0xDEADBEEF;
 
+#ifdef SLEEP_WHEN_IDLE_ENABLED
 // at which time before the next thread becomes active, should the processor wake up?
 constexpr int64_t TIME_BEFORE_WAKEUP = 3 * MILLISECONDS;
 // if in the next "TIME_DONT_SLEEP"  nanoseconds the next thread becomes active, do sleep. 999 Seconds is as good as deactivated
-constexpr int64_t TIME_DONT_SLEEP = 999*SECONDS;
+constexpr int64_t TIME_DONT_SLEEP = 3 * MILLISECONDS;
+#endif
 
 //List Thread::threadList = 0;
 //Thread* Thread::currentThread = 0;
@@ -209,20 +211,24 @@ void IdleThread::run() {
     while(1) {
         idleCnt = idleCnt + 1;
         setPriority(0); // Due to wrong usage of PRIORITY_CLING in events, once I got highest prio for Idle.
-        sp_partition_yield(); // allow other linux processes or ARIC-653 paritions to run
+        sp_partition_yield(); // allow other linux processes or ARIC-653 partitions to run
         yield();
 
+#ifdef SLEEP_WHEN_IDLE_ENABLED
         // enter sleep mode if suitable
-        int64_t timerInterval = (timeToTryAgainToSchedule - NOW());
-        timerInterval -= TIME_BEFORE_WAKEUP;
+        int64_t reactivationTime =
+            RODOS::min(timeToTryAgainToSchedule, TimeEvent::getNextTriggerTime());
+
+        int64_t timerInterval = reactivationTime - TIME_BEFORE_WAKEUP - NOW();
         if(timerInterval > TIME_DONT_SLEEP) {
           Timer::stop();
-          Timer::setInterval(timerInterval / 1000l); // nanoseconds to microsenconds
+          Timer::setInterval(timerInterval / 1000l); // nanoseconds to microseconds
           Timer::start();
           enterSleepMode();
           Timer::setInterval(PARAM_TIMER_INTERVAL);
           Timer::start();
         }
+#endif
     }
 }
 
