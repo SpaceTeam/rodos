@@ -78,7 +78,7 @@ void hwTriggerWatchdog() { timeOfLastTriggerWatchdog = NOW(); }
 
 //_____________________________________________________
 void sp_partition_yield() { }
-void enterSleepMode()     { }
+void enterSleepMode()     { pause(); }
 void FFLUSH()             { fflush(stdout); }
 
 } // namespace RODOS
