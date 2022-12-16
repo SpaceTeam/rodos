@@ -97,6 +97,12 @@ constexpr bool inOpenInterval(const T& a, const T& min, const T& max) {
     return (min < a) && (a < max);
 }
 
+template <typename T>
+constexpr bool areIntervalsDisjunt(const T& minA, const T& maxA,const T& minB, const T& maxB ) {
+    return  (maxA < minB) || (maxB < minA);
+}
+
+
 constexpr uint16_t chars2short(const char a, const char b) {
     return static_cast<uint16_t>((a << 8) + b);
 }
