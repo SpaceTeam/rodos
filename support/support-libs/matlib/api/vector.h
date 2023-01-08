@@ -272,6 +272,7 @@ public:
 	}
 
 	Vector3D_<TYPE>& operator=(const Vector3D_<TYPE> &other) = default;
+	Vector3D_<TYPE>(Vector3D_<TYPE> const&) = default;
 
 };
 
