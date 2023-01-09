@@ -14,28 +14,7 @@ Install prerequisites
 ```
 sudo apt update
 sudo apt upgrade
-sudo apt install build-essential xz-utils curl 
-```
-
-Optional: Add CLang toolchain repository. 
-------------------------------
-
-Note: In case you want the easy way, do not use clang, use g++ instead.
-Edit the last lines in scripts/build-scripts  `*set-vars.sh` 
-
-```
-#export CPP_COMP="g++ "
-#export C_COMP="gcc "  # only to compile BSP and Drivers from chip provider
-export C_COMP="clang "  # only to compile BSP and Drivers from chip provider
-export CPP_COMP="clang++ "
-```
-
-
-Append the following lines to **/etc/apt/sources.list**
-
-```
-    deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-7 main
-    deb-src http://apt.llvm.org/bionic/ llvm-toolchain-bionic-7 main
+sudo apt install build-essential xz-utils curl wget
 ```
 
 
@@ -45,11 +24,9 @@ Install toolchain for CLang
 ```
 wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key|sudo apt-key add
 sudo apt update
-sudo apt install clang-7 lldb-7 lld-7 clang-tools-7 libclang1-7
-sudo apt install clang-format-7 libc++-dev libc++abi-dev gdb
+sudo apt install clang lldb lld clang-tools libclang1
+sudo apt install clang-format libc++-dev libc++abi-dev gdb
 sudo apt install g++-multilib gcc-multilib
-sudo update-alternatives --install /usr/bin/cc cc /usr/bin/clang-7 100
-sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-7 100
 ```
 
 Other tools always required for GCC and CLang
@@ -63,7 +40,7 @@ sudo apt install build-essential gcc-multilib g++-multilib
 Manually install latest cmake 
 -----------------------------
 
-Ubuntu 20.04 and later ship a suitable CMake version:
+Ubuntu 22.04 and later ship a suitable CMake version:
 
 ```
 sudo apt install cmake
