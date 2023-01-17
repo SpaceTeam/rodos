@@ -8,7 +8,10 @@ namespace RODOS {
  *create context on stack and return a pointer to it
  */
 long* hwInitContext(long* stack, void* object) {
-    long* tos     = stack; /* top of stack */
+    /* top of stack = ALIGN(stack, 16 bytes boundary) */
+    long* tos = reinterpret_cast<long*>(
+                    reinterpret_cast<uintptr_t>(stack) & (~static_cast<uintptr_t>(0xF)));
+
     *tos--        = (long)object;
     *tos          = 0;
     TContext* ctx = (TContext*)(tos - sizeof(TContext) / sizeof(long));
