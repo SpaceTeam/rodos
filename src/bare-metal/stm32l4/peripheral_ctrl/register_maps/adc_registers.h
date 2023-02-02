@@ -76,7 +76,7 @@ namespace ADC_SMPR1 {
     using SMP0 = RegSubValue<0, 3>;
     using SMP1 = RegSubValue<3, 3>;
     using SMP2 = RegSubValue<6, 3>;
-    using SMP3 = RegSubValue<6, 3>;
+    using SMP3 = RegSubValue<9, 3>;
     using SMP4 = RegSubValue<12, 3>;
     using SMP5 = RegSubValue<15, 3>;
     using SMP6 = RegSubValue<18, 3>;
