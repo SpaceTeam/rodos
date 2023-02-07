@@ -14,7 +14,6 @@ Install prerequisites
 ```
 sudo apt update
 sudo apt upgrade
-sudo apt install build-essential xz-utils curl wget
 ```
 
 
@@ -22,31 +21,16 @@ Install toolchain for CLang
 -----------------------
 
 ```
-wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key|sudo apt-key add
-sudo apt update
-sudo apt install clang lldb lld clang-tools libclang1
-sudo apt install clang-format libc++-dev libc++abi-dev gdb
-sudo apt install g++-multilib gcc-multilib
-```
-
-Other tools always required for GCC and CLang
------------
+sudo apt install -y apt-utils
+sudo apt install -y clang clang-format clang-tools gdb
+sudo apt install -y gcc-multilib g++-multilib
+sudo apt install -y gcc-arm-none-eabi binutils-arm-none-eabi libnewlib-arm-none-eabi
+sudo apt install -y cmake
 
 ```
-sudo apt install build-essential gcc-multilib g++-multilib
-```
 
 
-Manually install latest cmake 
------------------------------
-
-Ubuntu 22.04 and later ship a suitable CMake version:
-
-```
-sudo apt install cmake
-```
-
-To check your version run:
+To check your camake version run:
 
 ```
 cmake --version
@@ -63,39 +47,6 @@ sudo ./cmake-3.13.2-Linux-x86_64.sh
 sudo ln -s /opt/cmake-3.13.2-Linux-x86_64/bin/* /usr/local/bin
 ```
 
-For ARM
-=======
-
-Install ARM cross compilation toolchain prerequisites
------------------------------------------------------
-
-```
-sudo apt install libgmp3-dev libmpfr-dev libx11-6 libx11-dev 
-sudo apt install texinfo flex bison libmpc-dev libncurses5
-sudo apt install libncurses5-dbg libncurses5-dev libncursesw5
-sudo apt install libncursesw5-dbg libncursesw5-dev zlibc
-```
-
-Install ARM cross compilation toolchain 
--------------------------------------------------
-
-There are two options to install the ARM toolchain: Either through the package manager or manually.
-
-Through apt: 
-
-```
-sudo apt install binutils-arm-none-eabi gcc-arm-none-eabi libnewlib-arm-none-eabi
-```
-
-Manually: replace link with latest Linux binary from https://developer.arm.com 
-
-
-```
-wget https://developer.arm.com/-/media/Files/downloads/gnu-rm/8-2018q4/gcc-arm-none-eabi-8-2018-q4-major-linux.tar.bz2
-tar -xf gcc-arm-none-eabi-8-2018-q4-major-linux.tar.bz2
-sudo mv gcc-arm-none-eabi-8-2018-q4-major /opt/gcc-arm
-sudo ln -s /opt/gcc-arm/bin/* /usr/local/bin
-```
 
 For Smartfusion 2 (SF2)
 ======================

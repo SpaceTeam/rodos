@@ -43,10 +43,12 @@ and study the "doc" directory.
 If you do not have the clang/c++ tools, please install first:
 
 ```
-    sudo apt-get install gcc-multilib g++-multilib
-    sudo apt-get install clang 
-for ARM:
-    sudo apt install binutils-arm-none-eabi gcc-arm-none-eabi libnewlib-arm-none-eabi
+	sudo apt install -y apt-utils
+	sudo apt install -y clang clang-format clang-tools gdb
+	sudo apt install -y gcc-multilib g++-multilib
+	sudo apt install -y gcc-arm-none-eabi binutils-arm-none-eabi libnewlib-arm-none-eabi
+	sudo apt install -y cmake
+
 ```
 
 2  Sent shell variables
