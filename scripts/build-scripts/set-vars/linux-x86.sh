@@ -15,7 +15,8 @@ export INCLUDES=${INCLUDES}" -I ${RODOS_SRC}/bare-metal/${ARCH} "  # only for pl
 export INCLUDES_TO_BUILD_LIB=" -I ${RODOS_SRC}/bare-metal-generic "  
 
 export CFLAGS=${CFLAGS}" -m32 "
-export LINKFLAGS=" -L ${RODOS_LIBS}/${TARGET_LIB} -lrodos -lm "
+export LINKFLAGS=" -L ${RODOS_LIBS}/${TARGET_LIB} -lrodos -lm -no-pie"
+#export LINKFLAGS=" -L ${RODOS_LIBS}/${TARGET_LIB} -lrodos -lm "
 
 
 #__________________________ Select one: gcc or clang, clang is better to detect warnings but slower
