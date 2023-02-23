@@ -49,6 +49,8 @@ public:
 	    z = 0;
 	}
 
+	Vector3D_(const Vector3D_ &) = default;
+
 	Vector3D_(const Vector_<3,TYPE> &other) {
 		x = other.r[0][0];
 		y = other.r[1][0];
@@ -272,8 +274,6 @@ public:
 	}
 
 	Vector3D_<TYPE>& operator=(const Vector3D_<TYPE> &other) = default;
-	Vector3D_<TYPE>(Vector3D_<TYPE> const&) = default;
-
 };
 
 template <typename TYPE>
