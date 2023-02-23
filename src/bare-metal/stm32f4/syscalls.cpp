@@ -128,7 +128,7 @@ caddr_t _sbrk(int incr) {
 	// Der Hauptstack (MSP) wird (nachdem RODOS gestartet ist) nur noch
 	// von ISRs & dem Scheduler verwendet.
 	//if (heap_end + incr > stack_ptr) {
-	if (heap_end + incr > &_estack-_Min_Stack_Size) {
+	if (reinterpret_cast<intptr_t>(heap_end) + incr > &_estack - &_Min_Stack_Size) {
 		/* Some of the libstdc++-v3 tests rely upon detecting
 		 out of memory errors, so do not abort here.  */
 #if 0
