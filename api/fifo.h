@@ -177,10 +177,10 @@ public:
         RODOS_ASSERT_IFNOT_RETURN(msgLen <= sizeof(Type), false);
 
         bool ok = this->put(*(const Type*)msg);
-        {
-            PRIORITY_CEILER_IN_SCOPE();
-            if (suspendedReader!=0)  suspendedReader->resume();
-        }
+
+        Thread *reader = this->suspendedReader;
+        if (reader != 0) reader->resume();
+
         return ok;
     }
 
@@ -211,8 +211,8 @@ public:
 
         if (!ok && timeout > 0) { ok = this->put(val); }
         if (ok) {
-            PRIORITY_CEILER_IN_SCOPE();
-            if(suspendedReader) suspendedReader->resume();
+            Thread *reader = this->suspendedReader;
+            if (reader != 0) reader->resume();
         }
         return ok;
     }
@@ -245,8 +245,8 @@ public:
         if (!ok && timeout > 0) { ok = this->get(val); }
 
         if(ok) {
-            PRIORITY_CEILER_IN_SCOPE();
-            if (suspendedWriter) suspendedWriter->resume();
+            Thread *writer = this->suspendedWriter;
+            if (writer != 0) writer->resume();
         }
         return ok;
     }
