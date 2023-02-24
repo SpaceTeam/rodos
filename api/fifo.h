@@ -178,8 +178,11 @@ public:
 
         bool ok = this->put(*(const Type*)msg);
 
-        Thread *reader = this->suspendedReader;
-        if (reader != 0) reader->resume();
+        if (ok) {
+            PRIORITY_CEILER_IN_SCOPE();
+            Thread *reader = this->suspendedReader;
+            if (reader != 0) reader->resume();
+        }
 
         return ok;
     }
@@ -209,8 +212,11 @@ public:
             }
         }
 
+        Thread::yield();
+
         if (!ok && timeout > 0) { ok = this->put(val); }
         if (ok) {
+            PRIORITY_CEILER_IN_SCOPE();
             Thread *reader = this->suspendedReader;
             if (reader != 0) reader->resume();
         }
@@ -242,9 +248,12 @@ public:
             }
         }
 
+        Thread::yield();
+
         if (!ok && timeout > 0) { ok = this->get(val); }
 
         if(ok) {
+            PRIORITY_CEILER_IN_SCOPE();
             Thread *writer = this->suspendedWriter;
             if (writer != 0) writer->resume();
         }
