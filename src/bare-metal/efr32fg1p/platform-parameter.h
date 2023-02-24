@@ -52,7 +52,7 @@
 
 /** Using a network, the maximal number of nodes attached */
 #undef MAX_NUMBER_OF_NODES
-#define MAX_NUMBER_OF_NODES 10
+#define MAX_NUMBER_OF_NODES 20
 
 /** If using network it may have a limit for packets, eg. UDP */
 #undef MAX_NETWORK_MESSAGE_LENGTH
@@ -66,7 +66,7 @@
 
 
 #ifdef EFR32FG12P433F1024GM68
-#define UART_DEBUG                              UART_IDX1,GPIO_028,GPIO_029
+#define UART_DEBUG                              UART_IDX4,GPIO_028,GPIO_029
 #else
 #define UART_DEBUG                              UART_IDX0,GPIO_000,GPIO_001
 #endif
@@ -102,7 +102,7 @@ static const uint32_t INIT_NUMBER_SLAVES = 5;
 
 // Size of internal TX and RX FIFOs in bytes
 static const int32_t TX_FIFO_SIZE = 2048;
-static const int32_t RX_FIFO_SIZE = 2048;
+static const int32_t RX_FIFO_SIZE = 4096;
 
 // Length of RAIL packet header, in bytes, contains only the length
 static const uint16_t PACKET_HEADER_LEN = 2;

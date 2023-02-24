@@ -59,7 +59,9 @@ HAL_UART::HAL_UART(UART_IDX uartIdx, GPIO_PIN txPin, GPIO_PIN rxPin, GPIO_PIN rt
     }
     // LEUART Pins are hardcoded and can not be set custom! Use HAL_UART(UART_IDX4) instead
     if(uartIdx == UART_IDX4){
-        context = nullptr;
+        //FIXME: make pins changable
+        context = &UART_contextArray[uartIdx];
+        context->initMembers(this, uartIdx, GPIO_028, GPIO_029, GPIO_000, GPIO_000); // Hardcoded to PB12 PB13
         return;
     }
 	context = &UART_contextArray[uartIdx];
