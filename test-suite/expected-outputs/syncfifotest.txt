@@ -37,8 +37,8 @@ read 18
 sent 19
 read 19
 sent 20
-read 20
 Sender Waiting 0.03 seconds
+read 20
 sent 21
 read 21
 sent 22
@@ -78,8 +78,8 @@ read 38
 sent 39
 read 39
 sent 40
-read 40
 Sender Waiting 0.03 seconds
+read 40
 sent 41
 read 41
 sent 42
@@ -161,8 +161,8 @@ read 78
 sent 79
 read 79
 sent 80
-read 80
 Sender Waiting 0.03 seconds
+read 80
 sent 81
 read 81
 sent 82
@@ -202,7 +202,7 @@ read 98
 sent 99
 read 99
 sent 100
-read 100
 Sender Waiting 0.03 seconds
+read 100
 Receiver wait 0.15 seconds
 hw_resetAndReboot() -> exit

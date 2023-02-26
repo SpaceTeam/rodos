@@ -177,13 +177,11 @@ public:
         RODOS_ASSERT_IFNOT_RETURN(msgLen <= sizeof(Type), false);
 
         bool ok = this->put(*(const Type*)msg);
-
         if (ok) {
             PRIORITY_CEILER_IN_SCOPE();
             Thread *reader = this->suspendedReader;
             if (reader != 0) reader->resume();
         }
-
         return ok;
     }
 
