@@ -1,3 +1,12 @@
+#!/bin/bash
+
+cat << EOT
+-------------------- SORRY!
+it has to be rewritten.
+In the mean time
+Please see rodos/support/support-libs/distributed-topic-register-test
+------------------------
+EOT
 
 REPORTER=gateway-with-topicreporter2.cpp
 
