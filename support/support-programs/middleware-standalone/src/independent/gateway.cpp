@@ -11,7 +11,7 @@
  * @brief gateway for middleware
  *
  */
-
+#include "stdio.h"
 #include "gateway/gateway.h"
 
 
@@ -238,12 +238,16 @@ void Gateway::pollMessages() {
 
 
 
-
 void prepareNetworkMessage(NetworkMessage& netMsg, const long topicId,const void* data, int len,int64_t sendTime) {
+
+
+    netMsg.put_receiverNode (-1);
+  //  netMsg.put_receiverNodesBitMap(netMsgInfo.receiverNodesBitMap);  // Might Need Later 
+    netMsg.put_maxStepsToForward(10);
     netMsg.put_senderNode(myNodeNr); // Set node ID of sending node
     netMsg.put_topicId(topicId);     // ID of calling topic
     netMsg.put_sentTime(sendTime);      // Timestamp
-    netMsg.put_maxStepsToForward(10);
+    netMsg.put_type ( uint16_t(NetMsgType::PUB_SUB_MSG) );
     netMsg.put_senderThreadId(0);
     netMsg.setUserData(data, len);
     netMsg.setCheckSum();

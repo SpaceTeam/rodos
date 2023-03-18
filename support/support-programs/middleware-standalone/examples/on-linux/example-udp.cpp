@@ -16,7 +16,7 @@
 
 //HAL_UART uart_stdout(UART_IDX2);
 
-UDPInOut udp(-5000);
+UDPInOut udp(-50000);
 LinkinterfaceUDP linkif(&udp);
 static Gateway gw(&linkif);
 
@@ -40,13 +40,15 @@ int64_t NOW(){
 
 class MessageHandler : public Putter {
 
+ public:
 
 	virtual bool putGeneric(const long topicId, const unsigned int len, const void* msg, const NetMsgInfo& netMsgInfo) {
 
 		Position* p;
 
+                printf("\n Got Something");
 
-		if(topicId==20840){
+		if(topicId==1003){
 
 
 
@@ -58,7 +60,7 @@ class MessageHandler : public Putter {
 			}
 
 
-			printf("Got clock len=%d data=%d timer=%d\n",len,p->cntr,timer);
+			printf("Got clock len=%d data=%d timer=%ld\n",len,(int)p->cntr,(long)timer);
 
 		}else{
 			//printf("Got other len=%d topicID=%d\n",len,topicId);
@@ -97,7 +99,7 @@ int main(){
 
 		outMsg.cntr=timer;
 
-		gw.sendNetworkMessage((char*)&outMsg,sizeof(outMsg),20840,NOW());
+		gw.sendNetworkMessage((char*)&outMsg,sizeof(outMsg),1002,NOW());
 
 		printf("Sended\n");
 

@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include "gateway/networkmessage.h"
+#include "gateway/netmsginfo.h"
 
 
 #ifndef NO_RODOS_NAMESPACE

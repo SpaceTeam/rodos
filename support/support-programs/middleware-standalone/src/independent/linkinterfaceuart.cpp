@@ -3,7 +3,7 @@
 
 
 #include "gateway/linkinterfaceuart.h"
-#include "gateway/networkmessage.h"
+#include "gateway/netmsginfo.h"
 #include "rodos-middleware.h"
 
 /**

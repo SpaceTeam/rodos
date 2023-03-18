@@ -13,9 +13,9 @@ static Gateway gateway1(&linkinterfaceUDP, true);
 
 /******************************/
 
-class MyPublisher16 : public Thread {
+class MyPublisher16 : public StaticThread<> {
 public:
-    MyPublisher16() : Thread("sender16") { }
+    MyPublisher16() : StaticThread("sender16") { }
     void run () {
         long cnt = 10000;
         TIME_LOOP(0, 1600*MILLISECONDS) {
@@ -28,8 +28,10 @@ public:
 
 struct Receiver : public Subscriber {
     Receiver() : Subscriber(counter5, "justprint11") { }
-    long put(const long topicId, const long len, const void* msg, const NetMsgInfo& netMsgInfo) {
-        PRINTF(" got %ld\n",  *(long*)msg);
+    uint32_t put(const uint32_t topicId, const size_t len, void* msg, const NetMsgInfo&) {
+
+        PRINTF("Got clock len=%d, topicId=%d\n",len,topicId);
+        PRINTF(" The Message %ld\n",  *(long*)msg);
         return true;
     }
 } justPrint11;

@@ -14,6 +14,11 @@
 #include "rodos-middleware.h"
 
 
+UDPInOut udp(-50000);
+LinkinterfaceUDP linkif(&udp);
+static Gateway gw(&linkif,true);
+
+#define ON_LINUX
 
 //#define ON_LINUX //if not defined: stm32f4
 
@@ -43,12 +48,16 @@ int64_t NOW(){
 #endif
 
 
+
+/*
 static HAL_CAN can(CAN_IDX1);
 static LinkinterfaceCAN linkif(&can);
 
 //static LinkinterfaceUART linkif(&uart);
 
 static Gateway gw(&linkif);
+
+*/
 
 struct Position {
 	char someData[3];
@@ -63,12 +72,13 @@ int32_t timer=0;
 class MessageHandler : public Putter {
 
 
-	virtual bool putGeneric(const long topicId, const unsigned int len, const void* msg, const NetMsgInfo& netMsgInfo) {
+	virtual bool putGeneric(const long topicId, const unsigned int len, const void* msg, const NetMsgInfo& netMsgInfo) override {
 
 		Position* p;
 
+                printf("\n Got Data");
 
-		if(topicId==20840){
+		if(topicId==1003){
 
 
 
@@ -80,10 +90,10 @@ class MessageHandler : public Putter {
 			}
 
 
-			printf("Got clock len=%d data=%d timer=%d\n",len,p->cntr,timer);
+			printf("Got clock len=%d data=%d timer=%d\n",len,(int)p->cntr,(int)timer);
 
 		}else{
-			printf("Got other len=%d topicID=%d\n",len,topicId);
+			printf("Got other len=%d topicID=%ld\n",len,topicId);
 		}
 
 		return true;
@@ -118,19 +128,16 @@ uart_stdout.init(115200);
 	while(1){
 
 
-		for(int i=0;i<1000;i++){
-			//printf("poll...%d",i);
-			gw.pollMessages();
-			//printf("done\n");
-		}
+                gw.pollMessages();
 
 		outMsg.cntr=timer++;
 
 		//printf("sending...\n");
 
-		gw.sendNetworkMessage((char*)&outMsg,sizeof(outMsg),20840,NOW());
+		gw.sendNetworkMessage((char*)&outMsg,sizeof(outMsg),1002,NOW());
 
-		//printf("Sended\n");
+		printf("Sended\n");
+		usleep(500000);
 
 
 
