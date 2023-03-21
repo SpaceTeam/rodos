@@ -1,8 +1,10 @@
 #include "rodos.h"
 #include "gateway.h"
 
-Topic<long> counter5(1002, "counter5"); // to receive (subscrived)
-Topic<long> counter6(1003, "counter6"); // to send (pulish)
+#include "../topics.h"
+
+Topic<Position> posTopic(topicIdLinux2Rodos,  "posTopic"); // to receive (subscrived)
+Topic<MyTime>   timeTopic(topicIdRodos2Linux, "timeTopic"); // to send (pulish)
 
 /******************************/
 
@@ -12,23 +14,27 @@ static Gateway gateway1(&linkinterfaceUDP, true);
 
 /******************************/
 
-class MyPublisher16 : public StaticThread<> {
+class MyPublisher : public StaticThread<> {
+  MyTime myTime;
 public:
-  MyPublisher16() : StaticThread("sender16") {}
+  MyPublisher() : StaticThread("sender from RODOS") {}
   void run() {
-    long cnt = 10000;
+    int32_t cnt = 10000;
     TIME_LOOP(0, 1600 * MILLISECONDS) {
-      PRINTF("sending %ld\n", --cnt);
-      counter6.publish(cnt);
+      PRINTF("sending %d\n", (int)cnt++);
+      myTime.msgIndex = cnt;
+      myTime.timeNow  = NOW();
+      timeTopic.publish(myTime);
     }
   }
-} myPublisher16;
+} myPublisher;
 
-struct Receiver : public Subscriber {
-  Receiver() : Subscriber(counter5, "justprint11") {}
-  uint32_t put(const uint32_t topicId, const size_t len, void *msg, const NetMsgInfo &) {
-
-    PRINTF("Got len=%d, topicId=%d Msg-Data %ld \n", (int)len, topicId,  *(long *)msg);
+struct PosReceiver : public Subscriber {
+  PosReceiver() : Subscriber(posTopic, "pos Pinter") {}
+  uint32_t put(const uint32_t topicId, const size_t len, void *msg, const NetMsgInfo &) override {
+    Position* pos = (Position*)msg;
+    PRINTF("Got topicId=%d len =%d : ", (int)topicId, (int)len); 
+    PRINTF(" Name: %s, cnt %d, coordinates (%f,%f,%f)\n", pos->name, pos->cnt, pos->x, pos->y, pos->z);
     return true;
   }
-} justPrint11;
+} posReceiver;

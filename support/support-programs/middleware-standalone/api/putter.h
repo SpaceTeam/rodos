@@ -33,7 +33,7 @@ class Putter {
 public:
 
 
-
+    // long, int len, etc are deprecated! but for compatibility we keep them
     virtual bool putGeneric(const long topicId, const unsigned int len, const void* msg, const NetMsgInfo& netMsgInfo) {
        //ERROR("For sure, You are overriding a deprecated old put function from Putter. please override only the new (this!) putGeneric");
        return false;
