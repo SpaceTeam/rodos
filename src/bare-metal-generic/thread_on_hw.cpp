@@ -221,12 +221,16 @@ void IdleThread::run() {
 
         int64_t timerInterval = reactivationTime - TIME_BEFORE_WAKEUP - NOW();
         if(timerInterval > TIME_DONT_SLEEP) {
-          Timer::stop();
-          Timer::setInterval(timerInterval / 1000l); // nanoseconds to microseconds
-          Timer::start();
-          enterSleepMode();
-          Timer::setInterval(PARAM_TIMER_INTERVAL);
-          Timer::start();
+            Timer::stop();
+            Timer::setInterval(timerInterval / 1000l); // nanoseconds to microseconds
+            Timer::start();
+
+            enterSleepMode();
+
+            Timer::stop();
+            auto actualNextTick = reactivationTime - NOW();
+            Timer::setInterval(actualNextTick / 1000l); // nanoseconds to microseconds
+            Timer::start();
         }
 #endif
     }
