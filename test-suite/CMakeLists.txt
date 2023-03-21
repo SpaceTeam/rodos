@@ -42,8 +42,6 @@ foreach(test_file ${test_files})
     add_custom_command(
         OUTPUT
         "${test_name}-bin.output"
-        "${test_name}-bin.output_trimmed"
-        "${test_name}-bin.expected_trimmed"
         "${test_name}-bin.diff"
         COMMAND
         bash
@@ -59,8 +57,6 @@ foreach(test_file ${test_files})
         COMMAND
         ${CMAKE_COMMAND} -E remove -f
         "${test_name}-bin.output"
-        "${test_name}-bin.output_trimmed"
-        "${test_name}-bin.expected_trimmed"
         "${test_name}-bin.diff")
 
     add_custom_target(${test_name}-run DEPENDS "${test_name}-bin.diff")
