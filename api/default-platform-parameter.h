@@ -31,6 +31,8 @@
 
 /// minimal timer interrupt interval (determines time granularity of events)
 #define MIN_SYS_TICK_SPACING           (1*MILLISECONDS)
+/// time the MCU needs to wakeup from sleeping (to be fully ready for the next time event)
+#define TIME_WAKEUP_FROM_SLEEP         (3*MILLISECONDS)
 
 #define DEFAULT_THREAD_PRIORITY        100
 #define MAX_THREAD_PRIORITY           1000

@@ -20,16 +20,6 @@ namespace RODOS {
 
 constexpr uint32_t EMPTY_MEMORY_MARKER = 0xDEADBEEF;
 
-#ifdef SLEEP_WHEN_IDLE_ENABLED
-// at which time before the next thread becomes active, should the processor wake up?
-constexpr int64_t TIME_BEFORE_WAKEUP = 3 * MILLISECONDS;
-// if in the next "TIME_DONT_SLEEP"  nanoseconds the next thread becomes active, do sleep. 999 Seconds is as good as deactivated
-constexpr int64_t TIME_DONT_SLEEP = 3 * MILLISECONDS;
-#endif
-
-//List Thread::threadList = 0;
-//Thread* Thread::currentThread = 0;
-
 /** old style constructor */
 Thread::Thread(const char* name,
                const int32_t priority,
@@ -79,6 +69,9 @@ void Thread::yield() {
     long long timeNow = NOW();
     Thread* preselection = findNextToRun(timeNow);
     if(preselection == getCurrentThread()) {
+        // Should be thread-safe even without semaphore locking as timer interrupts are disabled.
+        // Note: TimeEvent propagate done in thread here, this may lead to unusual behavior, e.g.
+        // IRQs preempting handlers (often possible otherwise anyways), Semaphores usable, etc.
         Timer::updateTriggerToNextTimingEvent();
         Timer::start();
         return;
@@ -223,12 +216,13 @@ void IdleThread::run() {
         {
             ScopeProtector protector{ &TimeEvent::getTimeEventSema() };
             reactivationTime =
-              RODOS::min(timeToTryAgainToSchedule, TimeEvent::getNextTriggerTime());
+                RODOS::min(timeToTryAgainToSchedule, TimeEvent::getNextTriggerTime());
         }
 
+        int64_t durationToNextTimingEvent = reactivationTime - NOW();
         int64_t timerInterval =
-          RODOS::max(reactivationTime - TIME_BEFORE_WAKEUP - NOW(), MIN_SYS_TICK_SPACING);
-        if(timerInterval > TIME_DONT_SLEEP) {
+            durationToNextTimingEvent - TIME_WAKEUP_FROM_SLEEP - MIN_SYS_TICK_SPACING;
+        if((timerInterval > TIME_WAKEUP_FROM_SLEEP) && (timerInterval > MIN_SYS_TICK_SPACING)) {
             Timer::stop();
             Timer::setInterval(timerInterval / 1000l); // nanoseconds to microseconds
             Timer::start();
@@ -236,8 +230,8 @@ void IdleThread::run() {
             enterSleepMode();
 
             Timer::stop();
-            auto actualNextTick = RODOS::max(reactivationTime - NOW(), MIN_SYS_TICK_SPACING);
-            Timer::setInterval(actualNextTick / 1000l); // nanoseconds to microseconds
+            auto remainingTime = RODOS::max(reactivationTime - NOW(), MIN_SYS_TICK_SPACING);
+            Timer::setInterval(remainingTime / 1000l); // nanoseconds to microseconds
             Timer::start();
         }
 #endif
