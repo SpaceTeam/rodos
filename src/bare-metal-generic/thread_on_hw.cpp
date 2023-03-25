@@ -67,25 +67,27 @@ void Thread::create() {
     // only required when implementig in on the top of posix, rtems, freertos, etc
 }
 
-extern bool isSchedulingEnabled; // from scheduler
-
 /** pause execution of this thread and call scheduler */
 void Thread::yield() {
-    if(!isSchedulingEnabled) return; // I really do not like This! but required
-
-    /** Optimisation: Avoid unnecesary context swtichs: see Scheduler::schedule()  ***/
-    globalAtomarLock();
-    long long timeNow = NOW(); 
-    Thread* preselection = findNextToRun(timeNow); 
-    if(preselection == getCurrentThread()) { globalAtomarUnlock(); return; }
-
-    // schedule is required, The scheduler shall not repeate my computations: 
-    Scheduler::preSelectedNextToRun = preselection; 
-    Scheduler::preSelectedTime = timeNow;
-    globalAtomarUnlock();
-
-    /* reschedule next timer interrupt to avoid interruptions of while switching */
+    // disable Scheduling and TimeEvent interrupts for the moment,
+    // re-enabled at activation of newly scheduled thread or method abort:
+    // -> scheduling is done (if necessary) anyways at end of yield
+    // -> TimeEvent propagation is done at activation of newly scheduled thread or method abort
     Timer::stop();
+
+    // Optimisation: Avoid unnecessary context switch: see Scheduler::schedule()
+    long long timeNow = NOW();
+    Thread* preselection = findNextToRun(timeNow);
+    if(preselection == getCurrentThread()) {
+        Timer::updateTriggerToNextTimingEvent();
+        Timer::start();
+        return;
+    }
+
+    // schedule is required, the scheduler shall not repeat my computations:
+    Scheduler::preSelectedNextToRun = preselection;
+    Scheduler::preSelectedTime = timeNow;
+
     __asmSaveContextAndCallScheduler();
 }
 
