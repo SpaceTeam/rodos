@@ -221,7 +221,7 @@ void IdleThread::run() {
         // enter sleep mode if suitable
         int64_t reactivationTime = timeToTryAgainToSchedule;
         {
-            ScopeProtector protector { &TimeEvent::getTimeEventSema };
+            ScopeProtector protector { &TimeEvent::getTimeEventSema() };
             reactivationTime =
                 RODOS::min(timeToTryAgainToSchedule, TimeEvent::getNextTriggerTime());
         }
