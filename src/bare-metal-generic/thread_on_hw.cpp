@@ -221,12 +221,13 @@ void IdleThread::run() {
         // enter sleep mode if suitable
         int64_t reactivationTime = timeToTryAgainToSchedule;
         {
-            ScopeProtector protector { &TimeEvent::getTimeEventSema() };
+            ScopeProtector protector{ &TimeEvent::getTimeEventSema() };
             reactivationTime =
-                RODOS::min(timeToTryAgainToSchedule, TimeEvent::getNextTriggerTime());
+              RODOS::min(timeToTryAgainToSchedule, TimeEvent::getNextTriggerTime());
         }
 
-        int64_t timerInterval = reactivationTime - TIME_BEFORE_WAKEUP - NOW();
+        int64_t timerInterval =
+          RODOS::max(reactivationTime - TIME_BEFORE_WAKEUP - NOW(), MIN_SYS_TICK_SPACING);
         if(timerInterval > TIME_DONT_SLEEP) {
             Timer::stop();
             Timer::setInterval(timerInterval / 1000l); // nanoseconds to microseconds
@@ -235,7 +236,7 @@ void IdleThread::run() {
             enterSleepMode();
 
             Timer::stop();
-            auto actualNextTick = reactivationTime - NOW();
+            auto actualNextTick = RODOS::max(reactivationTime - NOW(), MIN_SYS_TICK_SPACING);
             Timer::setInterval(actualNextTick / 1000l); // nanoseconds to microseconds
             Timer::start();
         }
