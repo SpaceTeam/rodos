@@ -118,6 +118,12 @@ public:
   *  Get timer interval.
   */
   static int64_t getInterval() { return microsecondsInterval; }
+
+  /**
+   * Set the timer interval to trigger directly after the next scheduling/timer-event
+   */
+  static void setTimerIntervalToNextSystemEvent();
+
 };
 
 

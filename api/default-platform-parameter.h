@@ -29,6 +29,9 @@
 #define PARAM_TIMER_INTERVAL          100000 //< in microseconds
 #define TIME_SLICE_FOR_SAME_PRIORITY (100*MILLISECONDS) //< for switch threads with same priority
 
+/// minimal timer interrupt interval (determines time granularity of events)
+#define MIN_SYS_TICK_SPACING           (1*MILLISECONDS)
+
 #define DEFAULT_THREAD_PRIORITY        100
 #define MAX_THREAD_PRIORITY           1000
 
