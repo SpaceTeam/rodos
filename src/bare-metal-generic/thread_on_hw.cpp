@@ -216,8 +216,12 @@ void IdleThread::run() {
 
 #ifdef SLEEP_WHEN_IDLE_ENABLED
         // enter sleep mode if suitable
-        int64_t reactivationTime =
-            RODOS::min(timeToTryAgainToSchedule, TimeEvent::getNextTriggerTime());
+        int64_t reactivationTime = timeToTryAgainToSchedule;
+        {
+            ScopeProtector protector { &TimeEvent::getTimeEventSema };
+            reactivationTime =
+                RODOS::min(timeToTryAgainToSchedule, TimeEvent::getNextTriggerTime());
+        }
 
         int64_t timerInterval = reactivationTime - TIME_BEFORE_WAKEUP - NOW();
         if(timerInterval > TIME_DONT_SLEEP) {

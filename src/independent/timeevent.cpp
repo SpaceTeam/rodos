@@ -79,8 +79,6 @@ int32_t TimeEvent::propagate(const int64_t timeNow) {
 }
 
 int64_t TimeEvent::getNextTriggerTime() {
-    ScopeProtector protector { &timeEventSema };
-
     int64_t nextTriggerTime = std::numeric_limits<int64_t>::max();
     ITERATE_LIST(TimeEvent, TimeEvent::timeEventList) {
         auto currentEventTime = iter->eventAt.load();

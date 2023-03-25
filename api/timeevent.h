@@ -78,10 +78,19 @@ public:
   /**
    * @brief Get the absolute time of the earliest TimeEvent in the future.
    *
-   * @note Is safe to call this method from a thread even if interrupts are enabled
-   * (even if TimeEvents are propagated in SysTick interrupting operation).
+   * @note Is safe to call this method from a thread or an interrupt handler even if interrupts
+   * are enabled (and TimeEvents are simultaneously propagated in SysTick interrupt).
+   *
+   * @warning Method is async-signal-safe but not thread-safe (if called simultaneously in another
+   * thread this fails). Use the TimeEvent Semaphore to ensure thread-safety.
    */
-   static int64_t getNextTriggerTime();
+  static int64_t getNextTriggerTime();
+
+  /**
+   * @brief Access to the dedicated TimeEvent Semaphore to be used to ensure thread-safety of
+   * TimeEvent methods.
+   */
+  static Semaphore& getTimeEventSema() { return timeEventSema; }
 
   /**
    * Defines the time point when the method handle will be called one time.
