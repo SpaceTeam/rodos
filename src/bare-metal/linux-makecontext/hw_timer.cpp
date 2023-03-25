@@ -66,10 +66,18 @@ extern void *signal_stack;
 void timerSignalHandler(int, siginfo_t *, void *) {
 
    if(!isSchedulingEnabled) return;
+
+   // prevent simultaneous timer signals
+   Timer::stop();
+
    long long timeNow = NOW();  // comment this out to improve performance, but: no time events any more
    TimeEvent::propagate(timeNow); // comment this out to improve performance, but: no time events any more
 
-   if(timeNow < timeToTryAgainToSchedule) return;
+   if(timeNow < timeToTryAgainToSchedule) {
+      Timer::updateTriggerToNextTimingEvent();
+      Timer::start();
+      return;
+   }
    __asmSaveContextAndCallScheduler();
 }
 

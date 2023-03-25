@@ -55,7 +55,11 @@ extern "C" void SysTick_Handler() {
     long long timeNow = NOW();  // comment this out to improve performance, but: no time events any more
     TimeEvent::propagate(timeNow); // comment this out to improve performance, but: no time events any more
 
-    if(NOW() < timeToTryAgainToSchedule) return;
+    if(NOW() < timeToTryAgainToSchedule) {
+        Timer::updateTriggerToNextTimingEvent();
+        Timer::start();
+        return;
+    }
 
     __asmSaveContextAndCallScheduler();
 }

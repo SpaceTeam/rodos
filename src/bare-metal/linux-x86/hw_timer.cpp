@@ -58,11 +58,18 @@ void timerSignalHandler(int ignore);
 void timerSignalHandler([[gnu::unused]] int ignore) {
 
     if(!isSchedulingEnabled) return;
+
+    // prevent simultaneous timer signals
+    Timer::stop();
+
     long long timeNow = NOW();     // comment this out to improve performance, but: no time events any more
     TimeEvent::propagate(timeNow); // comment this out to improve performance, but: no time events any more
 
-    if(timeNow < timeToTryAgainToSchedule) return;
-
+    if(timeNow < timeToTryAgainToSchedule) {
+        Timer::updateTriggerToNextTimingEvent();
+        Timer::start();
+        return;
+    }
 
     long* ebp;
     __asm__ __volatile__ ("mov %%ebp, %0":"=r"(ebp));

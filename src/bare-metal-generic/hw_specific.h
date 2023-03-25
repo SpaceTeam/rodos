@@ -122,7 +122,7 @@ public:
   /**
    * Set the timer interval to trigger directly after the next scheduling/timer-event
    */
-  static void setTimerIntervalToNextSystemEvent();
+  static void updateTriggerToNextTimingEvent();
 
 };
 

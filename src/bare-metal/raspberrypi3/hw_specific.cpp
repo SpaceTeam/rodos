@@ -43,9 +43,6 @@ void handleInterrupt(long* context) {
     contextT = context;
     // handles the timer interrupts
     if(read32(SYSTEM_TIMER_BASE) & BIT(SYSTEM_TIMER_CONTROL_MATCH1)) {
-        // calc next ticktime (current time plus 'Timer::microsecondsInterval' <- is private)
-        uint32_t nextTick = read32(SYSTEM_TIMER_CNT_LOW) + PARAM_TIMER_INTERVAL; //alle 10ms
-
         if(isSchedulingEnabled == true) {
             int64_t timeNow = NOW();
 
@@ -56,8 +53,11 @@ void handleInterrupt(long* context) {
             }
         }
 
-        // set next tick time
+        // calc and set next ticktime
+        Timer::updateTriggerToNextTimingEvent();
+        uint32_t nextTick = read32(SYSTEM_TIMER_CNT_LOW) + Timer::getInterval();
         write32(SYSTEM_TIMER_COMPARE1, nextTick);
+        Timer::start();
 
         // Write a one to the relevant bit to clear the match detect status bit
         // and the corresponding interrupt request line.

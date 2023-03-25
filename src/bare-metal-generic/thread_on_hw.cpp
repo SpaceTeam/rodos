@@ -92,7 +92,8 @@ void Thread::yield() {
 /* restore context of this thread and continue execution of this thread */
 void Thread::activate() {
     currentThread = this;
-    Timer::setInterval(PARAM_TIMER_INTERVAL);
+    // set trigger of next timer interrupt
+    Timer::updateTriggerToNextTimingEvent();
     Timer::start();
     __asmSwitchToContext((long*)context);
 }
