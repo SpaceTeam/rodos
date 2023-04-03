@@ -18,7 +18,7 @@ namespace RODOS {
 #define EFR32_MAX_ADC_IDX     ADC_IDX0
 
 #define EFR32_MIN_ADC_CHAN    ADC_CH_000
-#define EFR32_MAX_ADC_CHAN    ADC_CH_015
+#define EFR32_MAX_ADC_CHAN    ADC_CH_027
 
 
 
