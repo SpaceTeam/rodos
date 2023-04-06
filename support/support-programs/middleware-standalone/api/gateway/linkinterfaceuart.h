@@ -7,7 +7,7 @@
 
 #include "gateway/linkinterface.h"
 #include "gateway/gateway.h"
-#include "gateway/networkmessage.h"
+#include "gateway/netmsginfo.h"
 #include "hal/hal_uart.h"
 
 
