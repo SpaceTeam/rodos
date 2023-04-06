@@ -30,7 +30,11 @@ class MessageHandler : public Putter {
   bool putGeneric(const long topicId,  const unsigned int len,  const void* msg,  const NetMsgInfo& ) override {
     MyTime* myTime = (MyTime*)msg;
     printf("Got topic %d, len %d : ", (int)topicId, (int)len);
-    printf(" counter %d, time %lld\n", (int)myTime->msgIndex, (long long)myTime->timeNow);
+    if(topicId == topicIdRodos2Linux) {
+      printf(" counter %d, time %lld\n", (int)myTime->msgIndex, (long long)myTime->timeNow);
+    } else {
+      printf("got unexpected topic\n");
+    }
     return true;
   }
 } msgHandler;

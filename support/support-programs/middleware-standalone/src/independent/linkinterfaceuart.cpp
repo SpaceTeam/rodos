@@ -25,9 +25,9 @@ namespace RODOS {
 static const char  UART_BOM		=  0x02;
 static const char  UART_EOM		=  0x03;
 static const char  ENCODED_FF		=  0x7E;
-static const char  STOP_MARK		=  0x18;
-static const char  CONTINUE_MARK	=  0x01;
-static const char  MARK			=  (char)0xff;
+static const char  STOP_MARK		=  0x13;
+static const char  CONTINUE_MARK	=  0x11;
+static const char  MARK			=  (char)0xfe;
 
 /*********************************************************************************/
 
