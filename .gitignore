@@ -2,13 +2,14 @@
 .vs/
 .vscode/
 .cache/
-build/
+build*/
 CMakeLists.txt.user
 CMakeUserPresets.json
 compile_commands.json
 
 tst
 tmp
+tmp-embedded
 *~
 *.o
 *.a
