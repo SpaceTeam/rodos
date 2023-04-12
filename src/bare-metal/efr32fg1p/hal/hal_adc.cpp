@@ -63,6 +63,7 @@ public:
     ADC_TypeDef *adc;
     int32_t idx;
     ADC_Res_TypeDef resolution;
+    ADC_Ref_TypeDef reference;
 
     bool initialized;
 
@@ -117,7 +118,8 @@ int32_t HAL_ADC::init(ADC_CHANNEL channel){
     ADC_Init(context->adc, &init);
 
 
-  context->resolution = adcRes12Bit;
+    context->resolution = adcRes12Bit;
+    context->reference = adcRef2V5;
 	context->initialized = true;
 
 	return 0;
@@ -139,6 +141,17 @@ int32_t HAL_ADC::config(ADC_PARAMETER_TYPE type, int32_t value){
         default: return ADC_ERR_PARAMETER_VALUE_INVALID;
         }
 
+        break;
+    case ADC_PARAMETER_REF:
+        switch (value) {
+            case ADC_VREF_VCC: context->reference = adcRefVDD; break;
+            case ADC_VREF_EXT: context->reference = adcRefExtSingle; break;
+            case ADC_VREF_5V: context->reference = adcRef5V; break;
+            case ADC_VREF_2V5: context->reference = adcRef2V5; break;
+            case ADC_VREF_1V25: context->reference = adcRef1V25; break;
+            case ADC_VREF_DOUBLE_VCC: context->reference = adcRef2xVDD; break;
+            default: return ADC_ERR_PARAMETER_VALUE_INVALID;
+        }
         break;
     default:
         return ADC_ERR_PARAMETER_INVALID;
@@ -164,8 +177,8 @@ uint16_t HAL_ADC::read(ADC_CHANNEL channel) {
 
     ADC_InitSingle_TypeDef initSingle = ADC_INITSINGLE_DEFAULT;
     initSingle.diff       = false;        // single ended
-    initSingle.reference  = adcRef2V5;    // internal 2.5V reference
-    initSingle.resolution = context->resolution;  // 12-bit resolution
+    initSingle.reference  = context->reference;    // voltage reference, set by config
+    initSingle.resolution = context->resolution;  // resolution, set by config
     initSingle.acqTime    = adcAcqTime4;  // set acquisition time to meet minimum requirement
 
     // Select ADC input. See README for corresponding EXP header pin.
