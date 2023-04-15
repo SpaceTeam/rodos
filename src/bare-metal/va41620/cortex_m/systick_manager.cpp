@@ -50,8 +50,6 @@ extern bool isSchedulingEnabled;
 
 extern "C" void SysTick_Handler() {
 
-    Timer::stop();
-
     long long timeNow = NOW();  // comment this out to improve performance, but: no time events any more
     TimeEvent::propagate(timeNow); // comment this out to improve performance, but: no time events any more
 

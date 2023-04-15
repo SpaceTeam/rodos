@@ -57,6 +57,7 @@ extern bool      isSchedulingEnabled;
 void timerSignalHandler(int ignore);
 void timerSignalHandler([[gnu::unused]] int ignore) {
 
+    // stop timer to prevent simultaneous signals
     Timer::stop();
 
     long long timeNow = NOW();     // comment this out to improve performance, but: no time events any more

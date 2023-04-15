@@ -15,7 +15,6 @@
 #include "scheduler.h"
 #include "hw_specific.h"
 #include "platform-parameter.h"
-#include "thread.h"
 
 namespace RODOS {
 

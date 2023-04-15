@@ -2,7 +2,6 @@
 #include "systick_manager.h"
 #include "cortex_m/peripheral_defs.h"
 #include "hw_specific.h"
-#include "timemodel.h"
 
 namespace RODOS {
 
@@ -49,8 +48,6 @@ extern bool isSchedulingEnabled;
 
 
 extern "C" void SysTick_Handler() {
-
-    Timer::stop();
 
     long long timeNow = NOW();  // comment this out to improve performance, but: no time events any more
     TimeEvent::propagate(timeNow); // comment this out to improve performance, but: no time events any more
