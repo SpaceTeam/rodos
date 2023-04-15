@@ -1,3 +1,5 @@
+add_subdirectory(timing)
+
 add_rodos_executable(helloworld helloworld.cpp)
 add_rodos_executable(helloworld-multiple helloworld-multiple.cpp)
 add_rodos_executable(basic basic.cpp)
