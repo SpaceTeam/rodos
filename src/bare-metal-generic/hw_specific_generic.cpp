@@ -16,6 +16,7 @@ void Timer::updateTriggerToNextTimingEvent() {
         TimeEvent::propagate(timeNow);
     }
     auto reactivationTime   = RODOS::min(timeToTryAgainToSchedule, nextTriggerTime);
+
     auto intervalInNanoSecs = RODOS::max(reactivationTime - NOW(), MIN_SYS_TICK_SPACING);
     Timer::setInterval(intervalInNanoSecs / 1000l); // nanoseconds to microseconds
 }

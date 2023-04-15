@@ -15,6 +15,7 @@
 #include "scheduler.h"
 #include "hw_specific.h"
 #include "platform-parameter.h"
+#include "thread.h"
 
 namespace RODOS {
 
@@ -57,37 +58,32 @@ void Thread::create() {
     // only required when implementig in on the top of posix, rtems, freertos, etc
 }
 
+extern bool isSchedulingEnabled; // from scheduler
+
 /** pause execution of this thread and call scheduler */
 void Thread::yield() {
-    // disable Scheduling and TimeEvent interrupts for the moment,
-    // re-enabled at activation of newly scheduled thread or method abort:
-    // -> scheduling is done (if necessary) anyways at end of yield
-    // -> TimeEvent propagation is done at activation of newly scheduled thread or method abort
-    Timer::stop();
-
     // Optimisation: Avoid unnecessary context switch: see Scheduler::schedule()
+    globalAtomarLock();
     long long timeNow = NOW();
     Thread* preselection = findNextToRun(timeNow);
     if(preselection == getCurrentThread()) {
-        // Should be thread-safe even without semaphore locking as timer interrupts are disabled.
-        // Note: TimeEvent propagate done in thread here, this may lead to unusual behavior, e.g.
-        // IRQs preempting handlers (often possible otherwise anyways), Semaphores usable, etc.
-        Timer::updateTriggerToNextTimingEvent();
-        Timer::start();
+        globalAtomarUnlock();
         return;
     }
-
     // schedule is required, the scheduler shall not repeat my computations:
     Scheduler::preSelectedNextToRun = preselection;
     Scheduler::preSelectedTime = timeNow;
 
+    // reschedule next timer interrupt to avoid interruptions of while switching
+    // -> must first stop timer, then unlock (to prevent rescheduling between unlock and stop)
+    Timer::stop();
+    globalAtomarUnlock();
     __asmSaveContextAndCallScheduler();
 }
 
 /* restore context of this thread and continue execution of this thread */
 void Thread::activate() {
     currentThread = this;
-    // set trigger of next timer interrupt
     Timer::updateTriggerToNextTimingEvent();
     Timer::start();
     __asmSwitchToContext((long*)context);
@@ -222,7 +218,7 @@ void IdleThread::run() {
         int64_t durationToNextTimingEvent = reactivationTime - NOW();
         int64_t timerInterval =
             durationToNextTimingEvent - TIME_WAKEUP_FROM_SLEEP - MIN_SYS_TICK_SPACING;
-        if((timerInterval > TIME_WAKEUP_FROM_SLEEP) && (timerInterval > MIN_SYS_TICK_SPACING)) {
+        if(timerInterval > TIME_WAKEUP_FROM_SLEEP && timerInterval > MIN_SYS_TICK_SPACING) {
             Timer::stop();
             Timer::setInterval(timerInterval / 1000l); // nanoseconds to microseconds
             Timer::start();

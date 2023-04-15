@@ -43,10 +43,10 @@ void handleInterrupt(long* context) {
     contextT = context;
     // handles the timer interrupts
     if(read32(SYSTEM_TIMER_BASE) & BIT(SYSTEM_TIMER_CONTROL_MATCH1)) {
-        if(isSchedulingEnabled == true) {
-            int64_t timeNow = NOW();
+        int64_t timeNow = NOW();
+        TimeEvent::propagate(timeNow);
 
-            TimeEvent::propagate(timeNow);
+        if(isSchedulingEnabled == true) {
             if(NOW() > timeToTryAgainToSchedule) {
                 // call scheduler with top of task stack
                 schedulerWrapper(context);

@@ -53,12 +53,12 @@ extern "C" {
 void SysTick_Handler();
 void SysTick_Handler() {
 
-	if(!isSchedulingEnabled) return;
+    Timer::stop();
 
 	long long timeNow = NOW();  // comment this out to improve performance, but: no time events any more
 	TimeEvent::propagate(timeNow); // comment this out to improve performance, but: no time events any more
 
-	if(NOW() < timeToTryAgainToSchedule) {
+	if(!isSchedulingEnabled || NOW() < timeToTryAgainToSchedule) {
         Timer::updateTriggerToNextTimingEvent();
         Timer::start();
         return;
