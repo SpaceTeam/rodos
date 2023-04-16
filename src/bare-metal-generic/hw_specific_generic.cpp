@@ -11,11 +11,14 @@ extern long long timeToTryAgainToSchedule;
 
 void Timer::updateTriggerToNextTimingEvent() {
     auto nextTriggerTime = TimeEvent::getNextTriggerTime();
-    auto timeNow         = NOW();
+
+    // necessary to avoid silently dropping TimeEvents that occur
+    // while SysTicks interrupts are disabled
+    auto timeNow = NOW();
     if(nextTriggerTime < timeNow) {
         TimeEvent::propagate(timeNow);
     }
-    auto reactivationTime   = RODOS::min(timeToTryAgainToSchedule, nextTriggerTime);
+    auto reactivationTime = RODOS::min(timeToTryAgainToSchedule, nextTriggerTime);
 
     auto intervalInNanoSecs = RODOS::max(reactivationTime - NOW(), MIN_SYS_TICK_SPACING);
     Timer::setInterval(intervalInNanoSecs / 1000l); // nanoseconds to microseconds

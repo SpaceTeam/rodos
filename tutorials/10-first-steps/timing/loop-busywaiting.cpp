@@ -6,7 +6,7 @@
 
 namespace RODOS {
 
-constexpr auto INTERVAL = 1250 * MILLISECONDS;
+constexpr auto INTERVAL = 250 * MILLISECONDS;
 
 class PeriodicOutputThread : public StaticThread<> {
   protected:
