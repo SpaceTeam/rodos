@@ -53,8 +53,6 @@ void SysTick_Handler() {
     TimeEvent::propagate(timeNow); // comment this out to improve performance, but: no time events any more
 
     if(!isSchedulingEnabled || NOW() < timeToTryAgainToSchedule) {
-        Timer::updateTriggerToNextTimingEvent();
-        Timer::start();
         return;
     }
 
