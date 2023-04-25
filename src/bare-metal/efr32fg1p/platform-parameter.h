@@ -69,6 +69,7 @@
 #define UART_DEBUG                              UART_IDX4,GPIO_028,GPIO_029
 #else
 #define UART_DEBUG                              UART_IDX0,GPIO_000,GPIO_001
+//#define UART_DEBUG                              UART_IDX1,GPIO_042,GPIO_043 // EGSE TX RX Pins
 #endif
 
 #define TIMER_IRQ_PRIO                          0
