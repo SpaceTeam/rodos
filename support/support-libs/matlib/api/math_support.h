@@ -20,12 +20,12 @@ const double EPSILON = 0.0000001;
 #endif
 
 template <typename Type>
-inline int sgn(Type val) {
-    return (Type(0) < val) - (val < Type(0));
+inline Type sgn(Type val) {
+    return static_cast<Type>((Type(0) < val) - (val < Type(0)));
 }
 
 template <typename TYPE>
-inline bool   isAlmost0(const TYPE &a)   { return (a * sgn(a)) < EPSILON; }
+inline bool   isAlmost0(const TYPE &a)   { return (a * sgn(a)) <= static_cast<TYPE>(EPSILON); }
 
 template <typename TYPE>
 inline double grad2Rad(const TYPE &grad) {return grad * M_PI / 180.0; }

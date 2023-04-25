@@ -209,7 +209,7 @@ public:
 
     Quaternion_<TYPE> invert() const {
         TYPE quads = q0*q0 + q.x*q.x + q.y*q.y + q.z*q.z;
-        return this->conjugate().scale(1.0/quads);
+        return this->conjugate().scale(static_cast<TYPE>(1)/quads);
     }
 
     Quaternion_<TYPE> conjugate() const {
@@ -233,7 +233,7 @@ public:
 
     Quaternion_<TYPE> normalize() const {
         Quaternion_<TYPE> unit;
-        unit = this->scale(1.0/this->getLen());
+        unit = this->scale(1/this->getLen());
         return unit;
     }
 

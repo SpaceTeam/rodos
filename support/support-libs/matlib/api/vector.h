@@ -207,7 +207,7 @@ public:
 
 	void print() const {
 		PRINTF("\nVector3D = \n[");
-		PRINTF(" %4.5lf\n  %4.5lf\n  %4.5lf ]\n", x,y,z);
+		PRINTF(" %4.5lf\n  %4.5lf\n  %4.5lf ]\n", static_cast<double>(x),static_cast<double>(y),static_cast<double>(z));
 	}
 
 	HCoord_<TYPE> toHCoord() const{
