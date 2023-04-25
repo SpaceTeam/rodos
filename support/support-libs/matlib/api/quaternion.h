@@ -208,8 +208,8 @@ public:
     }
 
     Quaternion_<TYPE> invert() const {
-    	TYPE revNorm = 1/this->getLen();
-        return this->conjugate().scale(revNorm);
+        TYPE quads = q0*q0 + q.x*q.x + q.y*q.y + q.z*q.z;
+        return this->conjugate().scale(1.0/quads);
     }
 
     Quaternion_<TYPE> conjugate() const {
