@@ -30,7 +30,7 @@ public:
 
     Quaternion_() {
         Vector3D_<TYPE> q;
-        this->q0 = 1.0;
+        this->q0 = 1;
         this->q  = q;
     }
 
@@ -77,7 +77,7 @@ public:
         if(c4>c) c = c4;
         //Fallunterscheidung
         if(c==c1) {
-            c = 0.5 * sqrt(c);
+            c = static_cast<TYPE>(0.5) * sqrt(c);
             q0 = c;
             q1 = (other.r[2][1]-other.r[1][2])/(4*c);
             q2 = (other.r[0][2]-other.r[2][0])/(4*c);
@@ -85,7 +85,7 @@ public:
         }
 
         if(c==c2) {
-            c = 0.5 * sqrt(c);
+            c = static_cast<TYPE>(0.5) * sqrt(c);
             q0 = (other.r[2][1]-other.r[1][2])/(4*c);
             q1 = c;
             q2 = (other.r[1][0]+other.r[0][1])/(4*c);
@@ -93,7 +93,7 @@ public:
         }
 
         if(c==c3) {
-            c = 0.5 * sqrt(c);
+            c = static_cast<TYPE>(0.5) * sqrt(c);
             q0 = (other.r[0][2]-other.r[2][0])/(4*c);
             q1 = (other.r[1][0]+other.r[0][1])/(4*c);
             q2 = c;
@@ -101,7 +101,7 @@ public:
         }
 
         if(c==c4) {
-            c = 0.5 * sqrt(c);
+            c = static_cast<TYPE>(0.5) * sqrt(c);
             q0 = (other.r[1][0]-other.r[0][1])/(4*c);
             q1 = (other.r[0][2]+other.r[2][0])/(4*c);
             q2 = (other.r[2][1]+other.r[1][2])/(4*c);
@@ -208,8 +208,8 @@ public:
     }
 
     Quaternion_<TYPE> invert() const {
-    	TYPE revNorm = 1/this->getLen();
-        return this->conjugate().scale(revNorm);
+        TYPE quads = q0*q0 + q.x*q.x + q.y*q.y + q.z*q.z;
+        return this->conjugate().scale(static_cast<TYPE>(1)/quads);
     }
 
     Quaternion_<TYPE> conjugate() const {
@@ -233,7 +233,7 @@ public:
 
     Quaternion_<TYPE> normalize() const {
         Quaternion_<TYPE> unit;
-        unit = this->scale(1.0/this->getLen());
+        unit = this->scale(1/this->getLen());
         return unit;
     }
 
@@ -312,7 +312,7 @@ public:
     }
 
     void print() const {
-        PRINTF("[ %3.3lf \t (%3.3lf \t %3.3lf \t %3.3lf)]\n",(double) q0,(double) q.x,(double) q.y,(double) q.z);
+        PRINTF("[ %3.3lf \t (%3.3lf \t %3.3lf \t %3.3lf)]\n",static_cast<TYPE>(q0),static_cast<TYPE>(q.x),static_cast<TYPE>(q.y),static_cast<TYPE>(q.z));
     }
 
     inline friend Quaternion_<TYPE> operator+(const Quaternion_<TYPE> &left, const Quaternion_<TYPE> &right)  { return left.qAdd(right); }
@@ -329,12 +329,12 @@ public:
     	return res;
     }
     inline friend Vector3D_<TYPE>   operator*(const Quaternion_<TYPE> &left, const Vector3D_<TYPE>  &right)   { return right.qRotate(left); }
-    inline friend Quaternion_<TYPE> operator/(const Quaternion_<TYPE> &left, const TYPE     &right)  		{ return left.scale(1.0/right); }
+    inline friend Quaternion_<TYPE> operator/(const Quaternion_<TYPE> &left, const TYPE     &right)  		{ return left.scale(1/right); }
     inline friend Quaternion_<TYPE> operator-(const Quaternion_<TYPE> &right)                   				{ return right.conjugate(); }
 
-    inline friend Quaternion_<TYPE> qX(const TYPE &phi) { return Quaternion_<TYPE>(cos(phi/2), sin(phi/2), 0.0, 0.0); }
-    inline friend Quaternion_<TYPE> qY(const TYPE &phi) { return Quaternion_<TYPE>(cos(phi/2), 0.0, sin(phi/2), 0.0); }
-    inline friend Quaternion_<TYPE> qZ(const TYPE &phi) { return Quaternion_<TYPE>(cos(phi/2), 0.0, 0.0, sin(phi/2)); }
+    inline friend Quaternion_<TYPE> qX(const TYPE &phi) { return Quaternion_<TYPE>(cos(phi/2), sin(phi/2), 0, 0); }
+    inline friend Quaternion_<TYPE> qY(const TYPE &phi) { return Quaternion_<TYPE>(cos(phi/2), 0, sin(phi/2), 0); }
+    inline friend Quaternion_<TYPE> qZ(const TYPE &phi) { return Quaternion_<TYPE>(cos(phi/2), 0, 0, sin(phi/2)); }
 //    inline friend Quaternion_<TYPE> q1()           		 { return Quaternion_<TYPE>(1,          0.0, 0.0, 0.0); }
 
 	template <typename TYPE2>

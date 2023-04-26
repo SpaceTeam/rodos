@@ -57,7 +57,7 @@ public:
     }
 
     AngleAxis_(const Matrix3D_<TYPE>& M) {
-        this->phi= acos(0.5*(M.r[0][0] + M.r[1][1] + M.r[2][2]-1));
+        this->phi= acos(static_cast<TYPE>(0.5)*(M.r[0][0] + M.r[1][1] + M.r[2][2]-1));
 
         TYPE x = 1/(2*sin(phi))* (M.r[2][1] - M.r[1][2]);
         TYPE y = 1/(2*sin(phi))* (M.r[0][2] - M.r[2][0]);
@@ -156,7 +156,7 @@ public:
     AngleAxis_<TYPE>& operator=(const AngleAxis_<TYPE> &other) = default;
 
     void print() const {
-        PRINTF("[%3.3lf*PI \t %3.3lf \t %3.3f \t %3.3lf]\n",(double) phi/M_PI, (double) u.x, (double) u.y, (double) u.z);
+        PRINTF("[%3.3lf*PI \t %3.3lf \t %3.3f \t %3.3lf]\n",static_cast<double>(phi/M_PI), static_cast<double>(u.x), static_cast<double>(u.y), static_cast<double>(u.z));
     }
 
     static AngleAxis_<TYPE> rotor(const Vector3D_<TYPE>& fromVector, const Vector3D_<TYPE>& toVector) {
@@ -164,7 +164,7 @@ public:
     	Vector3D_<TYPE> to   = toVector.normalize();
         TYPE cosAngle = dotProduct  (from, to);
         Vector3D_<TYPE> axis = crossProduct(from, to);
-        if(isAlmost0(axis.getLen())) { cosAngle = axis.x = axis.y = axis.z = 1.0; }
+        if(isAlmost0(axis.getLen())) { cosAngle = axis.x = axis.y = axis.z = 1; }
         axis = axis.normalize();
         return AngleAxis_<TYPE>(acos(cosAngle), axis);
     }
@@ -172,7 +172,7 @@ public:
     bool resetIfNAN() {
         bool error = !isfinite(phi) || !isfinite(u.x) || !isfinite(u.y) || !isfinite(u.z);
         if(error) {
-        	u.x = u.y = u.z = 1.0;
+        	u.x = u.y = u.z = 1;
         	phi = 0;
         }
         return error;

@@ -56,7 +56,7 @@ public:
 	}
 
 	void print() const {
-	    PRINTF("[r= %3.3lf \t phi= %3.3lf*PI \t theta= %3.3lf*PI]\n", (double) r, (double) phi/M_PI, (double) theta/M_PI);
+	    PRINTF("[r= %3.3lf \t phi= %3.3lf*PI \t theta= %3.3lf*PI]\n", static_cast<double>(r), static_cast<double>(phi/M_PI), static_cast<double>(theta/M_PI));
 	}
 
 	template <typename TYPE2>

@@ -77,7 +77,7 @@ public:
 
 	bool resetIfNAN() {
 	    bool error = !isfinite(x) || !isfinite(y) || !isfinite(z);
-	    if(error) x = y = z = 0.0;
+	    if(error) x = y = z = 0;
 	    return error;
 	}
 
@@ -207,7 +207,7 @@ public:
 
 	void print() const {
 		PRINTF("\nVector3D = \n[");
-		PRINTF(" %4.5lf\n  %4.5lf\n  %4.5lf ]\n", x,y,z);
+		PRINTF(" %4.5lf\n  %4.5lf\n  %4.5lf ]\n", static_cast<double>(x),static_cast<double>(y),static_cast<double>(z));
 	}
 
 	HCoord_<TYPE> toHCoord() const{
@@ -261,7 +261,7 @@ public:
 	inline friend Vector3D_<TYPE> operator*   (const Vector3D_<TYPE> &left, const Vector3D_<TYPE> &right) { Vector3D_<TYPE> ret; ret.x = left.x * right.x;ret.y = left.y * right.y;ret.z = left.z * right.z; return ret;}
 	inline friend Vector3D_<TYPE> operator*   (const TYPE   &left, 	   		const Vector3D_<TYPE> &right) { return right.scale(left); }
 	inline friend Vector3D_<TYPE> operator*   (const Vector3D_<TYPE> &left, const TYPE   &right) 				{ return left.scale(right); }
-	inline friend Vector3D_<TYPE> operator/   (const Vector3D_<TYPE> &left, const TYPE   &right) 				{ return left.scale(1.0/right); }
+	inline friend Vector3D_<TYPE> operator/   (const Vector3D_<TYPE> &left, const TYPE   &right) 				{ return left.scale(1/right); }
 	inline friend bool operator==   (const Vector3D_<TYPE> &left, const Vector3D_<TYPE> &right) 				{ return (left.x == right.x) && (left.y == right.y) && (left.z == right.z); }
 	inline friend bool operator!=   (const Vector3D_<TYPE> &left, const Vector3D_<TYPE> &right) 				{ return !((left.x == right.x) && (left.y == right.y) && (left.z == right.z)); }
 
@@ -311,19 +311,19 @@ public:
     TYPE v[6];
 
     Vector6D_() {
-        for (int i=0; i<6; ++i) {
-            v[i]=0.0;
+        for (size_t i=0; i<6; ++i) {
+            v[i]=0;
         }
     }
 
     Vector6D_(const Vector_<6,TYPE>& other) {
-    	for (int i=0; i<6; ++i) {
+    	for (size_t i=0; i<6; ++i) {
     		v[i]=other.r[i][0];
     	}
     }
 
     Vector6D_(const Matrix_<6,1,TYPE>& other) {
-        for (int i=0; i<6; ++i) {
+        for (size_t i=0; i<6; ++i) {
             v[i]=other.r[i][0];
         }
     }
@@ -356,7 +356,7 @@ public:
     Vector6D_<TYPE> vecAdd(const Vector6D_<TYPE>& other) const {
 
         Vector6D_<TYPE> Aux;
-        for (int i=0; i<6; ++i) {
+        for (size_t i=0; i<6; ++i) {
             Aux.v[i]=v[i]+other.v[i];
         }
         return Aux;
@@ -376,7 +376,7 @@ public:
         Vector6D_<TYPE> Aux;
         TYPE Sum;
         for (size_t i=0; i<6; ++i) {
-            Sum = 0.0;
+            Sum = 0;
             for (size_t j=0; j<6; ++j) {
                 Sum += M.r[i][j] * v[j];
             }
@@ -406,7 +406,7 @@ public:
     inline friend Vector6D_<TYPE> operator-(const Vector6D_<TYPE>& left, const Vector6D_<TYPE>& right) { return left.vecSub(right); }
     inline friend Vector6D_<TYPE> operator*(TYPE value, 				 const Vector6D_<TYPE>& right) { return right.scale(value); }
     inline friend Vector6D_<TYPE> operator*(const Vector6D_<TYPE>& left, const TYPE &value) 		   { return left.scale(value); }
-    inline friend Vector6D_<TYPE> operator/(const Vector6D_<TYPE> &left, const TYPE &right) 		   { return left.scale(1.0/right); }
+    inline friend Vector6D_<TYPE> operator/(const Vector6D_<TYPE> &left, const TYPE &right) 		   { return left.scale(1/right); }
 	inline friend bool operator==   (const Vector6D_<TYPE> &left, const Vector6D_<TYPE> &right){
 		for (size_t i = 0; i < 6; ++i) {
 			if(!isAlmost0(left.v[i]-right.v[i]))
@@ -439,8 +439,8 @@ public:
 template <typename TYPE>
 TYPE dotProduct(const Vector6D_<TYPE>& left, const Vector6D_<TYPE>& right) {
 
-    TYPE Sum = 0.0;
-    for (int i=0; i<6; ++i) {
+    TYPE Sum = 0;
+    for (size_t i=0; i<6; ++i) {
         Sum+=left.v[i]*right.v[i];
     }
     return Sum;

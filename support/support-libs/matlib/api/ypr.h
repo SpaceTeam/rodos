@@ -164,7 +164,7 @@ public:
         TYPE p = this->pitch;
         TYPE r = this->roll;
 
-        TYPE phi = acos(0.5*(-1 + cos(p)*cos(y) + cos(r)*cos(y) + sin(r)*sin(p)*sin(y) + cos(r)*cos(p) ));
+        TYPE phi = acos(static_cast<TYPE>(0.5)*(-1 + cos(p)*cos(y) + cos(r)*cos(y) + sin(r)*sin(p)*sin(y) + cos(r)*cos(p) ));
 
         TYPE u_x = 1/(2*sin(phi))* (sin(r)*cos(p) -cos(r)*sin(p)*sin(y) +sin(r)*cos(y));
         TYPE u_y = 1/(2*sin(phi))* (sin(r)*sin(y) +cos(r)*sin(p)*cos(y) +sin(p));
@@ -178,11 +178,11 @@ public:
 
     void print(const print_format_t format = UNIT_DEGREE) const {
     	if(format == UNIT_RAD){
-    		PRINTF("(%3.3f \t %3.3f \t %3.3f)\n", yaw, pitch, roll);
+    		PRINTF("(%3.3f \t %3.3f \t %3.3f)\n", static_cast<double>(yaw), static_cast<double>(pitch), static_cast<double>(roll));
     	} else if(format == UNIT_DEGREE) {
-    		PRINTF("(%3.3f deg\t %3.3f deg \t %3.3f deg)\n", yaw*180/M_PI, pitch*180/M_PI, roll*180/M_PI);
+    		PRINTF("(%3.3f deg\t %3.3f deg \t %3.3f deg)\n", static_cast<double>(yaw*180/M_PI), static_cast<double>(pitch*180/M_PI), static_cast<double>(roll*180/M_PI));
     	} else {
-    		PRINTF("(%3.3f*PI \t %3.3f*PI \t %3.3f*PI)\n", yaw/M_PI, pitch/M_PI, roll/M_PI);
+    		PRINTF("(%3.3f*PI \t %3.3f*PI \t %3.3f*PI)\n", static_cast<double>(yaw/M_PI), static_cast<double>(pitch/M_PI), static_cast<double>(roll/M_PI));
     	}
     }
 

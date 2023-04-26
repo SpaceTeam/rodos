@@ -122,45 +122,45 @@ public:
 
 	TYPE getAngle() const {
 	    TYPE angle;
-	    angle = acos(0.5*(this->r[0][0]+this->r[1][1]+this->r[2][2]-1));
+	    angle = acos(static_cast<TYPE>(0.5)*(this->r[0][0]+this->r[1][1]+this->r[2][2]-1));
 	    return angle;
 	}
 
 	Vector3D_<TYPE> getVec() const {
 	    TYPE x,y,z,angle;
 	    angle = this->getAngle();
-	    x = 1.0/(2*sin(angle)) * (this->r[2][1]-this->r[1][2]);
-	    y = 1.0/(2*sin(angle)) * (this->r[0][2]-this->r[2][0]);
-	    z = 1.0/(2*sin(angle)) * (this->r[1][0]-this->r[0][1]);
+	    x = 1/(2*sin(angle)) * (this->r[2][1]-this->r[1][2]);
+	    y = 1/(2*sin(angle)) * (this->r[0][2]-this->r[2][0]);
+	    z = 1/(2*sin(angle)) * (this->r[1][0]-this->r[0][1]);
 	    Vector3D_<TYPE> u(x,y,z);
 
 	    return u;
 	}
 
 	void rotationX(const TYPE &angle) {
-	    Vector3D_<TYPE> c1(1.0, 0.0, 0.0);
+	    Vector3D_<TYPE> c1(1, 0, 0);
 	    this->setColumn(0,(Vector_<3,TYPE>) c1);
-	    Vector3D_<TYPE> c2(0.0, cos(angle), sin(angle));
+	    Vector3D_<TYPE> c2(0, cos(angle), sin(angle));
 	    this->setColumn(1,(Vector_<3,TYPE>) c2);
-	    Vector3D_<TYPE> c3(0.0, -sin(angle), cos(angle));
+	    Vector3D_<TYPE> c3(0, -sin(angle), cos(angle));
 	    this->setColumn(2,(Vector_<3,TYPE>) c3);
 	}
 
 	void rotationY(const TYPE &angle) {
-		Vector3D_<TYPE> c1(cos(angle), 0.0, -sin(angle));
+		Vector3D_<TYPE> c1(cos(angle), 0, -sin(angle));
 		this->setColumn(0,(Vector_<3,TYPE>) c1);
-	    Vector3D_<TYPE> c2(0.0, 1.0, 0.0);
+	    Vector3D_<TYPE> c2(0, 1, 0);
 	    this->setColumn(1,(Vector_<3,TYPE>) c2);
-	    Vector3D_<TYPE> c3(sin(angle), 0.0, cos(angle));
+	    Vector3D_<TYPE> c3(sin(angle), 0, cos(angle));
 	    this->setColumn(2,(Vector_<3,TYPE>) c3);
 	}
 
 	void rotationZ(const TYPE &angle) {
-	    Vector3D_<TYPE> c1(cos(angle), sin(angle), 0.0);
+	    Vector3D_<TYPE> c1(cos(angle), sin(angle), 0);
 	    this->setColumn(0,(Vector_<3, TYPE>) c1);
-	    Vector3D_<TYPE> c2(-sin(angle), cos(angle), 0.0);
+	    Vector3D_<TYPE> c2(-sin(angle), cos(angle), 0);
 	    this->setColumn(1,(Vector_<3, TYPE>) c2);
-	    Vector3D_<TYPE> c3(0.0, 0.0, 1.0);
+	    Vector3D_<TYPE> c3(0, 0, 1);
 	    this->setColumn(2,(Vector_<3, TYPE>) c3);
 	}
 
@@ -179,7 +179,7 @@ public:
 	    if(c4>c) c = c4;
 	    //Fallunterscheidung
 	    if(c==c1) {
-	        c = 0.5 * sqrt(c);
+	        c = static_cast<TYPE>(0.5) * sqrt(c);
 	        q0 = c;
 	        q1 = (this->r[2][1]-this->r[1][2])/(4*c);
 	        q2 = (this->r[0][2]-this->r[2][0])/(4*c);
@@ -187,7 +187,7 @@ public:
 	    }
 
 	    if(c==c2) {
-	        c = 0.5 * sqrt(c);
+	        c = static_cast<TYPE>(0.5) * sqrt(c);
 	        q0 = (this->r[2][1]-this->r[1][2])/(4*c);
 	        q1 = c;
 	        q2 = (this->r[1][0]+this->r[0][1])/(4*c);
@@ -195,7 +195,7 @@ public:
 	    }
 
 	    if(c==c3) {
-	        c = 0.5 * sqrt(c);
+	        c = static_cast<TYPE>(0.5) * sqrt(c);
 	        q0 = (this->r[0][2]-this->r[2][0])/(4*c);
 	        q1 = (this->r[1][0]+this->r[0][1])/(4*c);
 	        q2 = c;
@@ -203,7 +203,7 @@ public:
 	    }
 
 	    if(c==c4) {
-	        c = 0.5 * sqrt(c);
+	        c = static_cast<TYPE>(0.5) * sqrt(c);
 	        q0 = (this->r[1][0]-this->r[0][1])/(4*c);
 	        q1 = (this->r[0][2]+this->r[2][0])/(4*c);
 	        q2 = (this->r[2][1]+this->r[1][2])/(4*c);
@@ -230,7 +230,7 @@ public:
 	}
 
 	AngleAxis_<TYPE> toAngleAxis() const {
-		TYPE phi = acos(0.5*(this->r[0][0] + this->r[1][1] + this->r[2][2]-1));
+		TYPE phi = acos(static_cast<TYPE>(0.5)*(this->r[0][0] + this->r[1][1] + this->r[2][2]-1));
 		TYPE sp = sin(phi);
 
 		TYPE x = 1/(2*sp)* (this->r[2][1] - this->r[1][2]);
@@ -278,8 +278,8 @@ public:
 
 	Matrix3D_<TYPE> upperLeft() const {
 	    Matrix3D_<TYPE> P;
-	    for(int i = 0 ; i<3; ++i) {
-	        for(int j = 0; j<3; ++j) {
+	    for(size_t i = 0 ; i<3; ++i) {
+	        for(size_t j = 0; j<3; ++j) {
 	            P.r[i][j] = this->r[  i][  j];
 	        }
 	    }
@@ -288,8 +288,8 @@ public:
 
 	Matrix3D_<TYPE> upperRight() const {
 	    Matrix3D_<TYPE> Q;
-	    for(int i = 0 ; i<3; ++i) {
-	        for(int j = 0; j<3; ++j) {
+	    for(size_t i = 0 ; i<3; ++i) {
+	        for(size_t j = 0; j<3; ++j) {
 	            Q.r[i][j] = this->r[  i][3+j];
 	        }
 	    }
@@ -298,8 +298,8 @@ public:
 
 	Matrix3D_<TYPE> lowerLeft() const {
 	    Matrix3D_<TYPE> R;
-	    for(int i = 0 ; i<3; ++i) {
-	        for(int j = 0; j<3; ++j) {
+	    for(size_t i = 0 ; i<3; ++i) {
+	        for(size_t j = 0; j<3; ++j) {
 	            R.r[i][j] = this->r[3+i][  j];
 	        }
 	    }
@@ -308,8 +308,8 @@ public:
 
 	Matrix3D_<TYPE> lowerRight() const {
 	    Matrix3D_<TYPE> S;
-	    for(int i = 0 ; i<3; ++i) {
-	        for(int j = 0; j<3; ++j) {
+	    for(size_t i = 0 ; i<3; ++i) {
+	        for(size_t j = 0; j<3; ++j) {
 	            S.r[i][j] = this->r[3+i][3+j];
 	        }
 	    }
@@ -323,23 +323,23 @@ public:
 template <typename TYPE>
 Matrix3D_<TYPE> skewSymmetricMatrix( const Vector3D_<TYPE> &v ) {
 	TYPE r[9];
-    r[0] =  0.0;
+    r[0] =  0;
     r[1] = -v.z;
     r[2] =  v.y;
     r[3] =  v.z;
-    r[4] =  0.0;
+    r[4] =  0;
     r[5] = -v.x;
     r[6] = -v.y;
     r[7] =  v.x;
-    r[8] =  0.0;
+    r[8] =  0;
     return Matrix3D_<TYPE>(r);
 }
 
 template <typename TYPE>
 Matrix6D_<TYPE> dyadic(const Vector6D_<TYPE>& left, const Vector6D_<TYPE>& right) {
 	Matrix6D_<TYPE> Mat;
-	for (int i=0; i<6; ++i) {
-		for (int j=0; j<6; ++j) {
+	for(size_t i=0; i<6; ++i) {
+		for(size_t j=0; j<6; ++j) {
 			Mat.r[i][j] = left.v[i]*right.v[j];
 		}
 	}

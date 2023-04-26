@@ -19,13 +19,13 @@ const double EPSILON = 0.0000001;
 #define M_PI 3.14159265358979323846
 #endif
 
-template <typename Type>
-inline int sgn(Type val) {
-    return (Type(0) < val) - (val < Type(0));
+template <typename TYPE>
+inline TYPE sgn(TYPE val) {
+    return static_cast<TYPE>((static_cast<TYPE>(0) < val) - (val < static_cast<TYPE>(0)));
 }
 
 template <typename TYPE>
-inline bool   isAlmost0(const TYPE &a)   { return (a * sgn(a)) < EPSILON; }
+inline bool   isAlmost0(const TYPE &a)   { return (a * sgn(a)) <= static_cast<TYPE>(EPSILON); }
 
 template <typename TYPE>
 inline double grad2Rad(const TYPE &grad) {return grad * M_PI / 180.0; }

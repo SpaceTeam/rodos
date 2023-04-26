@@ -422,7 +422,7 @@ public:
 
 	inline friend Matrix_<ROW,COL,TYPE> operator*(const TYPE   &left, const Matrix_<ROW,COL,TYPE> &right) { return right.scale(left); }
 	inline friend Matrix_<ROW,COL,TYPE> operator*(const Matrix_<ROW,COL,TYPE> &left, const TYPE   &right) { return left.scale(right); }
-	inline friend Matrix_<ROW,COL,TYPE> operator/(const Matrix_<ROW,COL,TYPE> &left, const TYPE   &right) { return left.scale(1.0/right); }
+	inline friend Matrix_<ROW,COL,TYPE> operator/(const Matrix_<ROW,COL,TYPE> &left, const TYPE   &right) { return left.scale(1/right); }
 };
 
 template<> Matrix_<1,1,double> Matrix_<1,1,double>::invert() const;
