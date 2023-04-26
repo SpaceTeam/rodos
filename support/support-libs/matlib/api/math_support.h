@@ -19,9 +19,9 @@ const double EPSILON = 0.0000001;
 #define M_PI 3.14159265358979323846
 #endif
 
-template <typename Type>
-inline Type sgn(Type val) {
-    return static_cast<Type>((Type(0) < val) - (val < Type(0)));
+template <typename TYPE>
+inline TYPE sgn(TYPE val) {
+    return static_cast<TYPE>((static_cast<TYPE>(0) < val) - (val < static_cast<TYPE>(0)));
 }
 
 template <typename TYPE>

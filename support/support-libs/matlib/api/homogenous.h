@@ -25,8 +25,8 @@ public:
 	}
 
 	HTransform_(const Matrix3D_<TYPE>& rot, const Vector3D_<TYPE>& trans) : Matrix_<4,4,TYPE>("Htransform"){
-	    for(int i = 0 ; i<3; ++i) {
-	        for(int j = 0; j<3; ++j) {
+	    for(size_t i = 0 ; i<3; ++i) {
+	        for(size_t j = 0; j<3; ++j) {
 	            this->r[i][j]=rot.r[i][j];
 	        }
 	    }
@@ -34,11 +34,11 @@ public:
 	    this->r[0][3] = trans.x;
 	    this->r[1][3] = trans.y;
 	    this->r[2][3] = trans.z;
-	    this->r[3][3] = 1.0;
+	    this->r[3][3] = 1;
 	    //row 4
-	    this->r[3][0]=0.0;
-	    this->r[3][1]=0.0;
-	    this->r[3][2]=0.0;
+	    this->r[3][0]=0;
+	    this->r[3][1]=0;
+	    this->r[3][2]=0;
 	}
 
 	HTransform_(TYPE* arr) : Matrix_<4,4,TYPE>(arr, "Htransform"){ 				///< arr[16], left to right, top  to bottom
@@ -46,8 +46,8 @@ public:
 
 	Matrix3D_<TYPE> getRotation() const {
 	    Matrix3D_<TYPE> R;
-	    for(int i = 0 ; i<3; ++i) {
-	        for(int j = 0; j<3; ++j) {
+	    for(size_t i = 0 ; i<3; ++i) {
+	        for(size_t j = 0; j<3; ++j) {
 	            R.r[i][j]=this->r[i][j];
 	        }
 	    }

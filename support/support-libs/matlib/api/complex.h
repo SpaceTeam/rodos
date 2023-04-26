@@ -21,8 +21,8 @@ public:
 	TYPE Im;
 
 	Complex_() {
-	    this->Re = 0.0;
-	    this->Im = 0.0;
+	    this->Re = 0;
+	    this->Im = 0;
 	}
 
 	Complex_(const TYPE &Re, const TYPE &Im) {
@@ -62,11 +62,11 @@ public:
 	Complex_<TYPE> cPow(const int &exponent) const {
 		Complex_<TYPE> z;
 	    if(exponent ==0) {
-	        z.Re =1;
+	        z.Re = 1;
 	        return z;
 	    }
 	    z= (*this);
-	    for(int i = 1; i<exponent; ++i) {
+	    for(size_t i = 1; i<exponent; ++i) {
 	        z=z.cMult(*this);
 	    }
 	    return z;
@@ -91,7 +91,7 @@ public:
     inline friend Complex_<TYPE> operator* (const TYPE  &left, const Complex_<TYPE> &right) { return right.cScale(left); }
     inline friend Complex_<TYPE> operator* (const Complex_<TYPE> &left, const TYPE  &right) { return left.cScale(right); }
     inline friend Complex_<TYPE> operator* (const Complex_<TYPE> &left, const Complex_<TYPE> &right) { return left.cMult(right); }
-    inline friend Complex_<TYPE> operator/ (const Complex_<TYPE> &left, const TYPE  &right) { return left.cScale(1.0/right); }
+    inline friend Complex_<TYPE> operator/ (const Complex_<TYPE> &left, const TYPE  &right) { return left.cScale(1/right); }
     inline friend bool operator==   (const Complex_<TYPE> &left, const Complex_<TYPE> &right) { return (isAlmost0(left.Re - right.Re) && isAlmost0(left.Im - right.Im));}
     inline friend bool operator!=   (const Complex_<TYPE> &left, const Complex_<TYPE> &right) { return !(left == right);}
 
