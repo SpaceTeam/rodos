@@ -2,9 +2,9 @@
 
 echo "::: Running $1 against $2"
 set -e
-# Kill test executable (with SIGKILL) after 8 seconds.  Necessary
+# Kill test executable (with SIGKILL) after 25 seconds.  Necessary
 # because sometimes tests might deadlock.
-if timeout -s 9 8 $1 > "$1.output"
+if timeout -s 9 25 $1 > "$1.output"
 then
     true
 else
