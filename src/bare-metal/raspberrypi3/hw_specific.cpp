@@ -8,7 +8,6 @@
  * @author Johannes Freitag, Michael Zehrer, Sergio Montenegro, David Welch
  *
  */
-#include <inttypes.h>
 #include <rodos.h>
 #include <hal/hal_uart.h>
 #include "hw_specific.h"
@@ -26,8 +25,8 @@ namespace RODOS {
 /* CONTEXT SWITCH AND INTERRUPT HANDLING */
 /*********************************************************************************************/
 
-extern int64_t timeToTryAgainToSchedule;
-extern bool    isSchedulingEnabled;
+extern InterruptSyncWrapper<int64_t> timeToTryAgainToSchedule;
+extern bool isSchedulingEnabled;
 
 extern "C" {
 

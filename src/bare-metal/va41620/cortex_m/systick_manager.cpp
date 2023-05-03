@@ -44,7 +44,7 @@ void SysTickManager::start(){
 }
 
 
-extern long long timeToTryAgainToSchedule;
+extern InterruptSyncWrapper<int64_t> timeToTryAgainToSchedule;
 extern bool isSchedulingEnabled;
 
 

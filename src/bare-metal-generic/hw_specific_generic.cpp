@@ -7,7 +7,7 @@
 
 namespace RODOS {
 
-extern long long timeToTryAgainToSchedule;
+extern InterruptSyncWrapper<int64_t> timeToTryAgainToSchedule;
 
 void Timer::updateTriggerToNextTimingEvent() {
     auto nextTriggerTime = TimeEvent::getNextTriggerTime();

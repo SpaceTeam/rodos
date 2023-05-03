@@ -48,8 +48,8 @@ extern "C" {
 extern void __asmSaveContext();
 }
 
-extern long long timeToTryAgainToSchedule;
-extern bool      isSchedulingEnabled;
+extern InterruptSyncWrapper<int64_t> timeToTryAgainToSchedule;
+extern bool isSchedulingEnabled;
 
 /**
 * the signal handler for SIGVTALRM (timer signal)

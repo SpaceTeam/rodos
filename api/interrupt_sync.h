@@ -3,8 +3,6 @@
 #include <atomic>
 #include <cstddef>
 
-#include "rodos-semaphore.h"
-
 namespace RODOS {
 
 /**
@@ -79,10 +77,9 @@ class InterruptSyncWrapper {
         return (m_isLoadUninterrupted.load() == false);
     }
 
-    T                    m_valueBuffer[2]{};
+    volatile T           m_valueBuffer[2]{};
     std::atomic<uint8_t> m_index{ 0 };
-
-    std::atomic<bool> m_isLoadUninterrupted{ false };
+    std::atomic<bool>    m_isLoadUninterrupted{ false };
 };
 
 } // namespace RODOS

@@ -20,6 +20,8 @@ namespace RODOS {
 
 constexpr uint32_t EMPTY_MEMORY_MARKER = 0xDEADBEEF;
 
+InterruptSyncWrapper<int64_t> timeToTryAgainToSchedule{};
+
 /** old style constructor */
 Thread::Thread(const char* name,
                const int32_t priority,
@@ -106,7 +108,6 @@ Thread* Thread::getCurrentThread() {
 }
 
 
-long long timeToTryAgainToSchedule = 0; // set when looking for the next to execute
 
 /* resume the thread */
 void Thread::resume() {

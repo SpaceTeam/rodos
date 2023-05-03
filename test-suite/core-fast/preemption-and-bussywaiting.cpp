@@ -59,7 +59,7 @@ class HiPriorityThread : public StaticThread<> {
         PRINTF("\nHi prio in busy waiting\n");
         for(auto nextTick = START_LOOP_1 + PRINTF_WAIT_TIME; true;) {
             if(NOW() >= nextTick && NOW() <= nextTick + WAIT_JITTER) {
-                xprintf("+");
+                PRINTF("+");
                 FFLUSH();
             }
             if(NOW() >= START_LOOP_1 + DURATION_LOOP_1) {
@@ -88,7 +88,7 @@ class HiPriorityThread : public StaticThread<> {
 
             for(auto nextTick = START_LOOP_2 + PRINTF_WAIT_TIME; true;) {
                 if(NOW() >= nextTick && NOW() <= nextTick + WAIT_JITTER) {
-                    xprintf("+");
+                    PRINTF("+");
                     FFLUSH();
                 }
                 if(NOW() >= START_LOOP_2 + DURATION_LOOP_2) {

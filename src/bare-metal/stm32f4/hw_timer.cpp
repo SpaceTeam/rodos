@@ -36,7 +36,7 @@ namespace RODOS {
  * -> 100ms  @ 21MHz: 2.100.000
  * -> !!! 1s  @ 21MHz: 21.000.000 -> counter overflow !!!
  */
-extern long long timeToTryAgainToSchedule;
+extern InterruptSyncWrapper<int64_t> timeToTryAgainToSchedule;
 extern bool isSchedulingEnabled;
 
 
