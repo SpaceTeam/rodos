@@ -212,11 +212,13 @@ void IdleThread::run() {
 #ifdef SLEEP_WHEN_IDLE_ENABLED
         // enter sleep mode if suitable
         int64_t reactivationTime = timeToTryAgainToSchedule;
+#ifndef DISABLE_TIMEEVENTS
         {
             ScopeProtector protector{ &TimeEvent::getTimeEventSema() };
             reactivationTime =
-                RODOS::min(timeToTryAgainToSchedule, TimeEvent::getNextTriggerTime());
+                RODOS::min(timeToTryAgainToSchedule.load(), TimeEvent::getNextTriggerTime());
         }
+#endif
 
         int64_t durationToNextTimingEvent = reactivationTime - NOW();
         int64_t timerInterval =

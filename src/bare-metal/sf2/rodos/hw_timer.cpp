@@ -51,8 +51,10 @@ void SysTick_Handler();
 void SysTick_Handler() {
     nanoTime += PARAM_TIMER_INTERVAL * 1000; // 10M ns for each 10ms-tick
 
-    long long timeNow = NOW();     // comment this out to improve performance, but: no time events any more
-    TimeEvent::propagate(timeNow); // comment this out to improve performance, but: no time events any more
+    long long timeNow = NOW();
+#ifndef DISABLE_TIMEEVENTS
+    TimeEvent::propagate(timeNow);
+#endif
 
     if(!isSchedulingEnabled || NOW() < timeToTryAgainToSchedule) {
         return;

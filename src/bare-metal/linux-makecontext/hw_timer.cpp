@@ -69,8 +69,10 @@ void timerSignalHandler(int, siginfo_t *, void *) {
   // stop timer to prevent simultaneous signals
   Timer::stop();
 
-  long long timeNow = NOW();  // comment this out to improve performance, but: no time events any more
-  TimeEvent::propagate(timeNow); // comment this out to improve performance, but: no time events any more
+  long long timeNow = NOW();
+#ifndef DISABLE_TIMEEVENTS
+  TimeEvent::propagate(timeNow);
+#endif
 
   if(!isSchedulingEnabled || timeNow < timeToTryAgainToSchedule) {
     Timer::updateTriggerToNextTimingEvent();

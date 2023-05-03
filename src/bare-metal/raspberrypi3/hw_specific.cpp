@@ -46,7 +46,9 @@ void handleInterrupt(long* context) {
     // handles the timer interrupts
     if(read32(SYSTEM_TIMER_BASE) & BIT(SYSTEM_TIMER_CONTROL_MATCH1)) {
         int64_t timeNow = NOW();
+#ifndef DISABLE_TIMEEVENTS
         TimeEvent::propagate(timeNow);
+#endif
 
         if(isSchedulingEnabled == true) {
             if(NOW() > timeToTryAgainToSchedule) {

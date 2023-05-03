@@ -60,6 +60,11 @@ if (NOT ENABLE_RODOS_RTTI)
     target_compile_options(rodos_rodos PUBLIC $<$<COMPILE_LANGUAGE:CXX>:-fno-rtti>)
 endif ()
 
+option(DISABLE_TIMEEVENTS "Disable manual TimeEvents (interrupts on specified time)" OFF)
+if(DISABLE_TIMEEVENTS)
+    add_compile_definitions(DISABLE_TIMEEVENTS)
+endif()
+
 
 #___________________________________________________________________
 if (is_port_baremetal)
