@@ -23,7 +23,8 @@ class TestTime : public StaticThread<> {
 };
 
 
-TestTime t[] = {1, 2, 3, 4};
+TestTime t1{1}, t2{2}, t3{3}, t4{4};
+TestTime* t[] = {&t1, &t2, &t3, &t4};
 
 
 class MySchedluler : public StaticThread<> {
@@ -39,7 +40,7 @@ class MySchedluler : public StaticThread<> {
             }
             PRINTF("-----------------------------------\n");
             for(int i = 0; i < 4; i++) {
-                t[i].resume();
+                t[i]->resume();
                 yield();
             }
         }

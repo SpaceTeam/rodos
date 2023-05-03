@@ -12,7 +12,7 @@
 *
 * @brief %Thread handling
 */
-
+#include <atomic>
 
 #include "initiator.h"
 #include "listelement.h"
@@ -32,7 +32,7 @@ int64_t timeAtStartup = 0LL;
 /****************** src global variables **************/
 
 
-Thread* volatile Thread::currentThread   = 0;
+std::atomic<Thread*> Thread::currentThread {};
 
 List Thread::threadList         = 0;
 List TimeEvent::timeEventList   = 0;

@@ -16,7 +16,7 @@ ucontext_t signal_context; /* the interrupt context */
 extern void* signal_stack;
 
 uintptr_t Thread::getCurrentStackAddr(){
-    volatile ucontext_t* c = reinterpret_cast<volatile ucontext_t*>(context);
+    volatile ucontext_t* c = reinterpret_cast<volatile ucontext_t*>(context.load());
     return static_cast<uintptr_t>(c->uc_mcontext.gregs[REG_ESP]);
 }
 

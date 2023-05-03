@@ -15,6 +15,7 @@
 // #include <stdio.h>
 // #include <stdlib.h>
 
+#include <atomic>
 #include <signal.h>
 
 #include "hw_specific.h"
@@ -57,7 +58,7 @@ extern "C" {
 }
 
 extern InterruptSyncWrapper<int64_t> timeToTryAgainToSchedule;
-extern bool isSchedulingEnabled;
+extern std::atomic<bool> isSchedulingEnabled;
 extern void *signal_stack;
 
 /**

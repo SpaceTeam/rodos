@@ -1,5 +1,8 @@
-#include "rodos.h"
 #include "systick_manager.h"
+
+#include <atomic>
+
+#include "rodos.h"
 #include "cortex_m/peripheral_defs.h"
 #include "hw_specific.h"
 
@@ -44,7 +47,7 @@ void SysTickManager::start(){
 
 
 extern InterruptSyncWrapper<int64_t> timeToTryAgainToSchedule;
-extern bool isSchedulingEnabled;
+extern std::atomic<bool> isSchedulingEnabled;
 
 
 extern "C" void SysTick_Handler() {

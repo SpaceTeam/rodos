@@ -10,6 +10,9 @@
 *
 * @brief %Thread handling
 */
+#include "thread.h"
+
+#include <atomic>
 
 #include "rodos.h"
 #include "scheduler.h"
@@ -20,7 +23,7 @@ namespace RODOS {
 
 constexpr uint32_t EMPTY_MEMORY_MARKER = 0xDEADBEEF;
 
-InterruptSyncWrapper<int64_t> timeToTryAgainToSchedule{};
+InterruptSyncWrapper<int64_t> timeToTryAgainToSchedule = 0;
 
 /** old style constructor */
 Thread::Thread(const char* name,
@@ -59,7 +62,7 @@ void Thread::create() {
     // only required when implementig in on the top of posix, rtems, freertos, etc
 }
 
-extern bool isSchedulingEnabled; // from scheduler
+extern std::atomic<bool> isSchedulingEnabled; // from scheduler
 
 /** pause execution of this thread and call scheduler */
 void Thread::yield() {

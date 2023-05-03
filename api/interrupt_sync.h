@@ -28,6 +28,19 @@ class InterruptSyncWrapper {
         m_valueBuffer[m_index.load()] = value;
     }
 
+    InterruptSyncWrapper(const InterruptSyncWrapper& rhs) {
+        this->store(rhs.load());
+    }
+    InterruptSyncWrapper& operator=(const InterruptSyncWrapper& other) {
+        this->store(other.load());
+        return *this;
+    }
+    ~InterruptSyncWrapper() = default;
+
+    operator T() const {
+        return this->load();
+    }
+
     /**
      * @brief Load (copy) variable in an async-safe manner (but not thread-safe).
      *
@@ -35,7 +48,7 @@ class InterruptSyncWrapper {
      * interrupt handler stores a new value. This is necessary as in such a case the loaded value
      * might be invalid (half old, half new).
      */
-    T load() {
+    T load() const {
         T temporaryValue{};
         do {
             m_isLoadUninterrupted.store(true);
@@ -69,17 +82,17 @@ class InterruptSyncWrapper {
         m_index.store(newIndex);
     }
 
-    inline void notifyLoadOperation() {
+    inline void notifyLoadOperation() const {
         m_isLoadUninterrupted.store(false);
     }
 
-    inline bool loadWasInterruptedByStore() {
+    inline bool loadWasInterruptedByStore() const {
         return (m_isLoadUninterrupted.load() == false);
     }
 
-    volatile T           m_valueBuffer[2]{};
-    std::atomic<uint8_t> m_index{ 0 };
-    std::atomic<bool>    m_isLoadUninterrupted{ false };
+    volatile T                m_valueBuffer[2]{};
+    std::atomic<uint8_t>      m_index{ 0 };
+    mutable std::atomic<bool> m_isLoadUninterrupted{ false };
 };
 
 } // namespace RODOS

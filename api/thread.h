@@ -11,8 +11,10 @@
 
 #pragma once
 
+#include <atomic>
 #include <stdint.h>
 
+#include "interrupt_sync.h"
 #include "listelement.h" // required when compilng with posix
 #include "timemodel.h"
 #include "default-platform-parameter.h"
@@ -47,30 +49,35 @@ private:
   size_t stackSize; 	  ///< size of the thread's stack in bytes
   long* stack; 		  ///< pointer to the thread's stack (beginning high, growing low)
   char* stackBegin;	  ///< stack grows down, this is the lower limit
-  long* volatile context; ///< pointer to stored context
-
-  // Activation control
-  /**  priority of thread, higher values are serverd first  */
-  volatile int32_t priority = 0;
-
-  /** It will be activated only after this time */
-  volatile int64_t suspendedUntil = 0;
-
-  /** if waiting for reactivation from someone, eg semaphore */
-  void* volatile waitingFor = nullptr;
 
   int64_t nextBeat = END_OF_TIME;  ///<  the next time to awake (used in wait)
   int64_t period = 0;    ///<  To repeat every period localTime units
 
+  /**
+   * @name Shared variables used in both threads as well as interrupt handlers
+   * @{
+   */
+  /** used by scheduling algorithm */
+  std::atomic<unsigned long long> lastActivation{};
+  /** pointer to stored context */
+  std::atomic<long*> context{};
+  /** priority of thread, higher values are serverd first  */
+  std::atomic<int32_t> priority{};
+  /** It will be activated only after this time */
+  InterruptSyncWrapper<int64_t> suspendedUntil = 0;
+  /** if waiting for reactivation from someone, eg semaphore */
+  std::atomic<void*> waitingFor{};
+
+  /** pointer to currently running thread */
+  static std::atomic<Thread*> currentThread;
+  /** @} */
+
   void create(); ///< called in main() after all constuctors, to create/init thread
 
-  // Used only by the Scheduler and ThreadManager (friends)
-  volatile unsigned long long lastActivation = 0; ///< used by scheduling algorithm
   void activate(); ///< continue the execution of the thread
   void initializeStack();
 
   static void initializeThreads(); ///< call the init method of all threads
-  static Thread* volatile currentThread; ///< pointer to currently running thread
 
 public:
 

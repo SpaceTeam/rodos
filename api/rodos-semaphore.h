@@ -31,17 +31,19 @@ namespace RODOS {
 class Semaphore {
 
 private:
-  Thread* volatile owner;       ///< A pointer to the thread that currently has entered the semaphore.
-  volatile int32_t ownerEnterCnt; ///< Counts how often the owner enters the semaphore.
+  std::atomic<Thread*> owner; ///< A pointer to the thread that currently has entered the semaphore.
+  std::atomic<int32_t> ownerEnterCnt; ///< Counts how often the owner enters the semaphore.
 
 protected:
-  volatile int32_t ownerPriority; ///< The scheduling priority of the thread that currently has entered the semaphore.
-  void* context; ///< used only on posix and on host-os
+  std::atomic<int32_t> ownerPriority; ///< The scheduling priority of the thread that currently has entered the semaphore.
+  std::atomic<void*> context; ///< used only on posix and on host-os
 
 public:
   /** Constructor */
   Semaphore();
-  // ~Semaphore() { } // Shall never be called. Semaphores may not disappear
+  Semaphore(const Semaphore& rhs);
+  Semaphore& operator=(const Semaphore& rhs);
+  ~Semaphore() = default; ///< Shall never be called. Semaphores may not disappear
 
   /** caller will be blocked if semaphore is occupied
    ** The owner may reenter the semaphore without deadlock */

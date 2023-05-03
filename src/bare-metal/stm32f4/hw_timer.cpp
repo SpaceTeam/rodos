@@ -7,6 +7,8 @@
  *
  * @brief Timer for system time and preemption
  */
+#include <atomic>
+
 #include "rodos.h"
 #include "hw_specific.h"
 
@@ -37,7 +39,7 @@ namespace RODOS {
  * -> !!! 1s  @ 21MHz: 21.000.000 -> counter overflow !!!
  */
 extern InterruptSyncWrapper<int64_t> timeToTryAgainToSchedule;
-extern bool isSchedulingEnabled;
+extern std::atomic<bool> isSchedulingEnabled;
 
 
 extern "C" {

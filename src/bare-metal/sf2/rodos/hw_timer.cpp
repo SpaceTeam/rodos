@@ -7,6 +7,8 @@
  *
  * @brief Timer for system time and preemption
  */
+#include <atomic>
+
 #include "rodos.h"
 #include "hw_specific.h"
 
@@ -30,7 +32,7 @@ static uint32_t timerClock = 1;
  * -> !!! 1s  @ 15,625MHz: 15.625.000 ok, near an overflow
  */
 extern InterruptSyncWrapper<int64_t> timeToTryAgainToSchedule;
-extern bool isSchedulingEnabled;
+extern std::atomic<bool> isSchedulingEnabled;
 
 extern "C" {
 

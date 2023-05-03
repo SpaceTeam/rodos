@@ -15,6 +15,7 @@
 // #include <stdio.h>
 // #include <stdlib.h>
 
+#include <atomic>
 #include <signal.h>
 
 #include "hw_specific.h"
@@ -49,7 +50,7 @@ extern void __asmSaveContext();
 }
 
 extern InterruptSyncWrapper<int64_t> timeToTryAgainToSchedule;
-extern bool isSchedulingEnabled;
+extern std::atomic<bool> isSchedulingEnabled;
 
 /**
 * the signal handler for SIGVTALRM (timer signal)

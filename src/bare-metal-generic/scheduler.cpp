@@ -8,10 +8,12 @@
 * @brief priority based scheduler
 *
 */
-#include "rodos.h"
 #include "scheduler.h"
-#include "hw_specific.h"
 
+#include <atomic>
+
+#include "rodos.h"
+#include "hw_specific.h"
 
 namespace RODOS {
 
@@ -34,14 +36,14 @@ unsigned long long Scheduler::scheduleCounter=0;
 Thread* Scheduler::preSelectedNextToRun = 0;
 long long Scheduler::preSelectedTime = 0;
 
-bool isSchedulingEnabled = true; ///< will be checked before some one calls scheduler::schedule
+std::atomic<bool> isSchedulingEnabled{ true }; ///< will be checked before some one calls scheduler::schedule
 
 bool globalAtomarLock()   { isSchedulingEnabled = false; return true; }
 bool globalAtomarUnlock() { isSchedulingEnabled = true;  return true; }
 
 
 void schedulerWrapper(long* ctx) {
-  Thread::currentThread->context=ctx;
+  Thread::currentThread.load()->context=ctx;
   Scheduler::schedule();
 }
 
