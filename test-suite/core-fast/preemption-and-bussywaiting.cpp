@@ -32,9 +32,8 @@ class HiPriorityThread : public StaticThread<> {
     static constexpr auto PRINT_INTERVAL = 10 * MILLISECONDS;
 
     /*
-     * Wait period before printing is necessary to avoid deadlock of printf
-     * -> if suspend of LowPriorityThread interrupts PRINTF of HiPriorityThread => deadlock
-     * => solution: shift HiPriorityThread period a bit so that periods don't overlap
+     * Wait period before printing is needed to prevents threads from printing at same time
+     * -> due to small shifts in the print interval random PRINTF reordering is avoided
      */
     static constexpr auto PRINTF_WAIT_TIME = 4 * MILLISECONDS;
 
