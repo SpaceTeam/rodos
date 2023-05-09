@@ -8,7 +8,6 @@ project(
     LANGUAGES C CXX ASM
 )
 
-set (CMAKE_CXX_STANDARD 17)
 
 if (COVERAGE)
     if (NOT CMAKE_BUILD_TYPE)
@@ -54,7 +53,7 @@ target_include_directories(rodos_rodos PUBLIC
 target_compile_options(rodos_rodos PUBLIC -fno-exceptions -g -Wall -Wpedantic -Wextra -Wcast-qual -Wconversion
     -Wsign-conversion -Wfloat-conversion -Wdouble-promotion -Wnull-dereference -Wstrict-aliasing -Wno-long-long
     -Wno-cpp -O0)
-target_compile_options(rodos_rodos PUBLIC $<$<COMPILE_LANGUAGE:CXX>:-std=c++14>)
+target_compile_options(rodos_rodos PRIVATE $<$<COMPILE_LANGUAGE:CXX>:-std=c++14>)
 
 option(ENABLE_RODOS_RTTI "Build RODOS with run-time type information" OFF)
 if (NOT ENABLE_RODOS_RTTI)
@@ -81,15 +80,15 @@ endif ()
 #    optional extra files which are port dependent. See cmake/port/xxx.cmake
 #___________________________________________________________________
 if (compile_definitions)
-  target_compile_definitions(rodos PUBLIC ${compile_definitions})
+  target_compile_definitions(rodos_rodos PUBLIC ${compile_definitions})
 endif ()
 
 if (compile_options)
-  target_compile_options(rodos PUBLIC ${compile_options})
+  target_compile_options(rodos_rodos PUBLIC ${compile_options})
 endif ()
 
 if (link_options)
-  target_link_options(rodos PUBLIC ${link_options})
+  target_link_options(rodos_rodos PUBLIC ${link_options})
 endif ()
 
 if (sources_to_add)
@@ -97,10 +96,6 @@ if (sources_to_add)
     target_sources(rodos_rodos PRIVATE ${files})
 endif ()
 
-if(sources_to_add_public)
-  file(GLOB files ${sources_to_add_public})
-  target_sources(rodos PUBLIC ${files})
-endif ()
 
 if (directories_to_include)
     foreach(dir ${directories_to_include})
@@ -109,7 +104,7 @@ if (directories_to_include)
 endif ()
 
 if (directories_to_link)
-  target_link_directories(rodos PUBLIC ${directories_to_link})
+  target_link_directories(rodos_rodos PUBLIC ${directories_to_link})
 endif ()
 
 if (libraries_to_link)
@@ -117,7 +112,7 @@ if (libraries_to_link)
 endif ()
 
 if (linker_script)
-  target_link_options(rodos PUBLIC -T${linker_script})
+  target_link_options(rodos_rodos PUBLIC -T${linker_script})
 endif()
 
 if (EXECUTABLE)

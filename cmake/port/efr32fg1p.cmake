@@ -19,12 +19,9 @@ set(compile_and_link_options -mcpu=cortex-m4 -mfloat-abi=softfp -mfpu=fpv4-sp-d1
 set(compile_options ${compile_and_link_options} -nostdlib -gdwarf-2 -mthumb)
 set(link_options ${compile_and_link_options} -nostartfiles -nostdlib -Xlinker
     --gc-sections -fno-unwind-tables -fno-asynchronous-unwind-tables -lm)
-set(libraries_to_link ${RAIL_LIB} -lm)
-set(directories_to_link ${RODOS_DIR}/src/bare-metal/efr32fg1p/)
+set(libraries_to_link ${RAIL_LIB}  -lm $<TARGET_PROPERTY:rodos,BINARY_DIR>/librodos.a)
+set(directories_to_link $<BUILD_INTERFACE:${RODOS_DIR}/src/bare-metal/efr32fg1p/>)
 
-set(sources_to_add_public
-    ${RODOS_DIR}/src/bare-metal/efr32fg1p/emlib/src/em_system.c
-    )
 
 set(sources_to_add
     ${RODOS_DIR}/src/bare-metal/efr32fg1p/emlib/src/*.c
@@ -41,20 +38,20 @@ set(sources_to_add
     )
 
 set(directories_to_include
-    ${RODOS_DIR}/src/bare-metal/efr32fg1p/CMSIS/Include
-    ${RODOS_DIR}/src/bare-metal/efr32fg1p/${SUB_ARCH_DIR}/Include
-    ${RODOS_DIR}/src/bare-metal/efr32fg1p/common/bsp
-    ${RODOS_DIR}/src/bare-metal/efr32fg1p/common/drivers/used
-    ${RODOS_DIR}/src/bare-metal/efr32fg1p/common/inc
-    ${RODOS_DIR}/src/bare-metal/efr32fg1p/config
-    ${RODOS_DIR}/src/bare-metal/efr32fg1p/emlib/inc
-    ${RODOS_DIR}/src/bare-metal/efr32fg1p/hal-config
-    ${RODOS_DIR}/src/bare-metal/efr32fg1p/rail-config
-    ${RODOS_DIR}/src/bare-metal/efr32fg1p/rail_lib/chip/efr32/efr32xg1x
-    ${RODOS_DIR}/src/bare-metal/efr32fg1p/rail_lib/common
-    ${RODOS_DIR}/src/bare-metal/efr32fg1p/rail_lib/hal
-    ${RODOS_DIR}/src/bare-metal/efr32fg1p/rail_lib/hal/efr32
-    ${RODOS_DIR}/src/bare-metal/efr32fg1p/sleeptimer/config
-    ${RODOS_DIR}/src/bare-metal/efr32fg1p/sleeptimer/inc
-    ${RODOS_DIR}/src/bare-metal/efr32fg1p/emdrv/inc
+    /src/bare-metal/efr32fg1p/CMSIS/Include
+    /src/bare-metal/efr32fg1p/${SUB_ARCH_DIR}/Include
+    /src/bare-metal/efr32fg1p/common/bsp
+    /src/bare-metal/efr32fg1p/common/drivers/used
+    /src/bare-metal/efr32fg1p/common/inc
+    /src/bare-metal/efr32fg1p/config
+    /src/bare-metal/efr32fg1p/emlib/inc
+    /src/bare-metal/efr32fg1p/hal-config
+    /src/bare-metal/efr32fg1p/rail-config
+    /src/bare-metal/efr32fg1p/rail_lib/chip/efr32/efr32xg1x
+    /src/bare-metal/efr32fg1p/rail_lib/common
+    /src/bare-metal/efr32fg1p/rail_lib/hal
+    /src/bare-metal/efr32fg1p/rail_lib/hal/efr32
+    /src/bare-metal/efr32fg1p/sleeptimer/config
+    /src/bare-metal/efr32fg1p/sleeptimer/inc
+    /src/bare-metal/efr32fg1p/emdrv/inc
     )
