@@ -58,7 +58,7 @@ private:
    * @{
    */
   /** used by scheduling algorithm */
-  std::atomic<unsigned long long> lastActivation{};
+  InterruptSyncWrapper<uint64_t> lastActivation = 0;
   /** pointer to stored context */
   std::atomic<long*> context{};
   /** priority of thread, higher values are serverd first  */
