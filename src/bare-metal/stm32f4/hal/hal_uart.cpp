@@ -593,7 +593,9 @@ int16_t HAL_UART::getcharNoWait() {
 
 
 int16_t HAL_UART::putcharNoWait(uint8_t c) {
-    if ((context->idx < UART_IDX_MIN) || (context->idx > UART_IDX_MAX)) {return -1;}
+	if ((context->idx < UART_IDX_MIN) || (context->idx > UART_IDX_MAX)) {
+	    return -2; // SM 2023-06 -1 -> -2 as error uart not configured
+	}
 
 	if(context->transmittBuffer.put(c)){
 
