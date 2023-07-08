@@ -171,9 +171,9 @@ void HW_HAL_SPI::initMembers(SPI_IDX idx, GPIO_PIN sckPin, GPIO_PIN misoPin, GPI
 	case SPI_IDX3:
 		SPIx = SPI3;
 		DMA_Stream_RX = DMA1_Stream0; // or DMA1_Stream2
-		DMA_Stream_TX = DMA1_Stream5; // or DMA1_Stream7
+		DMA_Stream_TX = DMA1_Stream7; // or DMA1_Stream7
 		DMA_Stream_RX_FLAG_TCIFx = DMA_FLAG_TCIF0;
-		DMA_Stream_TX_FLAG_TCIFx = DMA_FLAG_TCIF5;
+		DMA_Stream_TX_FLAG_TCIFx = DMA_FLAG_TCIF7;
 		DMA_Channel_RX = DMA_Channel_0;
 		DMA_Channel_TX = DMA_Channel_0;
 		GPIO_AF = GPIO_AF_SPI3;
