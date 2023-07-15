@@ -34,7 +34,7 @@ extern "C" {
 /** count all calls to the scheduler */
 unsigned long long Scheduler::scheduleCounter=0;
 Thread* Scheduler::preSelectedNextToRun = 0;
-long long Scheduler::preSelectedTime = 0;
+int64_t Scheduler::selectedEarliestSuspendedUntil = END_OF_TIME;
 
 std::atomic<bool> isSchedulingEnabled{ true }; ///< will be checked before some one calls scheduler::schedule
 
@@ -67,25 +67,38 @@ void Scheduler::idle() {
   
 }
 
+extern InterruptSyncWrapper<int64_t> timeToTryAgainToSchedule;
+
 void Scheduler::schedule() {
-  Scheduler::scheduleCounter++;
+    Scheduler::scheduleCounter++;
 
-  /** Optimisations: if Thread::yield() prepared time and next to run, use it, but only once! **/
-  int64_t timeNow = preSelectedTime;  // Eventually set by Thread::yield()
-  if(timeNow == 0) timeNow = NOW(); // Obviously not set, then recompute
-  preSelectedTime = 0;              // use only once
+    // time events to call?
+    // now obsolete! call directly from timer!! TimeEvent::propagate(timeNow);
 
-  // time events to call?
-  // now obsolete! call directly from timer!! TimeEvent::propagate(timeNow);
+    // select the next thread to run: Do we have a preselection from Thread::yield()?
+    Thread* nextThreadToRun = preSelectedNextToRun; // eventually set by Thread::yield()
 
-  /** select the next thread to run: Do we have a preselection from Thread::yield()? **/
-  Thread* nextThreadToRun = preSelectedNextToRun; // eventually set by Thread::yield()
-  if(nextThreadToRun == 0)  nextThreadToRun = Thread::findNextToRun(timeNow); // not the case
-  preSelectedNextToRun = 0;                      // use only once
+    // in case we don't already have a preselected thread to run
+    // -> actually do the work of finding the next thread in the schedule
+    if(nextThreadToRun == 0) {
+        nextThreadToRun = Thread::findNextToRun();
+    }
+    // use preselection only once
+    preSelectedNextToRun = 0;
 
-  // now activate the selected thread
-  nextThreadToRun->lastActivation = Scheduler::scheduleCounter; // timeNow ?? but what with on-os_xx, on-posix, etc?
-  nextThreadToRun->activate();
+    // update the respective variables according to the schedule
+    nextThreadToRun->lastActivation.store(Scheduler::scheduleCounter); // timeNow ?? but what with on-os_xx, on-posix, etc?
+    // it is important to set timeToTryAgainToSchedule as late as possible,
+    // because we don't want to (potentially) steal time from our thread's next time slice
+    // -> if the thread gets the whole time slice and updating the next SysTick succeeds,
+    //    we only "waste" the thread's time for a small constant time period
+    int64_t nextTriggerTime = TimeEvent::getNextTriggerTime();
+    int64_t nextTimeSliceEnd = TIME_SLICE_FOR_SAME_PRIORITY + NOW();
+    timeToTryAgainToSchedule.store(min(selectedEarliestSuspendedUntil, nextTimeSliceEnd));
+
+    // update SysTick timer to next event and jump into selected thread
+    Timer::updateTriggerToNextTimingEvent(nextTriggerTime);
+    nextThreadToRun->activate();
 }
 
 unsigned long long Scheduler::getScheduleCounter() {

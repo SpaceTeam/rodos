@@ -246,7 +246,7 @@ public:
    *
    * @see resume
    */
-  static Thread* findNextToRun(int64_t timeNow);
+  static Thread* findNextToRun();
 
   /**
    * Search over all threads and select the one with the highest priority which is not ready to run

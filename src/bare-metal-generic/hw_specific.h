@@ -121,8 +121,10 @@ public:
 
   /**
    * Set the timer interval to trigger directly after the next scheduling/timer-event
+   * @param nextTriggerTime trigger time of the next TimeEvent
+   * (not done in function itself to allow reordering optimizations)
    */
-  static void updateTriggerToNextTimingEvent();
+  static void updateTriggerToNextTimingEvent(int64_t nextTriggerTime);
 
 };
 

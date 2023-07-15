@@ -287,7 +287,7 @@ unsigned long long Thread::getScheduleCounter() {
 /*********************************************************************************/
 
 // not used in posix: posix has its own scheluder
-//Thread* Thread::findNextToRun(int64_t timeNow) { }
+//Thread* Thread::findNextToRun() { }
 
 Thread* Thread::findNextWaitingFor(void* signaler) {
     Thread* nextWaiter = 0;

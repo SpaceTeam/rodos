@@ -2,29 +2,24 @@
 
 #include "default-platform-parameter.h"
 #include "misc-rodos-funcs.h"
-#include "timeevent.h"
+#include "interrupt_sync.h"
 #include "timemodel.h"
 
 namespace RODOS {
 
 extern InterruptSyncWrapper<int64_t> timeToTryAgainToSchedule;
 
-void Timer::updateTriggerToNextTimingEvent() {
+void Timer::updateTriggerToNextTimingEvent(int64_t nextTriggerTime) {
 #ifndef DISABLE_TIMEEVENTS
-    auto nextTriggerTime = TimeEvent::getNextTriggerTime();
-
-    // necessary to avoid silently dropping TimeEvents that occur
-    // while SysTicks interrupts are disabled
-    auto timeNow = NOW();
-    if(nextTriggerTime < timeNow) {
-        TimeEvent::propagate(timeNow);
-    }
-    auto reactivationTime = RODOS::min(timeToTryAgainToSchedule.load(), nextTriggerTime);
+    int64_t reactivationTime = min(timeToTryAgainToSchedule.load(), nextTriggerTime);
 #else
-    auto reactivationTime = timeToTryAgainToSchedule.load();
+    int64_t reactivationTime = timeToTryAgainToSchedule.load();
 #endif
-
-    auto intervalInNanoSecs = RODOS::max(reactivationTime - NOW(), MIN_SYS_TICK_SPACING);
+    // don't set interval to less than MIN_SYS_TICK_SPACING
+    // -> this is done to avoid flooding the system with SysTick interrupts
+    // -> deadlines may be overrun by maximally:
+    //    MIN_SYS_TICK_SPACING (+ scheduling overhead + accumulated previous overrunning)
+    int64_t intervalInNanoSecs = max(reactivationTime - NOW(), MIN_SYS_TICK_SPACING);
     Timer::setInterval(intervalInNanoSecs / 1000l); // nanoseconds to microseconds
 }
 

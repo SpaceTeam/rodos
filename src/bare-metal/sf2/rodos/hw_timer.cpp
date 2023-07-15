@@ -51,11 +51,12 @@ void SysTick_Handler();
 void SysTick_Handler() {
     nanoTime += PARAM_TIMER_INTERVAL * 1000; // 10M ns for each 10ms-tick
 
-    long long timeNow = NOW();
 #ifndef DISABLE_TIMEEVENTS
-    TimeEvent::propagate(timeNow);
+    TimeEvent::propagate(NOW());
 #endif
 
+    // if not time yet to schedule (SysTick only triggered for TimeEvent) return directly
+    // -> also, globalAtomarLock blocks scheduling via isSchedulingEnabled (used by Thread::yield)
     if(!isSchedulingEnabled || NOW() < timeToTryAgainToSchedule) {
         return;
     }

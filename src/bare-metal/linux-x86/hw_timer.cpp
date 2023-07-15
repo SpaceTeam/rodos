@@ -61,13 +61,14 @@ void timerSignalHandler([[gnu::unused]] int ignore) {
     // stop timer to prevent simultaneous signals
     Timer::stop();
 
-    long long timeNow = NOW();
 #ifndef DISABLE_TIMEEVENTS
-    TimeEvent::propagate(timeNow);
+    TimeEvent::propagate(NOW());
 #endif
 
-    if(!isSchedulingEnabled || timeNow < timeToTryAgainToSchedule) {
-        Timer::updateTriggerToNextTimingEvent();
+    // if not time yet to schedule (SysTick only triggered for TimeEvent) return directly
+    // -> also, globalAtomarLock blocks scheduling via isSchedulingEnabled (used by Thread::yield)
+    if(!isSchedulingEnabled || NOW() < timeToTryAgainToSchedule) {
+        Timer::updateTriggerToNextTimingEvent(TimeEvent::getNextTriggerTime());
         Timer::start();
         return;
     }

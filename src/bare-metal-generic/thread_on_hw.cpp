@@ -68,15 +68,13 @@ extern std::atomic<bool> isSchedulingEnabled; // from scheduler
 void Thread::yield() {
     // Optimisation: Avoid unnecessary context switch: see Scheduler::schedule()
     globalAtomarLock();
-    long long timeNow = NOW();
-    Thread* preselection = findNextToRun(timeNow);
+    Thread* preselection = findNextToRun();
     if(preselection == getCurrentThread()) {
         globalAtomarUnlock();
         return;
     }
     // schedule is required, the scheduler shall not repeat my computations:
     Scheduler::preSelectedNextToRun = preselection;
-    Scheduler::preSelectedTime = timeNow;
 
     // reschedule next timer interrupt to avoid interruptions of while switching
     // -> must first stop timer, then unlock (to prevent rescheduling between unlock and stop)
@@ -88,7 +86,6 @@ void Thread::yield() {
 /* restore context of this thread and continue execution of this thread */
 void Thread::activate() {
     currentThread = this;
-    Timer::updateTriggerToNextTimingEvent();
     Timer::start();
     __asmSwitchToContext((long*)context);
 }
@@ -257,24 +254,33 @@ constexpr int64_t earlier(const int64_t a, const int64_t b) {
     return (a < b) ? a : b;
 }
 
-Thread* Thread::findNextToRun(int64_t timeNow) {
+Thread* Thread::findNextToRun() {
     Thread* nextThreadToRun = &idlethread; // Default, if no one else wants
-    timeToTryAgainToSchedule = timeNow + TIME_SLICE_FOR_SAME_PRIORITY;
+    Scheduler::selectedEarliestSuspendedUntil = END_OF_TIME;
+    int64_t timeNow = NOW();
     ITERATE_LIST(Thread, threadList) {
-        if (iter->suspendedUntil < timeNow) { // in the past
+        int64_t iterSuspendedUntil = iter->suspendedUntil.load();
+        int64_t iterPrio = iter->getPriority();
+        int64_t nextThreadToRunPrio = nextThreadToRun->getPriority();
+        if (iterSuspendedUntil < timeNow) { // in the past
 			// - thread with highest prio will be executed immediately when this scheduler-call ends
             // - other threads with lower prio will be executed after next scheduler-call
             //   due to suspend() of high-prio thread
-            if (iter->getPriority() >  nextThreadToRun->getPriority()) { nextThreadToRun = iter; }
-            if (iter->getPriority() == nextThreadToRun->getPriority()) {
-                if (iter->lastActivation < nextThreadToRun->lastActivation) nextThreadToRun = iter;
+            if (iterPrio > nextThreadToRunPrio) {
+                nextThreadToRun = iter;
+            }
+            else if (iterPrio == nextThreadToRunPrio) {
+                if (iter->lastActivation.load() < nextThreadToRun->lastActivation.load()) {
+                    nextThreadToRun = iter;
+                }
             }
 
         } else { // in the future, find next to be handled
 			// if there is a thread with higher or same priority in the future, we must call the scheduler then
 			// so that the thread will be executed
-            if(iter->getPriority() >= nextThreadToRun->getPriority()) { 
-                timeToTryAgainToSchedule = earlier(timeToTryAgainToSchedule, iter->suspendedUntil) ;
+            if(iterPrio >= nextThreadToRunPrio) {
+                Scheduler::selectedEarliestSuspendedUntil =
+                    earlier(Scheduler::selectedEarliestSuspendedUntil, iterSuspendedUntil);
             }
 			// threads with lower priority will not be executed until nextThreadToRun suspends
         }

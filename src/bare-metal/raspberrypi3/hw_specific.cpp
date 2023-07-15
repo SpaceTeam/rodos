@@ -45,20 +45,21 @@ void handleInterrupt(long* context) {
     contextT = context;
     // handles the timer interrupts
     if(read32(SYSTEM_TIMER_BASE) & BIT(SYSTEM_TIMER_CONTROL_MATCH1)) {
-        int64_t timeNow = NOW();
 #ifndef DISABLE_TIMEEVENTS
-        TimeEvent::propagate(timeNow);
+        TimeEvent::propagate(NOW());
 #endif
 
+         // -> globalAtomarLock blocks scheduling via isSchedulingEnabled (used by Thread::yield)
         if(isSchedulingEnabled == true) {
-            if(NOW() > timeToTryAgainToSchedule) {
+            // if not time yet to schedule (SysTick only triggered for TimeEvent) -> don't schedule
+            if(NOW() >= timeToTryAgainToSchedule) {
                 // call scheduler with top of task stack
                 schedulerWrapper(context);
             }
         }
 
         // calc and set next ticktime
-        Timer::updateTriggerToNextTimingEvent();
+        Timer::updateTriggerToNextTimingEvent(TimeEvent::getNextTriggerTime());
         uint32_t nextTick = read32(SYSTEM_TIMER_CNT_LOW) + Timer::getInterval();
         write32(SYSTEM_TIMER_COMPARE1, nextTick);
         Timer::start();

@@ -37,7 +37,7 @@ friend class Thread;
 private:
   static unsigned long long scheduleCounter;
   static Thread* preSelectedNextToRun;  // used only to optimese yield time
-  static long long  preSelectedTime;    // used only to optimese yield time
+  static int64_t selectedEarliestSuspendedUntil;
 
 public:
   /**

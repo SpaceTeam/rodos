@@ -52,13 +52,14 @@ extern std::atomic<bool> isSchedulingEnabled;
 
 extern "C" void SysTick_Handler() {
 
-    long long timeNow = NOW();
 #ifndef DISABLE_TIMEEVENTS
-    TimeEvent::propagate(timeNow);
+    TimeEvent::propagate(NOW());
 #endif
 
+    // if not time yet to schedule (SysTick only triggered for TimeEvent) return directly
+    // -> also, globalAtomarLock blocks scheduling via isSchedulingEnabled (used by Thread::yield)
     if(!isSchedulingEnabled || NOW() < timeToTryAgainToSchedule) {
-        Timer::updateTriggerToNextTimingEvent();
+        Timer::updateTriggerToNextTimingEvent(TimeEvent::getNextTriggerTime());
         Timer::start();
         return;
     }
