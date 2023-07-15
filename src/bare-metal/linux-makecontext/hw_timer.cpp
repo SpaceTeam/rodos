@@ -66,9 +66,6 @@ extern void *signal_stack;
 */
 void timerSignalHandler(int, siginfo_t *, void *) {
 
-  // stop timer to prevent simultaneous signals
-  Timer::stop();
-
 #ifndef DISABLE_TIMEEVENTS
   TimeEvent::propagate(NOW());
 #endif

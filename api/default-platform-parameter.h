@@ -29,8 +29,11 @@
 #define PARAM_TIMER_INTERVAL          100000 //< in microseconds
 #define TIME_SLICE_FOR_SAME_PRIORITY (100*MILLISECONDS) //< for switch threads with same priority
 
-/// minimal timer interrupt interval (determines time granularity of events)
-#define MIN_SYS_TICK_SPACING           (1*MILLISECONDS)
+/// minimal timer (SysTick) interrupt interval
+/// - must be minimally as large to execute a context switch and one complete scheduler run
+/// - determines the granularity of Timing Events (scheduling events + TimeEvents)
+/// - Timing Events might be mapped to a multiple of 2 * MIN_SYS_TICK_SPACING (from MCU startup)
+#define MIN_SYS_TICK_SPACING           (500*MICROSECONDS)
 /// time the MCU needs to wakeup from sleeping (to be fully ready for the next time event)
 #define TIME_WAKEUP_FROM_SLEEP         (3*MILLISECONDS)
 

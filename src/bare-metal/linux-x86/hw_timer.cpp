@@ -58,9 +58,6 @@ extern std::atomic<bool> isSchedulingEnabled;
 void timerSignalHandler(int ignore);
 void timerSignalHandler([[gnu::unused]] int ignore) {
 
-    // stop timer to prevent simultaneous signals
-    Timer::stop();
-
 #ifndef DISABLE_TIMEEVENTS
     TimeEvent::propagate(NOW());
 #endif
