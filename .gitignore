@@ -2,6 +2,7 @@
 .vs/
 .vscode/
 .cache/
+.clangd
 build*/
 CMakeLists.txt.user
 CMakeUserPresets.json
