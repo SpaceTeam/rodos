@@ -32,14 +32,10 @@ extern "C" {
 }
 
 /** count all calls to the scheduler */
-unsigned long long Scheduler::scheduleCounter=0;
+InterruptSyncWrapper<uint64_t> Scheduler::scheduleCounter = 0;
+
 Thread* Scheduler::preSelectedNextToRun = 0;
-int64_t Scheduler::selectedEarliestSuspendedUntil = END_OF_TIME;
-
-std::atomic<bool> isSchedulingEnabled{ true }; ///< will be checked before some one calls scheduler::schedule
-
-bool globalAtomarLock()   { isSchedulingEnabled = false; return true; }
-bool globalAtomarUnlock() { isSchedulingEnabled = true;  return true; }
+int64_t Scheduler::preSelectedEarliestSuspendedUntil = END_OF_TIME;
 
 
 void schedulerWrapper(long* ctx) {
@@ -70,21 +66,29 @@ void Scheduler::idle() {
 extern InterruptSyncWrapper<int64_t> timeToTryAgainToSchedule;
 
 void Scheduler::schedule() {
-    Scheduler::scheduleCounter++;
+    // increment the schedule counter
+    scheduleCounter.store(scheduleCounter.load() + 1);
 
     // time events to call?
     // now obsolete! call directly from timer!! TimeEvent::propagate(timeNow);
 
     // select the next thread to run: Do we have a preselection from Thread::yield()?
     Thread* nextThreadToRun = preSelectedNextToRun; // eventually set by Thread::yield()
+    int64_t selectedEarliestSuspendedUntil = preSelectedEarliestSuspendedUntil;
 
     // in case we don't already have a preselected thread to run
     // -> actually do the work of finding the next thread in the schedule
     if(nextThreadToRun == 0) {
-        nextThreadToRun = Thread::findNextToRun();
+        nextThreadToRun = Thread::findNextToRun(selectedEarliestSuspendedUntil);
     }
     // use preselection only once
     preSelectedNextToRun = 0;
+
+    // check if selected thread has stack violations (if yes -> switch to idleThread)
+    bool hasStackViolations = nextThreadToRun->checkStackViolations();
+    if(hasStackViolations) {
+        nextThreadToRun = idlethreadP;
+    }
 
     // update the respective variables according to the schedule
     nextThreadToRun->lastActivation.store(Scheduler::scheduleCounter); // timeNow ?? but what with on-os_xx, on-posix, etc?
@@ -101,8 +105,8 @@ void Scheduler::schedule() {
     nextThreadToRun->activate();
 }
 
-unsigned long long Scheduler::getScheduleCounter() {
-  return scheduleCounter;
+uint64_t Scheduler::getScheduleCounter() {
+    return scheduleCounter.load();
 }
 
 } // namespace

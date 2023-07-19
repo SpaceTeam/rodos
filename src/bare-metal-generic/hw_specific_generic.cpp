@@ -18,7 +18,7 @@ void Timer::updateTriggerToNextTimingEvent(int64_t nextTimeEventTriggerTime) {
     // don't set interval to less than MIN_SYS_TICK_SPACING
     // -> this is done to avoid flooding the system with SysTick interrupts
     // -> deadlines may be overrun by maximally:
-    //    MIN_SYS_TICK_SPACING (+ scheduling overhead + accumulated previous overrunning)
+    //    2 * MIN_SYS_TICK_SPACING (+ scheduling overhead + accumulated previous overrunning)
     int64_t timeNow = NOW();
     int64_t nextOfNextBeat =
         TimeModel::computeNextBeat(0, MIN_SYS_TICK_SPACING, timeNow + MIN_SYS_TICK_SPACING);

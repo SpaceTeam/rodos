@@ -51,6 +51,26 @@ void Thread::initializeStack() {
     context = hwInitContext(stack, this);
 }
 
+bool Thread::checkStackViolations() {
+    /** Check stack violations **/
+    constexpr size_t stackMargin      = 300;
+    uintptr_t        minimumStackAddr = reinterpret_cast<uintptr_t>(this->stackBegin) + stackMargin;
+    if(this->getCurrentStackAddr() < minimumStackAddr) {
+        xprintf("!StackOverflow! %s DEACTIVATED!: free %d\n",
+                this->name,
+                static_cast<int>(this->getCurrentStackAddr() - reinterpret_cast<uintptr_t>(this->stackBegin)));
+        this->suspendedUntil = END_OF_TIME;
+        return false;
+    }
+    if(*reinterpret_cast<uint32_t*>(this->stackBegin) != EMPTY_MEMORY_MARKER) { // this thread is going beyond its stack!
+        xprintf("! PANIC %s beyond stack, DEACTIVATED!\n", this->name);
+        this->suspendedUntil = END_OF_TIME;
+        return false;
+    }
+
+    return true;
+}
+
 Thread::~Thread() {
     if(isShuttingDown) return;
     PRINTF("%s:",getName());
@@ -62,24 +82,67 @@ void Thread::create() {
     // only required when implementig in on the top of posix, rtems, freertos, etc
 }
 
-extern std::atomic<bool> isSchedulingEnabled; // from scheduler
 
 /** pause execution of this thread and call scheduler */
 void Thread::yield() {
+    // FIXME: race condition when other thread yields simultaneously!
+    // TODO: ARM Cortex-M supports interruptable double word load/stores
+    // TODO: implement Interruptable64BitVariable or something similar with port-specific implementation
+    // atomically save scheduleCounter to measure if scheduler is triggered during yield
+    uint64_t startScheduleCounter = Scheduler::getScheduleCounter();
+
     // Optimisation: Avoid unnecessary context switch: see Scheduler::schedule()
-    globalAtomarLock();
-    Thread* preselection = findNextToRun();
-    if(preselection == getCurrentThread()) {
-        globalAtomarUnlock();
+    int64_t selectedEarliestSuspendedUntil = END_OF_TIME;
+    Thread* preselection                   = findNextToRun(selectedEarliestSuspendedUntil);
+
+    // if scheduler triggered during find, preselection is invalid
+    // -> simultaneous scheduler call => already yielded (can just return)
+    uint64_t currentScheduleCounter = Scheduler::getScheduleCounter();
+    if(startScheduleCounter != currentScheduleCounter) {
         return;
     }
-    // schedule is required, the scheduler shall not repeat my computations:
-    Scheduler::preSelectedNextToRun = preselection;
+    // from here on we know that preselection is valid (there was no simultaneous scheduling event)
 
-    // reschedule next timer interrupt to avoid interruptions of while switching
-    // -> must first stop timer, then unlock (to prevent rescheduling between unlock and stop)
+    // If scheduler would choose same thread, return directly (no other thread wants to take over).
+    // There are some cases regarding simultaneous scheduling events to take into account:
+    // 1) no simultaneous scheduling event:
+    //    -> can directly return as no other thread wants to run + no context switch (optimisation)
+    //    -> no computation lease renewal for thread, but that is not required from yield
+    // 2) simultaneous scheduling event(s) to at least one other thread:
+    //    -> other thread(s) already got scheduled during yield (no manual scheduler call needed)
+    //    -> when this thread gets scheduled again, we can directly return
+    // 3) simultaneous scheduling event to same thread:
+    //    -> no other thread wanted to run, computation lease just got renewed for this thread
+    //    -> no need to call the scheduler again
+    if(preselection == getCurrentThread()) {
+        return;
+    }
+    // from here on we know that there is (was) a thread wanting to run (we must call scheduler)
+
+    // we have to stop Timer (as it might be unsafe to call scheduler from thread otherwise)
+    // FIXME: we can't use Timer::stop() because not atomic (probably is everywhere but potentially not)
+    // FIXME: also raspberry-pi port seems to have decided to just not implement Timer::stop() :-|
+    // TODO: instead probably globalAtomarLock style boolean setting
     Timer::stop();
-    globalAtomarUnlock();
+
+#ifndef DISABLE_TIMEEVENTS
+    // as we've stopped SysTicks, we mustn't forget to propagate potentially simultaneous TimeEvents
+    TimeEvent::propagate(NOW());
+#endif
+
+    // There are some cases regarding simultaneous scheduling events to take into account:
+    // 1) no simultaneous scheduling event:
+    //    -> just call scheduler as other thread is waiting for us
+    //    -> we can even reuse our precomputed scheduling parameters (optimisation)
+    // 2) simultaneous scheduling event(s) to at least one other thread:
+    //    -> we have already switched to other thread(s) and now we have been scheduled again
+    //    -> in theory not necessary to still call scheduler, but we must now as we stopped Timer
+    // 3) simultaneous scheduling event to same thread:
+    //    -> only possible when also simultaneous scheduling event(s) to other thread (see above)
+    if(startScheduleCounter == Scheduler::getScheduleCounter()) {
+        Scheduler::preSelectedNextToRun              = preselection;
+        Scheduler::preSelectedEarliestSuspendedUntil = selectedEarliestSuspendedUntil;
+    }
     __asmSaveContextAndCallScheduler();
 }
 
@@ -254,10 +317,11 @@ constexpr int64_t earlier(const int64_t a, const int64_t b) {
     return (a < b) ? a : b;
 }
 
-Thread* Thread::findNextToRun() {
+Thread* Thread::findNextToRun(int64_t& selectedEarliestSuspendedUntil) {
     Thread* nextThreadToRun = &idlethread; // Default, if no one else wants
-    Scheduler::selectedEarliestSuspendedUntil = END_OF_TIME;
+    selectedEarliestSuspendedUntil = END_OF_TIME;
     int64_t timeNow = NOW();
+
     ITERATE_LIST(Thread, threadList) {
         int64_t iterSuspendedUntil = iter->suspendedUntil.load();
         int64_t iterPrio = iter->getPriority();
@@ -279,32 +343,15 @@ Thread* Thread::findNextToRun() {
 			// if there is a thread with higher or same priority in the future, we must call the scheduler then
 			// so that the thread will be executed
             if(iterPrio >= nextThreadToRunPrio) {
-                Scheduler::selectedEarliestSuspendedUntil =
-                    earlier(Scheduler::selectedEarliestSuspendedUntil, iterSuspendedUntil);
+                selectedEarliestSuspendedUntil =
+                    earlier(selectedEarliestSuspendedUntil, iterSuspendedUntil);
             }
 			// threads with lower priority will not be executed until nextThreadToRun suspends
         }
     } // Iterate list
 
-    /** Check stack violations **/
-    constexpr size_t stackMargin = 300;
-    uintptr_t minimumStackAddr = reinterpret_cast<uintptr_t>(nextThreadToRun->stackBegin)+stackMargin;
-    if(nextThreadToRun->getCurrentStackAddr() < minimumStackAddr) {
-        xprintf("!StackOverflow! %s DEACTIVATED!: free %d\n",
-            nextThreadToRun->name,
-            static_cast<int>(nextThreadToRun->getCurrentStackAddr() - reinterpret_cast<uintptr_t>(nextThreadToRun->stackBegin)));
-        nextThreadToRun->suspendedUntil = END_OF_TIME;
-        nextThreadToRun = &idlethread;
-    }
-    if ( *reinterpret_cast<uint32_t *>(nextThreadToRun->stackBegin) !=  EMPTY_MEMORY_MARKER) { // this thread is going beyond its stack!
-        xprintf("! PANIC %s beyond stack, DEACTIVATED!\n", nextThreadToRun->name);
-        nextThreadToRun->suspendedUntil = END_OF_TIME;
-        nextThreadToRun = &idlethread;
-    }
-
     return nextThreadToRun;
 }
-#undef EARLIER
 
 
 Thread* Thread::findNextWaitingFor(void* signaler) {

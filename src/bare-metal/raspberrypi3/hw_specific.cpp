@@ -29,7 +29,6 @@ namespace RODOS {
 /*********************************************************************************************/
 
 extern InterruptSyncWrapper<int64_t> timeToTryAgainToSchedule;
-extern std::atomic<bool> isSchedulingEnabled;
 
 extern "C" {
 
@@ -49,13 +48,10 @@ void handleInterrupt(long* context) {
         TimeEvent::propagate(NOW());
 #endif
 
-         // -> globalAtomarLock blocks scheduling via isSchedulingEnabled (used by Thread::yield)
-        if(isSchedulingEnabled == true) {
-            // if not time yet to schedule (SysTick only triggered for TimeEvent) -> don't schedule
-            if(NOW() >= timeToTryAgainToSchedule) {
-                // call scheduler with top of task stack
-                schedulerWrapper(context);
-            }
+        // if not time yet to schedule (SysTick only triggered for TimeEvent) -> don't schedule
+        if(NOW() >= timeToTryAgainToSchedule) {
+            // call scheduler with top of task stack
+            schedulerWrapper(context);
         }
 
         // calc and set next ticktime

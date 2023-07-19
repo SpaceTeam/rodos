@@ -39,7 +39,6 @@ namespace RODOS {
  * -> !!! 1s  @ 21MHz: 21.000.000 -> counter overflow !!!
  */
 extern InterruptSyncWrapper<int64_t> timeToTryAgainToSchedule;
-extern std::atomic<bool> isSchedulingEnabled;
 
 
 extern "C" {
@@ -60,8 +59,7 @@ void SysTick_Handler() {
 #endif
 
     // if not time yet to schedule (SysTick only triggered for TimeEvent) return directly
-    // -> also, globalAtomarLock blocks scheduling via isSchedulingEnabled (used by Thread::yield)
-	if(!isSchedulingEnabled || NOW() < timeToTryAgainToSchedule) {
+	if(NOW() < timeToTryAgainToSchedule) {
         Timer::updateTriggerToNextTimingEvent(TimeEvent::getNextTriggerTime());
         Timer::start();
         return;

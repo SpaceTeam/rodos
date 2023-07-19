@@ -77,6 +77,8 @@ private:
   void activate(); ///< continue the execution of the thread
   void initializeStack();
 
+  bool checkStackViolations();
+
   static void initializeThreads(); ///< call the init method of all threads
 
 public:
@@ -202,13 +204,10 @@ public:
   void setPeriodicBeat(const int64_t begin, const int64_t period);
 
   /**
-   * Resume the thread. The thread gets after the call to the method computing resources if no
-   * other thread with a higher priority occupy the resources. It end calls to the methods
-   * suspendCallerUntil and suspendUntilNextBeat.
+   * Resume the thread. The resumed thread gets unsuspended and the scheduler will be triggered at
+   * the next timing event. Does not yield.
    *
-   * @see suspendCallerUntil
-   * @see suspendUntilNextBeat
-   * @see Semaphore
+   * @note Can safely be called from interrupt handlers.
    */
   void resume();
 
@@ -242,11 +241,11 @@ public:
   /**
    * Search over all threads and select the one with the highest priority which is ready to run
    *
-   * @return The pointer to the highest priorized runnable thread.
-   *
-   * @see resume
+   * @param[out] selectedEarliestSuspendedUntil Earliest wakeup time of a thread in the future
+   * that will trigger a scheduler event (i.e. of a thread with high enough priority).
+   * @return The pointer to the highest prioritized runnable thread.
    */
-  static Thread* findNextToRun();
+  static Thread* findNextToRun(int64_t& selectedEarliestSuspendedUntil);
 
   /**
    * Search over all threads and select the one with the highest priority which is not ready to run

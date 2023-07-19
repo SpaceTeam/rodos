@@ -50,7 +50,6 @@ extern void __asmSaveContext();
 }
 
 extern InterruptSyncWrapper<int64_t> timeToTryAgainToSchedule;
-extern std::atomic<bool> isSchedulingEnabled;
 
 /**
 * the signal handler for SIGVTALRM (timer signal)
@@ -63,8 +62,7 @@ void timerSignalHandler([[gnu::unused]] int ignore) {
 #endif
 
     // if not time yet to schedule (SysTick only triggered for TimeEvent) return directly
-    // -> also, globalAtomarLock blocks scheduling via isSchedulingEnabled (used by Thread::yield)
-    if(!isSchedulingEnabled || NOW() < timeToTryAgainToSchedule) {
+    if(NOW() < timeToTryAgainToSchedule) {
         Timer::updateTriggerToNextTimingEvent(TimeEvent::getNextTriggerTime());
         Timer::start();
         return;
