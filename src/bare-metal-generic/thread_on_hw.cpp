@@ -61,15 +61,15 @@ bool Thread::checkStackViolations() {
                 this->name,
                 static_cast<int>(this->getCurrentStackAddr() - reinterpret_cast<uintptr_t>(this->stackBegin)));
         this->suspendedUntil = END_OF_TIME;
-        return false;
+        return true;
     }
     if(*reinterpret_cast<uint32_t*>(this->stackBegin) != EMPTY_MEMORY_MARKER) { // this thread is going beyond its stack!
         xprintf("! PANIC %s beyond stack, DEACTIVATED!\n", this->name);
         this->suspendedUntil = END_OF_TIME;
-        return false;
+        return true;
     }
 
-    return true;
+    return false;
 }
 
 Thread::~Thread() {

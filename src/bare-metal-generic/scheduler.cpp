@@ -44,6 +44,7 @@ void schedulerWrapper(long* ctx) {
 }
 
 extern Thread* idlethreadP;
+extern InterruptSyncWrapper<int64_t> timeToTryAgainToSchedule;
 
 /** activate idle thread */
 void Scheduler::idle() {
@@ -57,13 +58,15 @@ void Scheduler::idle() {
    * - For all cortex ports a global context pointer is initialised in activate()
    *   and this must have been done before startIdleThread() is called.
    */
+  int64_t nextSchedulingEventTime = timeToTryAgainToSchedule.load();
+  int64_t nextTimeEventTime = TimeEvent::getNextTriggerTime();
+  Timer::updateTriggerToNextTimingEvent(nextSchedulingEventTime, nextTimeEventTime);
   idlethreadP->activate();
 
   startIdleThread(); // only for some architectures, most implementations == nop()
   
 }
 
-extern InterruptSyncWrapper<int64_t> timeToTryAgainToSchedule;
 
 void Scheduler::schedule() {
     // increment the schedule counter
