@@ -120,11 +120,11 @@ public:
   static int64_t getInterval() { return microsecondsInterval; }
 
   /**
-   * Set the timer interval to trigger directly after the next scheduling/timer-event
-   * @param nextTimeEventTriggerTime trigger time of the next TimeEvent
-   * (not done in function itself to allow reordering optimizations)
+   * Set the timer interval to trigger directly after the next scheduling event / TimeEvent.
    */
-  static void updateTriggerToNextTimingEvent(int64_t nextTimeEventTriggerTime);
+  static void updateTriggerToNextTimingEvent(
+    int64_t nextSchedulingEventTime,
+    int64_t nextTimeEventTriggerTime);
 
 };
 

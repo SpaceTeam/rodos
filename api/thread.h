@@ -348,20 +348,6 @@ inline void AT_UTC(const int64_t timeInUTC) { Thread::suspendCallerUntil(sysTime
 inline void BUSY_WAITING_UNTIL(int64_t endWaitingTime) { while(NOW() < (endWaitingTime)) ; }
 
 
-/**
- * Usually you can create short atomar sections using the macro PRIORITY_CEILER_IN_SCOPE
- * which is the standard, recommended procedure.
- * 
- * But some applications demand enabling and disabling the scheduling process. 
- * For those applications we use globalAtomarLock and globalAromarUnlock.
- *
- * WARNING!!!:   Deprecated
- *   avoid it! (no implementation on posix derivates)
- *   In multicore processors it does not help!
- */
-
-extern bool globalAtomarLock();   ///< returns always true
-extern bool globalAtomarUnlock(); ///< returns always true
 
 
 /* Use this class to change Priority in a scope.

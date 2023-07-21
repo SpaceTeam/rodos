@@ -24,6 +24,7 @@ namespace RODOS {
 constexpr uint32_t EMPTY_MEMORY_MARKER = 0xDEADBEEF;
 
 InterruptSyncWrapper<int64_t> timeToTryAgainToSchedule = 0;
+std::atomic<bool> yieldSchedulingLock { false };
 
 /** old style constructor */
 Thread::Thread(const char* name,
@@ -104,7 +105,7 @@ void Thread::yield() {
     // from here on we know that preselection is valid (there was no simultaneous scheduling event)
 
     // If scheduler would choose same thread, return directly (no other thread wants to take over).
-    // There are some cases regarding simultaneous scheduling events to take into account:
+    // Cases regarding simultaneous scheduling events (since last if):
     // 1) no simultaneous scheduling event:
     //    -> can directly return as no other thread wants to run + no context switch (optimisation)
     //    -> no computation lease renewal for thread, but that is not required from yield
@@ -120,9 +121,10 @@ void Thread::yield() {
     // from here on we know that there is (was) a thread wanting to run (we must call scheduler)
 
     // we have to stop Timer (as it might be unsafe to call scheduler from thread otherwise)
-    // FIXME: we can't use Timer::stop() because not atomic (probably is everywhere but potentially not)
-    // FIXME: also raspberry-pi port seems to have decided to just not implement Timer::stop() :-|
-    // TODO: instead probably globalAtomarLock style boolean setting
+    // and after Timer stop no simultaneous scheduling events are triggered anymore
+    // -> Timer::stop() is non-atomic, so must abort simultaneous SysTicks via yieldSchedulingLock
+    //    and we must keep the lock until thread activate as some ports don't implement Timer stop
+    yieldSchedulingLock = true;
     Timer::stop();
 
 #ifndef DISABLE_TIMEEVENTS
@@ -130,7 +132,7 @@ void Thread::yield() {
     TimeEvent::propagate(NOW());
 #endif
 
-    // There are some cases regarding simultaneous scheduling events to take into account:
+    // Cases regarding simultaneous scheduling events (between last if and Timer stop):
     // 1) no simultaneous scheduling event:
     //    -> just call scheduler as other thread is waiting for us
     //    -> we can even reuse our precomputed scheduling parameters (optimisation)
@@ -149,6 +151,9 @@ void Thread::yield() {
 /* restore context of this thread and continue execution of this thread */
 void Thread::activate() {
     currentThread = this;
+    // release yieldSchedulingLock before starting SysTicks again in case we are called from yield
+    // -> this is done so late because some ports don't implement Timer::stop
+    yieldSchedulingLock = false;
     Timer::start();
     __asmSwitchToContext((long*)context);
 }

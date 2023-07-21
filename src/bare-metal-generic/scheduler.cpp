@@ -101,7 +101,7 @@ void Scheduler::schedule() {
     timeToTryAgainToSchedule.store(min(selectedEarliestSuspendedUntil, nextTimeSliceEnd));
 
     // update SysTick timer to next event and jump into selected thread
-    Timer::updateTriggerToNextTimingEvent(nextTriggerTime);
+    Timer::updateTriggerToNextTimingEvent(timeToTryAgainToSchedule.load(), nextTriggerTime);
     nextThreadToRun->activate();
 }
 

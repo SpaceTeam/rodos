@@ -29,6 +29,7 @@ namespace RODOS {
 /*********************************************************************************************/
 
 extern InterruptSyncWrapper<int64_t> timeToTryAgainToSchedule;
+extern std::atomic<bool> yieldSchedulingLock;
 
 extern "C" {
 
@@ -44,21 +45,21 @@ void handleInterrupt(long* context) {
     contextT = context;
     // handles the timer interrupts
     if(read32(SYSTEM_TIMER_BASE) & BIT(SYSTEM_TIMER_CONTROL_MATCH1)) {
-#ifndef DISABLE_TIMEEVENTS
-        TimeEvent::propagate(NOW());
-#endif
+        // calc next ticktime (current time plus 'Timer::microsecondsInterval' <- is private)
+        uint32_t nextTick = read32(SYSTEM_TIMER_CNT_LOW) + PARAM_TIMER_INTERVAL; //alle 10ms
 
-        // if not time yet to schedule (SysTick only triggered for TimeEvent) -> don't schedule
-        if(NOW() >= timeToTryAgainToSchedule) {
-            // call scheduler with top of task stack
-            schedulerWrapper(context);
+        if(yieldSchedulingLock == false) {
+            int64_t timeNow = NOW();
+
+            TimeEvent::propagate(timeNow);
+            if(NOW() > timeToTryAgainToSchedule) {
+                // call scheduler with top of task stack
+                schedulerWrapper(context);
+            }
         }
 
-        // calc and set next ticktime
-        Timer::updateTriggerToNextTimingEvent(TimeEvent::getNextTriggerTime());
-        uint32_t nextTick = read32(SYSTEM_TIMER_CNT_LOW) + Timer::getInterval();
+        // set next tick time
         write32(SYSTEM_TIMER_COMPARE1, nextTick);
-        Timer::start();
 
         // Write a one to the relevant bit to clear the match detect status bit
         // and the corresponding interrupt request line.

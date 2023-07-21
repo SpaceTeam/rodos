@@ -2,18 +2,17 @@
 
 #include "default-platform-parameter.h"
 #include "misc-rodos-funcs.h"
-#include "interrupt_sync.h"
 #include "timemodel.h"
 
 namespace RODOS {
 
-extern InterruptSyncWrapper<int64_t> timeToTryAgainToSchedule;
-
-void Timer::updateTriggerToNextTimingEvent(int64_t nextTimeEventTriggerTime) {
+void Timer::updateTriggerToNextTimingEvent(
+    int64_t nextSchedulingEventTime,
+    int64_t nextTimeEventTriggerTime) {
 #ifndef DISABLE_TIMEEVENTS
-    int64_t reactivationTime = min(timeToTryAgainToSchedule.load(), nextTimeEventTriggerTime);
+    int64_t reactivationTime = min(nextSchedulingEventTime, nextTimeEventTriggerTime);
 #else
-    int64_t reactivationTime = timeToTryAgainToSchedule.load();
+    int64_t reactivationTime = nextSchedulingEventTime;
 #endif
     // don't set interval to less than MIN_SYS_TICK_SPACING
     // -> this is done to avoid flooding the system with SysTick interrupts
