@@ -54,8 +54,8 @@ alias cdrodos="cd ${RODOS_DIR}"
 
 export INCLUDES=" -I ${RODOS_API} -I ${RODOS_SUPPORT_LIBS} ${APP_INCLUDES} "
 
-#export CFLAGS=" -g -Wall -pedantic -Wno-long-long -Wno-cpp  -fno-exceptions -mfpmath=387 -O0 "
-export CFLAGS=" -g -Wall -Wpedantic -Wextra -Wcast-qual -Wconversion -Wsign-conversion -Wfloat-conversion -Wdouble-promotion -Wnull-dereference -Wstrict-aliasing -Wno-long-long -Wno-cpp -fno-exceptions -O0 "
+#export CFLAGS=" -g -Wall -pedantic -Wno-long-long -Wno-cpp  -fno-exceptions -mfpmath=387 "
+export CFLAGS=" -g -Wall -Wpedantic -Wextra -Wcast-qual -Wconversion -Wsign-conversion -Wfloat-conversion -Wdouble-promotion -Wnull-dereference -Wstrict-aliasing -Wno-long-long -Wno-cpp -fno-exceptions "
 export CPPFLAGS=" -fno-rtti -fno-exceptions  -std=c++20"
 
 #_____________________________________________________ extras, nice to have but not required
