@@ -11,9 +11,7 @@ class Interruptable_Uint64_Arch : public Impl {
   public:
     Interruptable_Uint64_Arch() : Impl() {}
     Interruptable_Uint64_Arch(uint64_t value) : Impl(value) {}
-    Interruptable_Uint64_Arch(const Interruptable_Uint64_Arch& rhs) {
-        this->store(rhs.load());
-    }
+    Interruptable_Uint64_Arch(const Interruptable_Uint64_Arch& rhs) : Impl(rhs.load()) {}
 
     Interruptable_Uint64_Arch& operator=(uint64_t rhs) {
         this->store(rhs);
@@ -46,9 +44,7 @@ class Interruptable_Int64_Arch : public Impl {
   public:
     Interruptable_Int64_Arch() : Impl() {}
     Interruptable_Int64_Arch(int64_t value) : Impl(value) {}
-    Interruptable_Int64_Arch(const Interruptable_Int64_Arch& rhs) {
-        this->store(rhs.load());
-    }
+    Interruptable_Int64_Arch(const Interruptable_Int64_Arch& rhs) : Impl(rhs.load()) {}
 
     Interruptable_Int64_Arch& operator=(int64_t rhs) {
         this->store(rhs);

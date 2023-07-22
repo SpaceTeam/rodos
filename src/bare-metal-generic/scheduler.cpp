@@ -32,7 +32,7 @@ extern "C" {
 }
 
 /** count all calls to the scheduler */
-InterruptSyncWrapper<uint64_t> Scheduler::scheduleCounter = 0;
+Interruptable_Uint64 Scheduler::scheduleCounter = 0;
 
 Thread* Scheduler::preSelectedNextToRun = 0;
 int64_t Scheduler::preSelectedEarliestSuspendedUntil = END_OF_TIME;
@@ -44,7 +44,7 @@ void schedulerWrapper(long* ctx) {
 }
 
 extern Thread* idlethreadP;
-extern InterruptSyncWrapper<int64_t> timeToTryAgainToSchedule;
+extern Interruptable_Int64 timeToTryAgainToSchedule;
 
 /** activate idle thread */
 void Scheduler::idle() {
@@ -59,7 +59,10 @@ void Scheduler::idle() {
    *   and this must have been done before startIdleThread() is called.
    */
   int64_t nextSchedulingEventTime = timeToTryAgainToSchedule.load();
-  int64_t nextTimeEventTime = TimeEvent::getNextTriggerTime();
+  int64_t nextTimeEventTime = END_OF_TIME;
+#ifndef DISABLE_TIMEEVENTS
+  nextTimeEventTime = TimeEvent::getNextTriggerTime();
+#endif
   Timer::updateTriggerToNextTimingEvent(nextSchedulingEventTime, nextTimeEventTime);
   idlethreadP->activate();
 
@@ -99,12 +102,15 @@ void Scheduler::schedule() {
     // because we don't want to (potentially) steal time from our thread's next time slice
     // -> if the thread gets the whole time slice and updating the next SysTick succeeds,
     //    we only "waste" the thread's time for a small constant time period
-    int64_t nextTriggerTime = TimeEvent::getNextTriggerTime();
+    int64_t nextTimeEventTime = END_OF_TIME;
+#ifndef DISABLE_TIMEEVENTS
+    nextTimeEventTime = TimeEvent::getNextTriggerTime();
+#endif
     int64_t nextTimeSliceEnd = TIME_SLICE_FOR_SAME_PRIORITY + NOW();
     timeToTryAgainToSchedule.store(min(selectedEarliestSuspendedUntil, nextTimeSliceEnd));
 
     // update SysTick timer to next event and jump into selected thread
-    Timer::updateTriggerToNextTimingEvent(timeToTryAgainToSchedule.load(), nextTriggerTime);
+    Timer::updateTriggerToNextTimingEvent(timeToTryAgainToSchedule.load(), nextTimeEventTime);
     nextThreadToRun->activate();
 }
 

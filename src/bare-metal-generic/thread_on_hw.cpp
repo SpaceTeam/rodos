@@ -23,7 +23,7 @@ namespace RODOS {
 
 constexpr uint32_t EMPTY_MEMORY_MARKER = 0xDEADBEEF;
 
-InterruptSyncWrapper<int64_t> timeToTryAgainToSchedule = 0;
+Interruptable_Int64 timeToTryAgainToSchedule = 0;
 std::atomic<bool> yieldSchedulingLock { false };
 
 /** old style constructor */
@@ -86,9 +86,6 @@ void Thread::create() {
 
 /** pause execution of this thread and call scheduler */
 void Thread::yield() {
-    // FIXME: race condition when other thread yields simultaneously!
-    // TODO: ARM Cortex-M supports interruptable double word load/stores
-    // TODO: implement Interruptable64BitVariable or something similar with port-specific implementation
     // atomically save scheduleCounter to measure if scheduler is triggered during yield
     uint64_t startScheduleCounter = Scheduler::getScheduleCounter();
 
@@ -278,11 +275,8 @@ void IdleThread::run() {
         // enter sleep mode if suitable
         int64_t reactivationTime = timeToTryAgainToSchedule;
 #ifndef DISABLE_TIMEEVENTS
-        {
-            ScopeProtector protector{ &TimeEvent::getTimeEventSema() };
-            reactivationTime =
-                RODOS::min(timeToTryAgainToSchedule.load(), TimeEvent::getNextTriggerTime());
-        }
+        reactivationTime =
+            RODOS::min(timeToTryAgainToSchedule.load(), TimeEvent::getNextTriggerTime());
 #endif
 
         int64_t durationToNextTimingEvent = reactivationTime - NOW();

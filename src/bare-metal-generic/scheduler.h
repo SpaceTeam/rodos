@@ -12,7 +12,7 @@
 #pragma once
 
 
-#include "interrupt_sync.h"
+#include "interrupt_sync_64bit.h"
 #include "thread.h"
 
 
@@ -36,7 +36,7 @@ class Scheduler {
 
 friend class Thread;
 private:
-  static InterruptSyncWrapper<uint64_t> scheduleCounter; // shared with Thread::yield()
+  static Interruptable_Uint64 scheduleCounter; // shared with Thread::yield()
 
   static Thread* preSelectedNextToRun; // used only to optimize yield time
   static int64_t preSelectedEarliestSuspendedUntil; // used only to optimize yield time

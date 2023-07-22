@@ -14,11 +14,9 @@
 #include "rodos-debug.h"
 #include "timeevent.h"
 #include "misc-rodos-funcs.h"
-#include "interrupt_sync.h"
+#include "interrupt_sync_64bit.h"
 
 namespace RODOS {
-
-Semaphore TimeEvent::timeEventSema{};
 
 /* constructor */
 TimeEvent::TimeEvent(const char* name)

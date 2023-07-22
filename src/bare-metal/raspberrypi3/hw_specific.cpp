@@ -28,7 +28,7 @@ namespace RODOS {
 /* CONTEXT SWITCH AND INTERRUPT HANDLING */
 /*********************************************************************************************/
 
-extern InterruptSyncWrapper<int64_t> timeToTryAgainToSchedule;
+extern Interruptable_Int64 timeToTryAgainToSchedule;
 extern std::atomic<bool> yieldSchedulingLock;
 
 extern "C" {

@@ -49,7 +49,7 @@ extern "C" {
 extern void __asmSaveContext();
 }
 
-extern InterruptSyncWrapper<int64_t> timeToTryAgainToSchedule;
+extern Interruptable_Int64 timeToTryAgainToSchedule;
 extern std::atomic<bool> yieldSchedulingLock;
 
 /**
@@ -69,7 +69,10 @@ void timerSignalHandler([[gnu::unused]] int ignore) {
     // if not time yet to schedule (SysTick only triggered for TimeEvent) return directly
     if(NOW() < timeToTryAgainToSchedule) {
         int64_t nextSchedulingEventTime = timeToTryAgainToSchedule.load();
-        int64_t nextTimeEventTime = TimeEvent::getNextTriggerTime();
+        int64_t nextTimeEventTime = END_OF_TIME;
+#ifndef DISABLE_TIMEEVENTS
+        nextTimeEventTime = TimeEvent::getNextTriggerTime();
+#endif
         Timer::updateTriggerToNextTimingEvent(nextSchedulingEventTime, nextTimeEventTime);
         Timer::start();
         return;
