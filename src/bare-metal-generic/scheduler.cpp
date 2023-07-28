@@ -44,7 +44,7 @@ void schedulerWrapper(long* ctx) {
 }
 
 extern Thread* idlethreadP;
-extern Interruptable_Int64 timeToTryAgainToSchedule;
+extern Atomic_Int64 timeToTryAgainToSchedule;
 
 /** activate idle thread */
 void Scheduler::idle() {
@@ -107,7 +107,10 @@ void Scheduler::schedule() {
     nextTimeEventTime = TimeEvent::getNextTriggerTime();
 #endif
     int64_t nextTimeSliceEnd = TIME_SLICE_FOR_SAME_PRIORITY + NOW();
-    timeToTryAgainToSchedule.store(min(selectedEarliestSuspendedUntil, nextTimeSliceEnd));
+    // store raw without disabling interrupts, safe because:
+    // -> timeToTryAgainToSchedule only read in SysTick interrupt (+ safely in yield)
+    // -> interrupts disabled for scheduler in most ports (don't enable them prematurely)
+    timeToTryAgainToSchedule.raw().store(min(selectedEarliestSuspendedUntil, nextTimeSliceEnd));
 
     // update SysTick timer to next event and jump into selected thread
     Timer::updateTriggerToNextTimingEvent(timeToTryAgainToSchedule.load(), nextTimeEventTime);

@@ -38,7 +38,7 @@ namespace RODOS {
  * -> 100ms  @ 21MHz: 2.100.000
  * -> !!! 1s  @ 21MHz: 21.000.000 -> counter overflow !!!
  */
-extern Interruptable_Int64 timeToTryAgainToSchedule;
+extern Atomic_Int64 timeToTryAgainToSchedule;
 extern std::atomic<bool> yieldSchedulingLock;
 
 

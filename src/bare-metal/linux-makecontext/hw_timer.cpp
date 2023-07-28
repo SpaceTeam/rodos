@@ -18,6 +18,7 @@
 #include <atomic>
 #include <signal.h>
 
+#include "atomic_64bit.h"
 #include "hw_specific.h"
 #include "rodos.h"
 #include <sys/time.h>
@@ -57,7 +58,7 @@ extern "C" {
   extern void __asmSaveContext();
 }
 
-extern Interruptable_Int64 timeToTryAgainToSchedule;
+extern Atomic_Int64 timeToTryAgainToSchedule;
 extern std::atomic<bool> yieldSchedulingLock;
 extern void *signal_stack;
 

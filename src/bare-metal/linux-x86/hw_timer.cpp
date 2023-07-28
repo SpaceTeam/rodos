@@ -49,7 +49,7 @@ extern "C" {
 extern void __asmSaveContext();
 }
 
-extern Interruptable_Int64 timeToTryAgainToSchedule;
+extern Atomic_Int64 timeToTryAgainToSchedule;
 extern std::atomic<bool> yieldSchedulingLock;
 
 /**

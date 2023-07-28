@@ -14,6 +14,7 @@
 #include <atomic>
 #include <stdint.h>
 
+#include "atomic_64bit.h"
 #include "interrupt_sync_64bit.h"
 #include "listelement.h" // required when compilng with posix
 #include "timemodel.h"
@@ -64,7 +65,7 @@ private:
   /** priority of thread, higher values are serverd first  */
   std::atomic<int32_t> priority{};
   /** It will be activated only after this time */
-  Interruptable_Int64 suspendedUntil = 0;
+  Atomic_Int64 suspendedUntil = 0;
   /** if waiting for reactivation from someone, eg semaphore */
   std::atomic<void*> waitingFor{};
 

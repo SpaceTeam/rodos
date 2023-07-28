@@ -31,7 +31,7 @@ static uint32_t timerClock = 1;
  * -> 100ms  @ 15,625MHz: 1.562.500
  * -> !!! 1s  @ 15,625MHz: 15.625.000 ok, near an overflow
  */
-extern Interruptable_Int64 timeToTryAgainToSchedule;
+extern Atomic_Int64 timeToTryAgainToSchedule;
 
 extern "C" {
 

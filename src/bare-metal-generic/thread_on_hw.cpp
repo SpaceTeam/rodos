@@ -23,7 +23,7 @@ namespace RODOS {
 
 constexpr uint32_t EMPTY_MEMORY_MARKER = 0xDEADBEEF;
 
-Interruptable_Int64 timeToTryAgainToSchedule = 0;
+Atomic_Int64 timeToTryAgainToSchedule = 0;
 std::atomic<bool> yieldSchedulingLock { false };
 
 /** old style constructor */
@@ -60,12 +60,12 @@ bool Thread::checkStackViolations() {
         xprintf("!StackOverflow! %s DEACTIVATED!: free %d\n",
                 this->name,
                 static_cast<int>(this->getCurrentStackAddr() - reinterpret_cast<uintptr_t>(this->stackBegin)));
-        this->suspendedUntil = END_OF_TIME;
+        this->suspendedUntil.raw().store(END_OF_TIME);
         return true;
     }
     if(*reinterpret_cast<uint32_t*>(this->stackBegin) != EMPTY_MEMORY_MARKER) { // this thread is going beyond its stack!
         xprintf("! PANIC %s beyond stack, DEACTIVATED!\n", this->name);
-        this->suspendedUntil = END_OF_TIME;
+        this->suspendedUntil.raw().store(END_OF_TIME);
         return true;
     }
 
