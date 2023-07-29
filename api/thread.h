@@ -209,6 +209,10 @@ public:
    * the next timing event. Does not yield.
    *
    * @note Can safely be called from interrupt handlers.
+   *
+   * @see suspendCallerUntil
+   * @see suspendUntilNextBeat
+   * @see Semaphore
    */
   void resume();
 

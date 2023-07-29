@@ -271,7 +271,7 @@ void IdleThread::run() {
         sp_partition_yield(); // allow other linux processes or ARIC-653 partitions to run
         yield();
 
-#ifdef SLEEP_WHEN_IDLE_ENABLED
+#ifndef DISABLE_SLEEP_WHEN_IDLE
         // enter sleep mode if suitable
         int64_t reactivationTime = timeToTryAgainToSchedule;
 #ifndef DISABLE_TIMEEVENTS
