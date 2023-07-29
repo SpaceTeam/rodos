@@ -60,12 +60,12 @@ bool Thread::checkStackViolations() {
         xprintf("!StackOverflow! %s DEACTIVATED!: free %d\n",
                 this->name,
                 static_cast<int>(this->getCurrentStackAddr() - reinterpret_cast<uintptr_t>(this->stackBegin)));
-        this->suspendedUntil.raw().store(END_OF_TIME);
+        this->suspendedUntil.store(END_OF_TIME);
         return true;
     }
     if(*reinterpret_cast<uint32_t*>(this->stackBegin) != EMPTY_MEMORY_MARKER) { // this thread is going beyond its stack!
         xprintf("! PANIC %s beyond stack, DEACTIVATED!\n", this->name);
-        this->suspendedUntil.raw().store(END_OF_TIME);
+        this->suspendedUntil.store(END_OF_TIME);
         return true;
     }
 
@@ -322,6 +322,7 @@ Thread* Thread::findNextToRun(int64_t& selectedEarliestSuspendedUntil) {
     int64_t timeNow = NOW();
 
     ITERATE_LIST(Thread, threadList) {
+        // only load suspendedUntil once, as this may be changed by interrupts during scheduling
         int64_t iterSuspendedUntil = iter->suspendedUntil.load();
         int64_t iterPrio = iter->getPriority();
         int64_t nextThreadToRunPrio = nextThreadToRun->getPriority();

@@ -107,10 +107,7 @@ void Scheduler::schedule() {
     nextTimeEventTime = TimeEvent::getNextTriggerTime();
 #endif
     int64_t nextTimeSliceEnd = TIME_SLICE_FOR_SAME_PRIORITY + NOW();
-    // store raw without disabling interrupts, safe because:
-    // -> timeToTryAgainToSchedule only read in SysTick interrupt (+ safely in yield)
-    // -> interrupts disabled for scheduler in most ports (don't enable them prematurely)
-    timeToTryAgainToSchedule.raw().store(min(selectedEarliestSuspendedUntil, nextTimeSliceEnd));
+    timeToTryAgainToSchedule.store(min(selectedEarliestSuspendedUntil, nextTimeSliceEnd));
 
     // update SysTick timer to next event and jump into selected thread
     Timer::updateTriggerToNextTimingEvent(timeToTryAgainToSchedule.load(), nextTimeEventTime);

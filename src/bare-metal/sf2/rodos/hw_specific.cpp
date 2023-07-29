@@ -130,7 +130,6 @@ void SVC_Handler(void) {
  */
 void PendSV_Handler(void) {
     __asm volatile(
-      "	cpsid f								\n" // disable all interrupts
       "	mrs r0, psp							\n" // load stack pointer of interrupted thread in r0 -> r0 is used to save all not automatically saved core and fpu registers
       "										\n"
 #if(__FPU_PRESENT == 1) && (__FPU_USED == 1)
@@ -155,7 +154,6 @@ void PendSV_Handler(void) {
 #endif
       "										\n"
       "	msr psp, r0							\n" // load psp with stack pointer of next thread -> PSP (process stack pointer) is used after leaving ISR
-      "	cpsie f								\n" // enable all interrupts
       "	bx r14								\n"
       "										\n"
       "	.align 2							\n");
