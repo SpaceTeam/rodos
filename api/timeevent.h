@@ -14,7 +14,7 @@
 
 #include <stdint.h>
 
-#include "interrupt_sync_64bit.h"
+#include "atomic_64bit_Nrw_Mrw.h"
 #include "listelement.h"
 #include "rodos-semaphore.h"
 #include "timemodel.h"
@@ -38,13 +38,13 @@ protected:
   static List timeEventList;
 
   /// Time, when the event is activated to handle
-  Interruptable_Int64 eventAt;
+  Int64_Atomic_N_ThreadRW_M_InterruptRW eventAt;
 
   /**
    * Periodical activation time of the event. If set to 0, the event is activated only once,
    * else it is activated with a period of this time.
    */
-  Interruptable_Int64 eventPeriod;
+  Int64_Atomic_N_ThreadRW_M_InterruptRW eventPeriod;
 
 public:
 

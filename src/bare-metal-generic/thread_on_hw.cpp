@@ -23,7 +23,7 @@ namespace RODOS {
 
 constexpr uint32_t EMPTY_MEMORY_MARKER = 0xDEADBEEF;
 
-Atomic_Int64 timeToTryAgainToSchedule = 0;
+Int64_Atomic_N_ThreadRW_M_InterruptRW timeToTryAgainToSchedule = 0;
 std::atomic<bool> yieldSchedulingLock { false };
 
 /** old style constructor */

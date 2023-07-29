@@ -92,12 +92,21 @@ namespace detail {
 } // namespace detail
 
 /**
- * @name Architecture-agnostic interruptable signed/unsigned 64bit integer variable.
- * @note Always use this typedef in your code!
+ * @name 64bit variable wrappers that are guaranteed to be atomic in RODOS scheduling
+ * as long as arbitrarily many threads only read from the variable and
+ * only one interrupt reads and/or writes to the variable.
+ *
+ * @note Other interrupts may also read from the variable as long as they are guaranteed to not
+ * interrupt the interrupt that writes to the variable.
+ *
+ * @note Essentially architecture-agnostic typedef for the interruptable-64bit-integer wrapper.
+ * Always use this typedef and *not* the arch-dependent template in your code!
  * @{
  */
-using Interruptable_Uint64 = detail::Interruptable_Uint64_Arch<Interruptable_Uint64_Arch_Impl>;
-using Interruptable_Int64  = detail::Interruptable_Int64_Arch<Interruptable_Int64_Arch_Impl>;
+using Uint64_Atomic_N_ThreadRO_1_InterruptRW =
+  detail::Interruptable_Uint64_Arch<Interruptable_Uint64_Arch_Impl>;
+using Int64_Atomic_N_ThreadRO_1_InterruptRW =
+  detail::Interruptable_Int64_Arch<Interruptable_Int64_Arch_Impl>;
 /** @} */
 
 } // namespace RODOS

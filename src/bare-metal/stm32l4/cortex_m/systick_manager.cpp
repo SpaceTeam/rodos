@@ -46,7 +46,7 @@ void SysTickManager::start(){
 }
 
 
-extern Atomic_Int64 timeToTryAgainToSchedule;
+extern Int64_Atomic_N_ThreadRW_M_InterruptRW timeToTryAgainToSchedule;
 extern std::atomic<bool> yieldSchedulingLock;
 
 

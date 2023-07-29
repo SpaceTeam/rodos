@@ -14,8 +14,8 @@
 #include <atomic>
 #include <stdint.h>
 
-#include "atomic_64bit.h"
-#include "interrupt_sync_64bit.h"
+#include "atomic_64bit_Nrw_Mrw.h"
+#include "atomic_64bit_Nro_1rw.h"
 #include "listelement.h" // required when compilng with posix
 #include "timemodel.h"
 #include "default-platform-parameter.h"
@@ -59,13 +59,13 @@ private:
    * @{
    */
   /** used by scheduling algorithm */
-  Interruptable_Uint64 lastActivation = 0;
+  Uint64_Atomic_N_ThreadRO_1_InterruptRW lastActivation = 0;
   /** pointer to stored context */
   std::atomic<long*> context{};
   /** priority of thread, higher values are serverd first  */
   std::atomic<int32_t> priority{};
   /** It will be activated only after this time */
-  Atomic_Int64 suspendedUntil = 0;
+  Int64_Atomic_N_ThreadRW_M_InterruptRW suspendedUntil = 0;
   /** if waiting for reactivation from someone, eg semaphore */
   std::atomic<void*> waitingFor{};
 

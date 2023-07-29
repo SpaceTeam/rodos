@@ -6,8 +6,9 @@
 namespace RODOS {
 
 /**
- * @brief Wrapper class for variables that can safely be shared
- * between threads and interrupt handlers.
+ * @brief Generic atomic variable wrapper that is guaranteed to be atomic in RODOS scheduling
+ * as long as only one thread is reading and/or writing to the variable (arbitrarily many
+ * interrupts may read and/or write to the variable).
  *
  * Load/store operations exist that are reentrant (async-signal-safe).
  * - A load operation is guaranteed to yield a valid value (that the variable had at a time
@@ -22,20 +23,22 @@ namespace RODOS {
  * @tparam T Type of the stored shared variable.
  */
 template <typename T>
-class InterruptSyncWrapper {
+class Generic_Atomic_1_ThreadRW_M_InterruptRW {
   public:
-    InterruptSyncWrapper(const T& value) {
+    Generic_Atomic_1_ThreadRW_M_InterruptRW(const T& value) {
         m_valueBuffer[m_index.load()] = value;
     }
 
-    InterruptSyncWrapper(const InterruptSyncWrapper& rhs) {
+    Generic_Atomic_1_ThreadRW_M_InterruptRW(
+      const Generic_Atomic_1_ThreadRW_M_InterruptRW& rhs) {
         this->store(rhs.load());
     }
-    InterruptSyncWrapper& operator=(const InterruptSyncWrapper& other) {
+    Generic_Atomic_1_ThreadRW_M_InterruptRW& operator=(
+      const Generic_Atomic_1_ThreadRW_M_InterruptRW& other) {
         this->store(other.load());
         return *this;
     }
-    ~InterruptSyncWrapper() = default;
+    ~Generic_Atomic_1_ThreadRW_M_InterruptRW() = default;
 
     operator T() const {
         return this->load();

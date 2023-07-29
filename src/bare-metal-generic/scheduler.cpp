@@ -32,7 +32,7 @@ extern "C" {
 }
 
 /** count all calls to the scheduler */
-Interruptable_Uint64 Scheduler::scheduleCounter = 0;
+Uint64_Atomic_N_ThreadRO_1_InterruptRW Scheduler::scheduleCounter = 0;
 
 Thread* Scheduler::preSelectedNextToRun = 0;
 int64_t Scheduler::preSelectedEarliestSuspendedUntil = END_OF_TIME;
@@ -44,7 +44,7 @@ void schedulerWrapper(long* ctx) {
 }
 
 extern Thread* idlethreadP;
-extern Atomic_Int64 timeToTryAgainToSchedule;
+extern Int64_Atomic_N_ThreadRW_M_InterruptRW timeToTryAgainToSchedule;
 
 /** activate idle thread */
 void Scheduler::idle() {
