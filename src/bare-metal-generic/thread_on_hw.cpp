@@ -124,11 +124,6 @@ void Thread::yield() {
     yieldSchedulingLock = true;
     Timer::stop();
 
-#ifndef DISABLE_TIMEEVENTS
-    // as we've stopped SysTicks, we mustn't forget to propagate potentially simultaneous TimeEvents
-    TimeEvent::propagate(NOW());
-#endif
-
     // Cases regarding simultaneous scheduling events (between last if and Timer stop):
     // 1) no simultaneous scheduling event:
     //    -> just call scheduler as other thread is waiting for us
