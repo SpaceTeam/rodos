@@ -1,8 +1,9 @@
 
 #include "rodos.h"
+#include "stdlib.h"
+
 #include "support-libs.h"
 
-#include "stdlib.h"
 
 void printlist(const char* name, SortedList* list) {
     PRINTF("\n list %s (%d) \n", name, (int)list->getNumberOfElements());

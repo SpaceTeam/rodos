@@ -128,7 +128,7 @@ typedef enum __mss_timer_mode_t {
 /*-------------------------------------------------------------------------*/ /**
   The MSS_TIM1_init() function initializes the SmartFusion2 MSS Timer block for
   use as a 32-bit timer and selects the operating mode for Timer 1. This function
-  takes the MSS Timer block out of reset in case this hasn’t been done already,
+  takes the MSS Timer block out of reset in case this hasn't been done already,
   stops Timer 1, disables its interrupt and sets the Timer 1 operating mode.
   Please note that the SmartFusion2 MSS Timer block cannot be used both as a
   64-bit and 32-bit timer. Calling MSS_TIM1_init() will overwrite any previous
@@ -143,7 +143,7 @@ typedef enum __mss_timer_mode_t {
 static __INLINE void MSS_TIM1_init(mss_timer_mode_t mode) {
     NVIC_DisableIRQ(Timer1_IRQn); /* Disable timer 1 irq in the Cortex-M3 NVIC */
 
-    SYSREG->SOFT_RST_CR &= ~SYSREG_TIMER_SOFTRESET_MASK; /* Take timer block out of reset */
+    SYSREG->SOFT_RST_CR = SYSREG->SOFT_RST_CR & ~SYSREG_TIMER_SOFTRESET_MASK; /* Take timer block out of reset */
 
     TIMER->TIM64_MODE = 0u; /* switch to 32 bits mode */
 
@@ -261,7 +261,7 @@ static __INLINE void MSS_TIM1_clear_irq(void) {
     TIMER->TIM1_RIS = 1u;
     /*
       To ensure all the previous instructions are completed, data barrier 
-      instruction is used. The “dsb” data barriers instruction completes,
+      instruction is used. The "dsb" data barriers instruction completes,
       only after all the previous instruction are completed. 
      */
     __ASM volatile("dsb");
@@ -270,7 +270,7 @@ static __INLINE void MSS_TIM1_clear_irq(void) {
 /*-------------------------------------------------------------------------*/ /**
   The MSS_TIM2_init() function initializes the SmartFusion2 MSS Timer block for
   use as a 32-bit timer and selects the operating mode for Timer 2. This function
-  takes the MSS Timer block out of reset in case this hasn’t been done already,
+  takes the MSS Timer block out of reset in case this hasn't been done already,
   stops Timer 2, disables its interrupt and sets the Timer 2 operating mode.
   Note: Please note that the SmartFusion2 MSS Timer block cannot be used both as
   a 64-bit and 32-bit timer. Calling MSS_TIM2_init() will overwrite any previous
@@ -285,7 +285,7 @@ static __INLINE void MSS_TIM1_clear_irq(void) {
 static __INLINE void MSS_TIM2_init(mss_timer_mode_t mode) {
     NVIC_DisableIRQ(Timer2_IRQn); /* Disable timer 2 irq in the Cortex-M3 NVIC */
 
-    SYSREG->SOFT_RST_CR &= ~SYSREG_TIMER_SOFTRESET_MASK; /* Take timer block out of reset */
+    SYSREG->SOFT_RST_CR = SYSREG->SOFT_RST_CR & ~SYSREG_TIMER_SOFTRESET_MASK; /* Take timer block out of reset */
 
     TIMER->TIM64_MODE = 0u; /* switch to 32 bits mode */
 
@@ -398,7 +398,7 @@ static __INLINE void MSS_TIM2_clear_irq(void) {
     TIMER->TIM2_RIS = 1u;
     /*
       To ensure all the previous instructions are completed, data barrier 
-      instruction is used. The “dsb” data barriers instruction completes,
+      instruction is used. The "dsb" data barriers instruction completes,
       only after all the previous instruction are completed. 
      */
     __ASM volatile("dsb");
@@ -407,7 +407,7 @@ static __INLINE void MSS_TIM2_clear_irq(void) {
 /*-------------------------------------------------------------------------*/ /**
   The MSS_TIM64_init() function initializes the SmartFusion2 MSS Timer block for
   use as a single 64-bit timer and selects the operating mode of the timer. This
-  function takes the MSS Timer block out of reset in case this hasn’t been done
+  function takes the MSS Timer block out of reset in case this hasn't been done
   already, stops the timer, disables its interrupts and sets the timer's
   operating mode.
   Note: Please note that the SmartFusion2 MSS Timer block cannot be used both as
@@ -424,7 +424,7 @@ static __INLINE void MSS_TIM64_init(mss_timer_mode_t mode) {
     NVIC_DisableIRQ(Timer1_IRQn); /* disable timer 1 interrupt within NVIC */
     NVIC_DisableIRQ(Timer2_IRQn); /* disable timer 2 interrupt within NVIC */
 
-    SYSREG->SOFT_RST_CR &= ~SYSREG_TIMER_SOFTRESET_MASK; /* Take timer block out of reset */
+    SYSREG->SOFT_RST_CR = SYSREG->SOFT_RST_CR & ~SYSREG_TIMER_SOFTRESET_MASK; /* Take timer block out of reset */
 
     TIMER->TIM64_MODE = 1u; /* switch to 64 bits mode */
 
@@ -581,7 +581,7 @@ static __INLINE void MSS_TIM64_clear_irq(void) {
     TIMER->TIM64_RIS = 1u;
     /*
       To ensure all the previous instructions are completed, data barrier 
-      instruction is used. The “dsb” data barriers instruction completes,
+      instruction is used. The "dsb" data barriers instruction completes,
       only after all the previous instruction are completed. 
      */
     __ASM volatile("dsb");

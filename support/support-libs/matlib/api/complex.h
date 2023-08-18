@@ -66,7 +66,7 @@ public:
 	        return z;
 	    }
 	    z= (*this);
-	    for(size_t i = 1; i<exponent; ++i) {
+	    for(int i = 1; i<exponent; ++i) {
 	        z=z.cMult(*this);
 	    }
 	    return z;

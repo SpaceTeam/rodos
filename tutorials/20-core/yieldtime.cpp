@@ -1,18 +1,20 @@
 #include "rodos.h"
+#include <atomic>
 
 static Application module01("YieldTimeMeasure");
 
 Semaphore printProtect;
 
-long long yieldGlobal = 0;
+std::atomic<uint32_t> yieldGlobal = 0;
 
 class TestThread : public StaticThread<> {
-    long long yieldCnt;
 
     void run() {
+        uint32_t yieldCnt = 0;
         while (1) {
             yield();
             yieldCnt++;
+            asm("": "+g"(yieldCnt) : :); // avoid complier optimization of busy loop
             yieldGlobal++;
             // displays every 100000 times
             if ((yieldCnt % 100000) == 0) {
@@ -31,7 +33,7 @@ class TestThread : public StaticThread<> {
     }
     //constructor
 public:
-    TestThread(const char *name = "xx") : StaticThread<>(name) { yieldCnt = 0; }
+    TestThread(const char *name = "xx") : StaticThread<>(name) { }
 
     void init() { PRINTF(" Thread activated"); }
 };

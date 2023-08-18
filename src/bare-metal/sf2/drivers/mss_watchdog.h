@@ -9,7 +9,7 @@
  */
 /*=========================================================================*//**
   @section intro_sec Introduction
-  The SmartFusion2™ microcontroller subsystem (MSS) includes a watchdog timer
+  The SmartFusion2(TM) microcontroller subsystem (MSS) includes a watchdog timer
   used to detect system lockups. This software driver provides a set of
   functions for controlling the MSS watchdog as part of a bare metal system
   where no operating system is available. The driver can be adapted for use as
@@ -116,7 +116,7 @@
     - MSS_WD_clear_wakeup_irq
     
  */
-                                                                             /*=========================================================================*/
+/*=========================================================================*/
 
 #ifndef MSS_WATCHDOG_H_
 #define MSS_WATCHDOG_H_
@@ -180,7 +180,7 @@ static __INLINE void MSS_WD_init(void) {
     uint32_t wdg_value;
 
     /* Disable interrupts. */
-    WATCHDOG->WDOGCONTROL &= ~(MSS_WDOG_TIMEOUT_IRQ_ENABLE_BIT_MASK | MSS_WDOG_WAKEUP_IRQ_CLEAR_BIT_MASK);
+    WATCHDOG->WDOGCONTROL = WATCHDOG->WDOGCONTROL & ~(MSS_WDOG_TIMEOUT_IRQ_ENABLE_BIT_MASK | MSS_WDOG_WAKEUP_IRQ_CLEAR_BIT_MASK);
 
     /* Clear any existing interrupts. */
     WATCHDOG->WDOGRIS = MSS_WDOG_TIMEOUT_IRQ_CLEAR_BIT_MASK | MSS_WDOG_WAKEUP_IRQ_CLEAR_BIT_MASK;
@@ -213,7 +213,7 @@ static __INLINE void MSS_WD_reload(void) {
   watchdog's down-counter.
  
   @return
-    This function returns the current value of the watchdog’s down-counter as
+    This function returns the current value of the watchdog's down-counter as
     a 32-bit unsigned integer.
  */
 static __INLINE uint32_t MSS_WD_current_value(void) {
@@ -225,8 +225,8 @@ static __INLINE uint32_t MSS_WD_current_value(void) {
  
   @return 
     This function returns the refresh status of the watchdog. A value of 0
-    indicates that watchdog’s down-counter is within the forbidden window and
-    that a reload should not be done. A value of 1 indicates that the watchdog’s
+    indicates that watchdog's down-counter is within the forbidden window and
+    that a reload should not be done. A value of 1 indicates that the watchdog's
     down counter is within the permitted window and that a reload is allowed.
  */
 static __INLINE uint32_t MSS_WD_status(void) {
@@ -234,7 +234,7 @@ static __INLINE uint32_t MSS_WD_status(void) {
 }
 
 /***************************************************************************/ /**
-  The MSS_WD_enable_timeout_irq() function enables the watchdog’s timeout
+  The MSS_WD_enable_timeout_irq() function enables the watchdog's timeout
   interrupt which is connected to the Cortex-M3 NMI interrupt. The NMI_Handler()
   function will be called when a watchdog timeout occurs.
   Note: An NMI_handler() default implementation is weakly defined in the 
@@ -266,7 +266,7 @@ static __INLINE uint32_t MSS_WD_status(void) {
   @endcode
  */
 static __INLINE void MSS_WD_enable_timeout_irq(void) {
-    WATCHDOG->WDOGCONTROL |= MSS_WDOG_TIMEOUT_IRQ_ENABLE_BIT_MASK;
+    WATCHDOG->WDOGCONTROL = WATCHDOG->WDOGCONTROL | MSS_WDOG_TIMEOUT_IRQ_ENABLE_BIT_MASK;
 }
 
 /***************************************************************************/ /**
@@ -277,7 +277,7 @@ static __INLINE void MSS_WD_enable_timeout_irq(void) {
     This function does not return a value.
  */
 static __INLINE void MSS_WD_disable_timeout_irq(void) {
-    WATCHDOG->WDOGCONTROL &= ~MSS_WDOG_TIMEOUT_IRQ_ENABLE_BIT_MASK;
+    WATCHDOG->WDOGCONTROL = WATCHDOG->WDOGCONTROL & ~MSS_WDOG_TIMEOUT_IRQ_ENABLE_BIT_MASK;
 }
 
 /***************************************************************************/ /**
@@ -314,7 +314,7 @@ static __INLINE void MSS_WD_disable_timeout_irq(void) {
   @endcode
  */
 static __INLINE void MSS_WD_enable_wakeup_irq(void) {
-    WATCHDOG->WDOGCONTROL |= MSS_WDOG_WAKEUP_IRQ_ENABLE_BIT_MASK;
+    WATCHDOG->WDOGCONTROL = WATCHDOG->WDOGCONTROL | MSS_WDOG_WAKEUP_IRQ_ENABLE_BIT_MASK;
     NVIC_EnableIRQ(WdogWakeup_IRQn);
 }
 
@@ -326,11 +326,11 @@ static __INLINE void MSS_WD_enable_wakeup_irq(void) {
     This function does not return a value.
  */
 static __INLINE void MSS_WD_disable_wakeup_irq(void) {
-    WATCHDOG->WDOGCONTROL &= ~MSS_WDOG_WAKEUP_IRQ_ENABLE_BIT_MASK;
+    WATCHDOG->WDOGCONTROL = WATCHDOG->WDOGCONTROL & ~MSS_WDOG_WAKEUP_IRQ_ENABLE_BIT_MASK;
 }
 
 /***************************************************************************/ /**
-  The MSS_WD_clear_timeout_irq() function clears the watchdog’s timeout
+  The MSS_WD_clear_timeout_irq() function clears the watchdog's timeout
   interrupt which is connected to the Cortex-M3 NMI interrupt. Calling
   MSS_WD_clear_timeout_irq() results in clearing the Cortex-M3 NMI interrupt.
   Note: You must call the MSS_WD_clear_timeout_irq() function as part of your

@@ -32,10 +32,10 @@ class Semaphore {
 
 private:
   Thread* volatile owner;       ///< A pointer to the thread that currently has entered the semaphore.
-  volatile int ownerEnterCnt;   ///< Counts how often the owner enters the semaphore.
+  volatile int32_t ownerEnterCnt; ///< Counts how often the owner enters the semaphore.
 
 protected:
-  volatile int32_t ownerPriority;   ///< The scheduling priority of the thread that currently has entered the semaphore.
+  volatile int32_t ownerPriority; ///< The scheduling priority of the thread that currently has entered the semaphore.
   void* context; ///< used only on posix and on host-os
 
 public:

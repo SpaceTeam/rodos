@@ -31,6 +31,7 @@ add_compile_definitions(HSE_VALUE=${OSC_CLK} ${mcu_flag} USE_STM32_DISCOVERY USE
 set(compile_and_link_options -mcpu=cortex-m4 -mfloat-abi=softfp -mfpu=fpv4-sp-d16)
 add_compile_options(-gdwarf-2 -mthumb -g3)
 add_compile_options(${compile_and_link_options})
+add_compile_options($<$<COMPILE_LANGUAGE:CXX>:-Wno-register>) # ignore register keyword in CMSIS header when included in cpp files
 add_link_options(${compile_and_link_options})
 add_link_options(-T${linker_script})
 add_link_options(-nostartfiles -nodefaultlibs -nostdlib -Xlinker --gc-sections -fno-unwind-tables -fno-asynchronous-unwind-tables)

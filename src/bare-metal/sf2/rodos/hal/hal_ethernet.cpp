@@ -105,7 +105,7 @@ class HW_HAL_ETH {
         MSS_GPIO_set_output(MSS_GPIO_10, 1);
 
         end = NOW() + 100 * MILLISECONDS;
-        AT(end); // SM: no bussy waiting for 100 ms!
+        AT(end); // SM: no busy waiting for 100 ms!
 
         MSS_SYS_get_serial_number(serialNum);
         MSS_MAC_cfg_struct_def_init(&mac_config);

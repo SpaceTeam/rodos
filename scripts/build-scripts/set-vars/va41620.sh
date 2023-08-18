@@ -26,7 +26,7 @@ export CFLAGS_BASICS=" -g3 -gdwarf-2"
 export HWCFLAGS=" -mcpu=cortex-m4 -mthumb -mfloat-abi=softfp -mfpu=fpv4-sp-d16 -ffreestanding"
 export LINKFLAGS=" -T${LINKER_SCRIPT} -nostartfiles -nodefaultlibs -nostdlib -Xlinker --gc-sections -L${RODOS_LIBS}/${TARGET_LIB} -fno-unwind-tables -fno-asynchronous-unwind-tables -ffreestanding -lrodos -lm -lgcc"
 export CFLAGS=${CFLAGS}" ${CFLAGS_BASICS} ${HWCFLAGS} "
-export CPPFLAGS=${CPPFLAGS}" --std=c++2a -ffreestanding"
+export CPPFLAGS=${CPPFLAGS}" --std=c++20 -ffreestanding"
 
 export ARM_TOOLS=""  # specify path to gcc arm toolchain to use version not in PATH
 export CPP_COMP="${CXX:-${ARM_TOOLS}arm-none-eabi-g++} "

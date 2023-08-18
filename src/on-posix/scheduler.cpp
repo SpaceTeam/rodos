@@ -26,7 +26,7 @@ unsigned long long Scheduler::scheduleCounter = 0;
 
 pthread_mutex_t signal_mutex                  = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t interruptDisableCounter_mutex = PTHREAD_MUTEX_INITIALIZER;
-volatile int    interruptDisableCounter       = 0;
+int interruptDisableCounter                   = 0;
 
 void sigio_handler(int a);
 void timerSignalHandler(int ignore);

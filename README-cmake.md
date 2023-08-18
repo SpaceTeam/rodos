@@ -2,9 +2,9 @@ How to build RODOS with CMake
 =============================
 
 CMake is a meta build-system suitable for large projects where build steps are
-configured declaratevly in CMakeLists.txt. CMake can automatically generate a
+configured declaratively in CMakeLists.txt. CMake can automatically generate a
 Makefile from this build configuration. Afterwards, make is used to compile the
-project. The following text explains the required steps to build rodos projects
+project. The following text explains the required steps to build RODOS projects
 with CMake.
 
 RODOS supports different target platforms, which require different compilation configuration.
@@ -36,11 +36,11 @@ Compile RODOS
 $ make -j rodos
 ```
 
-This commands builds the RODOS library, which is then placed at `build/librodos.a`
+This command builds the RODOS library, which is then placed at `build/librodos.a`
 
 Compile RODOS' Support Lib
 --------------------------
-The support-libs are included automatically when compiling rodos with CMake.
+The support-libs are included automatically when compiling RODOS with CMake.
 
 Compile Tutorials
 -----------------
@@ -93,7 +93,7 @@ add_executable(my-application my-source.cpp)
 target_link_libraries(my-application PUBLIC rodos support-lib)
 ```
 
-After those lines you can use all the features of CMake. To build the application, it is recommended to create a build-direcotry. Applications can then be built from the directory where your CMakeLists.txt is with:
+After those lines you can use all the features of CMake. To build the application, it is recommended to create a build-directory. Applications can then be built from the directory where your CMakeLists.txt is with:
 
 ```shell script
 # optionally create the build directory
