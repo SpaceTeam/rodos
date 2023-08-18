@@ -44,7 +44,7 @@ class LowPriorityThread : public StaticThread<> {
         volatile int64_t cnt             = 0;
         int64_t          intervalToPrint = getSpeedKiloLoopsPerSecond() * 10;
         while(1) {
-            cnt++;
+            cnt = cnt + 1;
             if(cnt % intervalToPrint == 0) {
                 xprintf(".");
                 FFLUSH();

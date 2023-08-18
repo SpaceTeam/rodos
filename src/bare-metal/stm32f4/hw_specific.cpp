@@ -506,7 +506,7 @@ void deepSleepUntil(long long until) {
 		return;
 	}
 
-	SysTick->CTRL  &= ~SysTick_CTRL_TICKINT_Msk; // systick IRQ off
+	SysTick->CTRL = SysTick->CTRL & ~SysTick_CTRL_TICKINT_Msk; // systick IRQ off
 
 	uint32_t cr = RCC->CR;
 	uint32_t cfgr = RCC->CFGR;
@@ -535,7 +535,7 @@ void deepSleepUntil(long long until) {
 		RTC_WakeUpCmd(DISABLE);
 	}
 
-	SysTick->CTRL  |= SysTick_CTRL_TICKINT_Msk; // systick IRQ on
+	SysTick->CTRL = SysTick->CTRL | SysTick_CTRL_TICKINT_Msk; // systick IRQ on
 }
 
 static bool setWakeUpTimer(long long wakeupInNanoseconds) {

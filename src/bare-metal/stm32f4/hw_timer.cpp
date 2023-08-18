@@ -60,7 +60,7 @@ void SysTick_Handler() {
 
 	if(NOW() < timeToTryAgainToSchedule) return;
 
-	SCB->ICSR |= SCB_ICSR_PENDSVSET_Msk; // set SW-IRQ to call scheduler
+	SCB->ICSR = SCB->ICSR | SCB_ICSR_PENDSVSET_Msk; // set SW-IRQ to call scheduler
 }
 
 
@@ -88,7 +88,7 @@ static __INLINE uint32_t SysTick_Config_New(uint32_t ticks)
 
 static __INLINE uint32_t SysTick_IRQEnable(void)
 {
-	SysTick->CTRL |= SysTick_CTRL_TICKINT_Msk;
+	SysTick->CTRL = SysTick->CTRL | SysTick_CTRL_TICKINT_Msk;
 
 	return (0);
 }
@@ -96,7 +96,7 @@ static __INLINE uint32_t SysTick_IRQEnable(void)
 
 static __INLINE uint32_t SysTick_IRQDisable(void)
 {
-	SysTick->CTRL &= ~( SysTick_CTRL_TICKINT_Msk);
+	SysTick->CTRL = SysTick->CTRL & ~( SysTick_CTRL_TICKINT_Msk);
 
 	return (0);
 }
@@ -121,35 +121,35 @@ static __INLINE uint32_t SysTick_Disable(void)
 
 } // end extern "C"
 
-/** 
+/**
 * the timer interval
 */
 long long Timer::microsecondsInterval = PARAM_TIMER_INTERVAL;
 
-void Timer::init() 
+void Timer::init()
 {
 	SysTick_Config_New(static_cast<uint32_t>((SystemCoreClock/8) * Timer::microsecondsInterval / 1000000)); // initialization of systick timer
 }
 
 /**
-* start timer 
+* start timer
 */
-void Timer::start() 
+void Timer::start()
 {
 	SysTick_Config_New(static_cast<uint32_t>((SystemCoreClock/8) * Timer::microsecondsInterval / 1000000)); // initialization of systick timer
 	SysTick_Enable();
 }
 
 /**
-* stop timer 
+* stop timer
 */
-void Timer::stop() 
+void Timer::stop()
 {
 	SysTick_Disable();
 }
 
 /**
-* set timer interval 
+* set timer interval
 */
 void Timer::setInterval(const int64_t microsecondsInterval) {
   Timer::microsecondsInterval = microsecondsInterval;

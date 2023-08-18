@@ -6,10 +6,11 @@ public:
     LowPriorityThread() : StaticThread<>("LowPriority", 100) {}
 
     void run() {
-        volatile int64_t cnt = 0;
+        int64_t cnt = 0;
         int64_t intervalToPrint = getSpeedKiloLoopsPerSecond() * 10;
         xprintf("\nLow prio begins printing '.'\n");
         while (1) {
+            asm("": "+g"(cnt) : :); // avoid complier optimization of busy loop
             if (++cnt % intervalToPrint == 0) {
                 xprintf(".");
                 FFLUSH();
@@ -26,12 +27,13 @@ public:
     HiPriorityThread() : StaticThread<>("HiPriority", 200) {}
 
     void run() {
-        volatile int64_t cnt = 0;
+        int64_t cnt = 0;
         int64_t intervalToPrint = getSpeedKiloLoopsPerSecond() * 10;
         xprintf("\nHi prio waits 1 second and then print +\n");
         AT(1 * SECONDS);
         xprintf("\nHi Priority in busy waiting\n");
         while (NOW() < 5 * SECONDS) {
+            asm("": "+g"(cnt) : :); // avoid complier optimization of busy loop
             if (++cnt % intervalToPrint == 0) {
                 xprintf("+");
                 FFLUSH();
@@ -43,7 +45,9 @@ public:
         {
             PRIORITY_FLOORING_IN_SCOPE();
             while (NOW() < 10 * SECONDS) {
-                if (++cnt % intervalToPrint == 0) {
+                cnt++;
+                asm("": "+g"(cnt) : :); // avoid complier optimization of busy loop
+                if (cnt % intervalToPrint == 0) {
                     xprintf("+");
                     FFLUSH();
                 }

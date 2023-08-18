@@ -60,7 +60,7 @@ void SysTick_Handler() {
         return;
     }
 
-    SCB->ICSR |= SCB_ICSR_PENDSVSET_Msk; // set SW-IRQ to call scheduler
+    SCB->ICSR = SCB->ICSR | SCB_ICSR_PENDSVSET_Msk; // set SW-IRQ to call scheduler
 }
 
 /** \brief  System Tick Configuration
@@ -83,13 +83,13 @@ static __INLINE uint32_t SysTick_Config_New(uint32_t ticks) {
 }
 
 static __INLINE uint32_t SysTick_IRQEnable(void) {
-    SysTick->CTRL |= SysTick_CTRL_TICKINT_Msk;
+    SysTick->CTRL = SysTick->CTRL | SysTick_CTRL_TICKINT_Msk;
 
     return (0);
 }
 
 static __INLINE uint32_t SysTick_IRQDisable(void) {
-    SysTick->CTRL &= ~(SysTick_CTRL_TICKINT_Msk);
+    SysTick->CTRL = SysTick->CTRL & ~(SysTick_CTRL_TICKINT_Msk);
 
     return (0);
 }

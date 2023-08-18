@@ -45,7 +45,7 @@ void Semaphore::enter() {
     }
     owner = caller;
     ownerPriority = callerPriority;
-    ownerEnterCnt++;
+    ownerEnterCnt = ownerEnterCnt + 1;
   } // end of prio_ceiling
   caller->yield(); // wating with prio_ceiling, maybe some one more important wants to work?
 }
@@ -61,7 +61,7 @@ void Semaphore::leave() {
     return; 
   }
  
-  ownerEnterCnt--;
+  ownerEnterCnt = ownerEnterCnt - 1;
   if (ownerEnterCnt > 0) { // same thread made multiple enter()
     return;
   }

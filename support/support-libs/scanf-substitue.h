@@ -20,8 +20,8 @@ struct Tokenizer {
 };
 
 //number can start with '-'terminates by the first non-digit character (not '0' to '9'), eg. Tokens from Tokenizer
-#define atoi s2int
 extern int64_t s2int(char *s);
+#define atoi s2int
 
 extern char* strCpyUntilChar(char* dest, char* source, char terminator);
 

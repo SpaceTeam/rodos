@@ -13,6 +13,7 @@ add_compile_definitions(MICROSEMI_STDIO_THRU_UART MULTICAST)
 add_compile_options(-fsigned-char -ffunction-sections)
 add_compile_options(-fdata-sections --specs=nano.specs)
 add_compile_options(-mcpu=cortex-m3 -mthumb)
+add_compile_options($<$<COMPILE_LANGUAGE:CXX>:-Wno-register>)
 
 add_link_options(-T${RODOS_DIR}/src/bare-metal/sf2/CMSIS/startup_gcc/${LINK_SCRIPT})
 add_link_options(-nostartfiles -nostdlib)
