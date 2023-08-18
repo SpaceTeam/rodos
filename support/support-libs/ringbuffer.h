@@ -10,13 +10,14 @@ namespace RODOS {
 /**
      RingBuffer administrates a pool of objects in a ring manner (Template class).
 
-     with getWriteBuffer/endWrite you can rewrite the oldest entry in the buffer.
-     with getfromRing you get cyckick one for one, all written entries
-     in the buffer.
+     With put you can rewrite the oldest entry in the buffer.
+     With get you get cyclic one for one, all written entries
+     in the buffer. If there was no put before (see writeCnt) 
+     get returns false and do not modify its parameter
 
      Thread-safe for one writer and one reader.
 
-     @param      t Class to be adrministrated (Template)
+     @param      t Class to be administrated (Template)
      @param      poolSize how many elements are to be allocated
 
      @author     Sergio Montenegro
@@ -33,7 +34,6 @@ public:
     uint32_t   currentWrite = UINT32_MAX;
     T          vals[poolSize];
 
-public:
     /// How often it was written
     uint64_t writeCnt = 0;
     /// How often it was readed
@@ -42,6 +42,15 @@ public:
     uint32_t occupiedCnt = 0;
 
     T* getNextEntryToPut() { return &vals[writeIndex]; }
+
+    void clear() {
+        writeIndex = 0;
+        readIndex = 0;
+        currentWrite = UINT32_MAX;
+        writeCnt = 0;
+        readCnt = 0;
+        occupiedCnt = 0;
+    }
 
     void put(const T& newdata) {
         currentWrite = writeIndex;
@@ -54,7 +63,8 @@ public:
     }
 
     /// get the next
-    void get(T& fromRing) {
+    bool get(T& fromRing) {
+        if(writeCnt == 0) return false;
 
         /** Jump the current being written record **/
         if (readIndex == currentWrite) readIndex++;
@@ -69,6 +79,8 @@ public:
 
         if (occupiedCnt > 0) occupiedCnt--;
         readCnt++;
+
+	return true;
     }
 
     ///
