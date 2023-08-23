@@ -28,6 +28,9 @@ sudo apt install -y gcc-arm-none-eabi binutils-arm-none-eabi libnewlib-arm-none-
 sudo apt install -y cmake
 
 ```
+If this fails, try
+https://askubuntu.com/questions/1243252/how-to-install-arm-none-eabi-gdb-on-ubuntu-20-04-lts-focal-fossa/1243405#1243405
+
 
 
 To check your camake version run:
