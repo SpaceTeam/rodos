@@ -37,6 +37,11 @@ int64_t TimeModel::getUTC() {
     return localTime2UTC(NOW());
 }
 
+/** Gets the UTC drift parameter of the clock model */
+double TimeModel::getDrift() {
+    return drift;
+}
+
 /* set the UTC drift parameter of the clock model */
 void TimeModel::setDrift(const double drift) {
     this->drift = drift;

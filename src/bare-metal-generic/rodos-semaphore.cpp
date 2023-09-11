@@ -28,6 +28,7 @@ Semaphore::Semaphore() :
  * The owner may reenter the semaphore without deadlock
  */
 void Semaphore::enter() {
+  if(!schedulerRunning) return;
   Thread* caller = Thread::getCurrentThread();
   int32_t callerPriority = caller->getPriority();
   {
@@ -54,6 +55,7 @@ void Semaphore::enter() {
  *  caller does not block. resumes one waiting thread (enter)
  */
 void Semaphore::leave() {
+  if(!schedulerRunning) return;
   Thread* caller = Thread::getCurrentThread();
   Thread* waiter = 0;
 

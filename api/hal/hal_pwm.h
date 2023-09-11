@@ -16,15 +16,15 @@ enum PWM_PARAMETER_TYPE {
 	PWM_PARAMETER_INCREMENTS
 };
 
-enum PWM_IDX {      // STM32F4                  AVR32
-	PWM_IDX00 = 0,  // Timer 1 CH1 - PE9        PWM0 -
-	PWM_IDX01,      // Timer 1 CH2 - PE11       PWM1 -
-	PWM_IDX02,      // Timer 1 CH3 - PE13       PWM2 - Pin PB21
-	PWM_IDX03,      // Timer 1 CH4 - PE14       PWM3 - Pin PB22
-	PWM_IDX04,      // Timer 2 CH1 - PA0        PWM4 -
-	PWM_IDX05,      // Timer 2 CH2 - PA1        PWM5 -
-	PWM_IDX06,      // Timer 2 CH3 - PA2        PWM6 -
-	PWM_IDX07,      // Timer 2 CH4 - PA3
+enum PWM_IDX {      // STM32F4                  AVR32                   EFR32FG12
+	PWM_IDX00 = 0,  // Timer 1 CH1 - PE9        PWM0 -                  Timer 1 CH 0 - PA00
+	PWM_IDX01,      // Timer 1 CH2 - PE11       PWM1 -                  Timer 1 CH 1 - PA01
+	PWM_IDX02,      // Timer 1 CH3 - PE13       PWM2 - Pin PB21         Timer 1 CH 2 - PA02
+	PWM_IDX03,      // Timer 1 CH4 - PE14       PWM3 - Pin PB22         Timer 1 CH 3 - PA03
+	PWM_IDX04,      // Timer 2 CH1 - PA0        PWM4 -                  WTimer1 CH 0 - PA04
+	PWM_IDX05,      // Timer 2 CH2 - PA1        PWM5 -                  WTimer1 CH 1 - PA05
+	PWM_IDX06,      // Timer 2 CH3 - PA2        PWM6 -                  WTimer1 CH 2 - PA06
+	PWM_IDX07,      // Timer 2 CH4 - PA3                                WTimer1 CH 3 - Not available
 	PWM_IDX08,      // Timer 3 CH1 - PA6
 	PWM_IDX09,      // Timer 3 CH2 - PC7
 	PWM_IDX10,      // Timer 3 CH3 - PB0

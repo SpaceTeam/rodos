@@ -106,6 +106,9 @@ class TimeModel {
     /** UTC2, or gpsTime: UTC without leapseconds (we add leapseconds!) **/
     int64_t getGpsTime() { return getUTC() + (int64_t)leapSeconds * SECONDS; }
 
+    /** Gets the UTC drift parameter of the clock model */
+    double getDrift();
+    
     /** Sets the UTC drift parameter of the clock model */
     void setDrift(const double drift);
 
@@ -113,7 +116,7 @@ class TimeModel {
     void correctUTCDelta(const int64_t deltaDelta);
 
     /** Converts the given local time to the corresponding UTC time. */
-    int64_t localTime2UTC(const int64_t loaclTime);
+    int64_t localTime2UTC(const int64_t localTime);
 
     /** Converts the given UTC time to the corresponding local time. */
     int64_t UTC2LocalTime(const int64_t utc);

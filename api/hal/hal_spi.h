@@ -15,26 +15,27 @@
 
 namespace RODOS {
 
-enum SPI_IDX{   //  STM32F4
-	SPI_IDX0,   //  not available
-	SPI_IDX1,   //  SPI1
-	SPI_IDX2,   //  SPI2
-	SPI_IDX3,    //   SPI3
-	SPI_IDX4,   //  SPI4 (STM32F429 only)
-	SPI_IDX5,   //  SPI5 (STM32F429 only)
-	SPI_IDX6    //  SPI6 (STM32F429 only)
+enum SPI_IDX{       //  STM32F4                     // EFR32FG12P
+	SPI_IDX0,         //  not available               // SPI0 (=USART0)
+	SPI_IDX1,         //  SPI1                        // SPI1 (=USART1)
+	SPI_IDX2,         //  SPI2                        // SPI2 (=USART2)
+	SPI_IDX3,         //  SPI3                        // SPI3 (=USART3)
+	SPI_IDX4,         //  SPI4 (STM32F429 only)
+	SPI_IDX5,         //  SPI5 (STM32F429 only)
+	SPI_IDX6          //  SPI6 (STM32F429 only)
 };
 
 enum SPI_PARAMETER_TYPE {
     SPI_PARAMETER_BAUDRATE,
-    SPI_PARAMETER_MODE      // MODE:CPOL/CPHA  0:0/0   1:0/1   2:1/0   3:1/1
+    SPI_PARAMETER_MODE,     // MODE:CPOL/CPHA  0:0/0   1:0/1   2:1/0   3:1/1
+    SPI_PARAMETER_DMA,      // default disabled
+    SPI_PARAMETER_BLOCKING  // default enabled
 };
 
 enum SPI_STATUS_TYPE {
     SPI_STATUS_BAUDRATE,
     SPI_STATUS_MODE
 };
-
 
 class HW_HAL_SPI;
 
@@ -43,7 +44,7 @@ class HAL_SPI : public GenericIOInterface {
 public:
     HAL_SPI(SPI_IDX spiIdx);
     HAL_SPI(SPI_IDX idx, GPIO_PIN sckPin, GPIO_PIN misoPin, GPIO_PIN mosiPin, GPIO_PIN nssPin = GPIO_INVALID);
-
+    ~HAL_SPI();
     /**
      * @brief   Initialization of SPI interface & pins
      *          Baudrate is set to the closest possible.

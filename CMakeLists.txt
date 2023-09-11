@@ -8,6 +8,7 @@ project(
     LANGUAGES C CXX ASM
 )
 
+
 if (COVERAGE)
     if (NOT CMAKE_BUILD_TYPE)
         set(CMAKE_BUILD_TYPE "Debug")
@@ -78,10 +79,23 @@ endif ()
 #___________________________________________________________________
 #    optional extra files which are port dependent. See cmake/port/xxx.cmake
 #___________________________________________________________________
+if (compile_definitions)
+  target_compile_definitions(rodos_rodos PUBLIC ${compile_definitions})
+endif ()
+
+if (compile_options)
+  target_compile_options(rodos_rodos PUBLIC ${compile_options})
+endif ()
+
+if (link_options)
+  target_link_options(rodos_rodos PUBLIC ${link_options})
+endif ()
+
 if (sources_to_add)
     file(GLOB files ${sources_to_add})
     target_sources(rodos_rodos PRIVATE ${files})
 endif ()
+
 
 if (directories_to_include)
     foreach(dir ${directories_to_include})
@@ -89,9 +103,17 @@ if (directories_to_include)
     endforeach()
 endif ()
 
+if (directories_to_link)
+  target_link_directories(rodos_rodos PUBLIC ${directories_to_link})
+endif ()
+
 if (libraries_to_link)
     target_link_libraries(rodos_rodos PUBLIC ${libraries_to_link})
 endif ()
+
+if (linker_script)
+  target_link_options(rodos_rodos PUBLIC -T${linker_script})
+endif()
 
 if (EXECUTABLE)
     include(cmake/executable.cmake)

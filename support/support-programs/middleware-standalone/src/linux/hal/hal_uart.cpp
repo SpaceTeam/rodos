@@ -30,8 +30,8 @@ namespace RODOS {
 
 //================================================================================
 //Mapping of UART IDs to linux device names
-#define MAX_NUM_UARTS 6
-const char *uartDeviceNames[6] = {"/dev/ttyUSB0","/dev/ttyUSB1","/dev/rfcomm0","/dev/rfcomm1","/dev/ttyS0","/dev/ttyS1"};
+#define MAX_NUM_UARTS 7
+const char *uartDeviceNames[MAX_NUM_UARTS] = {"/dev/ttyUSB0","/dev/ttyUSB1","/dev/rfcomm0","/dev/rfcomm1","/dev/ttyS0","/dev/ttyS1", "/dev/ttyACM0"};
 //================================================================================
 
 
@@ -122,7 +122,7 @@ int HAL_UART::init(unsigned int iBaudrate) {
 
 	init_sigio_handler();
 
-    //xprintf("UART: %s initialized with: %d\n",devname,iBaudrate);
+    xprintf("UART: %s initialized with: %d\n",devname,iBaudrate);
 
 	return 0;
 }
@@ -217,7 +217,7 @@ int HAL_UART::status(UART_STATUS_TYPE type) {
 
 	UART_IDX idx = context->idx;
 
-	if ((idx < 1) || (idx > 5)) {return -1;}
+	if ((idx < 1) || (idx >= MAX_NUM_UARTS)) {return -1;}
 
 	switch (type)
 	{
@@ -233,7 +233,7 @@ int HAL_UART::status(UART_STATUS_TYPE type) {
 
 
 bool HAL_UART::isWriteFinished() {
-	//return true;
+
 	fd_set fdset;
 		FD_ZERO(&fdset);
 		FD_SET(context->fd,&fdset);
@@ -247,7 +247,6 @@ bool HAL_UART::isWriteFinished() {
 			return true;
 		else
 			return false;
-
 }
 
 
