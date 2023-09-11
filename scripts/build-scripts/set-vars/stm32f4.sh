@@ -67,7 +67,7 @@ export CFLAGS_BASICS="${CFLAGS_BASICS_COMMON}  -D${MCU_FLAG} -DUSE_STM32_DISCOVE
 export HWCFLAGS=" -mcpu=cortex-m4 -mthumb -mfloat-abi=softfp -mfpu=fpv4-sp-d16"
 export LINKFLAGS=" -T${LINKER_SCRIPT} -nostartfiles -nodefaultlibs -nostdlib -Xlinker --gc-sections -L${RODOS_LIBS}/${TARGET_LIB} -fno-unwind-tables -fno-asynchronous-unwind-tables -lrodos -lm"
 export CFLAGS=${CFLAGS}" ${CFLAGS_BASICS} ${HWCFLAGS} "
-
+export CPPFLAGS=${CPPFLAGS}" -Wno-register " # ignore register keyword in CMSIS header when included in cpp files
 
 #export ARM_TOOLS="/opt/arm-tools/bin/"
 export ARM_TOOLS=""

@@ -11,8 +11,7 @@
 
 //_______________________________ compute  getYieldTimeOverhead and  getMaxIdleCntPerSecond
 
-static const long NUM_OF_LOOPS  = 1000 * 1000 * 10;
-volatile long long cnt = 0;
+static constexpr int32_t NUM_OF_LOOPS = 1000 * 1000 * 10;
 
 class SpeedTest : public StaticThread<> {
 public:
@@ -22,7 +21,9 @@ public:
 
         /** how many loops in a second? **/
         int64_t startTime = NOW();
-        for(cnt = 0; cnt < NUM_OF_LOOPS; cnt++);
+        for(int32_t cnt = 0; cnt < NUM_OF_LOOPS; cnt++) {
+            asm("": "+g"(cnt) : :); // avoid complier optimization of busy-wait loop
+        }
         int64_t deltaTime = (NOW() - startTime);
 
         long kiloLoopsPerSecond = static_cast<long>((double)SECONDS * (double)NUM_OF_LOOPS / (double)deltaTime / 1000.0);
@@ -43,21 +44,18 @@ public:
 
 //_______________________________ compute getYieldTimeOverhead
 
-#define NUMBER_OF_EXECUTIONS    1000000
+static constexpr int64_t NUMBER_OF_EXECUTIONS = 1000000;
 
-Semaphore printProtect;
-
-long long  yieldGlobal = 0;
 class TestThread : public StaticThread<> {
-  long long yieldCnt;
   void run(){
 
     PRINTF("\n\n________________________ Please wait until I say DONE\n");
 
+    uint64_t yieldCnt = 0;
     while(1){
       yield();
       yieldCnt++;
-      yieldGlobal++;
+      asm("": "+g"(yieldCnt) : :); // avoid complier optimization of busy loop
       // displays every 100000 times
       if((yieldCnt%NUMBER_OF_EXECUTIONS) == 0){
         long long timeNow = NOW();
@@ -68,7 +66,7 @@ class TestThread : public StaticThread<> {
   }
   //constructor
 public:
-  TestThread (const char* name ="xx") : StaticThread<>(name) { yieldCnt = 0; }
+  TestThread (const char* name ="xx") : StaticThread<>(name) {}
 
   void init() { PRINTF(" Thread activated"); }
 };

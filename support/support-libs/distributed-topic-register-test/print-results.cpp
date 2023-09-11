@@ -22,10 +22,10 @@ void printBin(uint32_t val) {
 class PrintTopicRecieverNodes : public StaticThread<> {
     void run() {
         TIME_LOOP(2017 * MILLISECONDS, 2 * SECONDS) {
-            PRINTF("–––––––––––––––––––––––––––––––––––––––––––––––––––––––– Iam %2d\n", getNodeNumber() % 32);
+            PRINTF("–––––––––––––––––––––––––––––––––––––––––––––––––––––––– Iam %2d\n", static_cast<int>(getNodeNumber() % 32));
             ITERATE_LIST(TopicInterface, TopicInterface::topicList) {
                 if(iter->topicId < 2000 && iter->topicId >= 1000) {
-                    PRINTF("topic %4d %9s: rec %2d bitmap %08x: ", iter->topicId, iter->name, iter->receiverNodesBitMap2Index(), iter->receiverNodesBitMap);
+                    PRINTF("topic %4d %9s: rec %2d bitmap %08x: ", static_cast<int>(iter->topicId), iter->name, static_cast<int>(iter->receiverNodesBitMap2Index()), static_cast<unsigned int>(iter->receiverNodesBitMap));
                     printBin(iter->receiverNodesBitMap);
                     PRINTF("\n");
                 }

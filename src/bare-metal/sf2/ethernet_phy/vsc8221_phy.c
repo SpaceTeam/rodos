@@ -75,16 +75,16 @@ void phy_decodeRegisters() {
     printReg(reg, 14, "NEAR_END_LOOPBACK", NULL);
     uint8_t tmp = (((reg >> 6) & 1) << 1) | ((reg >> 13) & 1);
     switch(tmp) {
-        case 0b00:
+        case 0x0:// = 0b00:
             printf(" 10M");
             break;
-        case 0b01:
+        case 0x1:// = 0b01:
             printf(" 100M");
             break;
-        case 0b10:
+        case 0x2:// = 0b10:
             printf(" 1000M");
             break;
-        case 0b11:
+        case 0x3:// = 0b11:
             printf(" RESERVED_SPD");
             break;
     }
@@ -154,28 +154,28 @@ void phy_decodeRegisters() {
     printf("Reg: 23");
     uint8_t newVal = (((reg >> 12) & 0xF) << 2) | ((reg >> 1) & 3);
     switch(newVal) {
-        case 0b111100:
+        case 0x3C:// = 0b111100:
             printf(" 802.3z SerDes CAT5 Clause 37 disabled");
             break;
-        case 0b111001:
+        case 0x39:// = 0b111001:
             printf(" 802.3z SerDes CAT5 Clause 37 enabled");
             break;
-        case 0b111010:
+        case 0x3A:// = 0b111010:
             printf(" 802.3z SerDes CAT5 Clause 37 enabled Media Converter");
             break;
-        case 0b111000:
+        case 0x38:// = 0b111000:
             printf(" 802.3z SerDes CAT5 Clause 37 Auto Detection");
             break;
-        case 0b101001:
+        case 0x29:// = 0b101001:
             printf(" SGMII CAT5 625MHz SCLK Disabled");
             break;
-        case 0b100001:
+        case 0x21:// = 0b100001:
             printf(" SGMII CAT5 625MHz SCLK Enabled");
             break;
-        case 0b100100:
+        case 0x24:// = 0b100100:
             printf(" SGMII CAT5 625MHz SCLK Disabled Clause 37 Auto-neg disabled");
             break;
-        case 0b101101:
+        case 0x2D:// = 0b101101:
             printf(" SGMII CAT5 625MHz SCLK Enabled Clause 37 Auto-neg disabled");
             break;
         default:
@@ -200,16 +200,16 @@ void phy_decodeRegisters() {
     printReg(reg, 5, "FULL_DUPLEX", "HALF_DUPLEX");
     tmp = (reg >> 3) & 3;
     switch(tmp) {
-        case 0b00:
+        case 0x0:// = 0b00:
             printf(" 10M");
             break;
-        case 0b01:
+        case 0x1:// = 0b01:
             printf(" 100M");
             break;
-        case 0b10:
+        case 0x2:// = 0b10:
             printf(" 1000M");
             break;
-        case 0b11:
+        case 0x3:// = 0b11:
             printf(" RESERVED_SPD");
             break;
     }
@@ -269,7 +269,7 @@ void phy_checkInterrupts() {
 void phy_setLinkSpeedManual(uint32_t speed_duplex_select) {
     enableMDIX();
     uint16_t reg = read_reg(0);
-    reg &= ~((1u << 12) | (1u << 6) | (1u << 13) | (1u << 8));
+    reg &= (uint16_t)(~((1u << 12) | (1u << 6) | (1u << 13) | (1u << 8)));
     switch(speed_duplex_select) {
         case MSS_MAC_ANEG_10M_FD:
             reg |= FD;
@@ -312,8 +312,8 @@ void MSS_MAC_phy_set_link_speed(uint32_t speed_duplex_select) {
 
     /* Set 10Mbps and 100Mbps advertisement. */
     phy_reg = MSS_MAC_read_phy_reg(g_phy_addr, MII_ADVERTISE);
-    phy_reg &= ~(ADVERTISE_10HALF | ADVERTISE_10FULL |
-                 ADVERTISE_100HALF | ADVERTISE_100FULL);
+    phy_reg &= (uint16_t)(~(ADVERTISE_10HALF | ADVERTISE_10FULL |
+                            ADVERTISE_100HALF | ADVERTISE_100FULL));
 
     speed_select = speed_duplex_select;
     for(inc = 0u; inc < 4u; ++inc) {
@@ -329,7 +329,7 @@ void MSS_MAC_phy_set_link_speed(uint32_t speed_duplex_select) {
 
     /* Set 1000Mbps advertisement. */
     phy_reg = MSS_MAC_read_phy_reg(g_phy_addr, MII_CTRL1000);
-    phy_reg &= ~(ADVERTISE_1000FULL | ADVERTISE_1000HALF);
+    phy_reg &= (uint16_t)(~(ADVERTISE_1000FULL | ADVERTISE_1000HALF));
 
     if((speed_duplex_select & MSS_MAC_ANEG_1000M_FD) != 0u) {
         phy_reg |= ADVERTISE_1000FULL;
@@ -381,27 +381,27 @@ uint8_t MSS_MAC_phy_get_link_status(mss_mac_speed_t* speed,
         phy_reg = MSS_MAC_read_phy_reg(g_phy_addr, 0x1C);
         op_mode = (phy_reg >> 3) & 0x0007u;
         switch(op_mode) {
-            case 0b000:
+            case 0x0:// = 0b000:
                 *speed      = MSS_MAC_10MBPS;
                 *fullduplex = MSS_MAC_HALF_DUPLEX;
                 break;
-            case 0b100:
+            case 0x4:// = 0b100:
                 *speed      = MSS_MAC_10MBPS;
                 *fullduplex = MSS_MAC_FULL_DUPLEX;
                 break;
-            case 0b001:
+            case 0x1:// = 0b001:
                 *speed      = MSS_MAC_100MBPS;
                 *fullduplex = MSS_MAC_HALF_DUPLEX;
                 break;
-            case 0b101:
+            case 0x5:// = 0b101:
                 *speed      = MSS_MAC_100MBPS;
                 *fullduplex = MSS_MAC_FULL_DUPLEX;
                 break;
-            case 0b010:
+            case 0x2:// = 0b010:
                 *speed      = MSS_MAC_1000MBPS;
                 *fullduplex = MSS_MAC_HALF_DUPLEX;
                 break;
-            case 0b110:
+            case 0x6:// = 0b110:
                 *speed      = MSS_MAC_1000MBPS;
                 *fullduplex = MSS_MAC_FULL_DUPLEX;
                 break;

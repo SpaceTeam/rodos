@@ -45,7 +45,7 @@ Semaphore::Semaphore() :
 void Semaphore::enter() {
   Thread* caller = Thread::getCurrentThread();
   if(owner == caller) {
-	ownerEnterCnt++;
+	ownerEnterCnt = ownerEnterCnt + 1;
 	return;
   }
   pthread_mutex_t *mutexp = (pthread_mutex_t*)context;
@@ -62,7 +62,7 @@ void Semaphore::leave() {
   if (owner != caller) { // User Programm error: What to do? Nothing!
     return;
   }
-  ownerEnterCnt--;
+  ownerEnterCnt = ownerEnterCnt - 1;
   if(ownerEnterCnt != 0) return;
   owner = 0;
   pthread_mutex_t *mutexp = (pthread_mutex_t*)context;

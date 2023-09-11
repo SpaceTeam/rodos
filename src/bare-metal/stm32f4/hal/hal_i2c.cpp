@@ -400,7 +400,7 @@ int32_t HW_HAL_I2C::mstrReadNoStart(const uint8_t addr, uint8_t* rxBuf, uint32_t
 		I2C_AcknowledgeConfig(I2Cx, DISABLE);
 
 		/*Set POS*/
-		I2Cx->CR1 |= I2C_CR1_POS;
+		I2Cx->CR1 = I2Cx->CR1 | I2C_CR1_POS;
 
 		/* Clear ADDR register by reading SR1 then SR2 register (SR1 has already been read) */
 		(void) I2Cx->SR2;
@@ -438,7 +438,7 @@ int32_t HW_HAL_I2C::mstrReadNoStart(const uint8_t addr, uint8_t* rxBuf, uint32_t
 		I2C_AcknowledgeConfig(I2Cx, ENABLE);
 
 		/*!< Reset POS */
-		I2Cx->CR1 &= (uint16_t) ~((uint16_t) I2C_CR1_POS );
+		I2Cx->CR1 = I2Cx->CR1 & (uint16_t) ~((uint16_t) I2C_CR1_POS );
 	}
 
 	else if (rxBufSize > 2) {

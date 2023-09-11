@@ -125,7 +125,7 @@ class S3pReceiverAsynchronous : S3pCode {
 
         if(msg == 0) msg = requestBufferToWrite(maxLen);  // maxLen shall be updated by you
 
-        dualByte  = (uint16_t)(dualByte  << 8 ) | (uint16_t)inputByte;
+        dualByte  = static_cast<uint16_t>((uint16_t)(dualByte  << 8 ) | (uint16_t)inputByte);
         if(inputByte == MARK) return; // here the msb, next call with the lsb
         if(msb(dualByte) == 0 ) dualByte = 0; // It is data, 0 is just to have some thing for the case
 

@@ -53,7 +53,7 @@ target_include_directories(rodos_rodos PUBLIC
 target_compile_options(rodos_rodos PUBLIC -fno-exceptions -g -Wall -Wpedantic -Wextra -Wcast-qual -Wconversion
     -Wsign-conversion -Wfloat-conversion -Wdouble-promotion -Wnull-dereference -Wstrict-aliasing -Wno-long-long
     -Wno-cpp -O0)
-target_compile_options(rodos_rodos PRIVATE $<$<COMPILE_LANGUAGE:CXX>:-std=c++14>)
+target_compile_features(rodos_rodos PUBLIC cxx_std_20)
 
 option(ENABLE_RODOS_RTTI "Build RODOS with run-time type information" OFF)
 if (NOT ENABLE_RODOS_RTTI)

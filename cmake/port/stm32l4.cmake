@@ -19,7 +19,6 @@ if(NOT DEFINED mcu)
     message(FATAL_ERROR "MCU group name must be provided in board port file.")
 endif()
 
-set(CMAKE_CXX_STANDARD 20 CACHE STRING "C++ Standard (toolchain)" FORCE)
 set(compile_and_link_options
     -mcpu=cortex-m4
     -mfloat-abi=softfp

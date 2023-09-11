@@ -46,7 +46,7 @@ export CFLAGS_BASICS="${CFLAGS_BASICS_COMMON}"
 export HWCFLAGS=" -mcpu=cortex-m4 -mthumb -mfloat-abi=softfp -mfpu=fpv4-sp-d16"
 export LINKFLAGS=" -T${LINKER_SCRIPT} -nostartfiles -nodefaultlibs -nostdlib -Xlinker --gc-sections -L${RODOS_LIBS}/${TARGET_LIB} -fno-unwind-tables -fno-asynchronous-unwind-tables -lrodos -lm"
 export CFLAGS=${CFLAGS}" ${CFLAGS_BASICS} ${HWCFLAGS} "
-export CPPFLAGS=${CPPFLAGS}" --std=c++2a"
+export CPPFLAGS=${CPPFLAGS}" --std=c++20"
 
 #export ARM_TOOLS="/opt/arm-tools/bin/"
 export ARM_TOOLS=""

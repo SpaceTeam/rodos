@@ -17,11 +17,11 @@ public:
     }
 
     void run() {
-        volatile int64_t cnt = 0;
+        int64_t cnt = 0;
         int64_t intervalToPrint = getSpeedKiloLoopsPerSecond() * 10;
         while (1) {
-            cnt++;
-            if (cnt % intervalToPrint == 0) {
+            asm("": "+g"(cnt) : :); // avoid complier optimization of busy loop
+            if (++cnt % intervalToPrint == 0) {
                 xprintf("%c", symbol);
                 FFLUSH();
             }

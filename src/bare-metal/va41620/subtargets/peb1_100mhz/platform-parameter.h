@@ -10,6 +10,8 @@
 
 #pragma once
 
+#include "default-platform-parameter.h"
+
 namespace RODOS {
 
 /** Version Number */

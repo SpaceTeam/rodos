@@ -60,6 +60,6 @@ void __asmSwitchToContext(long* context) {
 
 void __asmSaveContextAndCallScheduler() {
 	/* Set a PendSV-interrupt to request a context switch. */
-	SCB ->ICSR |= SCB_ICSR_PENDSVSET_Msk;
+	SCB->ICSR = SCB->ICSR | SCB_ICSR_PENDSVSET_Msk;
 }
 }
