@@ -78,7 +78,7 @@ enum ADC_CHANNEL {  // STM32F4      AVR32       STM32F1 ...     EFR32
     ADC_CH_025,     //                                          PF5
     ADC_CH_026,     //                                          PF6
     ADC_CH_027,     //                                          PF7
-    ADC_CH_028
+    ADC_CH_028      //                                          PF9
 };
 
 enum ADC_PARAMETER_TYPE {

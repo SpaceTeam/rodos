@@ -18,7 +18,7 @@ namespace RODOS {
 #define EFR32_MAX_ADC_IDX     ADC_IDX0
 
 #define EFR32_MIN_ADC_CHAN    ADC_CH_000
-#define EFR32_MAX_ADC_CHAN    ADC_CH_027
+#define EFR32_MAX_ADC_CHAN    ADC_CH_028
 
 
 
@@ -52,7 +52,8 @@ ADC_PosSel_TypeDef adcChannelMap[] = {
     adcPosSelAPORT1XCH20, //ADC_CH_024,   PF4
     adcPosSelAPORT2XCH21, //ADC_CH_025,   PF5
     adcPosSelAPORT1XCH22, //ADC_CH_026,   PF6
-    adcPosSelAPORT2XCH23  //ADC_CH_027,   PF7
+    adcPosSelAPORT2XCH23, //ADC_CH_027,   PF7
+    adcPosSelAPORT2XCH25  //ADC_CH_028,   PF9
 };
 
 
