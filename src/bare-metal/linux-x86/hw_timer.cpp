@@ -66,8 +66,6 @@ void timerSignalHandler([[gnu::unused]] int ignore) {
 
     long* ebp;
     __asm__ __volatile__ ("mov %%ebp, %0":"=r"(ebp));
-  
-    schedulerRunning = false;
 
   /* instruction pointer of interrupted programm is at ebp[17] 
   * see System V abi and linux src : include/asm-x86/sigcontext32.h 
