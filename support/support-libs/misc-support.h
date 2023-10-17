@@ -27,6 +27,9 @@ bool plausibleValue(double sensor1, double sensor2, double possibleMin, double p
 /** returns the integer value of a ascii string representing a decimal number eg "123" -> 123 */
 int stoi(char* s);
 
+//  Divides a / divisour and rounds up the results
+constexpr int divAndRoundUp(int a, int divisor) { return (a + divisor -1) / divisor; }
+
 
 #ifndef NO_RODOS_NAMESPACE
 }
