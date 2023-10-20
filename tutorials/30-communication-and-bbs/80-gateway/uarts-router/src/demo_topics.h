@@ -1,9 +1,10 @@
 #include "rodos.h"
+#include "random.h"
 
-struct myDataType {
-    int  cnt;
-    char stringMsg[16];
+struct TestData {
+    size_t   length = 64;
+    uint8_t  msg[64];
+    uint16_t checksum;
 };
 
-extern Topic<myDataType> topic1;
-extern Topic<myDataType> topic2;
+extern Topic<TestData> topic1, topic2;

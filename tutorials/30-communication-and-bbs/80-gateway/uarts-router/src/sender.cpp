@@ -1,25 +1,33 @@
+#include <stddef.h>
+
 #include "rodos.h"
 #include "demo_topics.h"
 
-myDataType msgToSend;
+class SenderTrd : public StaticThread<> {
+protected:
+    TestData data;
 
-class MyPublisher : public StaticThread<> {
-  public:
-    MyPublisher() : StaticThread<>("sender") { }
+public:
+    SenderTrd() : StaticThread<>("Sender") { }
 
-    void run() {
-        int32_t counter = 0;
-        strcpy(msgToSend.stringMsg, "Hallo receiver1");
-        TIME_LOOP(1 * SECONDS, 1 * SECONDS) {
-            msgToSend.cnt = counter;
-	    msgToSend.stringMsg[14] = '#';
-            PRINTF("at %9.3f sending %s %d\n", SECONDS_NOW(), msgToSend.stringMsg, msgToSend.cnt);
+    void generateRandomMessage() {
+        for (size_t j = 0; j < this->data.length; j++) {
+            this->data.msg[j] = static_cast<uint8_t>(uint64Rand());
+        }
+        this->data.checksum = checkSum(this->data.msg, static_cast<size_t>(this->data.length));
+    }
 
-	    msgToSend.stringMsg[14] = '1';
-            topic1.publish(msgToSend);
-	    msgToSend.stringMsg[14] = '2';
-            topic2.publish(msgToSend);
-            counter++;
+    void run() override {
+        setRandSeed(static_cast<uint64_t>(getNodeNumber()));
+
+        TIME_LOOP(5 * SECONDS, 3 * SECONDS) {
+            this->generateRandomMessage();
+            PRINTF("[topic1] publish: 0x%04x\n", this->data.checksum);
+            topic1.publish(this->data);
+
+            this->generateRandomMessage();
+            PRINTF("[topic2] publish: 0x%04x\n", this->data.checksum);
+            topic2.publish(this->data);
         }
     }
-} myPublisher;
+} sender;
