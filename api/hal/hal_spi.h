@@ -44,7 +44,6 @@ class HAL_SPI : public GenericIOInterface {
 public:
     HAL_SPI(SPI_IDX spiIdx);
     HAL_SPI(SPI_IDX idx, GPIO_PIN sckPin, GPIO_PIN misoPin, GPIO_PIN mosiPin, GPIO_PIN nssPin = GPIO_INVALID);
-    ~HAL_SPI();
     /**
      * @brief   Initialization of SPI interface & pins
      *          Baudrate is set to the closest possible.
