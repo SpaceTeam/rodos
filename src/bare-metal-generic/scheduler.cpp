@@ -10,9 +10,8 @@
 */
 #include "scheduler.h"
 
-#include <atomic>
-
 #include "rodos.h"
+#include "rodos-atomic.h"
 #include "hw_specific.h"
 
 namespace RODOS {
@@ -32,48 +31,70 @@ extern "C" {
 }
 
 /** count all calls to the scheduler */
-Uint64_Atomic_N_ThreadRO_1_InterruptRW Scheduler::scheduleCounter = 0;
+RODOS::Atomic<uint64_t> Scheduler::scheduleCounter{0};
 
 Thread* Scheduler::preSelectedNextToRun = 0;
 int64_t Scheduler::preSelectedEarliestSuspendedUntil = END_OF_TIME;
 
+extern Thread* idlethreadP;
+extern RODOS::Atomic<int64_t> timeToTryAgainToSchedule;
+
 
 void schedulerWrapper(long* ctx) {
-  Thread::currentThread.load()->context=ctx;
-  Scheduler::schedule();
-}
+    Thread *active_trd = Thread::currentThread.loadFromISR();
+    active_trd->context = ctx;
 
-extern Thread* idlethreadP;
-extern Int64_Atomic_N_ThreadRW_M_InterruptRW timeToTryAgainToSchedule;
+#ifndef DISABLE_TIMEEVENTS
+    TimeEvent::propagate(NOW());
+#endif
+
+    int64_t nextSchedulingEventTime = timeToTryAgainToSchedule.loadFromISR();
+    if (NOW() < nextSchedulingEventTime) {
+        // it's not the time to schedule (SysTick only triggered for TimeEvent)
+
+#ifndef DISABLE_TIMEEVENTS
+        int64_t nextTimeEventTime = TimeEvent::getNextTriggerTime();
+#else
+        int64_t nextTimeEventTime = END_OF_TIME;
+#endif
+
+        Timer::updateTriggerToNextTimingEvent(nextSchedulingEventTime, nextTimeEventTime);
+        Timer::start();
+    } else {
+        active_trd = Scheduler::schedule();
+    }
+
+    // resume active thread
+    active_trd->activate();
+}
 
 /** activate idle thread */
 void Scheduler::idle() {
-  idlethreadP->suspendedUntil = 0;
+    idlethreadP->suspendedUntil.store(0);
 
+    Thread::currentThread.store(idlethreadP);
+    schedulerRunning = true;  /* a bit to early, but no later place possible */
 
-  Thread::currentThread = idlethreadP;
-  schedulerRunning = true;  /* a bit to early, but no later place possible */
-
-  /* - the order of activate() and startIdleThread() is important -> don't change
-   * - For all cortex ports a global context pointer is initialised in activate()
-   *   and this must have been done before startIdleThread() is called.
-   */
-  int64_t nextSchedulingEventTime = timeToTryAgainToSchedule.load();
-  int64_t nextTimeEventTime = END_OF_TIME;
+    int64_t nextSchedulingEventTime = timeToTryAgainToSchedule.load();
+    int64_t nextTimeEventTime = END_OF_TIME;
 #ifndef DISABLE_TIMEEVENTS
-  nextTimeEventTime = TimeEvent::getNextTriggerTime();
+    nextTimeEventTime = TimeEvent::getNextTriggerTime();
 #endif
-  Timer::updateTriggerToNextTimingEvent(nextSchedulingEventTime, nextTimeEventTime);
-  idlethreadP->activate();
+    Timer::updateTriggerToNextTimingEvent(nextSchedulingEventTime, nextTimeEventTime);
 
-  startIdleThread(); // only for some architectures, most implementations == nop()
-  
+    /*
+     * - the order of activate() and startIdleThread() is important -> don't change
+     * - for all cortex ports a global context pointer is initialised in activate()
+     *   and this must have been done before startIdleThread() is called.
+     */
+    idlethreadP->activate();
+    startIdleThread(); // only for some architectures, most implementations == nop()
 }
 
 
-void Scheduler::schedule() {
+Thread* Scheduler::schedule() {
     // increment the schedule counter
-    scheduleCounter.store(scheduleCounter.load() + 1);
+    scheduleCounter.storeFromISR(scheduleCounter.loadFromISR() + 1);
 
     // time events to call?
     // now obsolete! call directly from timer!! TimeEvent::propagate(timeNow);
@@ -85,19 +106,19 @@ void Scheduler::schedule() {
     // in case we don't already have a preselected thread to run
     // -> actually do the work of finding the next thread in the schedule
     if(nextThreadToRun == 0) {
-        nextThreadToRun = Thread::findNextToRun(selectedEarliestSuspendedUntil);
+        nextThreadToRun = Thread::findNextToRunFromISR(selectedEarliestSuspendedUntil);
     }
     // use preselection only once
     preSelectedNextToRun = 0;
 
     // check if selected thread has stack violations (if yes -> switch to idleThread)
-    bool hasStackViolations = nextThreadToRun->checkStackViolations();
-    if(hasStackViolations) {
+    if (nextThreadToRun->checkStackViolations()) {
         nextThreadToRun = idlethreadP;
     }
 
     // update the respective variables according to the schedule
-    nextThreadToRun->lastActivation.store(Scheduler::scheduleCounter); // timeNow ?? but what with on-os_xx, on-posix, etc?
+    nextThreadToRun->lastActivation.storeFromISR(Scheduler::scheduleCounter.loadFromISR()); // timeNow ?? but what with on-os_xx, on-posix, etc?
+
     // it is important to set timeToTryAgainToSchedule as late as possible,
     // because we don't want to (potentially) steal time from our thread's next time slice
     // -> if the thread gets the whole time slice and updating the next SysTick succeeds,
@@ -107,16 +128,15 @@ void Scheduler::schedule() {
     nextTimeEventTime = TimeEvent::getNextTriggerTime();
 #endif
     int64_t nextTimeSliceEnd = TIME_SLICE_FOR_SAME_PRIORITY + NOW();
-    timeToTryAgainToSchedule.store(min(selectedEarliestSuspendedUntil, nextTimeSliceEnd));
+    timeToTryAgainToSchedule.storeFromISR(min(selectedEarliestSuspendedUntil, nextTimeSliceEnd));
 
-    // update SysTick timer to next event and jump into selected thread
-    Timer::updateTriggerToNextTimingEvent(timeToTryAgainToSchedule.load(), nextTimeEventTime);
-    nextThreadToRun->activate();
+    // update SysTick timer to next event
+    Timer::updateTriggerToNextTimingEvent(timeToTryAgainToSchedule.loadFromISR(), nextTimeEventTime);
+    return nextThreadToRun;
 }
 
 uint64_t Scheduler::getScheduleCounter() {
     return scheduleCounter.load();
 }
 
-} // namespace
-
+} /* namespace RODOS */

@@ -14,7 +14,7 @@
 
 #include <stdint.h>
 
-#include "atomic_64bit_Nrw_Mrw.h"
+#include "rodos-atomic.h"
 #include "listelement.h"
 #include "rodos-semaphore.h"
 #include "timemodel.h"
@@ -38,13 +38,13 @@ protected:
   static List timeEventList;
 
   /// Time, when the event is activated to handle
-  Int64_Atomic_N_ThreadRW_M_InterruptRW eventAt;
+  RODOS::Atomic<int64_t> eventAt;
 
   /**
    * Periodical activation time of the event. If set to 0, the event is activated only once,
    * else it is activated with a period of this time.
    */
-  Int64_Atomic_N_ThreadRW_M_InterruptRW eventPeriod;
+  RODOS::Atomic<int64_t> eventPeriod;
 
 public:
 

@@ -12,9 +12,8 @@
 */
 #include "thread.h"
 
-#include <atomic>
-
 #include "rodos.h"
+#include "rodos-atomic.h"
 #include "scheduler.h"
 #include "hw_specific.h"
 #include "platform-parameter.h"
@@ -23,8 +22,8 @@ namespace RODOS {
 
 constexpr uint32_t EMPTY_MEMORY_MARKER = 0xDEADBEEF;
 
-Int64_Atomic_N_ThreadRW_M_InterruptRW timeToTryAgainToSchedule = 0;
-std::atomic<bool> yieldSchedulingLock { false };
+RODOS::Atomic<int64_t> timeToTryAgainToSchedule{0};
+RODOS::Atomic<bool> yieldSchedulingLock{false};
 
 /** old style constructor */
 Thread::Thread(const char* name,
@@ -86,6 +85,8 @@ void Thread::create() {
 
 /** pause execution of this thread and call scheduler */
 void Thread::yield() {
+    // we want to perform an unplanned schedule => reset precalculated time
+    timeToTryAgainToSchedule.store(0);
     // atomically save scheduleCounter to measure if scheduler is triggered during yield
     uint64_t startScheduleCounter = Scheduler::getScheduleCounter();
 
@@ -342,6 +343,44 @@ Thread* Thread::findNextToRun(int64_t& selectedEarliestSuspendedUntil) {
                     earlier(selectedEarliestSuspendedUntil, iterSuspendedUntil);
             }
 			// threads with lower priority will not be executed until nextThreadToRun suspends
+        }
+    } // Iterate list
+
+    return nextThreadToRun;
+}
+
+// It's completely identical to the above function except all "load()" calls
+// are replaced with "loadFromISR()" ones (when accessing RODOS::Atomics)
+Thread* Thread::findNextToRunFromISR(int64_t& selectedEarliestSuspendedUntil) {
+    Thread* nextThreadToRun = &idlethread; // Default, if no one else wants
+    selectedEarliestSuspendedUntil = END_OF_TIME;
+    int64_t timeNow = NOW();
+
+    ITERATE_LIST(Thread, threadList) {
+        // only load suspendedUntil once, as this may be changed by interrupts during scheduling
+        int64_t iterSuspendedUntil = iter->suspendedUntil.loadFromISR();
+        int64_t iterPrio = iter->priority.loadFromISR();
+        int64_t nextThreadToRunPrio = nextThreadToRun->priority.loadFromISR();
+        if (iterSuspendedUntil < timeNow) { // in the past
+            // - thread with highest prio will be executed immediately when this scheduler-call ends
+            // - other threads with lower prio will be executed after next scheduler-call
+            //   due to suspend() of high-prio thread
+            if (iterPrio > nextThreadToRunPrio) {
+                nextThreadToRun = iter;
+            }
+            else if (iterPrio == nextThreadToRunPrio) {
+                if (iter->lastActivation.loadFromISR() < nextThreadToRun->lastActivation.loadFromISR()) {
+                    nextThreadToRun = iter;
+                }
+            }
+        } else { // in the future, find next to be handled
+            // if there is a thread with higher or same priority in the future, we must call the scheduler then
+            // so that the thread will be executed
+            if(iterPrio >= nextThreadToRunPrio) {
+                selectedEarliestSuspendedUntil =
+                    earlier(selectedEarliestSuspendedUntil, iterSuspendedUntil);
+            }
+            // threads with lower priority will not be executed until nextThreadToRun suspends
         }
     } // Iterate list
 

@@ -12,7 +12,7 @@
 #pragma once
 
 
-#include "atomic_64bit_Nro_1rw.h"
+#include "rodos-atomic.h"
 #include "thread.h"
 
 
@@ -36,7 +36,7 @@ class Scheduler {
 
 friend class Thread;
 private:
-  static Uint64_Atomic_N_ThreadRO_1_InterruptRW scheduleCounter; // shared with Thread::yield()
+  static RODOS::Atomic<uint64_t> scheduleCounter; // shared with Thread::yield()
 
   static Thread* preSelectedNextToRun; // used only to optimize yield time
   static int64_t preSelectedEarliestSuspendedUntil; // used only to optimize yield time
@@ -45,7 +45,7 @@ public:
   /**
    * Call the scheduling algorithm.
    */
-  static void schedule();
+  static Thread* schedule();
 
   /**
    * Activate the idle thread.

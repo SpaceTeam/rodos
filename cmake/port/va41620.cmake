@@ -30,6 +30,9 @@ add_link_options(
     -fno-unwind-tables
     -fno-asynchronous-unwind-tables
 )
+set(compile_definitions
+    ATOMIC_VARIANT=ATOMIC_VARIANT_STD_FALLBACK_CUSTOM
+)
 
 set(sources_to_add
     ${RODOS_DIR}/src/bare-metal/va41620/hw/*.cpp

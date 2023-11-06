@@ -30,7 +30,7 @@ export LINKSCRIPT="debug-in-microsemi-smartfusion2-envm_w_ddr.ld"
 #export LINKSCRIPT="debug-in-microsemi-smartfusion2-external-ram.ld"
 #export LINKSCRIPT="production-smartfusion2-execute-in-place.ld"
 
-export DEFINES=" -DMICROSEMI_STDIO_THRU_UART -DMULTICAST "
+export DEFINES=" -DMICROSEMI_STDIO_THRU_UART -DMULTICAST -DATOMIC_VARIANT=ATOMIC_VARIANT_STD_FALLBACK_CUSTOM"
 export CFLAGS_BASICS=" -fsigned-char -ffunction-sections \
                        -fdata-sections --specs=nano.specs ${DEFINES}"
 export HWCFLAGS=" -mcpu=cortex-m3 -mthumb "

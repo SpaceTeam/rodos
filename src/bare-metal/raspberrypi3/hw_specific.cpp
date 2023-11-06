@@ -10,9 +10,8 @@
  */
 #include "hw_specific.h"
 
-#include <atomic>
-
 #include <rodos.h>
+#include <rodos-atomic.h>
 #include <hal/hal_uart.h>
 
 #include "include/bcm2837.h"
@@ -28,8 +27,7 @@ namespace RODOS {
 /* CONTEXT SWITCH AND INTERRUPT HANDLING */
 /*********************************************************************************************/
 
-extern Int64_Atomic_N_ThreadRW_M_InterruptRW timeToTryAgainToSchedule;
-extern std::atomic<bool> yieldSchedulingLock;
+extern RODOS::Atomic<bool> yieldSchedulingLock;
 
 extern "C" {
 
@@ -48,14 +46,8 @@ void handleInterrupt(long* context) {
         // calc next ticktime (current time plus 'Timer::microsecondsInterval' <- is private)
         uint32_t nextTick = read32(SYSTEM_TIMER_CNT_LOW) + PARAM_TIMER_INTERVAL; //alle 10ms
 
-        if(yieldSchedulingLock == false) {
-            int64_t timeNow = NOW();
-
-            TimeEvent::propagate(timeNow);
-            if(NOW() > timeToTryAgainToSchedule) {
-                // call scheduler with top of task stack
-                schedulerWrapper(context);
-            }
+        if (yieldSchedulingLock == false) {
+            schedulerWrapper(context);
         }
 
         // set next tick time

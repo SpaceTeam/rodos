@@ -1,8 +1,7 @@
 #include "systick_manager.h"
 
-#include <atomic>
-
 #include "rodos.h"
+#include "rodos-atomic.h"
 #include "cortex_m/peripheral_defs.h"
 #include "hw_specific.h"
 
@@ -46,33 +45,12 @@ void SysTickManager::start(){
 }
 
 
-extern Int64_Atomic_N_ThreadRW_M_InterruptRW timeToTryAgainToSchedule;
-extern std::atomic<bool> yieldSchedulingLock;
-
+extern RODOS::Atomic<bool> yieldSchedulingLock;
 
 extern "C" void SysTick_Handler() {
-
-    if(yieldSchedulingLock) {
-        return;
+    if (yieldSchedulingLock == false) {
+        __asmSaveContextAndCallScheduler();
     }
-
-#ifndef DISABLE_TIMEEVENTS
-    TimeEvent::propagate(NOW());
-#endif
-
-    // if not time yet to schedule (SysTick only triggered for TimeEvent) return directly
-    if(NOW() < timeToTryAgainToSchedule) {
-        int64_t nextSchedulingEventTime = timeToTryAgainToSchedule.load();
-        int64_t nextTimeEventTime = END_OF_TIME;
-#ifndef DISABLE_TIMEEVENTS
-        nextTimeEventTime = TimeEvent::getNextTriggerTime();
-#endif
-        Timer::updateTriggerToNextTimingEvent(nextSchedulingEventTime, nextTimeEventTime);
-        Timer::start();
-        return;
-    }
-
-    __asmSaveContextAndCallScheduler();
 }
 
 }

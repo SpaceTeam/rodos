@@ -12,8 +12,7 @@
 
 #pragma once
 
-#include <atomic>
-
+#include "rodos-atomic.h"
 #include "putter.h"
 #include "rodos-debug.h"
 #include "thread.h"
@@ -270,7 +269,7 @@ public:
 
     volatile size_t   writeX;
     volatile size_t   readX[numOfreaders];
-    std::atomic<uint32_t> overflowCnt[numOfreaders];
+    RODOS::Atomic<uint32_t> overflowCnt[numOfreaders];
     uint32_t readerCnt; ///< used only to generate readerId, if user wishes!
 
     /** advance index to next position

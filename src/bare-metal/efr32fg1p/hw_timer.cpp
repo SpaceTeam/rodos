@@ -9,6 +9,7 @@
  */
 #include <emlib/inc/em_timer.h>
 #include "rodos.h"
+#include "rodos-atomic.h"
 #include "hw_specific.h"
 
 #include "platform-parameter.h"
@@ -31,8 +32,7 @@ static uint32_t timerClock = 1;
  * -> 1s  	@ 2,375MHz: 2.375.000		@ 19MHz: 19.000.000 -> counter overflow !!!
  * -> 10s  	@ 2,375MHz: 23.750.000 -> counter overflow !!!
  */
-extern long long timeToTryAgainToSchedule;
-extern bool      isSchedulingEnabled;
+extern RODOS::Atomic<bool> yieldSchedulingLock;
 
 extern "C" {
 
@@ -49,19 +49,10 @@ volatile int64_t nanoTime = 0;
  */
 void SysTick_Handler();
 void SysTick_Handler() {
-
-    if(!isSchedulingEnabled) {
-        return;
+    if (yieldSchedulingLock == false) {
+        /* request PendSV-interrupt (that calls the scheduler) */
+        SCB->ICSR = SCB->ICSR | SCB_ICSR_PENDSVSET_Msk;
     }
-
-    long long timeNow = NOW();
-    TimeEvent::propagate(timeNow); // comment this out to improve performance, but: no time events any more
-
-    if(timeNow < timeToTryAgainToSchedule) {
-        return;
-    }
-
-    SCB->ICSR |= SCB_ICSR_PENDSVSET_Msk; // set SW-IRQ to call scheduler
 }
 
 /** \brief  System Tick Configuration

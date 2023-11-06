@@ -1,10 +1,10 @@
 #include "hw_specific.h"
+#include "rodos-atomic.h"
 
 #include "peripheral_ctrl/clock_management/clock_manager.h"
 #include "peripheral_ctrl/peripheral_rcc/hw_rcc_periph.h"
 #include "cortex_m/nvic.h"
 
-#include <atomic>
 #include <limits>
 
 namespace RODOS {
@@ -36,7 +36,7 @@ private:
     static constexpr float minTimeDrift {-1};
     static constexpr float maxTimeDrift {1};
     static_assert(minTimeDrift < maxTimeDrift);
-    static constinit std::atomic<float> timeDrift;
+    static constinit RODOS::Atomic<float> timeDrift;
 
     static inline BasicTimerStruct& tim6 = *TIM6Def::periphStruct;
 
@@ -100,7 +100,7 @@ public:
 };
 
 constinit volatile int64_t HW_Time::nanoTime{0};
-constinit std::atomic<float> HW_Time::timeDrift{0};
+constinit RODOS::Atomic<float> HW_Time::timeDrift{0};
 
 extern "C" void TIM6_DAC_IRQHandler()
 {

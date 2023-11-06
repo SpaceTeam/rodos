@@ -8,12 +8,13 @@
 * @author Sergio Montenegro
 *
 *
-* @breif binary semaphore, mutex a synchronisation primitive 
+* @brief binary semaphore, mutex a synchronisation primitive
 */
 
 #pragma once
 
 #include "thread.h"
+#include "rodos-atomic.h"
 
 namespace RODOS {
 
@@ -31,12 +32,12 @@ namespace RODOS {
 class Semaphore {
 
 private:
-  std::atomic<Thread*> owner; ///< A pointer to the thread that currently has entered the semaphore.
-  std::atomic<int32_t> ownerEnterCnt; ///< Counts how often the owner enters the semaphore.
+  RODOS::Atomic<Thread*> owner; ///< A pointer to the thread that currently has entered the semaphore.
+  RODOS::Atomic<int32_t> ownerEnterCnt; ///< Counts how often the owner enters the semaphore.
 
 protected:
-  std::atomic<int32_t> ownerPriority; ///< The scheduling priority of the thread that currently has entered the semaphore.
-  std::atomic<void*> context; ///< used only on posix and on host-os
+  RODOS::Atomic<int32_t> ownerPriority; ///< The scheduling priority of the thread that currently has entered the semaphore.
+  RODOS::Atomic<void*> context; ///< used only on posix and on host-os
 
 public:
   /** Constructor */

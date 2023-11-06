@@ -85,7 +85,7 @@ export INCLUDES_TO_BUILD_LIB=" -I ${RODOS_SRC}/bare-metal-generic \
     -I ${RODOS_ARCH_SRC15} "
 
 export CFLAGS_BASICS_COMMON=" -g3 -gdwarf-2 -DHSE_VALUE=${OSC_CLK} "
-export CFLAGS_BASICS="${CFLAGS_BASICS_COMMON} -DCORTEXM3 -DCORTEXM3_EFR32_MICRO -DCORTEXM3_EFR32 ${SUB_ARCH_FLAGS}"
+export CFLAGS_BASICS="${CFLAGS_BASICS_COMMON} -DCORTEXM3 -DCORTEXM3_EFR32_MICRO -DCORTEXM3_EFR32 ${SUB_ARCH_FLAGS} -DATOMIC_VARIANT=ATOMIC_VARIANT_STD_FALLBACK_CUSTOM"
 export HWCFLAGS=" -mcpu=cortex-m4 -mthumb -mfloat-abi=softfp -mfpu=fpv4-sp-d16 -specs=nano.specs -specs=nosys.specs"
 export LINKFLAGS=" -T${RODOS_ARCH_SRC1}/scripts/${SUB_ARCH}.ld -I${RODOS_ARCH_SRC1}/scripts/ -nostartfiles -nodefaultlibs -nostdlib -Xlinker --gc-sections -L${RODOS_LIBS}/${TARGET_LIB} -fno-unwind-tables -fno-asynchronous-unwind-tables -L${RODOS_SRC}/bare-metal/${ARCH} -lrodos -lm -l${RAIL_LIB} -lrodos"
 export CFLAGS=${CFLAGS}" ${CFLAGS_BASICS} ${HWCFLAGS}  -Wno-unused-parameter -Wno-sign-conversion -Wno-conversion"

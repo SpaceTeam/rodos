@@ -15,11 +15,11 @@
 // #include <stdio.h>
 // #include <stdlib.h>
 
-#include <atomic>
 #include <signal.h>
 
 #include "hw_specific.h"
 #include "rodos.h"
+#include "rodos-atomic.h"
 #include <sys/time.h>
 
 
@@ -49,32 +49,15 @@ extern "C" {
 extern void __asmSaveContext();
 }
 
-extern Int64_Atomic_N_ThreadRW_M_InterruptRW timeToTryAgainToSchedule;
-extern std::atomic<bool> yieldSchedulingLock;
+extern RODOS::Atomic<int64_t> timeToTryAgainToSchedule;
+extern RODOS::Atomic<bool> yieldSchedulingLock;
 
 /**
 * the signal handler for SIGVTALRM (timer signal)
 */
 void timerSignalHandler(int ignore);
 void timerSignalHandler([[gnu::unused]] int ignore) {
-
-    if(yieldSchedulingLock) {
-        return;
-    }
-
-#ifndef DISABLE_TIMEEVENTS
-    TimeEvent::propagate(NOW());
-#endif
-
-    // if not time yet to schedule (SysTick only triggered for TimeEvent) return directly
-    if(NOW() < timeToTryAgainToSchedule) {
-        int64_t nextSchedulingEventTime = timeToTryAgainToSchedule.load();
-        int64_t nextTimeEventTime = END_OF_TIME;
-#ifndef DISABLE_TIMEEVENTS
-        nextTimeEventTime = TimeEvent::getNextTriggerTime();
-#endif
-        Timer::updateTriggerToNextTimingEvent(nextSchedulingEventTime, nextTimeEventTime);
-        Timer::start();
+    if (yieldSchedulingLock) {
         return;
     }
 

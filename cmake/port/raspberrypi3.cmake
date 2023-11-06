@@ -8,8 +8,6 @@ set(CMAKE_CXX_COMPILER arm-none-eabi-g++)
 
 set(OSC_CLK 8000000)
 
-add_compile_definitions(HSE_VALUE=${OSC_CLK} STM32F40_41xxx USE_STM32_DISCOVERY USE_STDPERIPH_DRIVER)
-
 add_compile_options(-mfloat-abi=soft -mcpu=cortex-a53 -nostartfiles)
 add_link_options(-T${RODOS_DIR}/src/bare-metal/raspberrypi3/scripts/linkerscript.ld)
 add_link_options(--entry=_exception_table -Wl,--gc-sections -nodefaultlibs -nostdlib -ffreestanding -fno-strict-aliasing -ffunction-sections -fdata-sections -fno-unwind-tables -fno-asynchronous-unwind-tables)

@@ -11,7 +11,7 @@
 #include <limits>
 #include <stdint.h>
 
-#include "atomic_64bit_Nrw_Mrw.h"
+#include "rodos-atomic.h"
 #include "listelement.h"
 #include "rodos-debug.h"
 #include "misc-rodos-funcs.h"

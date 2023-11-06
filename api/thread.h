@@ -11,16 +11,13 @@
 
 #pragma once
 
-#include <atomic>
 #include <stdint.h>
+#include <stddef.h>
 
-#include "atomic_64bit_Nrw_Mrw.h"
-#include "atomic_64bit_Nro_1rw.h"
+#include "rodos-atomic.h"
 #include "listelement.h" // required when compilng with posix
 #include "timemodel.h"
 #include "default-platform-parameter.h"
-
-#include <stddef.h>
 
 namespace RODOS {
 
@@ -59,21 +56,21 @@ private:
    * @{
    */
   /** used by scheduling algorithm */
-  Uint64_Atomic_N_ThreadRO_1_InterruptRW lastActivation = 0;
+  RODOS::Atomic<uint64_t> lastActivation{0};
   /** pointer to stored context */
-  std::atomic<long*> context{};
-  /** priority of thread, higher values are serverd first  */
-  std::atomic<int32_t> priority{};
+  RODOS::Atomic<long*> context{};
+  /** priority of thread, higher values are served first  */
+  RODOS::Atomic<int32_t> priority{};
   /** It will be activated only after this time */
-  Int64_Atomic_N_ThreadRW_M_InterruptRW suspendedUntil = 0;
+  RODOS::Atomic<int64_t> suspendedUntil{0};
   /** if waiting for reactivation from someone, eg semaphore */
-  std::atomic<void*> waitingFor{};
+  RODOS::Atomic<void*> waitingFor{};
 
   /** pointer to currently running thread */
-  static std::atomic<Thread*> currentThread;
+  static RODOS::Atomic<Thread*> currentThread;
   /** @} */
 
-  void create(); ///< called in main() after all constuctors, to create/init thread
+  void create(); ///< called in main() after all constructors, to create/init thread
 
   void activate(); ///< continue the execution of the thread
   void initializeStack();
@@ -119,12 +116,13 @@ public:
   Thread(char (&stack)[STACK_SIZE],
          const char*   name     = "AnonymThread",
          const int32_t priority = DEFAULT_THREAD_PRIORITY)
-    : ListElement(threadList, name) {
-      this->stackSize  = STACK_SIZE;
-      this->stackBegin = stack;
+    : ListElement(threadList, name),
+      stackSize(STACK_SIZE),
+      stackBegin(stack),
+      priority{priority}
+  {
       this->stack      = reinterpret_cast<long*>(
         (reinterpret_cast<uintptr_t>(stackBegin) + (stackSize - 4)) & (~static_cast<uintptr_t>(7u)));
-      this->priority   = priority;
 
       initializeStack();
   }
@@ -251,6 +249,10 @@ public:
    * @return The pointer to the highest prioritized runnable thread.
    */
   static Thread* findNextToRun(int64_t& selectedEarliestSuspendedUntil);
+  /**
+   * @brief same as 'findNextToRun(...)' - interrupt service routines (ISRs) should use this version
+   */
+  static Thread* findNextToRunFromISR(int64_t& selectedEarliestSuspendedUntil);
 
   /**
    * Search over all threads and select the one with the highest priority which is not ready to run

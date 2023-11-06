@@ -1,11 +1,10 @@
 #include "hw_specific.h"
+#include "rodos-atomic.h"
 #include "timemodel.h"
 #include "clkgen_config.h"
 #include "peripheral_ctrl/peripheral_defs.h"
 #include "cortex_m/nvic.h"
 #include "rodos-debug.h"
-
-#include <atomic>
 
 namespace RODOS {
 
@@ -20,7 +19,7 @@ private:
     static constexpr float minTimeDrift {-1};
     static constexpr float maxTimeDrift {1};
     static_assert(minTimeDrift < maxTimeDrift);
-    static constinit std::atomic<float> timeDrift;
+    static constinit RODOS::Atomic<float> timeDrift;
 
     static void initTiming(){
         using namespace TIM_CSD_CTRL;
@@ -65,7 +64,7 @@ public:
     }
 };
 
-constinit std::atomic<float> HW_Time::timeDrift{0};
+constinit RODOS::Atomic<float> HW_Time::timeDrift{0};
 
 
 int64_t hwGetNanoseconds() {
