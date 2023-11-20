@@ -1,5 +1,4 @@
 
-
 The most simple way to start using RODOS is to use
 a virtual mashine where every thing (and compilers) is already installed.
 
@@ -11,11 +10,11 @@ We provide an Ubuntu 20.4 Linux Image, which includes all required compilers and
 First, install Virtualbox and the matching VirtualBox Extension Pack from oracle.
                     
 Download the RODOS image (3.4 Gbytes to download, ca 10 Gbytes disk space required)  
-    > https://oc.informatik.uni-wuerzburg.de/s/TY5ywx2kZKjSM4f  
-    Download Password: rodos2021
+    > https://oc.informatik.uni-wuerzburg.de/s/p7J6HHMTGdtdXRJ   
+    Download Password: rodosVM64Bit
 
 Here you find Information how create a Virtual Machine from the RODOS Image:  
-    > https://www.informatik.uni-wuerzburg.de/aerospaceinfo/wissenschaft-forschung/rodos/rodos-vm-installation-english-version/
+    > https://www.informatik.uni-wuerzburg.de/aerospaceinfo/forschung-und-entwicklung-prof-dr-sergio-montenegro/projekte/rodos/rodos-vm-installation-english-version/
 
 Problems with the VM?  
 There is a VM Troubleshooting guide at the end of the howto.
