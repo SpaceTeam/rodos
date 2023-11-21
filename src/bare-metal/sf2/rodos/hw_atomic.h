@@ -24,16 +24,8 @@ template<> struct Atomic<uint64_t> {
     Atomic(const Atomic&) = delete;
     ~Atomic() noexcept = default;
 
-    /**
-     * @brief load without protection
-     * @warning don't use in multiple ISRs (if they have different priorities)
-     */
-    uint64_t loadFromISR() const noexcept { return this->data; }
-    /**
-     * @brief store without protection
-     * @warning don't use in multiple ISRs (if they have different priorities)
-     */
-    void storeFromISR(uint64_t val) noexcept { this->data = val; }
+    uint64_t loadFromISR() const noexcept { return this->load(); }
+    void storeFromISR(uint64_t val) noexcept { this->store(val); }
 
     void store(uint64_t val) noexcept {
         hwDisableInterrupts();
@@ -139,16 +131,8 @@ template<> struct Atomic<int64_t> {
     Atomic(const Atomic&) = delete;
     ~Atomic() noexcept = default;
 
-    /**
-     * @brief load without protection
-     * @warning don't use in multiple ISRs (if they have different priorities)
-     */
-    int64_t loadFromISR() const noexcept { return this->data; }
-    /**
-     * @brief store without protection
-     * @warning don't use in multiple ISRs (if they have different priorities)
-     */
-    void storeFromISR(int64_t val) noexcept { this->data = val; }
+    int64_t loadFromISR() const noexcept { return this->load(); }
+    void storeFromISR(int64_t val) noexcept { this->store(val); }
 
     void store(int64_t val) noexcept {
         hwDisableInterrupts();
@@ -239,6 +223,78 @@ template<> struct Atomic<int64_t> {
 
   private:
     int64_t data;
+};
+
+
+
+template<> struct AtomicRO<uint64_t> {
+  public:
+    AtomicRO() = default;
+    constexpr AtomicRO(uint64_t val) noexcept : data(val) { }
+    AtomicRO(const AtomicRO&) = delete;
+    ~AtomicRO() noexcept = default;
+
+    uint64_t load() const noexcept {
+        uint64_t tmp;
+        __asm__ volatile(
+            "ldrd %Q[pair], %R[pair], %[addr]"
+            : [pair] "=r"(tmp)
+            : [addr] "m"(this->data)
+            : "memory");
+        return tmp;
+    }
+
+    uint64_t loadFromISR() const noexcept { return this->load(); }
+    /**
+     * @brief store without protection
+     * @warning don't use in multiple ISRs (if they have different priorities)
+     */
+    void storeFromISR(uint64_t val) noexcept { this->data = val; }
+
+    bool is_lock_free() const noexcept { return true; }
+
+    AtomicRO& operator=(const AtomicRO&) = delete;
+    AtomicRO& operator=(const AtomicRO&) volatile = delete;
+
+    operator uint64_t() const noexcept { return this->load(); }
+
+  private:
+    alignas(8) uint64_t data;
+};
+
+template<> struct AtomicRO<int64_t> {
+  public:
+    AtomicRO() = default;
+    constexpr AtomicRO(int64_t val) noexcept : data(val) { }
+    AtomicRO(const AtomicRO&) = delete;
+    ~AtomicRO() noexcept = default;
+
+    int64_t load() const noexcept {
+        int64_t tmp;
+        __asm__ volatile(
+            "ldrd %Q[pair], %R[pair], %[addr]"
+            : [pair] "=r"(tmp)
+            : [addr] "m"(this->data)
+            : "memory");
+        return tmp;
+    }
+
+    int64_t loadFromISR() const noexcept { return this->load(); }
+    /**
+     * @brief store without protection
+     * @warning don't use in multiple ISRs (if they have different priorities)
+     */
+    void storeFromISR(int64_t val) noexcept { this->data = val; }
+
+    bool is_lock_free() const noexcept { return true; }
+
+    AtomicRO& operator=(const AtomicRO&) = delete;
+    AtomicRO& operator=(const AtomicRO&) volatile = delete;
+
+    operator int64_t() const noexcept { return this->load(); }
+
+  private:
+    alignas(8) int64_t data;
 };
 } /* namespace RODOS */
 #endif /* ATOMIC_VARIANT == ATOMIC_VARIANT_STD_FALLBACK_CUSTOM */

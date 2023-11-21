@@ -30,15 +30,27 @@
 #include <atomic>
 
 namespace RODOS {
-template<typename T> struct Atomic : public std::atomic<T> {
+/**
+ * @brief generic atomic data structure
+ *
+ * can be accessed by arbitrary many threads and / or ISRs
+ *
+ * @warning only single-core accesses are guaranteed to be atomic
+ */
+template<typename T> struct Atomic : protected std::atomic<T> {
   public:
     Atomic() = default;
     constexpr Atomic(T val) noexcept : std::atomic<T>(val) { }
     Atomic(const Atomic&) = delete;
     ~Atomic() noexcept = default;
 
+    T load() const noexcept { return std::atomic<T>::load(); }
+    void store(T val) noexcept { std::atomic<T>::store(val); }
+
     T loadFromISR() const noexcept { return this->load(); }
     void storeFromISR(T val) noexcept { this->store(val); }
+
+    bool is_lock_free() const noexcept { return std::atomic<T>::is_lock_free(); }
 
     Atomic& operator=(const Atomic&) = delete;
     Atomic& operator=(const Atomic&) volatile = delete;
@@ -57,6 +69,34 @@ template<typename T> struct Atomic : public std::atomic<T> {
     T operator&=(T v) noexcept { return this->fetch_and(v); }
     T operator|=(T v) noexcept { return this->fetch_or(v);  }
     T operator^=(T v) noexcept { return this->fetch_xor(v); }
+};
+
+/**
+ * @brief generic atomic data structure (read only)
+ *
+ * arbitrarily many threads can read (load) the value,
+ * but writing (store) is only allowed from a single ISR
+ *
+ * @warning only single-core accesses are guaranteed to be atomic
+ */
+template<typename T> struct AtomicRO : protected std::atomic<T> {
+  public:
+    AtomicRO() = default;
+    constexpr AtomicRO(T val) noexcept : std::atomic<T>(val) { }
+    AtomicRO(const AtomicRO&) = delete;
+    ~AtomicRO() noexcept = default;
+
+    T load() const noexcept { return std::atomic<T>::load(); }
+
+    T loadFromISR() const noexcept { return this->load(); }
+    void storeFromISR(T val) noexcept { std::atomic<T>::store(val); }
+
+    bool is_lock_free() const noexcept { return std::atomic<T>::is_lock_free(); }
+
+    AtomicRO& operator=(const AtomicRO&) = delete;
+    AtomicRO& operator=(const AtomicRO&) volatile = delete;
+
+    operator T() const noexcept { return this->load(); }
 };
 } /* namespace RODOS */
 #endif /* ATOMIC_VARIANT == ATOMIC_VARIANT_STD{*} */

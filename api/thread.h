@@ -56,7 +56,7 @@ private:
    * @{
    */
   /** used by scheduling algorithm */
-  RODOS::Atomic<uint64_t> lastActivation{0};
+  RODOS::AtomicRO<uint64_t> lastActivation{0};
   /** pointer to stored context */
   RODOS::Atomic<long*> context{};
   /** priority of thread, higher values are served first  */

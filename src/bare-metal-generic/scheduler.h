@@ -36,7 +36,7 @@ class Scheduler {
 
 friend class Thread;
 private:
-  static RODOS::Atomic<uint64_t> scheduleCounter; // shared with Thread::yield()
+  static RODOS::AtomicRO<uint64_t> scheduleCounter; // shared with Thread::yield()
 
   static Thread* preSelectedNextToRun; // used only to optimize yield time
   static int64_t preSelectedEarliestSuspendedUntil; // used only to optimize yield time

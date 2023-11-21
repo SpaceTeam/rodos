@@ -176,6 +176,9 @@ void Thread::resume() {
     waitingFor     = 0;
     suspendedUntil = 0;
     // yield(); // commented out because resume may be called from an interrupt server
+    // maybe use __asmSaveContextAndCallScheduler():
+    //  (+) more responsive, if a high-priority thread is resumed
+    //  (-) "steals" time due to rescheduling, if a low-priority thread is resumed
 }
 
 /* suspend the thread */

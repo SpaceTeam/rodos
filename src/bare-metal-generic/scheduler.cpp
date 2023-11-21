@@ -31,7 +31,7 @@ extern "C" {
 }
 
 /** count all calls to the scheduler */
-RODOS::Atomic<uint64_t> Scheduler::scheduleCounter{0};
+RODOS::AtomicRO<uint64_t> Scheduler::scheduleCounter{0};
 
 Thread* Scheduler::preSelectedNextToRun = 0;
 int64_t Scheduler::preSelectedEarliestSuspendedUntil = END_OF_TIME;
