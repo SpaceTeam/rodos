@@ -100,16 +100,16 @@ Thread* Scheduler::schedule() {
     // now obsolete! call directly from timer!! TimeEvent::propagate(timeNow);
 
     // select the next thread to run: Do we have a preselection from Thread::yield()?
-    Thread* nextThreadToRun = preSelectedNextToRun; // eventually set by Thread::yield()
-    int64_t selectedEarliestSuspendedUntil = preSelectedEarliestSuspendedUntil;
+    Thread* nextThreadToRun = Scheduler::preSelectedNextToRun; // eventually set by Thread::yield()
+    int64_t selectedEarliestSuspendedUntil = Scheduler::preSelectedEarliestSuspendedUntil;
 
     // in case we don't already have a preselected thread to run
     // -> actually do the work of finding the next thread in the schedule
-    if(nextThreadToRun == 0) {
+    if (nextThreadToRun == nullptr) {
         nextThreadToRun = Thread::findNextToRunFromISR(selectedEarliestSuspendedUntil);
     }
     // use preselection only once
-    preSelectedNextToRun = 0;
+    Scheduler::preSelectedNextToRun = nullptr;
 
     // check if selected thread has stack violations (if yes -> switch to idleThread)
     if (nextThreadToRun->checkStackViolations()) {
@@ -127,11 +127,12 @@ Thread* Scheduler::schedule() {
 #ifndef DISABLE_TIMEEVENTS
     nextTimeEventTime = TimeEvent::getNextTriggerTime();
 #endif
-    int64_t nextTimeSliceEnd = TIME_SLICE_FOR_SAME_PRIORITY + NOW();
-    timeToTryAgainToSchedule.storeFromISR(min(selectedEarliestSuspendedUntil, nextTimeSliceEnd));
+
+    int64_t nextSchedulingEventTime = min(selectedEarliestSuspendedUntil, TIME_SLICE_FOR_SAME_PRIORITY + NOW());
+    timeToTryAgainToSchedule.storeFromISR(nextSchedulingEventTime);
 
     // update SysTick timer to next event
-    Timer::updateTriggerToNextTimingEvent(timeToTryAgainToSchedule.loadFromISR(), nextTimeEventTime);
+    Timer::updateTriggerToNextTimingEvent(nextSchedulingEventTime, nextTimeEventTime);
     return nextThreadToRun;
 }
 

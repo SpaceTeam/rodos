@@ -173,7 +173,7 @@ Thread* Thread::getCurrentThread() {
 /* resume the thread */
 void Thread::resume() {
     timeToTryAgainToSchedule = 0;
-    waitingFor     = 0;
+    waitingFor     = nullptr;
     suspendedUntil = 0;
     // yield(); // commented out because resume may be called from an interrupt server
     // maybe use __asmSaveContextAndCallScheduler():
@@ -192,7 +192,7 @@ bool Thread::suspendCallerUntil(const int64_t reactivationTime, void* signaler) 
     }
     yield();
 
-    caller->waitingFor = 0;
+    caller->waitingFor = nullptr;
     /** after yield: It was resumed (suspendedUntil set to 0) or time was reached ?*/
     if(caller->suspendedUntil == 0) return true; // it was resumed!
     return false; // time was reached
@@ -323,8 +323,8 @@ Thread* Thread::findNextToRun(int64_t& selectedEarliestSuspendedUntil) {
     ITERATE_LIST(Thread, threadList) {
         // only load suspendedUntil once, as this may be changed by interrupts during scheduling
         int64_t iterSuspendedUntil = iter->suspendedUntil.load();
-        int64_t iterPrio = iter->getPriority();
-        int64_t nextThreadToRunPrio = nextThreadToRun->getPriority();
+        int32_t iterPrio = iter->getPriority();
+        int32_t nextThreadToRunPrio = nextThreadToRun->getPriority();
         if (iterSuspendedUntil < timeNow) { // in the past
 			// - thread with highest prio will be executed immediately when this scheduler-call ends
             // - other threads with lower prio will be executed after next scheduler-call
@@ -362,8 +362,8 @@ Thread* Thread::findNextToRunFromISR(int64_t& selectedEarliestSuspendedUntil) {
     ITERATE_LIST(Thread, threadList) {
         // only load suspendedUntil once, as this may be changed by interrupts during scheduling
         int64_t iterSuspendedUntil = iter->suspendedUntil.loadFromISR();
-        int64_t iterPrio = iter->priority.loadFromISR();
-        int64_t nextThreadToRunPrio = nextThreadToRun->priority.loadFromISR();
+        int32_t iterPrio = iter->priority.loadFromISR();
+        int32_t nextThreadToRunPrio = nextThreadToRun->priority.loadFromISR();
         if (iterSuspendedUntil < timeNow) { // in the past
             // - thread with highest prio will be executed immediately when this scheduler-call ends
             // - other threads with lower prio will be executed after next scheduler-call
@@ -408,7 +408,7 @@ Thread* Thread::findNextWaitingFor(void* signaler) {
         }
     }
     if (nextWaiter == &idlethread) {
-        return 0;
+        return nullptr;
     }
     return nextWaiter;
 }
