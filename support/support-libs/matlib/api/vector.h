@@ -274,6 +274,24 @@ public:
 	}
 
 	Vector3D_<TYPE>& operator=(const Vector3D_<TYPE> &other) = default;
+
+    // Serialize the Vector3D to a buffer
+    uint32_t serialize(char* const buffer) const {
+        TYPE* ptr = reinterpret_cast<TYPE*>(buffer);
+        ptr[0] = x;
+        ptr[1] = y;
+        ptr[2] = z;
+        return sizeof(TYPE) * 3;
+    }
+
+    // Deserialize the Vector3D from a buffer
+    uint32_t deserialize(const char* const buffer) {
+        const TYPE* ptr = reinterpret_cast<const TYPE*>(buffer);
+        x = ptr[0];
+        y = ptr[1];
+        z = ptr[2];
+        return sizeof(TYPE) * 3;
+    }
 };
 
 template <typename TYPE>

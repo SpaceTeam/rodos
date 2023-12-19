@@ -243,6 +243,38 @@ public:
 
 	Matrix3D_<TYPE>& operator=(const Matrix3D_<TYPE>& other) = default;
 
+    // Serialize the Matrix3D to a buffer
+    uint32_t serialize(char* const buffer) const {
+        uint32_t* ptr = reinterpret_cast<uint32_t*>(buffer);
+
+        // Copy the label
+        RODOS::strcpy(reinterpret_cast<char*>(ptr), this->label);
+
+        // Move pointer to the end of the label
+        ptr += (RODOS::strlen(this->label) + 1) / sizeof(TYPE);
+
+        // Copy the matrix elements
+        RODOS::memcpy(ptr, &this->r[0][0], sizeof(TYPE) * 9);
+
+        return (RODOS::strlen(this->label) + 1) + sizeof(TYPE) * 9; // label + matrix
+    }
+
+    // Deserialize the Matrix3D from a buffer
+    uint32_t deserialize(const char* const buffer) {
+        const uint32_t* ptr = reinterpret_cast<const uint32_t*>(buffer);
+
+        // Set the label pointer
+        this->label = reinterpret_cast<const char*>(ptr);
+
+        // Move pointer to the end of the label
+        ptr += (RODOS::strlen(this->label) + 1) / sizeof(TYPE);
+
+        // Copy the matrix elements directly from the buffer
+        RODOS::memcpy(&this->r[0][0], ptr, sizeof(TYPE) * 9);
+
+        return (RODOS::strlen(this->label) + 1) + sizeof(TYPE) * 9; // label + matrix
+    }
+
 };
 
 template <typename TYPE>
