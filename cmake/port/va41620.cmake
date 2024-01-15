@@ -14,13 +14,13 @@ set(compile_and_link_options
     -mcpu=cortex-m4
     -mfloat-abi=softfp
     -mfpu=fpv4-sp-d16
-    -ffreestanding)
-add_compile_options(
+)
+set(compile_options
     ${compile_and_link_options}
     -gdwarf-2
     -mthumb
 )
-add_link_options(
+set(link_options
     ${compile_and_link_options}
     -T${linker_script}
     -nostartfiles
