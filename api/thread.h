@@ -58,13 +58,13 @@ private:
   /** used by scheduling algorithm */
   RODOS::AtomicRO<uint64_t> lastActivation{0};
   /** pointer to stored context */
-  RODOS::Atomic<long*> context{};
+  RODOS::Atomic<long*> context{nullptr};
   /** priority of thread, higher values are served first  */
   RODOS::Atomic<int32_t> priority{};
   /** It will be activated only after this time */
   RODOS::Atomic<int64_t> suspendedUntil{0};
   /** if waiting for reactivation from someone, eg semaphore */
-  RODOS::Atomic<void*> waitingFor{};
+  RODOS::Atomic<void*> waitingFor{nullptr};
 
   /** pointer to currently running thread */
   static RODOS::Atomic<Thread*> currentThread;
