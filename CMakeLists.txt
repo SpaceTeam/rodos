@@ -60,6 +60,11 @@ if (NOT ENABLE_RODOS_RTTI)
     target_compile_options(rodos_rodos PUBLIC $<$<COMPILE_LANGUAGE:CXX>:-fno-rtti>)
 endif ()
 
+option(DISABLE_TIMEEVENTS "Disable manual TimeEvents (interrupts on specified time)" OFF)
+if(DISABLE_TIMEEVENTS)
+    add_compile_definitions(DISABLE_TIMEEVENTS)
+endif()
+
 
 #___________________________________________________________________
 if (is_port_baremetal)
@@ -69,9 +74,9 @@ if (is_port_baremetal)
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/bare-metal-generic>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/bare-metal-generic/ip/lwip/include>)
 
-    option(SLEEP_WHEN_IDLE_ENABLED "Go into sleep mode when idling" OFF)
-    if(SLEEP_WHEN_IDLE_ENABLED)
-        add_compile_definitions(SLEEP_WHEN_IDLE_ENABLED)
+    option(DISABLE_SLEEP_WHEN_IDLE "Do not go to sleep mode when idling" OFF)
+    if(DISABLE_SLEEP_WHEN_IDLE)
+        add_compile_definitions(DISABLE_SLEEP_WHEN_IDLE)
     endif()
 endif ()
 

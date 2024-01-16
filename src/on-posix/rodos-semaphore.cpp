@@ -48,7 +48,7 @@ void Semaphore::enter() {
 	ownerEnterCnt = ownerEnterCnt + 1;
 	return;
   }
-  pthread_mutex_t *mutexp = (pthread_mutex_t*)context;
+  pthread_mutex_t *mutexp = (pthread_mutex_t*)context.load();
   pthread_mutex_lock(mutexp);
   owner =  caller;
   ownerEnterCnt = 1;
@@ -65,7 +65,7 @@ void Semaphore::leave() {
   ownerEnterCnt = ownerEnterCnt - 1;
   if(ownerEnterCnt != 0) return;
   owner = 0;
-  pthread_mutex_t *mutexp = (pthread_mutex_t*)context;
+  pthread_mutex_t *mutexp = (pthread_mutex_t*)context.load();
   pthread_mutex_unlock(mutexp);
   
 }

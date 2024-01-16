@@ -40,9 +40,7 @@ export INCLUDES=${INCLUDES}" -I ${RODOS_SRC}/bare-metal/${ARCH} \
 export INCLUDES_TO_BUILD_LIB=" -I ${RODOS_SRC}/bare-metal-generic  \
     -I ${RODOS_SRC}/bare-metal/${ARCH}/peripheral_ctrl/mcu_specific/${MCU} "
 
-export CFLAGS_BASICS_COMMON=" -g3 -gdwarf-2"
-
-export CFLAGS_BASICS="${CFLAGS_BASICS_COMMON}"
+export CFLAGS_BASICS=" -g3 -gdwarf-2 -DATOMIC_VARIANT=ATOMIC_VARIANT_STD_FALLBACK_CUSTOM"
 export HWCFLAGS=" -mcpu=cortex-m4 -mthumb -mfloat-abi=softfp -mfpu=fpv4-sp-d16"
 export LINKFLAGS=" -T${LINKER_SCRIPT} -nostartfiles -nodefaultlibs -nostdlib -Xlinker --gc-sections -L${RODOS_LIBS}/${TARGET_LIB} -fno-unwind-tables -fno-asynchronous-unwind-tables -lrodos -lm"
 export CFLAGS=${CFLAGS}" ${CFLAGS_BASICS} ${HWCFLAGS} "

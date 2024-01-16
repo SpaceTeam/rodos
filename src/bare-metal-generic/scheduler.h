@@ -12,6 +12,7 @@
 #pragma once
 
 
+#include "rodos-atomic.h"
 #include "thread.h"
 
 
@@ -35,25 +36,26 @@ class Scheduler {
 
 friend class Thread;
 private:
-  static unsigned long long scheduleCounter;
-  static Thread* preSelectedNextToRun;  // used only to optimese yield time
-  static long long  preSelectedTime;    // used only to optimese yield time
+  static RODOS::AtomicRO<uint64_t> scheduleCounter; // shared with Thread::yield()
+
+  static Thread* preSelectedNextToRun; // used only to optimize yield time
+  static int64_t preSelectedEarliestSuspendedUntil; // used only to optimize yield time
 
 public:
   /**
-  * Call the scheduling algorithm.
-  */
-  static void schedule();
+   * Call the scheduling algorithm.
+   */
+  static Thread* schedule();
 
   /**
-  * Activate the idle thread.
-  */
+   * Activate the idle thread.
+   */
   static void idle();
 
   /**
-  *  return schedule_counter
-  */
-  static unsigned long long getScheduleCounter();
+   * Getter for scheduleCounter.
+   */
+  static uint64_t getScheduleCounter();
 
 };
 

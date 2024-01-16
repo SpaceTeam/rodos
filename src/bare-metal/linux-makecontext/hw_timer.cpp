@@ -19,7 +19,7 @@
 
 #include "hw_specific.h"
 #include "rodos.h"
-#include <sys/time.h>
+#include "rodos-atomic.h"
 
 #include <ucontext.h>
 #include <sys/types.h>
@@ -56,8 +56,7 @@ extern "C" {
   extern void __asmSaveContext();
 }
 
-extern long long timeToTryAgainToSchedule;
-extern bool isSchedulingEnabled;
+extern RODOS::Atomic<bool> yieldSchedulingLock;
 extern void *signal_stack;
 
 /**
@@ -65,12 +64,11 @@ extern void *signal_stack;
 */
 void timerSignalHandler(int, siginfo_t *, void *) {
 
-   if(!isSchedulingEnabled) return;
-   long long timeNow = NOW();  // comment this out to improve performance, but: no time events any more
-   TimeEvent::propagate(timeNow); // comment this out to improve performance, but: no time events any more
+  if(yieldSchedulingLock) {
+    return;
+  }
 
-   if(timeNow < timeToTryAgainToSchedule) return;
-   __asmSaveContextAndCallScheduler();
+  __asmSaveContextAndCallScheduler();
 }
 
 /**

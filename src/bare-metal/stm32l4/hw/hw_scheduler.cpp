@@ -33,7 +33,6 @@ extern "C" void PendSV_Handler(void)  __attribute__ (( naked ));
 extern "C" void PendSV_Handler(void) {
     asm volatile
     (
-        "cpsid f                       \n" // disable all interrupts
         "mrs r0, psp                   \n"// load stack pointer of interrupted thread in r0 -> r0 is used to save all not automatically saved core and fpu registers
         "                              \n"
         "tst r14, #0x10                \n" // Is the task using the FPU context?  If so, push high vfp registers.
@@ -54,7 +53,6 @@ extern "C" void PendSV_Handler(void) {
         "vldmiaeq r0!, {s16-s31}       \n"
         "                              \n"
         "msr psp, r0                   \n" // load psp with stack pointer of next thread -> PSP (process stack pointer) is used after leaving ISR
-        "cpsie f                       \n"// enable all interrupts
         "bx r14                        \n"
         "                              \n"
         ".align 2                      \n"

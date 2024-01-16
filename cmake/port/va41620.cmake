@@ -14,13 +14,13 @@ set(compile_and_link_options
     -mcpu=cortex-m4
     -mfloat-abi=softfp
     -mfpu=fpv4-sp-d16
-    -ffreestanding)
-add_compile_options(
+)
+set(compile_options
     ${compile_and_link_options}
     -gdwarf-2
     -mthumb
 )
-add_link_options(
+set(link_options
     ${compile_and_link_options}
     -T${linker_script}
     -nostartfiles
@@ -29,6 +29,9 @@ add_link_options(
     -Xlinker --gc-sections
     -fno-unwind-tables
     -fno-asynchronous-unwind-tables
+)
+set(compile_definitions
+    ATOMIC_VARIANT=ATOMIC_VARIANT_STD_FALLBACK_CUSTOM
 )
 
 set(sources_to_add

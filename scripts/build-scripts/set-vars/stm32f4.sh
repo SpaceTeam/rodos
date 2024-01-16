@@ -63,7 +63,7 @@ export INCLUDES_TO_BUILD_LIB=" -I ${RODOS_SRC}/bare-metal-generic  \
 
 export CFLAGS_BASICS_COMMON=" -g3 -gdwarf-2 -DHSE_VALUE=${OSC_CLK}"
 
-export CFLAGS_BASICS="${CFLAGS_BASICS_COMMON}  -D${MCU_FLAG} -DUSE_STM32_DISCOVERY -DUSE_STDPERIPH_DRIVER"
+export CFLAGS_BASICS="${CFLAGS_BASICS_COMMON} -D${MCU_FLAG} -DUSE_STM32_DISCOVERY -DUSE_STDPERIPH_DRIVER -DATOMIC_VARIANT=ATOMIC_VARIANT_STD_FALLBACK_CUSTOM"
 export HWCFLAGS=" -mcpu=cortex-m4 -mthumb -mfloat-abi=softfp -mfpu=fpv4-sp-d16"
 export LINKFLAGS=" -T${LINKER_SCRIPT} -nostartfiles -nodefaultlibs -nostdlib -Xlinker --gc-sections -L${RODOS_LIBS}/${TARGET_LIB} -fno-unwind-tables -fno-asynchronous-unwind-tables -lrodos -lm"
 export CFLAGS=${CFLAGS}" ${CFLAGS_BASICS} ${HWCFLAGS} "

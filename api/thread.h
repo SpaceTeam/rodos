@@ -12,12 +12,12 @@
 #pragma once
 
 #include <stdint.h>
+#include <stddef.h>
 
+#include "rodos-atomic.h"
 #include "listelement.h" // required when compilng with posix
 #include "timemodel.h"
 #include "default-platform-parameter.h"
-
-#include <stddef.h>
 
 namespace RODOS {
 
@@ -47,30 +47,37 @@ private:
   size_t stackSize; 	  ///< size of the thread's stack in bytes
   long* stack; 		  ///< pointer to the thread's stack (beginning high, growing low)
   char* stackBegin;	  ///< stack grows down, this is the lower limit
-  long* volatile context; ///< pointer to stored context
-
-  // Activation control
-  /**  priority of thread, higher values are serverd first  */
-  volatile int32_t priority = 0;
-
-  /** It will be activated only after this time */
-  volatile int64_t suspendedUntil = 0;
-
-  /** if waiting for reactivation from someone, eg semaphore */
-  void* volatile waitingFor = nullptr;
 
   int64_t nextBeat = END_OF_TIME;  ///<  the next time to awake (used in wait)
   int64_t period = 0;    ///<  To repeat every period localTime units
 
-  void create(); ///< called in main() after all constuctors, to create/init thread
+  /**
+   * @name Shared variables used in both threads as well as interrupt handlers
+   * @{
+   */
+  /** used by scheduling algorithm */
+  RODOS::AtomicRO<uint64_t> lastActivation{0};
+  /** pointer to stored context */
+  RODOS::Atomic<long*> context{nullptr};
+  /** priority of thread, higher values are served first  */
+  RODOS::Atomic<int32_t> priority{};
+  /** It will be activated only after this time */
+  RODOS::Atomic<int64_t> suspendedUntil{0};
+  /** if waiting for reactivation from someone, eg semaphore */
+  RODOS::Atomic<void*> waitingFor{nullptr};
 
-  // Used only by the Scheduler and ThreadManager (friends)
-  volatile unsigned long long lastActivation = 0; ///< used by scheduling algorithm
+  /** pointer to currently running thread */
+  static RODOS::Atomic<Thread*> currentThread;
+  /** @} */
+
+  void create(); ///< called in main() after all constructors, to create/init thread
+
   void activate(); ///< continue the execution of the thread
   void initializeStack();
 
+  bool checkStackViolations();
+
   static void initializeThreads(); ///< call the init method of all threads
-  static Thread* volatile currentThread; ///< pointer to currently running thread
 
 public:
 
@@ -109,12 +116,13 @@ public:
   Thread(char (&stack)[STACK_SIZE],
          const char*   name     = "AnonymThread",
          const int32_t priority = DEFAULT_THREAD_PRIORITY)
-    : ListElement(threadList, name) {
-      this->stackSize  = STACK_SIZE;
-      this->stackBegin = stack;
+    : ListElement(threadList, name),
+      stackSize(STACK_SIZE),
+      stackBegin(stack),
+      priority{priority}
+  {
       this->stack      = reinterpret_cast<long*>(
         (reinterpret_cast<uintptr_t>(stackBegin) + (stackSize - 4)) & (~static_cast<uintptr_t>(7u)));
-      this->priority   = priority;
 
       initializeStack();
   }
@@ -195,9 +203,10 @@ public:
   void setPeriodicBeat(const int64_t begin, const int64_t period);
 
   /**
-   * Resume the thread. The thread gets after the call to the method computing resources if no
-   * other thread with a higher priority occupy the resources. It end calls to the methods
-   * suspendCallerUntil and suspendUntilNextBeat.
+   * Resume the thread. The resumed thread gets unsuspended and the scheduler will be triggered at
+   * the next timing event. Does not yield.
+   *
+   * @note Can safely be called from interrupt handlers.
    *
    * @see suspendCallerUntil
    * @see suspendUntilNextBeat
@@ -235,11 +244,15 @@ public:
   /**
    * Search over all threads and select the one with the highest priority which is ready to run
    *
-   * @return The pointer to the highest priorized runnable thread.
-   *
-   * @see resume
+   * @param[out] selectedEarliestSuspendedUntil Earliest wakeup time of a thread in the future
+   * that will trigger a scheduler event (i.e. of a thread with high enough priority).
+   * @return The pointer to the highest prioritized runnable thread.
    */
-  static Thread* findNextToRun(int64_t timeNow);
+  static Thread* findNextToRun(int64_t& selectedEarliestSuspendedUntil);
+  /**
+   * @brief same as 'findNextToRun(...)' - interrupt service routines (ISRs) should use this version
+   */
+  static Thread* findNextToRunFromISR(int64_t& selectedEarliestSuspendedUntil);
 
   /**
    * Search over all threads and select the one with the highest priority which is not ready to run
@@ -342,20 +355,6 @@ inline void AT_UTC(const int64_t timeInUTC) { Thread::suspendCallerUntil(sysTime
 inline void BUSY_WAITING_UNTIL(int64_t endWaitingTime) { while(NOW() < (endWaitingTime)) ; }
 
 
-/**
- * Usually you can create short atomar sections using the macro PRIORITY_CEILER_IN_SCOPE
- * which is the standard, recommended procedure.
- * 
- * But some applications demand enabling and disabling the scheduling process. 
- * For those applications we use globalAtomarLock and globalAromarUnlock.
- *
- * WARNING!!!:   Deprecated
- *   avoid it! (no implementation on posix derivates)
- *   In multicore processors it does not help!
- */
-
-extern bool globalAtomarLock();   ///< returns always true
-extern bool globalAtomarUnlock(); ///< returns always true
 
 
 /* Use this class to change Priority in a scope.

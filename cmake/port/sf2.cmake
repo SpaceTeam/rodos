@@ -8,7 +8,11 @@ set(CMAKE_CXX_COMPILER arm-none-eabi-g++)
 
 set(LINK_SCRIPT debug-in-microsemi-smartfusion2-envm_w_ddr.ld)
 
-add_compile_definitions(MICROSEMI_STDIO_THRU_UART MULTICAST)
+set(compile_definitions
+    ATOMIC_VARIANT=ATOMIC_VARIANT_STD_FALLBACK_CUSTOM
+    MICROSEMI_STDIO_THRU_UART
+    MULTICAST
+)
 
 add_compile_options(-fsigned-char -ffunction-sections)
 add_compile_options(-fdata-sections --specs=nano.specs)

@@ -10,7 +10,7 @@ constexpr long INITIAL_XPSR        = 0x01000000l;
 constexpr long INITIAL_EXEC_RETURN = static_cast<long>(0xfffffffdl);
 
 uintptr_t Thread::getCurrentStackAddr(){
-    return reinterpret_cast<uintptr_t>(context);
+    return reinterpret_cast<uintptr_t>(context.load());
 }
 
 /**

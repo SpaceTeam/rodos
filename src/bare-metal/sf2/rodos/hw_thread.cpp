@@ -49,7 +49,7 @@ void startIdleThread() {
 }
 
 uintptr_t Thread::getCurrentStackAddr(){
-    return reinterpret_cast<uintptr_t>(context);
+    return reinterpret_cast<uintptr_t>(context.load());
 }
 }
 

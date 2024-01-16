@@ -8,6 +8,7 @@
  * @brief Timer for system time and preemption
  */
 #include "rodos.h"
+#include "rodos-atomic.h"
 #include "hw_specific.h"
 
 #include "default-platform-parameter.h"
@@ -36,8 +37,7 @@ namespace RODOS {
  * -> 100ms  @ 21MHz: 2.100.000
  * -> !!! 1s  @ 21MHz: 21.000.000 -> counter overflow !!!
  */
-extern long long timeToTryAgainToSchedule;
-extern bool isSchedulingEnabled;
+extern RODOS::Atomic<bool> yieldSchedulingLock;
 
 
 extern "C" {
@@ -52,15 +52,10 @@ extern "C" {
  */
 void SysTick_Handler();
 void SysTick_Handler() {
-
-	if(!isSchedulingEnabled) return;
-
-	long long timeNow = NOW();  // comment this out to improve performance, but: no time events any more
-	TimeEvent::propagate(timeNow); // comment this out to improve performance, but: no time events any more
-
-	if(NOW() < timeToTryAgainToSchedule) return;
-
-	SCB->ICSR = SCB->ICSR | SCB_ICSR_PENDSVSET_Msk; // set SW-IRQ to call scheduler
+    if (yieldSchedulingLock == false) {
+        /* request PendSV-interrupt (that calls the scheduler) */
+        SCB->ICSR = SCB->ICSR | SCB_ICSR_PENDSVSET_Msk;
+    }
 }
 
 

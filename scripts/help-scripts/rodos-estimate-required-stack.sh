@@ -33,7 +33,7 @@ cat << EOT
 
  The context switch function will deactivate any thread which
  has less than 300 bytes free on Stack.  See:
- src/bare-metal-generic/thread_on_hw.cpp Thread::findNextToRun()
+ src/bare-metal-generic/thread_on_hw.cpp Thread::checkStackViolations()
 
  Warning: This version is not able to consider virtual methods.
  This is specially dangerous in the case of the middleware publish()

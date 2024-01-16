@@ -1,8 +1,10 @@
 #include "systick_manager.h"
+
 #include "cortex_m/peripheral_defs.h"
 #include "hw_specific.h"
 #include "timemodel.h"
 #include "timeevent.h"
+#include "rodos-atomic.h"
 
 namespace RODOS {
 
@@ -44,20 +46,12 @@ void SysTickManager::start(){
 }
 
 
-extern long long timeToTryAgainToSchedule;
-extern bool isSchedulingEnabled;
-
+extern RODOS::Atomic<bool> yieldSchedulingLock;
 
 extern "C" void SysTick_Handler() {
-
-    if(!isSchedulingEnabled) return;
-
-    long long timeNow = NOW();  // comment this out to improve performance, but: no time events any more
-    TimeEvent::propagate(timeNow); // comment this out to improve performance, but: no time events any more
-
-    if(NOW() < timeToTryAgainToSchedule) return;
-
-    __asmSaveContextAndCallScheduler();
+    if (yieldSchedulingLock == false) {
+        __asmSaveContextAndCallScheduler();
+    }
 }
 
 }

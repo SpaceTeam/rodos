@@ -6,19 +6,17 @@
  *
  * @brief %Event management
  */
+#include "timeevent.h"
+
 #include <limits>
 #include <stdint.h>
 
-
+#include "rodos-atomic.h"
 #include "listelement.h"
 #include "rodos-debug.h"
-#include "timeevent.h"
 #include "misc-rodos-funcs.h"
-#include "interrupt_sync.h"
 
 namespace RODOS {
-
-Semaphore TimeEvent::timeEventSema{};
 
 /* constructor */
 TimeEvent::TimeEvent(const char* name)
@@ -59,15 +57,16 @@ void TimeEvent::activatePeriodic(const int64_t startAt, const int64_t period) {
 int32_t TimeEvent::propagate(const int64_t timeNow) {
     int32_t cnt = 0;
     ITERATE_LIST(TimeEvent, TimeEvent::timeEventList) {
-        if(iter->eventAt.load() < timeNow) {
-            if(iter->eventPeriod.load() == 0) { // not again until user sets it again
+        int64_t iterEventAt = iter->eventAt.load();
+        if(iterEventAt < timeNow) {
+            int64_t iterEventPeriod = iter->eventPeriod.load();
+            if(iterEventPeriod == 0) { // not again until user sets it again
                 iter->eventAt.store(END_OF_TIME);
             } else {
-                iter->eventAt.store(iter->eventAt.load() + iter->eventPeriod.load());
-                if(iter->eventAt.load() < timeNow) { // Still in the past?
-                    auto nextBeat = TimeModel::computeNextBeat(iter->eventAt.load(),
-                                                               iter->eventPeriod.load(),
-                                                               timeNow);
+                iter->eventAt.store(iterEventAt + iterEventPeriod);
+                if(iterEventAt < timeNow) { // Still in the past?
+                    int64_t nextBeat =
+                        TimeModel::computeNextBeat(iterEventAt, iterEventPeriod, timeNow);
                     iter->eventAt.store(nextBeat);
                 }
             }
@@ -79,8 +78,6 @@ int32_t TimeEvent::propagate(const int64_t timeNow) {
 }
 
 int64_t TimeEvent::getNextTriggerTime() {
-    ScopeProtector protector { &timeEventSema };
-
     int64_t nextTriggerTime = std::numeric_limits<int64_t>::max();
     ITERATE_LIST(TimeEvent, TimeEvent::timeEventList) {
         auto currentEventTime = iter->eventAt.load();

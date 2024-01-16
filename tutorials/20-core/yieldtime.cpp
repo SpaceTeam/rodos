@@ -1,11 +1,11 @@
 #include "rodos.h"
-#include <atomic>
+#include "rodos-atomic.h"
 
 static Application module01("YieldTimeMeasure");
 
 Semaphore printProtect;
 
-std::atomic<uint32_t> yieldGlobal = 0;
+RODOS::Atomic<uint32_t> yieldGlobal = 0;
 
 class TestThread : public StaticThread<> {
 

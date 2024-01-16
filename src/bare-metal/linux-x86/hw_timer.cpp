@@ -19,6 +19,7 @@
 
 #include "hw_specific.h"
 #include "rodos.h"
+#include "rodos-atomic.h"
 #include <sys/time.h>
 
 
@@ -48,21 +49,17 @@ extern "C" {
 extern void __asmSaveContext();
 }
 
-extern long long timeToTryAgainToSchedule;
-extern bool      isSchedulingEnabled;
+extern RODOS::Atomic<int64_t> timeToTryAgainToSchedule;
+extern RODOS::Atomic<bool> yieldSchedulingLock;
 
 /**
 * the signal handler for SIGVTALRM (timer signal)
 */
 void timerSignalHandler(int ignore);
 void timerSignalHandler([[gnu::unused]] int ignore) {
-
-    if(!isSchedulingEnabled) return;
-    long long timeNow = NOW();     // comment this out to improve performance, but: no time events any more
-    TimeEvent::propagate(timeNow); // comment this out to improve performance, but: no time events any more
-
-    if(timeNow < timeToTryAgainToSchedule) return;
-
+    if (yieldSchedulingLock) {
+        return;
+    }
 
     long* ebp;
     __asm__ __volatile__ ("mov %%ebp, %0":"=r"(ebp));

@@ -85,7 +85,7 @@ void Thread::create() {
     pthread_attr_setinheritsched(&pthreadCreationAttr, PTHREAD_EXPLICIT_SCHED);
 
     pthread_create(&pt, &pthreadCreationAttr, posixThreadEntryPoint, this);
-    ((ThreadOnPosixContext*)context)->pt = pt;
+    ((ThreadOnPosixContext*)context.load())->pt = pt;
     // xprintf("Thread %lx context %ld\n", (long)this, (long)context);
 
     setPriority(priority);
@@ -115,12 +115,13 @@ void checkSuspend(volatile int64_t* reactivationTime, pthread_cond_t* cond, pthr
 void Thread::yield() {
     //Make suspendUntil.. in genericIO work
     Thread*               caller =  getCurrentThread();
-    ThreadOnPosixContext* context = (ThreadOnPosixContext*)(caller->context);
+    ThreadOnPosixContext* context = (ThreadOnPosixContext*)(caller->context.load());
 
     pthread_mutex_lock(&context->mutex);
     if(caller->suspendedUntil > NOW()) {
-        caller->waitingFor = 0;
-        checkSuspend(&(caller->suspendedUntil), &context->condition, &context->mutex);
+        caller->waitingFor.store(0);
+        int64_t suspendedUntil = caller->suspendedUntil.load();
+        checkSuspend(&suspendedUntil, &context->condition, &context->mutex);
     }
     pthread_mutex_unlock(&context->mutex);
 
@@ -156,7 +157,7 @@ void Thread::setPriority(const int32_t prio) {
     if(posixPrio > 99) posixPrio = 99;
 
     if(context == 0) return; // not initialized
-    pthread_t pt = ((ThreadOnPosixContext*)context)->pt;
+    pthread_t pt = ((ThreadOnPosixContext*)context.load())->pt;
 
     /** Posix code **/
     // xprintf("Setting Prio %ld for %d\n", priority, (int)pt);
@@ -179,7 +180,7 @@ Thread* Thread::getCurrentThread() {
     Thread* me = 0;
     while(me == 0) {
         ITERATE_LIST(Thread, threadList) {
-            pthread_t pthread = ((ThreadOnPosixContext*)iter->context)->pt;
+            pthread_t pthread = ((ThreadOnPosixContext*)iter->context.load())->pt;
             if(pthread == posixCaller) {
                 me = iter;
                 break;
@@ -197,7 +198,7 @@ Thread* Thread::getCurrentThread() {
 
 /* resume the thread */
 void Thread::resume() {
-    ThreadOnPosixContext* c = (ThreadOnPosixContext*)context;
+    ThreadOnPosixContext* c = (ThreadOnPosixContext*)context.load();
     pthread_mutex_lock(&c->mutex);
     suspendedUntil = 0;
     waitingFor     = 0;
@@ -210,14 +211,15 @@ void Thread::resume() {
 bool Thread::suspendCallerUntil(const int64_t reactivationTime, void* signaler) {
 
     Thread* caller =  getCurrentThread();
-    ThreadOnPosixContext* context = (ThreadOnPosixContext*)(caller->context);
+    ThreadOnPosixContext* context = (ThreadOnPosixContext*)(caller->context.load());
 
     pthread_mutex_lock(&context->mutex);
 
     caller->waitingFor = signaler;
     caller->suspendedUntil = reactivationTime;
 
-    checkSuspend(&(caller->suspendedUntil), &context->condition, &context->mutex);
+    int64_t suspendedUntil = caller->suspendedUntil.load();
+    checkSuspend(&suspendedUntil, &context->condition, &context->mutex);
 
     pthread_mutex_unlock(&context->mutex);
 
@@ -285,7 +287,7 @@ unsigned long long Thread::getScheduleCounter() {
 /*********************************************************************************/
 
 // not used in posix: posix has its own scheluder
-//Thread* Thread::findNextToRun(int64_t timeNow) { }
+//Thread* Thread::findNextToRun() { }
 
 Thread* Thread::findNextWaitingFor(void* signaler) {
     Thread* nextWaiter = 0;

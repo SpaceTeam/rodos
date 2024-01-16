@@ -256,8 +256,6 @@ public:
         testWaiter.resume();
         xprintf("   Testwaiter resumed from me\n");
     }
-    
-    void init() {activatePeriodic(50 * MILLISECONDS, 30 * MILLISECONDS); }
 };
 
 static TimeEventTest te01;
@@ -287,8 +285,8 @@ void MainTest::run() {
     checksumsTester.resume();
     suspendCallerUntil();
     
-    //TimeEvent, last test in this file as the TimeEvent can't be stopped
     PRINTF("TimeEvent---------------------\n");
+    te01.activatePeriodic(NOW(), 30 * MILLISECONDS);
     suspendCallerUntil();
     
     hwResetAndReboot();

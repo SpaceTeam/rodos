@@ -20,8 +20,22 @@ namespace RODOS {
 /**
  *  Constructor
  */
-Semaphore::Semaphore() :
-  owner(0), ownerEnterCnt(0), ownerPriority(0), context(0) { }
+Semaphore::Semaphore()
+    : owner(0), ownerEnterCnt(0), ownerPriority(0), context(0) {}
+
+Semaphore::Semaphore(const Semaphore& rhs)
+    : owner{rhs.owner.load()}
+    , ownerEnterCnt{rhs.ownerEnterCnt.load()}
+    , ownerPriority{rhs.ownerPriority.load()}
+    , context{rhs.context.load()} {}
+
+Semaphore& Semaphore::operator=(const Semaphore& rhs) {
+    this->owner = rhs.owner.load();
+    this->ownerEnterCnt = rhs.ownerEnterCnt.load();
+    this->ownerPriority = rhs.ownerPriority.load();
+    this->context = rhs.context.load();
+    return *this;
+}
 
 /**
  * caller will be blocked if semaphore is occupied
@@ -37,8 +51,8 @@ void Semaphore::enter() {
     if ((owner != 0) && (owner != caller) ) {
 
       // Avoid priority inversion
-      if (callerPriority > owner->getPriority()) {
-        owner->setPriority(callerPriority);
+      if (callerPriority > owner.load()->getPriority()) {
+        owner.load()->setPriority(callerPriority);
       }
       // Sleep until wake up by leave
       while(owner != 0 && owner != caller) Thread::suspendCallerUntil(END_OF_TIME, this);

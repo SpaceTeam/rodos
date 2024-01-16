@@ -26,7 +26,13 @@ else()
     MESSAGE("Linker script used ${linker_script}")
 endif()
 
-add_compile_definitions(HSE_VALUE=${OSC_CLK} ${mcu_flag} USE_STM32_DISCOVERY USE_STDPERIPH_DRIVER)
+set(compile_definitions
+    ATOMIC_VARIANT=ATOMIC_VARIANT_STD_FALLBACK_CUSTOM
+    HSE_VALUE=${OSC_CLK}
+    ${mcu_flag}
+    USE_STM32_DISCOVERY
+    USE_STDPERIPH_DRIVER
+)
 
 set(compile_and_link_options -mcpu=cortex-m4 -mfloat-abi=softfp -mfpu=fpv4-sp-d16)
 add_compile_options(-gdwarf-2 -mthumb -g3)

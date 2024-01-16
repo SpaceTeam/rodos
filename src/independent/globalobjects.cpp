@@ -12,8 +12,7 @@
 *
 * @brief %Thread handling
 */
-
-
+#include "rodos-atomic.h"
 #include "initiator.h"
 #include "listelement.h"
 #include "subscriber.h"
@@ -32,7 +31,7 @@ int64_t timeAtStartup = 0LL;
 /****************** src global variables **************/
 
 
-Thread* volatile Thread::currentThread   = 0;
+RODOS::Atomic<Thread*> Thread::currentThread {};
 
 List Thread::threadList         = 0;
 List TimeEvent::timeEventList   = 0;

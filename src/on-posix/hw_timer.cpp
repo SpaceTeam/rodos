@@ -44,9 +44,11 @@ int64_t Timer::microsecondsInterval = 0;
 void timerSignalHandler(int ignore);
 void timerSignalHandler([[gnu::unused]] int ignore) {
 
-    // time events to call?
-    int64_t timeNow = NOW();       // comment this out to improve performance, but: no time events any more
-    TimeEvent::propagate(timeNow); // comment this out to improve performance, but: no time events any more
+#ifndef DISABLE_TIMEEVENTS
+    int64_t timeNow = NOW();
+    TimeEvent::propagate(timeNow);
+#endif
+
 }
 
 /**

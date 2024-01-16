@@ -14,7 +14,7 @@
 
 #include <stdint.h>
 
-#include "interrupt_sync.h"
+#include "rodos-atomic.h"
 #include "listelement.h"
 #include "rodos-semaphore.h"
 #include "timemodel.h"
@@ -37,16 +37,14 @@ protected:
   /// default list of all time events
   static List timeEventList;
 
-  static Semaphore timeEventSema;
-
   /// Time, when the event is activated to handle
-  InterruptSyncWrapper<int64_t> eventAt;
+  RODOS::Atomic<int64_t> eventAt;
 
   /**
    * Periodical activation time of the event. If set to 0, the event is activated only once,
    * else it is activated with a period of this time.
    */
-  InterruptSyncWrapper<int64_t> eventPeriod;
+  RODOS::Atomic<int64_t> eventPeriod;
 
 public:
 
@@ -78,10 +76,10 @@ public:
   /**
    * @brief Get the absolute time of the earliest TimeEvent in the future.
    *
-   * @note Is safe to call this method from a thread even if interrupts are enabled
-   * (even if TimeEvents are propagated in SysTick interrupting operation).
+   * @note Is safe to call this method from a thread or an interrupt handler even if interrupts
+   * are enabled (and TimeEvents are simultaneously propagated in SysTick interrupt).
    */
-   static int64_t getNextTriggerTime();
+  static int64_t getNextTriggerTime();
 
   /**
    * Defines the time point when the method handle will be called one time.
