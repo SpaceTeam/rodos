@@ -30,10 +30,10 @@ uint16_t computeCrc(const void* buf, size_t len, uint16_t initialValue);
   * CCSDS recommends 0 (but Warning: some times 0xffff) as initial value 
   */
 
-class CRC {
+class Crc {
     uint16_t lookUpTable[256];
 public:
-    CRC(); 
+    Crc(); 
     uint16_t computeCRC(const void* buf, size_t len, uint16_t initialValue);
 };
 
