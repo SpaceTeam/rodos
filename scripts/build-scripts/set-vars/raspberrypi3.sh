@@ -12,40 +12,47 @@ SRCS[2]="${RODOS_SRC}/bare-metal/${ARCH}"
 SRCS[3]="${RODOS_SRC}/bare-metal/${ARCH}/hal"
 SRCS[4]="${RODOS_SRC}/bare-metal/${ARCH}/startup"
 
-export INCLUDES=${INCLUDES}" -I ${RODOS_SRC}/bare-metal/${ARCH}/include " # only for platform-parameter.h
+export INCLUDES=${INCLUDES}" \
+  -I ${RODOS_SRC}/bare-metal/${ARCH}/include"
 
 export INCLUDES_TO_BUILD_LIB=" \
-    -I ${RODOS_SRC}/bare-metal-generic \
-    -I ${RODOS_SRC}/bare-metal/${ARCH}/include"
+  -I ${RODOS_SRC}/bare-metal-generic \
+  -I ${RODOS_SRC}/bare-metal/${ARCH}/include"
 
 
-export CFLAGS_BASICS="-O2 -Wall -g0"
-export HWCFLAGS="\
-    -mfloat-abi=soft \
-    -mcpu=cortex-a53 \
-    -nostartfiles"
+export HWCFLAGS=" \
+  -mcpu=cortex-a53 \
+  -mfloat-abi=soft"
 #    -mfpu=neon-fp-armv8
 
-export CFLAGS="${CFLAGS_BASICS} ${HWCFLAGS}"
-export LINKFLAGS="-Wl,-T${RODOS_SRC}/bare-metal/${ARCH}/scripts/linkerscript.ld \
-    -Wl,--entry=_exception_table -Wl,--gc-sections \
-    -nodefaultlibs -nostdlib \
-    -ffreestanding -fno-strict-aliasing -ffunction-sections -fdata-sections\
-    -fno-unwind-tables -fno-asynchronous-unwind-tables \
-    -L${RODOS_LIBS}/${TARGET_LIB} \
-    -lrodos -lm -lgcc"
+export CFLAGS=${CFLAGS}" ${HWCFLAGS} \
+  -ffunction-sections \
+  -fdata-sections \
+  -fno-strict-aliasing \
+  -fno-unwind-tables \
+  -fno-asynchronous-unwind-tables"
+
+export LINKFLAGS="${HWCFLAGS} \
+  -static \
+  -nostartfiles \
+  -nostdlib \
+  -Wl,--gc-sections \
+  -Wl,--entry=_exception_table \
+  -Wl,-T${RODOS_SRC}/bare-metal/${ARCH}/scripts/linkerscript.ld \
+  -L${RODOS_LIBS}/${TARGET_LIB} \
+  -lrodos -lc_nano -lm -lgcc"
 
 # Check if the U-Boot tool 'mkimage' is available (package 'u-boot-tools')
 if command -v mkimage >/dev/null 2>&1; then
   export UBOOT_MKIMAGE=mkimage
 fi
 
-# set PATH to whereever your ARM compiler is located; usually you should
-# have symlinks in /usr/bin so this would work out-of-the box
-export ARM_TOOLS=""
+# usually you add your compiler toolchain to PATH;
+# you could also set ARM_TOOLS to your toolchains location
 
 export CPP_COMP="${CXX:-${ARM_TOOLS}arm-none-eabi-g++} "
 export C_COMP="${CC:-${ARM_TOOLS}arm-none-eabi-gcc} "
 export AR="${AR:-${ARM_TOOLS}arm-none-eabi-ar} "
 export OBJCOPY="${OBJCOPY:-${ARM_TOOLS}arm-none-eabi-objcopy} "
 export OBJDUMP="${OBJDUMP:-${ARM_TOOLS}arm-none-eabi-objdump} "
+
