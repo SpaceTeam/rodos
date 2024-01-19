@@ -1,4 +1,6 @@
-image: nixos/nix:2.3.16
+default:
+  image:
+    name: nixos/nix:2.19.3
 
 stages:
  - build_test
@@ -71,17 +73,11 @@ skith:
 
 nucleo_l496zg:
   extends: .compile_tmpl
-  before_script:
-    - nix-channel --add https://nixos.org/channels/nixpkgs-unstable nixpkgs
-    - nix-channel --update
   variables:
     TARGET: nucleo_l496zg
 
 va41620:
   extends: .compile_tmpl
-  before_script:
-    - nix-channel --add https://nixos.org/channels/nixpkgs-unstable nixpkgs
-    - nix-channel --update
   variables:
     TARGET: va41620
 
@@ -100,7 +96,7 @@ coverage:
     - job: posix
       artifacts: true
   script:
-    - nix-env -i lcov binutils
+    - nix-env -i lcov binutils gnused
     - lcov -a $(echo */coverage.info | sed -e 's@ @ -a @g') --output-file coverage.info
     - genhtml --demangle-cpp -o coverage coverage.info
   artifacts:
