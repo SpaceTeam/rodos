@@ -1,4 +1,5 @@
 #include "matlib.h"
+#include "rodos.h"
 
 #ifndef NO_RODOS_NAMESPACE
 namespace RODOS {
@@ -254,14 +255,14 @@ Matrix3D eciToECEFrotmat(double jd){
 
 //====ECEF (meter, meter, meter) to ECI (meter, meter, meter)
 Vector3D ecefToECI(const Vector3D ecef, int64_t utcNanoseconds){
-	double jd =  ((double)utcNanoseconds / (double)DAYS) + JD2000;
+	double jd =  ((double)utcNanoseconds / (double)RODOS::DAYS) + JD2000;
 	Matrix3D rot = eciToECEFrotmat(jd);
 	return  ecef.matVecMult(rot);
 }
 
 //====ECI (meter, meter, meter) to ECEF (meter, meter, meter)
 Vector3D eciToECEF(const Vector3D eci, int64_t utcNanoseconds){
-	double jd =  ((double)utcNanoseconds / (double)DAYS) + JD2000;
+	double jd =  ((double)utcNanoseconds / (double)RODOS::DAYS) + JD2000;
 	Matrix3D rot = eciToECEFrotmat(jd);
 	return eci.matVecMult(rot.transpose());
 }
@@ -269,7 +270,7 @@ Vector3D eciToECEF(const Vector3D eci, int64_t utcNanoseconds){
 
 double eciToECEF(int64_t utcNanoseconds) {  //DEPRECATED
 
-    double days2k = (double)utcNanoseconds / (double)DAYS;
+    double days2k = (double)utcNanoseconds / (double)RODOS::DAYS;
     double angle  = (280.46061837+360.98564736628*days2k)/180*M_PI;
     angle         = FMod2p(angle);
     return angle;

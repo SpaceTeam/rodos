@@ -8,7 +8,8 @@
 #ifndef GENERIC_H_
 #define GENERIC_H_
 
-#include "rodos.h"
+#include "yprintf.h"
+#include "string_pico.h"
 #include "math_support.h"
 #include "vector.h"
 
