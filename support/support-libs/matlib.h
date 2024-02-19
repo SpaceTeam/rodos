@@ -1,7 +1,6 @@
 #ifndef MATLIB_H_
 #define MATLIB_H_
 
-#include "rodos.h"
 #include "math.h" // for sin, sqrt, etc
 #include "stdint.h"
 
