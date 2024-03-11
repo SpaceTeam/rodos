@@ -2,10 +2,12 @@
  * Copyright (c) 2022 Uni Wuerzburg, Wuerzburg
  * All rights reserved.
  *
- * @author Tom Baumann
+ * @author Konstantin Winkel, Tom Baumann
  */
+
 #include <new>
 #include "rodos.h"
+#include "misc-rodos-funcs.h"
 
 #include "hal/hal_pwm.h"
 #include "em_gpio.h"
@@ -26,6 +28,94 @@ typedef enum
     TIM_CHAN3
 } TIM_CHAN_TypeDef;
 
+typedef enum{
+    TIM1_CHAN0 = 0,
+    TIM1_CHAN1,
+    TIM1_CHAN2,
+    TIM1_CHAN3,
+    WTIM0_CHAN0,
+    WTIM0_CHAN1,
+    WTIM0_CHAN2,
+    WTIM1_CHAN0,
+    WTIM1_CHAN1,
+    WTIM1_CHAN2,
+    WTIM1_CHAN3
+} HW_TIM_CHAN_Typedef;
+
+//Pin to timer and channel map
+static uint16_t P2TCM[54]{
+    0b00000011111, //PA0
+    0b00000011111, //PA1
+    0b00000111111, //PA2
+    0b00000111111, //PA3
+    0b00001111111, //PA4
+    0b00001111111, //PA5
+    0b00001110000, //PA6
+    0b00001110000, //PA7
+    0b00001110000, //PA8
+    0b00001110000, //PA9
+    0b00001110000, //PB6
+    0b00001110000, //PB7
+    0b00001110000, //PB8
+    0b00001110000, //PB9
+    0b00001110000, //PB10
+    0b00001111111, //PB11
+    0b00011111111, //PB12
+    0b00011111111, //PB13
+    0b00111111111, //PB14
+    0b00111111111, //PB15
+    0b01111110000, //PC0
+    0b01111110000, //PC1
+    0b11111110000, //PC2
+    0b11111110000, //PC3
+    0b11111110000, //PC4
+    0b11111110000, //PC5
+    0b11111111111, //PC6
+    0b11111111111, //PC7
+    0b11111111111, //PC8
+    0b11111111111, //PC9
+    0b11111111111, //PC10
+    0b11111111111, //PC11
+    0b11111100000, //PD8
+    0b11111101111, //PD9
+    0b11111101111, //PD10
+    0b11111101111, //PD11
+    0b11110001111, //PD12
+    0b11110001111, //PD13
+    0b11110001111, //PD14
+    0b11110001111, //PD15
+    0b11110001111, //PF0
+    0b11110001111, //PF1
+    0b11110001111, //PF2
+    0b11110001111, //PF3
+    0b11110001111, //PF4
+    0b11110001111, //PF5
+    0b11110001111, //PF6
+    0b11110001111, //PF7
+    0b11100000000, //PF8
+    0b11100000000, //PF9
+    0b11000000000, //PF10
+    0b11000000000, //PF11
+    0b10000000000, //PF12
+    0b10000000000, //PF13
+};
+
+struct ReserveOutput{
+    bool reserved = false;
+    HW_TIM_CHAN_Typedef output;
+};
+
+class HAL_PWM_WATCHDOG{
+    public:             
+        HAL_PWM_WATCHDOG();
+                                  //T1C0  T1C1   T1C2   T1C3   WT0C0  WT0C1  WT0C2  WT1C0  WT1C1  WT1C2  WT1C3 
+        bool CHANNEL_IN_USE[11] = {false, false, false, false, false, false, false, false, false, false, false};
+        ReserveOutput reserveTimerChannel(PWM_IDX idx);
+};
+
+HAL_PWM_WATCHDOG::HAL_PWM_WATCHDOG(){}
+
+static HAL_PWM_WATCHDOG pwmWatchdog;
 
 class HW_HAL_PWM{
 public:
@@ -44,7 +134,13 @@ public:
     GPIO_Port_TypeDef GPIO_Port; // Timer GPIO port
 	int PwmIdx; // IDX of pwm instance
 
+    unsigned long TIMER_ROUTE_LOC;
+
 	void updateSettings(); // update configuration (eg. duty cycle change)
+
+    void PortAndPinFromIDX();
+    void setTimerAndChannel(HW_TIM_CHAN_Typedef tc);
+    void setTimerRouteLoc(HW_TIM_CHAN_Typedef tc);
 };
 
 HAL_PWM::HAL_PWM(PWM_IDX idx) {
@@ -55,9 +151,21 @@ HAL_PWM::HAL_PWM(PWM_IDX idx) {
 
 int32_t HAL_PWM::init(uint32_t frequency, uint32_t increments) {
 
-    if ((static_cast<int>(context->PwmIdx) < static_cast<int>(PWM_IDX00)) || (static_cast<int>(context->PwmIdx) > static_cast<int>(PWM_IDX15))) {
+    
+    if ((static_cast<int>(context->PwmIdx) < static_cast<int>(PWM_IDX00)) || (static_cast<int>(context->PwmIdx) > static_cast<int>(PWM_IDX53))) {
         return -1;
     }
+
+    ReserveOutput result = pwmWatchdog.reserveTimerChannel((PWM_IDX)context->PwmIdx);
+    if(result.reserved == false){
+        PRINTF("ERROR: NO FREE TIMER FOUND \n");
+        return -2;
+    }
+
+    context->setTimerAndChannel(result.output);
+    context->PortAndPinFromIDX();
+    context->setTimerRouteLoc(result.output);
+
     static char pwmInit[4] = { 0, 0, 0, 0 };
 
     char timerIdx = 1;
@@ -77,75 +185,13 @@ int32_t HAL_PWM::init(uint32_t frequency, uint32_t increments) {
     TIMER_InitCC_TypeDef timerCCInit = TIMER_INITCC_DEFAULT;
     timerCCInit.mode = timerCCModePWM;
 
-    if(context->timer == TIMER1){
-        switch (context->channel) {
-            case TIM_CHAN0:
-                // Configure as output
-                context->GPIO_Pin = 0;
-                context->GPIO_Port = gpioPortA;
-                TIMER_InitCC(context->timer, 0, &timerCCInit);
-                // Route Timer CC to location and enable CC route pin
-                context->timer->ROUTELOC0 |=  TIMER_ROUTELOC0_CC0LOC_LOC0;
-                break;
-            case TIM_CHAN1:
-                // Configure as output
-                context->GPIO_Pin = 1;
-                context->GPIO_Port = gpioPortA;
-                TIMER_InitCC(context->timer, 1, &timerCCInit);
-                // Route Timer CC to location and enable CC route pin
-                context->timer->ROUTELOC0 |=  TIMER_ROUTELOC0_CC1LOC_LOC0;
-                break;
-            case TIM_CHAN2:
-                // Configure as output
-                context->GPIO_Pin = 2;
-                context->GPIO_Port = gpioPortA;
-                TIMER_InitCC(context->timer, 2, &timerCCInit);
-                // Route Timer CC to location and enable CC route pin
-                context->timer->ROUTELOC0 |=  TIMER_ROUTELOC0_CC2LOC_LOC0;
-                break;
-            case TIM_CHAN3:
-                // Configure as output
-                context->GPIO_Pin = 3;
-                context->GPIO_Port = gpioPortA;
-                TIMER_InitCC(context->timer, 3, &timerCCInit);
-                // Route Timer CC to location and enable CC route pin
-                context->timer->ROUTELOC0 |=  TIMER_ROUTELOC0_CC3LOC_LOC0;
-                break;
-        }
-        timerIdx = 1;
-    }else if (context->timer == WTIMER0){
-        switch (context->channel) {
-            case TIM_CHAN0:
-                // Configure as output
-                context->GPIO_Pin = 4;
-                context->GPIO_Port = gpioPortA;
-                TIMER_InitCC(context->timer, 0, &timerCCInit);
-                // Route Timer CC to location and enable CC route pin
-                context->timer->ROUTELOC0 |=  WTIMER_ROUTELOC0_CC0LOC_LOC4;
-                break;
-            case TIM_CHAN1:
-                // Configure as output
-                context->GPIO_Pin = 5;
-                context->GPIO_Port = gpioPortA;
-                TIMER_InitCC(context->timer, 1, &timerCCInit);
-                // Route Timer CC to location and enable CC route pin
-                context->timer->ROUTELOC0 |=  WTIMER_ROUTELOC0_CC1LOC_LOC3;
-                break;
-            case TIM_CHAN2:
-                // Configure as output
-                context->GPIO_Pin = 6;
-                context->GPIO_Port = gpioPortA;
-                TIMER_InitCC(context->timer, 2, &timerCCInit);
-                // Route Timer CC to location and enable CC route pin
-                context->timer->ROUTELOC0 |=  WTIMER_ROUTELOC0_CC2LOC_LOC2;
-                break;
-            case TIM_CHAN3:
-                // no chan3 on wtimer
-                break;
-        }
-        timerIdx = 2;
-    }
+    TIMER_InitCC(context->timer, context->channel, &timerCCInit);
 
+    context->timer->ROUTELOC0 |=  context->TIMER_ROUTE_LOC;
+    
+    if(context->timer == TIMER1) timerIdx = 1;
+    else if (context->timer == WTIMER0) timerIdx = 2;
+    else if (context->timer == WTIMER1) timerIdx = 3;
 
 	/* reset timer before new init, only if it's not already used as PWM source */
 	if (pwmInit[timerIdx - 1] == 0) {
@@ -199,7 +245,7 @@ void HAL_PWM::reset() {
 }
 
 int32_t HAL_PWM::write(uint32_t pulseWidthInIncs) {
-	if ((static_cast<int>(context->PwmIdx) < static_cast<int>(PWM_IDX00)) || (static_cast<int>(context->PwmIdx) > static_cast<int>(PWM_IDX15))) {
+	if ((static_cast<int>(context->PwmIdx) < static_cast<int>(PWM_IDX00)) || (static_cast<int>(context->PwmIdx) > static_cast<int>(PWM_IDX53))) {
         return -1;
     }
 
@@ -253,8 +299,6 @@ int32_t HAL_PWM::write(uint32_t pulseWidthInIncs) {
 	return 0;
 }
 
-
-
 HW_HAL_PWM::HW_HAL_PWM(PWM_IDX idx){
     increments = 2;
     duty_cycle_in_increments = 1;
@@ -266,31 +310,13 @@ HW_HAL_PWM::HW_HAL_PWM(PWM_IDX idx){
     GPIO_Pin = 0;
 
 
-    if ((static_cast<unsigned int>(idx) > static_cast<unsigned int>(PWM_IDX15))) {
+    if ((static_cast<unsigned int>(idx) > static_cast<unsigned int>(PWM_IDX53))) {
         RODOS_ERROR("Invalid PWM Index\n");
         return;
     }
 
-    PwmIdx = idx;
-
-    // conversion from index to Timer and channel
-    switch (PwmIdx / 4) {
-    case 0:
-        timer = TIMER1;
-        timer_clock = cmuClock_TIMER1;
-        break;
-    case 1:
-        timer = WTIMER0;
-        timer_clock = cmuClock_WTIMER0;
-        break;
-    default:
-        return;
-    }
-
-    channel = (TIM_CHAN_TypeDef) (PwmIdx % 4);
+    PwmIdx = idx; 
 }
-
-
 
 void HW_HAL_PWM::updateSettings(){
     if (Frequency == 0){
@@ -329,7 +355,106 @@ void HW_HAL_PWM::updateSettings(){
 
 }
 
+void HW_HAL_PWM::setTimerAndChannel(HW_TIM_CHAN_Typedef tc){
+
+    if(tc < 4){
+        timer = TIMER1;
+        timer_clock = cmuClock_TIMER1;
+        channel = (TIM_CHAN_TypeDef) tc;
+        return;
+    }
+
+    if(tc < 7){
+        timer = WTIMER0;
+        timer_clock = cmuClock_WTIMER0;
+        channel = (TIM_CHAN_TypeDef)(tc - 4);
+        return;
+    }
+
+    if(tc < 11){
+        timer = WTIMER1;
+        timer_clock = cmuClock_WTIMER1;
+        channel = (TIM_CHAN_TypeDef)(tc - 7);
+        return;
+    }
+}
+
+void HW_HAL_PWM::PortAndPinFromIDX(){
+    if(PwmIdx < 10){
+        GPIO_Port = gpioPortA;
+        GPIO_Pin = PwmIdx;
+        return;
+    }
+
+    if(PwmIdx < 20){
+        GPIO_Port = gpioPortB;
+        GPIO_Pin = PwmIdx - 10 + 6; //PB starts at 6
+        return;
+    }
+
+    if(PwmIdx < 32){
+        GPIO_Port = gpioPortC;
+        GPIO_Pin = PwmIdx - 20;
+        return;
+    }
+
+    if(PwmIdx < 40){
+        GPIO_Port = gpioPortD;
+        GPIO_Pin = PwmIdx - 32 + 8; //PD starts at 8
+        return;
+    }
+
+    if(PwmIdx < 53){
+        GPIO_Port = gpioPortF;
+        GPIO_Pin = PwmIdx - 40;
+    }
+}
+
+void HW_HAL_PWM::setTimerRouteLoc(HW_TIM_CHAN_Typedef tc){
+    unsigned long  LOC;
+    uint8_t shift;
+
+    switch(tc){
+        case TIM1_CHAN0:  LOC = 0;  shift = 0;  break;
+        case TIM1_CHAN1:  LOC = 31; shift = 8;  break;
+        case TIM1_CHAN2:  LOC = 30; shift = 16; break;
+        case TIM1_CHAN3:  LOC = 29; shift = 24; break;
+        case WTIM0_CHAN0: LOC = 0;  shift = 0;  break;
+        case WTIM0_CHAN1: LOC = 0;  shift = 8;  break;
+        case WTIM0_CHAN2: LOC = 0;  shift = 16; break;
+        case WTIM1_CHAN0: LOC = 0;  shift = 0;  break;
+        case WTIM1_CHAN1: LOC = 0;  shift = 8;  break;
+        case WTIM1_CHAN2: LOC = 0;  shift = 16; break;
+        case WTIM1_CHAN3: LOC = 0;  shift = 24; break;
+    }
+
+    for(int i = 0; i < PwmIdx; i++){
+        if(getbit(P2TCM[i], tc)){
+            LOC++;
+            if(LOC >= 32) LOC = 0;
+        }
+    }
+
+    TIMER_ROUTE_LOC = LOC << shift;
+}
+
+ReserveOutput HAL_PWM_WATCHDOG::reserveTimerChannel(PWM_IDX idx){
+    ReserveOutput result;
+    uint32_t currentPinMap = P2TCM[idx];
+    
+    for(int i = 0; i < 11; i++){
+
+        if(getbit(currentPinMap, i) == true && CHANNEL_IN_USE[i] == false){
+            CHANNEL_IN_USE[i] = true;
+            result.reserved = true;
+            result.output = (HW_TIM_CHAN_Typedef) i;    
+            break;
+        }
+    }
+
+    return result;
+}
+
 #ifndef NO_RODOS_NAMESPACE
 }
 #endif
-
