@@ -146,9 +146,9 @@ void Gateway::sendNetworkMessage(const char* data,int32_t len,uint32_t topicID,i
 	linkinterface->sendNetworkMsg(networkOutMessage);
 }
 
-
-
-
+void Gateway::sendNetworkMessage(NetworkMessage& msg) {
+    linkinterface->sendNetworkMsg(msg);
+}
 
 
 
