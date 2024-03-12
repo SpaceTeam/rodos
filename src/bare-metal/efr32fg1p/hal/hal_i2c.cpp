@@ -29,6 +29,7 @@ namespace RODOS {
 //#endif
 
 HW_HAL_I2C HW_HAL_I2C::I2C_contextArray[I2C_IDX_MAX+1];
+static const int64_t i2c_hal_timeout = 1000*MILLISECONDS;
 
 /*****************************************************************************************************************/
 /*
@@ -269,11 +270,15 @@ int32_t HAL_I2C::write(const uint8_t addr, const uint8_t* txBuf, uint32_t txBufS
   result = I2C_TransferInit(context->I2Cx, &i2cTransfer);
 
   // Sending data
-  while (result == i2cTransferInProgress) {
-    result = I2C_Transfer(context->I2Cx);
+  int64_t starttime_trying = NOW();
+  while (result == i2cTransferInProgress && NOW() < (starttime_trying + i2c_hal_timeout)) {
+      result = I2C_Transfer(context->I2Cx);
   }
 
-  if(result != i2cTransferDone) {
+  if(result == i2cTransferInProgress){
+      PRINTF("I2C write timeout\n");
+      return -1;
+  }else if(result != i2cTransferDone){
       PRINTF("I2C write error: %d\n", result);
       return -1;
   }
@@ -313,16 +318,20 @@ int32_t HAL_I2C::read(const uint8_t addr, uint8_t* rxBuf, uint32_t rxBufSize) {
 	  result = I2C_TransferInit(context->I2Cx, &i2cTransfer);
 
 	  // Sending data
-	  while (result == i2cTransferInProgress)
+    int64_t starttime_trying = NOW();
+    while (result == i2cTransferInProgress && NOW() < (starttime_trying + i2c_hal_timeout))
 	  {
 	    result = I2C_Transfer(context->I2Cx);
-	  }
+      }
 
-	  if(result != i2cTransferDone)
-	  {
-	      PRINTF("I2C read error: %d\n", result);
-	      return -1;
-	  }
+    if(result == i2cTransferInProgress){
+        PRINTF("I2C Read timeout\n");
+        return -1;
+    }else if(result != i2cTransferDone)
+    {
+        PRINTF("I2C Read error: %d\n", result);
+        return -1;
+    }
 
 	  upCallReadFinished();
 
@@ -357,14 +366,18 @@ int32_t HAL_I2C::writeRead(const uint8_t addr, const uint8_t* txBuf, uint32_t tx
   result = I2C_TransferInit(I2C0, &i2cTransfer);
 
   // Sending data
-  while (result == i2cTransferInProgress)
+    int64_t starttime_trying = NOW();
+    while (result == i2cTransferInProgress && NOW() < (starttime_trying + i2c_hal_timeout))
   {
-    result = I2C_Transfer(I2C0);
+        result = I2C_Transfer(I2C0);
   }
 
-  if(result != i2cTransferDone)
+  if(result == i2cTransferInProgress){
+      PRINTF("I2C writeRead timeout\n");
+      return -1;
+  }else if(result != i2cTransferDone)
   {
-      PRINTF("I2C writeRead: %d\n", result);
+      PRINTF("I2C writeRead error: %d\n", result);
       return -1;
   }
 
