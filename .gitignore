@@ -8,6 +8,9 @@ CMakeLists.txt.user
 CMakeUserPresets.json
 compile_commands.json
 
+__pycache__
+
+
 tst
 tmp
 tmp-embedded

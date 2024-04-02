@@ -27,6 +27,7 @@ class TopicFilter;
 constexpr uint32_t TOPIC_ID_FOR_TOPIC_REPORT           =  0; // redundant with 2? yes, this is DEPRECATED!
 constexpr uint32_t TOPIC_ID_FOR_TOPICLIST_DISTRIBUTION =  1; // see receiverNode+receiverNodesBitMap.txt
 constexpr uint32_t ALL_TOPICS_BELOW_THIS_ARE_BROADCAST = 10;
+constexpr uint32_t TOPIC_FOR_PRINTF = 11;
 
 /**
  *  @class TopicInterface
@@ -220,6 +221,16 @@ struct GenericMsgRef { // V. 128 PTS
 
     GenericMsgRef() { }
 };
+
+/**************************************************************/
+
+struct PrintBufferDescriptor {
+    uint32_t sendingThread;
+    uint32_t stringLength;
+    char buffer[1000];
+};
+
+extern Topic<PrintBufferDescriptor> printTopic;
 
 /**************************************************************/
 /** A topic only for gateways */

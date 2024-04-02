@@ -61,8 +61,8 @@ char* formatBinary(uint32_t val, size_t len, char* outBuf);
 /** Printf protected with a semaphore: Thread safe 
      Warning: %3.9f means 3 digits then 9 digits
  **/
-void PRINTF(const char* fmt, ...) __attribute__((__format__(__printf__,1,2)));
-
+void    PRINTF(const char* fmt, ...) __attribute__((__format__(__printf__,1,2)));
+void MW_PRINTF(const char* fmt, ...) __attribute__((__format__(__printf__,1,2))); // "prints" by sending MW messages
 
 void SPRINTF(char* dest, const char* fmt, ...) __attribute__((__format__(__printf__,2,3)));
 

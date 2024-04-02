@@ -20,6 +20,9 @@ rm -rf ${RODOS_BUILD}
 
 rm -rf ${RODOS_ROOT}/test-suite/tmp*
 
+CLEAR_LIST=$(find . -type d | grep "__pycache__")
+rm -rf ${CLEAR_LIST}
+
 #__________________________________________
 echo -n "   after clear occupied disc: "
 du -sh .
