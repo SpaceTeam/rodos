@@ -20,6 +20,7 @@
 #include "timepoints.h"
 #include "yprintf.h"
 
+#include "topic.h" // For Printf-over-middleware
 
 namespace RODOS {
 
@@ -53,6 +54,32 @@ void PRINTF_CONDITIONAL(uint32_t id, const char* fmt, ...) {
         printfProtector.leave();
     }
     FFLUSH();
+}
+
+//_________________________________________________________________-
+
+
+struct PrintBufferDescriptor printDescriptor;
+
+Topic<PrintBufferDescriptor> printTopic(TOPIC_FOR_PRINTF, "printMessages");
+
+Semaphore mwPrintProtector;
+
+void MW_PRINTF (const char* fmt, ...) {
+
+    mwPrintProtector.enter();
+    // don't touch this!
+    Ysprintf ysprintf(printDescriptor.buffer);
+    va_start(ysprintf.ap, fmt);
+
+    ysprintf.vaprintf(fmt);
+
+    uint32_t len = (uint32_t)strlen(printDescriptor.buffer) + 9; //actual length of transimitted data combined with metadata
+    printDescriptor.stringLength  = (uint32_t)strlen(printDescriptor.buffer);
+    printDescriptor.sendingThread = (uint32_t)((uint64_t)Thread::getCurrentThread() & 0xffffffff); // use pointer to thread as unique_id
+    printTopic.publishMsgPart(printDescriptor, len);
+    mwPrintProtector.leave();
+
 }
 
 //_________________________________________________________________-
