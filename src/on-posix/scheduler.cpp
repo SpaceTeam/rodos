@@ -99,15 +99,23 @@ void Scheduler::idle() {
     sigdelset(&newset, SIGINT); // keep CTRL-C working
     pthread_sigmask(SIG_SETMASK, &newset, 0);
 
+    // In some places of the code the 'schedulerRunning' variable is used to
+    // determine if the RODOS startup has already been finished.
+    // On the other hand this port uses the scheduler of the underlying OS
+    // and therefore 'schedulerRunning' technically should always be true.
+    // => We set it here purely for compatibility to the other ports
+    schedulerRunning = true; /* a bit to early */
+
     Thread::startAllThreads();
     Timer::start();
 
     signalprocessLoop();
 
-    while(1) sleep(0xffffffff); // while(1) becouse timerinterups terminaes the sleep
+    // while(1) because timer interrupts will terminate the sleep
+    while(1) sleep(0xffffffff);
 }
 
-// Not used in posix, becouse posix hast its own schedulder
+// Not used in posix, because posix has its own scheduler
 // void Scheduler::schedule() { }
 
 unsigned long long Scheduler::getScheduleCounter() {
