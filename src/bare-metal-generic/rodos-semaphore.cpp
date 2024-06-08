@@ -50,6 +50,23 @@ void Semaphore::enter() {
   caller->yield(); // wating with prio_ceiling, maybe some one more important wants to work?
 }
 
+bool Semaphore::tryEnter() {
+  Thread* caller = Thread::getCurrentThread();
+  int32_t callerPriority = caller->getPriority();
+  {
+    PRIORITY_CEILER_IN_SCOPE();
+    // Check if semaphore is occupied by another thread
+    if ((owner != 0) && (owner != caller) ) {
+      return false;
+    }
+    owner = caller;
+    ownerPriority = callerPriority;
+    ownerEnterCnt++;
+  } // end of prio_ceiling
+  caller->yield();
+  return true;
+}
+
 /**
  *  caller does not block. resumes one waiting thread (enter)
  */
