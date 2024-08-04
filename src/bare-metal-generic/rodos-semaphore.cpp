@@ -98,5 +98,23 @@ void Semaphore::leave() {
 }
 
 
+bool Semaphore::tryEnter() {
+  // Thread* caller = Thread::getCurrentThread();
+  // int32_t callerPriority = caller->getPriority();
+  // {
+  //   PRIORITY_CEILER_IN_SCOPE();
+  //   // Check if semaphore is occupied by another thread
+  //   if ((owner != 0) && (owner != caller) ) {
+  //     return false;
+  //   }
+  //   owner = caller;
+  //   ownerPriority = callerPriority;
+  //   ownerEnterCnt++;
+  // } // end of prio_ceiling
+  // caller->yield();
+  return true;
+}
+
+
 } // namespace
 
