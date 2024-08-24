@@ -56,7 +56,7 @@ endif ()
 # I add all of them and use this foreach loop cause I don't know how to do this the install(TARGET
 # ... INCLUDES DESTINATION ...) way.
 foreach(dir ${directories_to_include})
-    target_include_directories(rodos_rodos PUBLIC $<INSTALL_INTERFACE:${rodos_INSTALL_INCLUDEDIR}/${dir}>)
+    target_include_directories(rodos_without_main PUBLIC $<INSTALL_INTERFACE:${rodos_INSTALL_INCLUDEDIR}/${dir}>)
 endforeach()
 
 set(rodos_INSTALL_LIBDIR ${CMAKE_INSTALL_LIBDIR}/${package})
@@ -64,7 +64,7 @@ set(rodos_INSTALL_LIBDIR ${CMAKE_INSTALL_LIBDIR}/${package})
 # Define how to install which targets and create an export. If possible define the include
 # directories for the exported targets here.
 install(
-    TARGETS rodos_rodos EXPORT rodosTargets
+    TARGETS rodos_without_main rodos_rodos EXPORT rodosTargets
     ARCHIVE
         DESTINATION ${rodos_INSTALL_LIBDIR}
     INCLUDES
@@ -124,4 +124,3 @@ if (NOT TARGET uninstall-all)
         COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall-all.cmake
     )
 endif ()
-
