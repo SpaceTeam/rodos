@@ -34,7 +34,10 @@ namespace RODOS {
 /** This shall be in topicInterface, but to do not link if we do not need...*/
 // List TopicInterface::topicList = 0;
 
-bool isHostBigEndian = false; // will  be updated in main
+// Patrick Kappl: I moved this definition to stream-bytesex.cpp, because it is declared in
+// stream-bytesex.h and I need a definition in rodos_without_main too.
+
+// bool isHostBigEndian = false; // will  be updated in main
 
 union ByteSexDetector {
     char asBytes[4];

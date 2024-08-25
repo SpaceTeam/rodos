@@ -13,6 +13,10 @@
 
 namespace RODOS {
 
+// I moved this here from main.cpp, because it is declared in stream-bytesex.h, and I need a
+// definition in rodos_without_main too.
+bool isHostBigEndian = false; // will  be updated in main
+
 /// exchange values of char variables (a) and (b)
 inline void swapChars(char& a, char& b) {
     const char tmp = a;
