@@ -2,8 +2,6 @@
 # OSC_CLK which.
 set(board discovery_f411)
 
-add_compile_definitions(BOOTIMAGE_PAGE=5)
-
 set(SUB_ARCH stm32f411)
 set(OSC_CLK 12000000)
 include(${CMAKE_CURRENT_LIST_DIR}/stm32f4.cmake)
