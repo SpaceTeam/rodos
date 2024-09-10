@@ -18,8 +18,8 @@ class LinkinterfaceUART(LinkinterfaceI):
 
     messageQueue = queue.Queue()
 
-    def __init__(self, path="/dev/rfcomm0"):
-        self.ser = serial.Serial(path)
+    def __init__(self, path="/dev/rfcomm0", baudrate=115200):
+        self.ser = serial.Serial(path, baudrate)
         print(self.ser.name)
         self.BIGENDIAN_P = False
 
