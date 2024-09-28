@@ -50,7 +50,7 @@ public:
      *          Request configured baudrate with status().
      * @return  0 on success, -1 on failure
      */
-    int32_t init(uint32_t baudrate = 1000000, bool slave = false, bool tiMode = false);
+    int32_t init(uint32_t baudrate = 1000000, bool slave = false, bool tiMode = false, bool useOpenDrainOutputs = false);
 
     /**
      *  @brief  Disable interface and set all its registers and pins to its reset state.

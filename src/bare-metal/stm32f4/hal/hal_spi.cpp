@@ -308,7 +308,7 @@ HAL_SPI::HAL_SPI(SPI_IDX idx) {
  * @param baudrate
  * @return baudrate that is really configured, considering APB clock and possible baudrate prescaler (2,4,8,16,32,64,128,256)
  */
-int32_t HAL_SPI::init(uint32_t baudrate, bool slave, bool tiMode) {
+int32_t HAL_SPI::init(uint32_t baudrate, bool slave, bool tiMode, bool useOpenDrainOutputs) {
 	context->slave = slave;
 	/* enable peripheral clock */
 	switch(context->idx){
@@ -392,7 +392,11 @@ int32_t HAL_SPI::init(uint32_t baudrate, bool slave, bool tiMode) {
 	/* set GPIO parameter which are always the same */
     GPIO_InitTypeDef GPIO_InitStruct;
 	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_AF;
-	GPIO_InitStruct.GPIO_OType = GPIO_OType_PP;
+	if(useOpenDrainOutputs) {
+		GPIO_InitStruct.GPIO_OType = GPIO_OType_OD;
+	} else {
+		GPIO_InitStruct.GPIO_OType = GPIO_OType_PP;
+	}
 	GPIO_InitStruct.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_NOPULL;
 
