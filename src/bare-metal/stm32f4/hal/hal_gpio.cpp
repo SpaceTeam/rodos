@@ -230,6 +230,14 @@ int32_t HAL_GPIO::config(GPIO_CFG_TYPE type, uint32_t paramVal){
 				return 0;
 			}
 			return -1;
+		case GPIO_CFG_OPENDRAIN_ENABLE:
+			if (paramVal > 0){
+				context->GPIO_InitStruct.GPIO_OType = GPIO_OType_OD;
+			}else{
+				context->GPIO_InitStruct.GPIO_OType = GPIO_OType_PP;
+			}
+			GPIO_Init(context->PORT, &context->GPIO_InitStruct);
+			return 0;
 		case GPIO_CFG_IRQ_SENSITIVITY:
 			if (paramVal <= GPIO_IRQ_SENS_FALLING){
 				context->irqSensitivity=(RODOS::GPIO_IRQ_SENSITIVITY)paramVal;
@@ -331,7 +339,7 @@ void HAL_GPIO::resetInterruptEventStatus(){
 
 
 extern "C" {
-    
+
 #ifndef RODOS_UNMOUNT_IRQ_EXTI0
 void EXTI0_IRQHandler();
 void EXTI0_IRQHandler() {
