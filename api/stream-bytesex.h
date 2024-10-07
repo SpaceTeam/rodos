@@ -12,8 +12,33 @@
 
 namespace RODOS {
 
-/// Warning: Will be set in rodos-main(). never use beore main (eg never in static constructurs)
-extern bool isHostBigEndian;
+// isHostBigEndian can now be used in static constructs
+// Noel Atzwanger: Somewhat messy but it supports all mainstream compilers
+//                 and some derivatives like icx, and aocc
+//                 tested on: gcc>=6.0.0, clang>=9.0.0, msvc>=19.20
+
+#if defined(__BYTE_ORDER__) // Cland and GCC
+    #if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+        constexpr bool isHostBigEndian = false;
+    #elif __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+        constexpr bool isHostBigEndian = true;
+    #else
+        constexpr bool isHostBigEndian = false;
+        #warning "Host is nither BigEndian nor LittleEndian"
+    #endif
+#elif defined(__BIG_ENDIAN__) || defined(__big_endian__) // MISC
+    constexpr bool isHostBigEndian = true;
+#elif defined(__LITTLE_ENDIAN__) defined(__little_endian__) // MISC
+    constexpr bool isHostBigEndian = false;
+#elif defined(_MSC_VER) // MSVC
+    #if defined(_M_IX86) || defined(_M_X64)
+        constexpr bool isHostBigEndian = false;
+    #else
+        constexpr bool isHostBigEndian = true;
+    #endif
+#else
+    #error "Could not determine Endianess!"
+#endif
 
 //______________________________________________________ toggle single variables
 
