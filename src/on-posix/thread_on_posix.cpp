@@ -92,16 +92,16 @@ void Thread::create() {
 }
 
 
-void checkSuspend(volatile int64_t* reactivationTime, pthread_cond_t* cond, pthread_mutex_t* mutex) {
+void checkSuspend(RODOS::Atomic<int64_t> &reactivationTime, pthread_cond_t* cond, pthread_mutex_t* mutex) {
     int64_t now                          = NOW();
-    int64_t hostabsoluteReactivationTime = hwGetAbsoluteNanoseconds() + (*reactivationTime - now);
+    int64_t hostAbsoluteReactivationTime = hwGetAbsoluteNanoseconds() + (reactivationTime - now);
 
     struct timespec tp;
-    tp.tv_sec  = static_cast<time_t>(hostabsoluteReactivationTime / SECONDS);
-    tp.tv_nsec = static_cast<long>(hostabsoluteReactivationTime % SECONDS);
+    tp.tv_sec  = static_cast<time_t>(hostAbsoluteReactivationTime / SECONDS);
+    tp.tv_nsec = static_cast<long>(hostAbsoluteReactivationTime % SECONDS);
 
-    while(*reactivationTime > now) {
-        if(*reactivationTime == END_OF_TIME) {
+    while (reactivationTime > now) {
+        if (reactivationTime == END_OF_TIME) {
             pthread_cond_wait(cond, mutex);
         } else {
             pthread_cond_timedwait(cond, mutex, &tp);
@@ -120,8 +120,7 @@ void Thread::yield() {
     pthread_mutex_lock(&context->mutex);
     if(caller->suspendedUntil > NOW()) {
         caller->waitingFor.store(0);
-        int64_t suspendedUntil = caller->suspendedUntil.load();
-        checkSuspend(&suspendedUntil, &context->condition, &context->mutex);
+        checkSuspend(caller->suspendedUntil, &context->condition, &context->mutex);
     }
     pthread_mutex_unlock(&context->mutex);
 
@@ -209,7 +208,6 @@ void Thread::resume() {
 
 /* suspend the thread */
 bool Thread::suspendCallerUntil(const int64_t reactivationTime, void* signaler) {
-
     Thread* caller =  getCurrentThread();
     ThreadOnPosixContext* context = (ThreadOnPosixContext*)(caller->context.load());
 
@@ -217,9 +215,7 @@ bool Thread::suspendCallerUntil(const int64_t reactivationTime, void* signaler) 
 
     caller->waitingFor = signaler;
     caller->suspendedUntil = reactivationTime;
-
-    int64_t suspendedUntil = caller->suspendedUntil.load();
-    checkSuspend(&suspendedUntil, &context->condition, &context->mutex);
+    checkSuspend(caller->suspendedUntil, &context->condition, &context->mutex);
 
     pthread_mutex_unlock(&context->mutex);
 
