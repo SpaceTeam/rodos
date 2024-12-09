@@ -74,7 +74,7 @@ uint16_t computeCrc(const void* buf, size_t len, uint16_t initialValue) {
   * first it generates a luck up table to speed up the crc computation
   */
 
-CRC::CRC() {
+Crc::Crc() {
 		for (int i=0; i < 256; i++) {
 			uint16_t tmp=0;
 			if ((i & 1) != 0)   tmp=tmp ^ 0x1021;
@@ -89,7 +89,7 @@ CRC::CRC() {
 		}
 }
 
-uint16_t CRC::computeCRC(const void* buf, size_t len, uint16_t initialValue) {
+uint16_t Crc::computeCRC(const void* buf, size_t len, uint16_t initialValue) {
 
         uint16_t currentValue = initialValue;
         const uint8_t* data = static_cast<const uint8_t*>(buf);
@@ -139,5 +139,3 @@ uint32_t checkSumXor32(const uint32_t *buf, size_t len) {
 #ifndef NO_RODOS_NAMESPACE
 }
 #endif
-
-

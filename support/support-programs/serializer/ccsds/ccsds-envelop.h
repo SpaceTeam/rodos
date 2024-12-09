@@ -93,10 +93,9 @@ struct UplinkEnvelop : CCSDSEnvelop {
 //extern DownlinkEnvelop downlinkEnvelop;
 //extern UplinkEnvelop   uplinkEnvelop;
 #ifndef NO_RODOS_NAMESPACE
-extern RODOS::CRC      crcChecker;
+extern RODOS::Crc      crcChecker;
 #else
-extern CRC             crcChecker;
+extern Crc             crcChecker;
 #endif
 
 } // namespace ccsds
-

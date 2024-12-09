@@ -8,7 +8,7 @@
 
 namespace CCSDS {
 
-CRC             crcChecker;
+Crc             crcChecker;
 Application     applicationSpacecraft("CCSDS-spacesegmentsegment-envelop");
 
 /*************************** To Write (Send) Data **********************/
@@ -172,5 +172,3 @@ bool UplinkEnvelop::checkoutNextSP() {
 }
 
 } // namespace ccsds
-
-

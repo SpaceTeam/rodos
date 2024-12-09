@@ -26,13 +26,13 @@ uint16_t computeCrc(const void* buf, size_t len, uint16_t initialValue);
 /** An optimized crc generator.
   * first it generates a luck up table to speed up the crc computation
   * use only one in the system. more is not required.
-  * CCSDS recommends 0 (but Warning: some times 0xffff) as initial value 
+  * CCSDS recommends 0 (but Warning: some times 0xffff) as initial value
   */
 
-class CRC {
+class Crc {
     uint16_t lookUpTable[256];
 public:
-    CRC(); 
+    Crc();
     uint16_t computeCRC(const void* buf, size_t len, uint16_t initialValue);
 };
 
@@ -52,4 +52,3 @@ uint32_t checkSumXor32(const uint32_t *buf, size_t len);
 #ifndef NO_RODOS_NAMESPACE
 }
 #endif
-

@@ -8,7 +8,7 @@
 
 namespace CCSDS {
 
-//CRC             crcChecker;
+//Crc             crcChecker;
 Application     applicationGround("CCSDS-groundsegment-envelop");
 
 /*************************** To Write (Send) Data **********************/
@@ -145,5 +145,3 @@ bool DownlinkEnvelop::checkoutNextSP() {
 }
 
 } // namespace ccsds
-
-
