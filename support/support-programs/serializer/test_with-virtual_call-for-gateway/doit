@@ -9,7 +9,7 @@ echo
 echo "generating serializers for user defined classes"
 
 for  i in *.hh
-do 
+do
     FILE="${i%%.*}"
     echo "    $i -> generated/$FILE"
     ../generator/serializer -I include --use-non-pod $i | grep -v "static_cast<Serializable" > generated/${FILE}.cpp
@@ -17,7 +17,7 @@ done
 
 echo "compiling user application and generated files"
 
-linux-executable  -I include -I. testapplication.cpp generated/*
+rodos-executable.sh linux-x86  -I include -I. testapplication.cpp generated/*
 
 echo
 echo

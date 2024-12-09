@@ -5,7 +5,7 @@ echo "                          Send and reseice a downlink tf"
 echo " -------------------------------------------------------"
 \rm tst downlinktf.bin
 
-linux-executable         ccsds-example-downlink-frame.cpp
+rodos-executable.sh linux-x86 ccsds-example-downlink-frame.cpp
 tst
 
 echo " -------------------------------------------------------"
@@ -15,12 +15,8 @@ hexdump -C downlinktf.bin
 echo
 echo " -------------------------------------------------------"
 
-linux-executable         ccsds-example-downlink-receive-groundstation.cpp
-tst 
+rodos-executable.sh linux-x86 ccsds-example-downlink-receive-groundstation.cpp
+tst
 
 #---------------------------------------
 \rm tst
-
-
-
-

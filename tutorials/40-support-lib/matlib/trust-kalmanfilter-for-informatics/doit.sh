@@ -17,7 +17,7 @@ to see the original data (big noise) call
 
 Then try the simple calmanfilter-for-informatic, ony scalar:
 for example
-    linux-executable nadirfinder-scalar-test.cpp
+    rodos-executable.sh linux-x86 nadirfinder-scalar-test.cpp
     tst > temp.m
 WARNING: you have to stop it using ^C (control C)
 See the results using
@@ -25,7 +25,7 @@ See the results using
 
 
 The more comprex with attitude determination:
-    linux-executable  nadirfinder.cpp  filteredsensors.cpp 
+    rodos-executable.sh linux-x86  nadirfinder.cpp  filteredsensors.cpp
     tst > temp.m
 WARNING: you have to stop it using ^C (control C)
 See the results using
@@ -34,4 +34,3 @@ See the results using
 
 
 END_OF_MESSAGE
-

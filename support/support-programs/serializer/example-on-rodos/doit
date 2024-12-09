@@ -13,6 +13,5 @@ doit-generate-serializer-dezerailser
 
 echo "_______________________________ compiling RODOS user application and generated files"
 
-linux-executable  -I. -Iinclude application.cpp generated/*.cpp
+rodos-executable.sh linux-x86  -I. -Iinclude application.cpp generated/*.cpp
 tst
-

@@ -12,7 +12,7 @@ to see the original data (big noise) call
 
 Then try each filter
 for example
-    linux-executable example-filterrealdata.cpp
+    rodos-executable.sh linux-x86 example-filterrealdata.cpp
 then execute it, write in a file
     tst > temp.m
 WARNING: you have to stop it using ^C (control C)
@@ -21,4 +21,3 @@ See the results using
 
 
 END_OF_MESSAGE
-
