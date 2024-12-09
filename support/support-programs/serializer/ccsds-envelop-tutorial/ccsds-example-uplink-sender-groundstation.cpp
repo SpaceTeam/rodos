@@ -2,7 +2,7 @@
 #include "rodos.h"
 #include "ccsds/ccsds-envelop.h"
 
-#include "stdio.h" // NOT rodos!!! 
+#include "stdio.h" // NOT rodos!!!
 
 /**
  *---------------- to Send data ---------------
@@ -59,21 +59,22 @@ void writeSP(const char* stringToSend) {
     PRINTF("Max sp len = %d\n", maxlen);
     PRINT_ENVELOP_INFOS("after beginNewSP :");
 
-    strcpy(uplinkEnvelop.userDataBuf, stringToSend);
-    uplinkEnvelop.lenOfCurrentUserData = strlen(stringToSend);
+    uplinkEnvelop.lenOfCurrentUserData = static_cast<uint16_t>(strlen(stringToSend));
+    memcpy(uplinkEnvelop.userDataBuf, stringToSend, uplinkEnvelop.lenOfCurrentUserData);
 
     uplinkEnvelop.commitSP();
     PRINT_ENVELOP_INFOS("after CommitSP   :");
 }
 
-class CCDStests: public Thread {
+class CCDStests: public StaticThread<> {
 public:
     void run() {
         printfVerbosity = 100; // print acticated
         PRINTF("it writes a singel downlink Tranferframe to file uplinktf.bin\n");
 
         uplinkEnvelop.beginNewTF();
-        uplinkEnvelop.initDefaultTFHeaderAndTrailer();
+        auto const spacecraftId = 1023; // largest possible value since it is only 10 bit
+        uplinkEnvelop.initDefaultTFHeaderAndTrailer(spacecraftId);
         uplinkEnvelop.initDefaultSPHeader();
 
         //_____________________________________________________________________ Init My defaults, can be modified later
@@ -135,5 +136,3 @@ public:
     }
 
 } ccsdsTests;
-
-

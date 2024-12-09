@@ -2,7 +2,7 @@
 #include "rodos.h"
 #include "ccsds/ccsds-envelop.h"
 #include "ccsds/downlink-frame.h"
-#include "stdio.h" // NOT rodos!!! 
+#include "stdio.h" // NOT rodos!!!
 
 
 /********** For spacecraft ************/
@@ -14,14 +14,20 @@ using namespace CCSDS;
 DownlinkFrame myTm; // Exaclty one SP per TF, make all simpler!
 
 
-class CCDStests: public Thread {
+class CCDStests: public StaticThread<> {
 public:
     void run() {
         printfVerbosity = 100; // print acticated
         PRINTF("it writes a singel downlink sp & Tranferframe to file downlinktf.bin\n");
-       
-        char* dest = myTm.beginNewFrame(1,2,3,4); // (apid, serv, subserv, vcid)
-        strcpy(dest, "This is a single sp in a single tf, rest ist empty \0\0\0");
+
+        auto const spacecraftId = 13;
+        auto const apid = 1;
+        auto const service = 2;
+        auto const subservice = 3;
+        auto const vcid = 4;
+        uint8_t* dest = myTm.beginNewFrame(spacecraftId, apid, service, subservice, vcid);
+        char string[] = "This is a single sp in a single tf, rest ist empty \0\0\0";
+        memcpy(dest, string, strlen(string));
         DownlinkTransferFrame* tf = myTm.commit();
 
         //______________________________________________________________________ write to file
@@ -36,5 +42,3 @@ public:
     }
 
 } ccsdsTests;
-
-

@@ -36,14 +36,14 @@ struct DownlinkFrame {
 
     DownlinkEnvelop downlinkEnvelop;
 
-    char* beginNewFrame() { 
+    uint8_t* beginNewFrame() {
         downlinkEnvelop.beginNewTF();
-        int len = downlinkEnvelop.beginNewSP();
+        uint16_t len = downlinkEnvelop.beginNewSP();
         downlinkEnvelop.lenOfCurrentUserData = len;
         return downlinkEnvelop.userDataBuf;
     }
 
-   char* beginNewFrame(uint32_t spaceCraftId, int apid, int serv, int subserv, int vcid) {
+   uint8_t* beginNewFrame(uint16_t spaceCraftId, uint8_t apid, uint8_t serv, uint8_t subserv, uint8_t vcid) {
         beginNewFrame();
         setVals(spaceCraftId, apid, serv, subserv, vcid);
         return downlinkEnvelop.userDataBuf;
@@ -57,11 +57,11 @@ struct DownlinkFrame {
         return downlinkEnvelop.getTfPtr();
     }
 
-    void setVcid(int vcid) { 
+    void setVcid(uint8_t vcid) {
         downlinkEnvelop.tfHeader.virtualChanId        = vcid;
     }
 
-    void setVals(uint32_t spaceCraftId, int apid, int serv, int subserv, int vcid) {
+    void setVals(uint16_t spaceCraftId, uint16_t apid, uint8_t serv, uint8_t subserv, uint8_t vcid) {
         downlinkEnvelop.initDefaultTFHeaderAndTrailer(spaceCraftId);
         downlinkEnvelop.initDefaultSPHeader();
 

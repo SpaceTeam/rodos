@@ -1,7 +1,7 @@
 #include "rodos.h"
 #include "ccsds/ccsds-envelop.h"
 
-#include "stdio.h" // NOT rodos!!! 
+#include "stdio.h" // NOT rodos!!!
 
 /**
  *------------- to recieve  data----------------
@@ -31,7 +31,7 @@ using namespace CCSDS;
 DownlinkEnvelop downlinkEnvelop;
 int printfVerbosity = 0; // no prints from rodos
 
-class CCDStests: public Thread {
+class CCDStests: public StaticThread<> {
 public:
     void run() {
         printfVerbosity = 100; // print acticated
@@ -94,5 +94,3 @@ public:
         hwResetAndReboot();
     }
 } ccsdsTests;
-
-
