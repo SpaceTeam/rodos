@@ -97,10 +97,16 @@ else()
     MESSAGE("Linker script used ${linker_script}")
 endif()
 
+# I thought setting the default flags for the configurations is done with the *_INIT variables but
+# that appends to the existing default flags instead of replacing them.
+set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g3 -gdwarf-2")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG")
+set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O2 -g3 -gdwarf-2 -DNDEBUG")
+set(CMAKE_CXX_FLAGS_MINSIZEREL "-Os -DNDEBUG")
 
 add_compile_definitions(HSE_VALUE=${OSC_CLK} USE_STDPERIPH_DRIVER)
 set(compile_and_link_options -mcpu=cortex-m4 -mfpu=fpv4-sp-d16)
-add_compile_options(-gdwarf-2 -mthumb -g3)
+add_compile_options(-mthumb -ffunction-sections -fdata-sections)
 add_link_options(-Wl,-T${linker_script})
 add_link_options(
     -nostartfiles -nodefaultlibs -nostdlib
