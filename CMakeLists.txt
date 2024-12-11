@@ -70,14 +70,14 @@ target_include_directories(rodos_without_main PUBLIC
 
 target_compile_features(rodos_rodos PUBLIC cxx_std_14)
 target_compile_options(rodos_rodos PUBLIC -fno-exceptions)
-target_compile_options(rodos_rodos PRIVATE -g -Wall -Wpedantic -Wextra -Wcast-qual -Wconversion
+target_compile_options(rodos_rodos PRIVATE -Wall -Wpedantic -Wextra -Wcast-qual -Wconversion
 -Wsign-conversion -Wfloat-conversion -Wdouble-promotion -Wnull-dereference -Wstrict-aliasing -Wno-long-long
--Wno-cpp -O0)
+-Wno-cpp)
 target_compile_features(rodos_without_main PUBLIC cxx_std_14)
 target_compile_options(rodos_without_main PUBLIC -fno-exceptions)
-target_compile_options(rodos_without_main PRIVATE -g -Wall -Wpedantic -Wextra -Wcast-qual -Wconversion
+target_compile_options(rodos_without_main PRIVATE -Wall -Wpedantic -Wextra -Wcast-qual -Wconversion
     -Wsign-conversion -Wfloat-conversion -Wdouble-promotion -Wnull-dereference -Wstrict-aliasing -Wno-long-long
-    -Wno-cpp -O0)
+    -Wno-cpp)
 
 option(ENABLE_RODOS_RTTI "Build RODOS with run-time type information" OFF)
 if (NOT ENABLE_RODOS_RTTI)
