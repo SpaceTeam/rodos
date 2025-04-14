@@ -45,13 +45,34 @@ Semaphore::Semaphore() :
 void Semaphore::enter() {
   Thread* caller = Thread::getCurrentThread();
   if(owner == caller) {
-	ownerEnterCnt++;
-	return;
+    ownerEnterCnt++;
+    return;
   }
   pthread_mutex_t *mutexp = (pthread_mutex_t*)context;
   pthread_mutex_lock(mutexp);
   owner =  caller;
   ownerEnterCnt = 1;
+}
+
+/**
+* Caller will return false if semaphore is occupied,
+* true if he obtained the lock.
+* Owner may always re-enter.
+*/
+bool Semaphore::tryEnter() {
+  Thread* caller = Thread::getCurrentThread();
+  if(owner == caller) {
+    ownerEnterCnt++;
+    return true;
+  }
+  pthread_mutex_t *mutexp = (pthread_mutex_t*)context;
+  if(pthread_mutex_trylock(mutexp) == 0){
+    // Success
+    owner =  caller;
+    ownerEnterCnt = 1;
+    return true;
+  }
+  return false;
 }
 
 /**
