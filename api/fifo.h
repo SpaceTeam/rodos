@@ -345,7 +345,7 @@ template <class Type, size_t len>  class BlockFifo : public Fifo<Type,len> {
 protected:
     size_t advanceIndexEx(size_t index,size_t advanceSize) {
         size_t newIndex = index + advanceSize;
-        while(newIndex >= len) {
+        while(newIndex >= len) { // like %, Module, just faster if we do it once
             newIndex -= len;
         }
         return newIndex;
