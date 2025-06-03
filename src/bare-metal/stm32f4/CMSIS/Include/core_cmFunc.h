@@ -591,7 +591,7 @@ __attribute__( ( always_inline ) ) __STATIC_INLINE uint32_t __get_FPSCR(void)
 
   /* Empty asm statement works as a scheduling barrier */
   __ASM volatile ("");
-  __ASM volatile ("VMRS %0, fpscr" : "=r" (result) );
+  result = __builtin_arm_get_fpscr();
   __ASM volatile ("");
   return(result);
 #else
@@ -611,7 +611,7 @@ __attribute__( ( always_inline ) ) __STATIC_INLINE void __set_FPSCR(uint32_t fps
 #if (__FPU_PRESENT == 1) && (__FPU_USED == 1)
   /* Empty asm statement works as a scheduling barrier */
   __ASM volatile ("");
-  __ASM volatile ("VMSR fpscr, %0" : : "r" (fpscr) : "vfpcc");
+  __builtin_arm_set_fpscr(fpscr);
   __ASM volatile ("");
 #endif
 }
