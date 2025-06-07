@@ -27,12 +27,8 @@
 
 namespace RODOS {
 
-// I don't know why this definition was moved to main, I don't understand the comment, but I need to
-// move it back to topic.c where it belongs, because otherwise we get get linker errors from the
-// rodos_without_main library if we build for coverage with -fkeep-inline-functions in the COBC SW
-// repo.
 /** This shall be in topicInterface, but to do not link if we do not need...*/
-// List TopicInterface::topicList = 0;
+List TopicInterface::topicList = 0;
 
 /********************************/
 
