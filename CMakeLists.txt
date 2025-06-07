@@ -25,33 +25,27 @@ endif ()
 file(GLOB_RECURSE independent_sources
     src/independent/*.cpp
     support/support-libs/*.cpp)
-set(main_cpp "${CMAKE_CURRENT_SOURCE_DIR}/src/independent/main.cpp")
-set(independent_sources_without_main ${independent_sources})
-list(REMOVE_ITEM independent_sources_without_main ${main_cpp})
 
 add_library(rodos_rodos STATIC ${independent_sources})
 add_library(rodos::rodos ALIAS rodos_rodos)
 add_library(rodos ALIAS rodos_rodos)
-add_library(rodos_without_main STATIC ${independent_sources_without_main})
-add_library(rodos::without_main ALIAS rodos_without_main)
+add_library(rodos_with_vector_table_offset STATIC ${independent_sources})
+add_library(rodos::with_vector_table_offset ALIAS rodos_with_vector_table_offset)
 set_target_properties(rodos_rodos PROPERTIES
 EXPORT_NAME rodos
 OUTPUT_NAME rodos
 )
-set_target_properties(rodos_without_main PROPERTIES
-    EXPORT_NAME without_main
+set_target_properties(rodos_with_vector_table_offset PROPERTIES
+    EXPORT_NAME with_vector_table_offset
 )
-
-# FIXME: That does not work. rodos_rodos needs to be the way it was before
-# target_link_libraries(rodos_rodos PUBLIC rodos_without_main)
 
 file(GLOB port_sources
     src/${port_dir}/*.cpp
     src/${port_dir}/*.c
     src/${port_dir}/hal/*.cpp
     src/${port_dir}/*.S)
-    target_sources(rodos_rodos PRIVATE ${port_sources})
-target_sources(rodos_without_main PRIVATE ${port_sources})
+target_sources(rodos_rodos PRIVATE ${port_sources})
+target_sources(rodos_with_vector_table_offset PRIVATE ${port_sources})
 
 target_include_directories(rodos_rodos PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/api>
@@ -60,7 +54,7 @@ target_include_directories(rodos_rodos PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/${port_dir}/include>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/support/support-libs>
 )
-target_include_directories(rodos_without_main PUBLIC
+target_include_directories(rodos_with_vector_table_offset PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/api>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/api/hal>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/${port_dir}>
@@ -73,16 +67,17 @@ target_compile_options(rodos_rodos PUBLIC -fno-exceptions)
 target_compile_options(rodos_rodos PRIVATE -Wall -Wpedantic -Wextra -Wcast-qual -Wconversion
 -Wsign-conversion -Wfloat-conversion -Wdouble-promotion -Wnull-dereference -Wstrict-aliasing -Wno-long-long
 -Wno-cpp)
-target_compile_features(rodos_without_main PUBLIC cxx_std_14)
-target_compile_options(rodos_without_main PUBLIC -fno-exceptions)
-target_compile_options(rodos_without_main PRIVATE -Wall -Wpedantic -Wextra -Wcast-qual -Wconversion
+target_compile_features(rodos_with_vector_table_offset PUBLIC cxx_std_14)
+target_compile_options(rodos_with_vector_table_offset PUBLIC -fno-exceptions)
+target_compile_options(rodos_with_vector_table_offset PRIVATE -Wall -Wpedantic -Wextra -Wcast-qual -Wconversion
     -Wsign-conversion -Wfloat-conversion -Wdouble-promotion -Wnull-dereference -Wstrict-aliasing -Wno-long-long
     -Wno-cpp)
+target_compile_definitions(rodos_with_vector_table_offset PUBLIC BOOTIMAGE_PAGE=5)
 
 option(ENABLE_RODOS_RTTI "Build RODOS with run-time type information" OFF)
 if (NOT ENABLE_RODOS_RTTI)
     target_compile_options(rodos_rodos PUBLIC $<$<COMPILE_LANGUAGE:CXX>:-fno-rtti>)
-    target_compile_options(rodos_without_main PUBLIC $<$<COMPILE_LANGUAGE:CXX>:-fno-rtti>)
+    target_compile_options(rodos_with_vector_table_offset PUBLIC $<$<COMPILE_LANGUAGE:CXX>:-fno-rtti>)
 endif ()
 
 
@@ -93,8 +88,8 @@ if (is_port_baremetal)
     target_include_directories(rodos_rodos PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/bare-metal-generic>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/bare-metal-generic/ip/lwip/include>)
-    target_sources(rodos_without_main PRIVATE ${baremetal_generic_sources})
-    target_include_directories(rodos_without_main PUBLIC
+    target_sources(rodos_with_vector_table_offset PRIVATE ${baremetal_generic_sources})
+    target_include_directories(rodos_with_vector_table_offset PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/bare-metal-generic>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src/bare-metal-generic/ip/lwip/include>)
 endif ()
@@ -106,19 +101,19 @@ endif ()
 if (sources_to_add)
     file(GLOB files ${sources_to_add})
     target_sources(rodos_rodos PRIVATE ${files})
-    target_sources(rodos_without_main PRIVATE ${files})
+    target_sources(rodos_with_vector_table_offset PRIVATE ${files})
 endif ()
 
 if (directories_to_include)
     foreach(dir ${directories_to_include})
         target_include_directories(rodos_rodos PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${dir}>)
-        target_include_directories(rodos_without_main PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${dir}>)
+        target_include_directories(rodos_with_vector_table_offset PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/${dir}>)
     endforeach()
 endif ()
 
 if (libraries_to_link)
     target_link_libraries(rodos_rodos PUBLIC ${libraries_to_link})
-    target_link_libraries(rodos_without_main PUBLIC ${libraries_to_link})
+    target_link_libraries(rodos_with_vector_table_offset PUBLIC ${libraries_to_link})
 endif ()
 
 if (EXECUTABLE)
