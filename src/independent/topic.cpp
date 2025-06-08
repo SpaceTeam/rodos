@@ -24,10 +24,6 @@ namespace RODOS {
 
 // List TopicInterface::topicList = 0; This shall be here, but moved to main
 
-// Patrick Kappl: I don't know why this definition was moved to main, but I need to move it back to
-// here for the rodos_without_main target
-List TopicInterface::topicList = 0;
-
 static Application applicationName("Topics & Middleware", APID_MIDDLEWARE);
 
 TopicInterface::TopicInterface(int64_t id, size_t len, const char* name, bool _onlyLocal) : ListElement(topicList, name)  {
