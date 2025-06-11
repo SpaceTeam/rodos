@@ -97,6 +97,8 @@ LoopFillZerobss:
 /* Call static constructors */
 //    bl __libc_init_array
     bl call_constructors
+  /* Enable interrupts again after they were disabled by the bootloader */
+  cpsie i
   /* Call the application's entry point.*/
   bl  main
   bx  lr
