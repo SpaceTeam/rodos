@@ -45,6 +45,7 @@ void startIdleThread() {
 			" cpsie i				\n" /* Globally enable interrupts. */
 			" svc 0					\n" /* System call to start first task. */
 			" nop					\n"
+			" .ltorg 				\n"
 	);
 }
 

@@ -43,7 +43,7 @@ extern "C" {
  *
  */
 #if 1
-int _close(int file);
+int _close(int file) __attribute__((used));
 int _close([[gnu::unused]] int file) {
 	return -1;
 }
@@ -63,7 +63,7 @@ int _fork(void) {
 	return -1;
 }
 
-int _fstat(int file, struct stat *st);
+int _fstat(int file, struct stat *st) __attribute__((used));
 int _fstat([[gnu::unused]] int file, struct stat *st) {
 	st->st_mode = S_IFCHR;
 	return 0;
@@ -74,7 +74,7 @@ int _getpid(void) {
 	return 1;
 }
 
-int _isatty(int file);
+int _isatty(int file) __attribute__((used));
 int _isatty([[gnu::unused]] int file) {
 	return 1;
 }
@@ -91,7 +91,7 @@ int _link([[gnu::unused]] char *old, [[gnu::unused]] char *pNew) {
 	return -1;
 }
 
-int _lseek(int file, int ptr, int dir);
+int _lseek(int file, int ptr, int dir) __attribute__((used));
 int _lseek([[gnu::unused]] int file, [[gnu::unused]] int ptr, [[gnu::unused]] int dir) {
 	return 0;
 }
@@ -101,7 +101,7 @@ int _open([[gnu::unused]] const char *name, [[gnu::unused]] int flags, [[gnu::un
 	return -1;
 }
 
-int _read(int file, char *ptr, int len);
+int _read(int file, char *ptr, int len) __attribute__((used));
 int _read([[gnu::unused]] int file, [[gnu::unused]] char *ptr, [[gnu::unused]] int len) {
 	return 0;
 }
@@ -189,7 +189,7 @@ size_t _write([[gnu::unused]] int file, const char *ptr, size_t len) {
 /*
  * reentrant syscalls
  */
-size_t _write_r(void *reent, int fd, const void *buf, size_t cnt);
+size_t _write_r(void *reent, int fd, const void *buf, size_t cnt) __attribute__((used));
 size_t _write_r([[gnu::unused]] void *reent, int fd, const void *buf, size_t cnt) {
 	return _write(fd, (const char*) buf, cnt);
 }
@@ -262,4 +262,3 @@ void UndefinedInterrupt_Handler(){
 }
 
 }
-

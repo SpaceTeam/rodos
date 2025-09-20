@@ -30,7 +30,7 @@
 #include "stm32f4xx_rtc.h"
 #include "stm32f4xx_exti.h"
 
-volatile long *contextT;
+volatile long *contextT __attribute__((used));
 
 namespace RODOS {
 
@@ -43,7 +43,7 @@ void PendSV_Handler(void) __attribute__ (( naked ));
 void SVC_Handler(void) __attribute__ (( naked ));
 }
 
-/** function to do hardware initialization 
+/** function to do hardware initialization
  * -> hwInit() is called in main() (src/independent/main.cpp)
  */
 
@@ -198,6 +198,7 @@ void SVC_Handler(void) {
 			"	bx r14							\n"
 			"									\n"
 			"	.align 2						\n"
+			"	.ltorg 							\n"
 	);
 }
 
@@ -238,6 +239,7 @@ void PendSV_Handler(void) {
 			"	bx r14								\n"
 			"										\n"
 			"	.align 2							\n"
+			"	.ltorg 								\n"
 	);
 }
 }
@@ -526,7 +528,7 @@ void deepSleepUntil(long long until) {
 	if (status == true) {
 		RTC_WakeUpCmd(ENABLE);
 
-		deepSleepWakeupTime = until; // +/- SYNCH_ERROR_CORRECTION_IN_MILLISECONDS // optional, HSE typical startup time: ~ 2 ms 
+		deepSleepWakeupTime = until; // +/- SYNCH_ERROR_CORRECTION_IN_MILLISECONDS // optional, HSE typical startup time: ~ 2 ms
 		PWR_EnterSTOPMode(PWR_Regulator_LowPower, PWR_STOPEntry_WFI);
 
 		RCC->CR = cr;
@@ -615,4 +617,3 @@ void RTC_WKUP_IRQHandler() {
 #ifndef NO_RODOS_NAMESPACE
 }
 #endif
-

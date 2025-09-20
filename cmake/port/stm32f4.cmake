@@ -103,6 +103,7 @@ set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g3 -gdwarf-2")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG")
 set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O2 -g3 -gdwarf-2 -DNDEBUG")
 set(CMAKE_CXX_FLAGS_MINSIZEREL "-Os -DNDEBUG")
+set(CMAKE_INTERPROCEDURAL_OPTIMIZATION_MINSIZEREL ON)
 
 add_compile_definitions(HSE_VALUE=${OSC_CLK} USE_STDPERIPH_DRIVER)
 set(compile_and_link_options -mcpu=cortex-m4 -mfpu=fpv4-sp-d16)
