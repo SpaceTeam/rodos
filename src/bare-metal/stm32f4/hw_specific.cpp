@@ -30,7 +30,7 @@
 #include "stm32f4xx_rtc.h"
 #include "stm32f4xx_exti.h"
 
-volatile long *contextT;
+volatile long *contextT __attribute__((used));
 
 namespace RODOS {
 
