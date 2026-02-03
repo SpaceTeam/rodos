@@ -47,6 +47,11 @@ public:
    ** The owner may reenter the semaphore without deadlock */
   void enter();
 
+  /** Caller will return false if semaphore is occupied,
+   *  true if the caller obtained the lock.
+   ** The owner may reenter the semaphore without deadlock */
+  bool tryEnter();
+
   /** caller does not block. Resumes one waiting thread (enter) */
   void leave();
 
