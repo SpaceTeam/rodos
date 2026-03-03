@@ -75,7 +75,16 @@ void PRINTF_CONDITIONAL(uint32_t id, const char* fmt, ...) __attribute__((__form
 /** Writes an error text with a leading title to stdout and keeps 
  * a counter. Used to report programming errors which shall be corrected.
  */
-void RODOS_ERROR(const char* text);
+#ifdef NO_RODOS_PRINTING
+// To remove strings, turn RODOS_ERROR into a macro, discard the argument,
+// and replace with non-printing version.
+void RODOS_ERROR_NO_PRINTING();
+#define RODOS_ERROR(text) RODOS_ERROR_NO_PRINTING()
+#else
+// Otherwise simply redirect to old printing version.
+void RODOS_ERROR_PRINTING(const char* text);
+#define RODOS_ERROR(text) RODOS_ERROR_PRINTING(text)
+#endif
 
 /** Print a character bitwise, highest bit first. 
  *  obsolete! use %b in PRINTF
