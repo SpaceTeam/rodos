@@ -39,7 +39,9 @@ void initSystem() {
 
 
     /**** Initiators **********/
+#ifndef NO_RODOS_PRINTING
     xprintf("Calling Initiators and Application Initiators\n");
+#endif
     ITERATE_LIST(Initiator, Initiator::initiatorList) {
         iter->init();
     }
@@ -49,8 +51,9 @@ void initSystem() {
 
 
     /**************** Middleware topics & Subscribers ******/
-
+#ifndef NO_RODOS_PRINTING
     xprintf("Distribute Subscribers to Topics\n");
+#endif
     Subscriber* next;
     // we can not use INTERALTE_LIST because iter->getNext is set to 0 in the loop
     for (Subscriber* iter = (Subscriber*)Subscriber::subscriberList; iter!=0; iter = next) {
@@ -63,6 +66,7 @@ void initSystem() {
         }
     }
 
+#ifndef NO_RODOS_PRINTING
     if (TopicInterface::topicList != 0) {
         xprintf("List of Middleware Topics:\n");
         ITERATE_LIST(TopicInterface, TopicInterface::topicList) {
@@ -72,14 +76,14 @@ void initSystem() {
             }
         }
     }
-
+#endif
 
     /************* TimeEvents *************/
-
-    xprintf("\nEvent servers:\n");
     num = TimeEvent::initAllElements();
+#ifndef NO_RODOS_PRINTING
+    xprintf("\nEvent servers:\n");
     if (num != 0) xprintf("	%ld TimeEvent managers\n", num);
-
+#endif
     Thread::initializeThreads();
 }
 
@@ -100,7 +104,9 @@ int main (int argc, char** argv) {
     main_argv = argv;
 
     hwInit();
+#ifndef NO_RODOS_PRINTING
     xprintf("RODOS %s OS Version %s\nLoaded Applications:\n", RODOS_VERSION_TEXT, OSVERSION);
+#endif
     Application::printApplications();
 
     initSystem();
@@ -109,6 +115,7 @@ int main (int argc, char** argv) {
     xprintf("\n\n\nWARNING! 'DANGEROUS_ASSERT_ENABLED' is active! NEVER fly this code (%s)!\n\n\n", LOCATION);
 #endif
 
+#ifndef NO_RODOS_PRINTING 
     xprintf("BigEndianity = %d, cpu-Arc = %s, Basis-Os = %s, Cpu-Speed (K-Loops/sec) = %ld yeildtim (ns) %ld\n",
             getIsHostBigEndian(),
             getHostCpuArch(),
@@ -119,13 +126,16 @@ int main (int argc, char** argv) {
             static_cast<long>(getNodeNumber()),
             static_cast<long>(getNodeNumber()));
     xprintf("-----------------------------------------------------\n");
+#endif
 
     MAIN();
 
     Timer::setInterval(PARAM_TIMER_INTERVAL);
     Timer::init(); // Timer interrupt started here
 
+#ifndef NO_RODOS_PRINTING
     xprintf("--------------- Application running ------------\n");
+#endif
     Scheduler::idle();
 
     return 0;
