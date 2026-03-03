@@ -57,14 +57,21 @@ void PRINTF_CONDITIONAL(uint32_t id, const char* fmt, ...) {
 
 //_________________________________________________________________-
 
-
-void RODOS_ERROR(const char* text) {
+// Theoretically contitional compilation is not needed here 
+// as the unused version is not included in the final binary, 
+// but I will do it anyway.
+#ifdef NO_RODOS_PRINTING
+void RODOS_ERROR_NO_PRINTING() {
+    rodosErrorCounter++;
+}
+#else
+void RODOS_ERROR_PRINTING(const char* text) {
   rodosErrorMsg = text;
   rodosErrorCounter++;
   errorLog.addRaw(text);
   if(printErrorReports) PRINTF(SCREEN_RED "\n!! Programm ERROR %s!!\n", text); // keep in red to make aware
 }
-
+#endif
 
 //void printBin(unsigned char val) {
 //	PRINTF(" ");
