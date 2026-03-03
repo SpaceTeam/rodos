@@ -8,6 +8,8 @@ project(
     LANGUAGES C CXX ASM
 )
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS On)
+
 if (COVERAGE)
     if (NOT CMAKE_BUILD_TYPE)
         set(CMAKE_BUILD_TYPE "Debug")
@@ -54,6 +56,11 @@ target_compile_options(rodos_rodos PUBLIC -fno-exceptions)
 target_compile_options(rodos_rodos PRIVATE -Wall -Wpedantic -Wextra -Wcast-qual -Wconversion
 -Wsign-conversion -Wfloat-conversion -Wdouble-promotion -Wnull-dereference -Wstrict-aliasing -Wno-long-long
 -Wno-cpp)
+
+option(NO_RODOS_PRINTING "Build RODOS without print statements and related string literals" ON)
+if (NO_RODOS_PRINTING)
+    target_compile_definitions(rodos_rodos PUBLIC NO_RODOS_PRINTING)
+endif ()
 
 option(ENABLE_RODOS_RTTI "Build RODOS with run-time type information" OFF)
 if (NOT ENABLE_RODOS_RTTI)
